@@ -1,0 +1,144 @@
+@font-face {
+  font-family: stripes;
+  src: url(halogen.otf);
+}
+
+@keyframes flicker-r {
+  0% {color: white; text-shadow: 4px 4px 20px rgb(255,255,255,0.8);}
+  79% {color: white; text-shadow: 4px 4px 20px rgb(255,255,255,0.8);}
+  80% {color: grey; text-shadow: none;}
+  82% {color: white; text-shadow: 4px 4px 20px rgb(255,255,255,0.8);}
+  97% {color: white; text-shadow: 4px 4px 20px rgb(255,255,255,0.8);}
+  99% {color:grey; text-shadow: none;}
+  100% {color: white; text-shadow: 4px 4px 20px rgb(255,255,255,0.8);}
+}
+
+@keyframes flicker-4 {
+  0% {color: red; text-shadow: 4px 4px 20px rgb(177, 22, 6);}
+  9% {color: darkred; text-shadow: none;}
+  11% {color: red; text-shadow: 4px 4px 20px rgb(177, 22, 6);}
+  13% {color: darkred; text-shadow: none;}
+  15% {color: red; text-shadow: 4px 4px 20px rgb(177, 22, 6);}
+  70% {color: red; text-shadow: 4px 4px 20px rgb(177, 22, 6);}
+  72% {color: darkred; text-shadow: none;}
+  74% {color: red; text-shadow: 4px 4px 20px rgb(177, 22, 6);}
+  100% {color: red; text-shadow: 4px 4px 20px rgb(177, 22, 6);}
+}
+
+
+body {
+  background-image: linear-gradient(to bottom, rgba(224, 82, 3, 0.99), rgb(228, 174, 16));
+}
+
+h1 {
+  font-family: stripes;
+  font-size: 60pt;
+  color: white;
+  margin: 10%;
+  text-shadow: 4px 4px 20px rgb(255,255,255,0.8);
+}
+
+.first-digit {
+  color: red;
+}
+
+.second-digit {
+  color: darkred;
+}
+
+.third-digit {
+  color: red;
+  animation-name: flicker-4;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+}
+
+.white-r {
+  animation-name: flicker-r;
+  animation-duration: 10s;
+  animation-iteration-count: infinite;
+}
+
+.first-digit, .second-digit, .third-digit {
+  text-shadow: 4px 4px 20px rgb(177, 22, 6, 1);
+}
+
+.second-digit {
+  text-shadow: none;
+}
+
+.home {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  height: 60px;
+  width: 60px;
+  filter: invert(1);
+}
+
+.home:hover {
+  transform: rotate(-45deg);
+  transition: 500ms;
+}
+
+nav a {
+  color: white;
+  font-size: 1.5em;
+}
+
+a:hover {
+  color: black;
+  text-decoration: none;
+  transition: 400ms;
+}
+
+nav {
+  text-align: center;
+  margin-bottom: 2vh;
+}
+
+.black-box {
+  background-color: black;
+  width: 60%;
+  border-radius: 30px;
+  padding: 80px;
+}
+
+.blackbox .newsletter {
+  font-size: 30pt;
+  font-family: Helvetica;
+  background-color: black;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+input, button {
+  border-radius: 5px;
+  border-style: none;
+  padding: 10px;
+}
+
+
+
+button {
+  background-image: linear-gradient(to bottom right, red, yellow);
+  color: white;
+  width: 30%;
+}
+
+input {
+  width: 65%;
+}
+
+hr {
+  width: 100%;
+  height: 10px;
+  background-image: linear-gradient(to right, red, yellow);
+  border-style: none;
+  margin-top: 20px;
+}
+
+#newsletter-text {
+  color: white;
+}
