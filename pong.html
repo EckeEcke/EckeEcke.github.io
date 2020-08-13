@@ -1,6 +1,7 @@
 <html>
 <head>
 <link rel="stylesheet" href="css/pong.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
 <center>
@@ -24,7 +25,25 @@
 <audio src="sounds/bounce1.wav" id="bounce1"></audio>
 <audio src="sounds/victory.wav" id="victory"></audio>
 
+<nav class="navbar navbar-expand-md justify-content-center">
+  <ul class="navbar-nav">
+    <li class="nav-item px-5">
+      <a href="CV.html" class="nav-link"> My CV</a>
+    </li>
+    <li class="nav-item px-5">
+      <a href="404.html" class="nav-link">CSS demo</a>
+    </li>
+    <li class="nav-item px-5">
+      <a href="pong.html" class="nav-link">JS demo</a>
+    </li>
+  </ul>
+</nav>
+
+<br>
+
 <canvas id="game-canvas" width="800px" height="600px"></canvas>
+<br>
+<br>
 <script>
 
   var canvas;
