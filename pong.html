@@ -1,0 +1,328 @@
+<html>
+<head>
+<link rel="stylesheet" href="css/pong.css">
+</head>
+<body>
+<center>
+
+<div class="scoreboard">
+
+<div id="Score1">
+<span>P1</span><div id="P1Score"></div>
+</div>
+<div id="Score2">
+<span>P2</span><div id="P2Score">
+</div>
+</div>
+
+</div>
+
+</center>
+<audio src="sounds/bounce.wav" id="bounce"></audio>
+<audio src="sounds/cheer2.wav" id="cheer2"></audio>
+<audio src="sounds/cheer1.wav" id="cheer1"></audio>
+<audio src="sounds/bounce1.wav" id="bounce1"></audio>
+<audio src="sounds/victory.wav" id="victory"></audio>
+
+<canvas id="game-canvas" width="800px" height="600px"></canvas>
+<script>
+
+  var canvas;
+  var canvasContext;
+  var ballX = 400;
+  var ballSpeedX = 5;
+  var ballY = 300;
+  var ballSpeedY = 0;
+  var paddle1Y = 250;
+  var paddle2Y = 250;
+  var upPressed = false; /*paddle controls */
+  var downPressed = false;
+  var wPressed = false;
+  var sPressed = false;
+  var Score1 = 0;
+  var Score2 = 0;
+  const paddleHeight = 100;
+  const tolerance = 20;
+  var speedBoost= 0;
+  var hitCounter = 0;
+
+
+
+
+  window.onload = function () {
+    canvas = document.getElementById("game-canvas");
+    canvasContext = canvas.getContext("2d");
+    setInterval(callBoth, 1000/120);
+    document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
+  }
+
+  function callBoth() {
+    drawEverything();
+    moveEverything();
+    moveDown1();
+    collision2();
+    collision1();
+    moveUp1();
+    moveDown2();
+    moveUp2();
+    P1Score();
+    P2Score();
+    countP1();
+    countP2();
+    raiseSpeed();
+  }
+
+  function moveEverything() {
+    ballX = ballX + ballSpeedX;
+    ballY = ballY + ballSpeedY;
+
+    if (ballX == canvas.width) {
+      ballSpeedX = ballSpeedX/ballSpeedX*(-1)*2;
+
+    }
+    if (ballX == 0) {
+      ballSpeedX = ballSpeedX/ballSpeedX*2;
+    }
+
+    ballY = ballY + ballSpeedY;
+    if (ballY >= canvas.height) {
+      ballSpeedY = -ballSpeedY;
+    }
+    if (ballY <= 0) {
+      ballSpeedY = -ballSpeedY;
+    }
+
+  }
+
+
+
+  function moveUp1 (event) {
+    if(wPressed) {
+      paddle1Y = paddle1Y - 10;
+    }
+    if(paddle1Y < 0) {
+      paddle1Y = 0;
+    }
+  }
+
+  function moveDown1 (event) {
+      if(sPressed) {
+        paddle1Y = paddle1Y + 8;
+      }
+      if(paddle1Y > 500) {
+        paddle1Y = 500;
+      }
+
+    }
+  function moveDown2 (event) {
+      if(downPressed) {
+        paddle2Y = paddle2Y + 8;
+      }
+      if(paddle2Y > 500) {
+        paddle2Y = 500;
+      }
+
+    }
+
+    function moveUp2 (event) {
+      if(upPressed) {
+        paddle2Y = paddle2Y - 10;
+      }
+      if(paddle2Y < 0) {
+        paddle2Y = 0;
+      }
+    }
+
+function keyDownHandler (event) {
+  if(event.keyCode === 87) {
+    wPressed = true;
+  }
+  else if (event.keyCode === 83) {
+    sPressed = true;
+  }
+  else if (event.keyCode === 79) {
+    upPressed = true;
+  }
+  else if (event.keyCode === 76) {
+    downPressed = true;
+  }
+}
+  function keyUpHandler (event) {
+    if(event.keyCode === 87) {
+      wPressed = false;
+    }
+    else if (event.keyCode === 83) {
+      sPressed = false;
+    }
+    else if (event.keyCode === 79) {
+      upPressed = false;
+    }
+    else if (event.keyCode === 76) {
+      downPressed = false;
+    }
+  }
+
+  function P1Score () {
+    if (ballX == canvas.width) {
+      Score1 = Score1 +1;
+      document.getElementById("cheer1").play();
+    }
+    if (ballX == canvas.width) {
+      ballX = 400;
+      hitCounter = 0;
+    }
+    if (Score1 == 10) {
+      document.getElementById("victory").play();
+      alert("Player1 wins!");
+      Score1 = 0;
+      Score2 = 0;
+      paddle1Y = 250;
+      paddle2Y = 250;
+    }
+  }
+
+
+  function countP1 () {
+    document.getElementById("P1Score").innerHTML = Score1;
+  }
+
+  function P2Score () {
+    if (ballX == 0) {
+      Score2 = Score2 +1;
+      document.getElementById("cheer2").play();
+    }
+
+    if (ballX == 0) {
+      ballX = 400;
+      hitCounter = 0;
+    }
+
+    if (Score2 == 10) {
+      document.getElementById("victory").play();
+      alert("Player2 wins!");
+      Score1 = 0;
+      Score2 = 0;
+      paddle1Y = 250;
+      paddle2Y = 250;
+    }
+  }
+
+  function countP2 () {
+    document.getElementById("P2Score").innerHTML = Score2;
+  }
+
+  function collision2 () {
+    /*if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY <= paddle2Y + paddleHeight + tolerance) {
+      ballSpeedX = -ballSpeedX;
+      ballSpeedX = (5 + speedBoost)*(-1);
+      hitCounter = hitCounter + 1;
+    } just trying out new collision for P2*/
+    if (ballX == 760 && ballY >= paddle2Y + paddleHeight/4 && ballY <= paddle2Y + 3*paddleHeight/4 && ballY >=0) { /*middle paddle*/
+      ballSpeedX = -5 - speedBoost;
+      ballSpeedY = ballSpeedY -1;
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce").play();
+    }
+    if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y + paddleHeight/4 && ballSpeedY <= 0) { /*top paddle*/
+      ballSpeedX = -5 - speedBoost;
+      ballSpeedY = 2;
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce").play();
+    }
+    if (ballX == 760 && ballY > paddle2Y + 3*paddleHeight/4 && ballY < paddle2Y + paddleHeight+tolerance && ballSpeedY >= 0) { /*bottom paddle*/
+      ballSpeedX = -5 - speedBoost;
+      ballSpeedY = 2;
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce").play();
+    }
+    if (ballX == 760 && ballY >= paddle2Y + paddleHeight/4 && ballY <= paddle2Y + 3*paddleHeight/4 && ballSpeedY < 0) { /*middle paddle*/
+      ballSpeedX = -5 - speedBoost;
+      ballSpeedY = ballSpeedY + 1;
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce").play();
+    }
+    if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y + paddleHeight/4 && ballSpeedY > 0) { /*top paddle*/
+      ballSpeedX = -5 - speedBoost;
+      ballSpeedY = (-2);
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce").play();
+    }
+    if (ballX == 760 && ballY > paddle2Y + 3*paddleHeight/4 && ballY < paddle2Y + paddleHeight+tolerance && ballSpeedY < 0) { /*bottom paddle*/
+      ballSpeedX = -5 - speedBoost;
+      ballSpeedY = 2;
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce").play();
+    }
+  }
+/*  } */
+
+  function collision1 () {
+    /*original movement if (ballX == 30 && ballY >= paddle1Y - tolerance && ballY <= paddle1Y + paddleHeight + tolerance) {
+      ballSpeedX = 5 + speedBoost;
+      ballSpeedY = 2;
+      hitCounter = hitCounter + 1;
+    }*/
+    /*experimental Y manipulation*/
+    if (ballX == 30 && ballY >= paddle1Y + paddleHeight/4 && ballY <= paddle1Y + 3*paddleHeight/4 && ballY >=0) { /*middle paddle*/
+      ballSpeedX = 5 + speedBoost;
+      ballSpeedY = ballSpeedY -1;
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce1").play();
+    }
+    if (ballX == 30 && ballY >= paddle1Y - tolerance && ballY < paddle1Y + paddleHeight/4 && ballSpeedY <= 0) {
+      ballSpeedX = 5 + speedBoost;
+      ballSpeedY = 2;
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce1").play();
+    }
+    if (ballX == 30 && ballY > paddle1Y + 3*paddleHeight/4 && ballY < paddle1Y + paddleHeight+tolerance && ballSpeedY >= 0) {
+      ballSpeedX = 5 + speedBoost;
+      ballSpeedY = 2;
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce1").play();
+    }
+    if (ballX == 30 && ballY >= paddle1Y + paddleHeight/4 && ballY <= paddle1Y + 3*paddleHeight/4 && ballSpeedY < 0) {
+      ballSpeedX = 5 + speedBoost;
+      ballSpeedY = ballSpeedY + 1;
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce1").play();
+    }
+    if (ballX == 30 && ballY >= paddle1Y - tolerance && ballY < paddle1Y + paddleHeight/4 && ballSpeedY > 0) {
+      ballSpeedX = 5 + speedBoost;
+      ballSpeedY = (-2);
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce1").play();
+    }
+    if (ballX == 30 && ballY > paddle1Y + 3*paddleHeight/4 && ballY < paddle1Y + paddleHeight+tolerance && ballSpeedY < 0) {
+      ballSpeedX = 5 + speedBoost;
+      ballSpeedY = 2;
+      hitCounter = hitCounter + 1;
+      document.getElementById("bounce1").play();
+    }
+  }
+
+  function raiseSpeed () {
+    if (hitCounter >= 10) {
+      speedBoost = 5;
+    }
+    else {
+    speedBoost = 0;
+  }
+  }
+  function drawEverything() {
+
+    canvasContext.fillStyle = "black"; /*black background*/
+    canvasContext.fillRect(0,0,canvas.width,canvas.height);
+    canvasContext.fillStyle = "red"; /*middle line*/
+    canvasContext.fillRect(canvas.width/2,0,1,canvas.height);
+    canvasContext.fillStyle = "white"; /*ball*/
+    canvasContext.fillRect(ballX,ballY,10,10);
+    canvasContext.fillstyle ="white"; /*Paddle1*/
+    canvasContext.fillRect(20,paddle1Y,10,paddleHeight);
+    canvasContext.fillStyle ="white"; /*Paddle2*/
+    canvasContext.fillRect(770,paddle2Y,10,paddleHeight);
+  }
+</script>
+</body>
+</html>
