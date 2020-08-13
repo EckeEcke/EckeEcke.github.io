@@ -2,9 +2,24 @@ body {
   background-image: url("../images/explosion.gif");
   background-size: cover;
   background-repeat: no-repeat;
-  font-size: 50;
-  font-weight: bold;
+}
+
+nav a {
   color: white;
+  font-size: 1.5em;
+  background-color: black;
+  border-radius: 20px;
+}
+
+a:hover {
+  color: rgb(155, 131, 103);
+  text-decoration: none;
+  transition: 400ms;
+}
+
+nav {
+  text-align: center;
+  margin-bottom: 5vh;
 }
 
 canvas {
@@ -14,8 +29,8 @@ canvas {
 }
 
 .scoreboard {
- 	margin: 50px auto;
-	position: absolute;
+ 	margin: 180px auto;
+  position: absolute;
 	display: inline-block;
 }
 
@@ -23,9 +38,15 @@ canvas {
 	float: left;
 	margin-left: -75px;
 	padding-right: 20px;
+  font-size: 50;
+  font-weight: bold;
+  color: white;
 }
 
 #Score2 {
 	float: left;
 	padding-left: 20px;
+  font-size: 50;
+  font-weight: bold;
+  color: white;
 }
