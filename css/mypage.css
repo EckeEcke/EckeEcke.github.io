@@ -12,17 +12,7 @@ body {
   font-family: myFont;
 }
 
-@media (min-width: 1px) {
-  p {
-    font-size: 1.5em;
-  }
-}
 
-@media (min-width: 1000px) {
-  p {
-    font-size: 1em;
-}
-}
 
 p {
   font-size: 1em;
@@ -144,4 +134,16 @@ margin: auto;
   box-shadow: 1px -2px black;
   transition: 500ms;
   background-color: rgb(190,190,190);
+}
+
+@media (min-width: 1px) {
+  p {
+    font-size: 1.5em;
+  }
+}
+
+@media (min-width: 1000px) {
+  p {
+    font-size: 1em;
+}
 }
