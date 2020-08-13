@@ -9,8 +9,8 @@ body {
   font-family: myFont;
 }
 
-@media only screen and (max-width: 380px) {
-  body {
+@media screen and (max-width: 480px) {
+  p {
     font-size: 2em;
   }
 }
