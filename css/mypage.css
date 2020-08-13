@@ -9,13 +9,17 @@ body {
   font-family: myFont;
 }
 
-@media only screen and (max-width: 480px) {
+@media (min-width: 480px) {
   p {
-    font-size: 100pt !important;
+    font-size: 1.5em;
   }
 }
 
-
+@media (min-width: 800px) {
+  p {
+    font-size: 1em;
+}
+}
 
 nav a {
   color: rgb(44, 42, 43);
