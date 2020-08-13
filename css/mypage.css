@@ -11,7 +11,7 @@ body {
 
 @media screen and (max-width: 480px) {
   p {
-    font-size: 20pt;
+    font-size: 100px;
   }
 }
 
