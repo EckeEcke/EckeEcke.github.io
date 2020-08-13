@@ -6,6 +6,7 @@
 body {
   background-image: url("../images/background.jpg");
   background-size: cover;
+  background-repeat: no-repeat;
   font-family: myFont;
 }
 
@@ -15,7 +16,7 @@ body {
   }
 }
 
-@media (min-width: 800px) {
+@media (min-width: 900px) {
   p {
     font-size: 1em;
 }
