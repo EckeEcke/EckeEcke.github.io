@@ -1,5 +1,5 @@
 body {
-  background-image: url("../images/explosion.gif");
+  background-image: linear-gradient(to bottom, darkred, black);
   background-size: cover;
   background-repeat: no-repeat;
 }
