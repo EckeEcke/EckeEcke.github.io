@@ -7,8 +7,15 @@ body {
   background-image: url("../images/background.jpg");
   background-size: cover;
   font-family: myFont;
-
 }
+
+@media only screen and (max-width: 380px) {
+  body {
+    font-size: 2em;
+  }
+}
+
+
 
 nav a {
   color: rgb(44, 42, 43);
