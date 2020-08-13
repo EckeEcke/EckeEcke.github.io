@@ -2,7 +2,10 @@
 <head>
 <link rel="stylesheet" href="css/pong.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="newspaper.css">
+<script type="text/javascript" src="script.js"></script>
 </head>
+
 <body>
 <center>
 
@@ -44,8 +47,50 @@
 <canvas id="game-canvas" width="800px" height="600px">
 </canvas>
 
+
+
 <br>
 <br>
+
+<div class="container white-box">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+          <p class="col1">
+              HTML elements are the building blocks of HTML pages. With HTML constructs, images and other objects such as interactive forms may be embedded into the rendered page. HTML provides a means to create structured documents by denoting structural semantics for text such as headings, paragraphs, lists, links, quotes and other items. HTML elements are delineated by tags, written using angle brackets. Tags such as "img /" and "input /" directly introduce content into the page.
+            <span id="spanCol1">
+                  Other tags such as "p" surround and provide information about document text and may include other tags as sub-elements. Browsers do not display the HTML tags, but use them to interpret the content of the page.
+            </span>
+            <br>
+            <button id="button1" onclick="readMore1()">Read more</button> <!-- there is the onclick event assigned to the button -->
+          </p>
+          </div>
+
+        <div class="col-md-4 col-sm-12">
+              <p class="col2">
+                CSS is designed to enable the separation of presentation and content, including layout, colors, and fonts.[3] This separation can improve content accessibility, provide more flexibility and control in the specification of presentation characteristics, enable multiple web pages to share formatting by specifying the relevant CSS in a separate .css file which reduces complexity and repetition in the structural content as well as enabling the .css file
+                  <span id="spanCol2">
+                    to be cached to improve the page load speed between the pages that share the file and its formatting.
+                  </span><br>
+                  <button id="button2" onclick="readMore2()">Read more</button>
+                </p>
+              </div>
+
+         <div class="col-md-4 col-sm-12">
+           <p class="col3">
+                JavaScript (/ˈdʒɑːvəˌskrɪpt/),[6] often abbreviated as JS, is a programming language that conforms to the ECMAScript specification.[7] JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.
+               <span id="spanCol3">
+                    Alongside HTML and CSS, JavaScript is one of the core technologies of the World Wide Web.[8] JavaScript enables interactive web pages and is an essential part of web applications. The vast majority of websites use it for client-side page behavior,[9] and all major web browsers have a dedicated JavaScript engine to execute it.
+               </span>
+               <br>
+              <button id="button3" onclick="readMore3()">Read more</button>
+
+
+           </p>
+         </div>
+
+
+     </div>
+
 <script>
 
   var canvas;
