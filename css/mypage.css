@@ -12,10 +12,12 @@ body {
   font-family: myFont;
 }
 
-
+h1 {
+  text-align: center;
+}
 
 p {
-  font-size: 1em;
+  font-size: 1.2em;
 }
 nav a {
   color: rgb(44, 42, 43);
@@ -65,7 +67,7 @@ footer li {
 
 
 .profile-pic {
-width: 100%;
+width: 80%;
 display: block;
 margin: auto;
 
@@ -73,7 +75,7 @@ margin: auto;
 
 .profile-text {
   width: auto;
-  margin: 10px;
+  margin: 2px;
   text-align: justify;
 }
 
@@ -168,6 +170,6 @@ margin: auto;
 
 @media (min-width: 1000px) {
   p, nav li {
-    font-size: 1em;
+    font-size: 1.2em;
 }
 }
