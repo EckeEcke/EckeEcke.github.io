@@ -7,89 +7,112 @@
 </head>
 
 <body>
-<center>
 
-<div class="scoreboard">
-
-<div id="Score1">
-<span>P1</span><div id="P1Score"></div>
-</div>
-<div id="Score2">
-<span>P2</span><div id="P2Score">
-</div>
-</div>
-
-</div>
-
-</center>
 <audio src="sounds/bounce.wav" id="bounce"></audio>
 <audio src="sounds/cheer2.wav" id="cheer2"></audio>
 <audio src="sounds/cheer1.wav" id="cheer1"></audio>
 <audio src="sounds/bounce1.wav" id="bounce1"></audio>
 <audio src="sounds/victory.wav" id="victory"></audio>
 
-<nav class="navbar navbar-expand-md justify-content-center">
-  <ul class="navbar-nav">
-    <li class="nav-item px-5">
-      <a href="CV.html" class="nav-link"> My CV</a>
+<button id="hamburger" onclick="showMenu()">
+  <div class="line1"></div>
+  <div class="line2"></div>
+  <div class="line3"></div>
+</button>
+
+<div id="burger-menu">
+  <ul>
+    <li>
+      <a href="index.html">Home</a>
     </li>
-    <li class="nav-item px-5">
-      <a href="404.html" class="nav-link">CSS demo</a>
+    <hr>
+    <li>
+      <a href="CV.html">My CV</a>
     </li>
-    <li class="nav-item px-5">
-      <a href="pong.html" class="nav-link">JS demo</a>
+    <hr>
+    <li>
+      <a href="404.html">CSS</a>
+    </li>
+    <hr>
+    <li>
+      <a href="pong.html">Javascript</a>
     </li>
   </ul>
-</nav>
+</div>
 
-<br>
+<div class="black-box">
+
+<div class="text-box" position: absolute;>
+
+  <center>
+    <h2>Pong</h2>
+  <div class="scoreboard">
+
+  <div id="Score1">
+  <div id="P1Score"></div>
+  </div>
+  <div id="Score2">
+  <div id="P2Score">
+  </div>
+  </div>
+
+  </div>
+
+  </center>
+</div>
 
 <canvas id="game-canvas" width="800px" height="600px">
 </canvas>
-
+<article>
+  Controls P1: "w" and "a"<br>
+  Controls P2: "o" and "l"
+</article>
+</div>
 
 
 <br>
 <br>
 
-<div class="container white-box">
-    <div class="row">
-        <div class="col-md-4 col-sm-12">
-          <p class="col1">
-              HTML elements are the building blocks of HTML pages. With HTML constructs, images and other objects such as interactive forms may be embedded into the rendered page. HTML provides a means to create structured documents by denoting structural semantics for text such as headings, paragraphs, lists, links, quotes and other items. HTML elements are delineated by tags, written using angle brackets. Tags such as "img /" and "input /" directly introduce content into the page.
-            <span id="spanCol1">
-                  Other tags such as "p" surround and provide information about document text and may include other tags as sub-elements. Browsers do not display the HTML tags, but use them to interpret the content of the page.
-            </span>
-            <br>
-            <button id="button1" onclick="readMore1()">Read more</button> <!-- there is the onclick event assigned to the button -->
-          </p>
-          </div>
+  <div class="container white-box">
+      <div class="row">
+          <div class="col-md-4 col-sm-12">
+            <p class="col1">
+                HTML elements are the building blocks of HTML pages. With HTML constructs, images and other objects such as interactive forms may be embedded into the rendered page. HTML provides a means to create structured documents by denoting structural semantics for text such as headings, paragraphs, lists, links, quotes and other items. HTML elements are delineated by tags, written using angle brackets. Tags such as "img /" and "input /" directly introduce content into the page.
+              <span id="spanCol1">
+                    Other tags such as "p" surround and provide information about document text and may include other tags as sub-elements. Browsers do not display the HTML tags, but use them to interpret the content of the page.
+              </span>
+              <br>
+              <button id="button1" onclick="readMore1()">Read more</button> <!-- there is the onclick event assigned to the button -->
+            </p>
+            </div>
 
-        <div class="col-md-4 col-sm-12">
-              <p class="col2">
-                CSS is designed to enable the separation of presentation and content, including layout, colors, and fonts.[3] This separation can improve content accessibility, provide more flexibility and control in the specification of presentation characteristics, enable multiple web pages to share formatting by specifying the relevant CSS in a separate .css file which reduces complexity and repetition in the structural content as well as enabling the .css file
-                  <span id="spanCol2">
-                    to be cached to improve the page load speed between the pages that share the file and its formatting.
-                  </span><br>
-                  <button id="button2" onclick="readMore2()">Read more</button>
-                </p>
-              </div>
+          <div class="col-md-4 col-sm-12">
+                <p class="col2">
+                  CSS is designed to enable the separation of presentation and content, including layout, colors, and fonts.[3] This separation can improve content accessibility, provide more flexibility and control in the specification of presentation characteristics, enable multiple web pages to share formatting by specifying the relevant CSS in a separate .css file which reduces complexity and repetition in the structural content as well as enabling the .css file
+                    <span id="spanCol2">
+                      to be cached to improve the page load speed between the pages that share the file and its formatting.
+                    </span><br>
+                    <button id="button2" onclick="readMore2()">Read more</button>
+                  </p>
+                </div>
 
-         <div class="col-md-4 col-sm-12">
-           <p class="col3">
-                JavaScript (/ˈdʒɑːvəˌskrɪpt/),[6] often abbreviated as JS, is a programming language that conforms to the ECMAScript specification.[7] JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.
-               <span id="spanCol3">
-                    Alongside HTML and CSS, JavaScript is one of the core technologies of the World Wide Web.[8] JavaScript enables interactive web pages and is an essential part of web applications. The vast majority of websites use it for client-side page behavior,[9] and all major web browsers have a dedicated JavaScript engine to execute it.
-               </span>
-               <br>
-              <button id="button3" onclick="readMore3()">Read more</button>
-
-
-           </p>
-         </div>
+           <div class="col-md-4 col-sm-12">
+             <p class="col3">
+                  JavaScript (/ˈdʒɑːvəˌskrɪpt/),[6] often abbreviated as JS, is a programming language that conforms to the ECMAScript specification.[7] JavaScript is high-level, often just-in-time compiled, and multi-paradigm. It has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.
+                 <span id="spanCol3">
+                      Alongside HTML and CSS, JavaScript is one of the core technologies of the World Wide Web.[8] JavaScript enables interactive web pages and is an essential part of web applications. The vast majority of websites use it for client-side page behavior,[9] and all major web browsers have a dedicated JavaScript engine to execute it.
+                 </span>
+                 <br>
+                <button id="button3" onclick="readMore3()">Read more</button>
 
 
-     </div>
+             </p>
+           </div>
+
+
+       </div>
+</div>
+
 
 <script>
 
@@ -389,6 +412,19 @@ function keyDownHandler (event) {
     canvasContext.fillStyle ="white"; /*Paddle2*/
     canvasContext.fillRect(770,paddle2Y,10,paddleHeight);
   }
+
+
+  var display = false;
+
+  function showMenu(){
+    if (document.getElementById("burger-menu").style.display === "none") {
+      document.getElementById("burger-menu").style.display = "block";
+    }
+    else {
+      document.getElementById("burger-menu").style.display = "none";
+    }
+  }
+
 </script>
 </body>
 </html>
