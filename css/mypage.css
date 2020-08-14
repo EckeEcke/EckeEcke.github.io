@@ -154,7 +154,7 @@ margin: auto;
   }
 }
 
-@media (min-width: 700px) {
+@media (min-width: 900px) {
   .profile {
     width: 60%;
   }
