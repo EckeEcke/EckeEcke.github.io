@@ -137,13 +137,37 @@ margin: auto;
 }
 
 @media (min-width: 1px) {
-  p {
+  p, nav li {
     font-size: 2.5em;
   }
 }
 
 @media (min-width: 1000px) {
-  p {
+  p, nav li {
+    font-size: 1em;
+}
+}
+
+@media (min-width: 1px) {
+  .profile {
+    width: 90%;
+  }
+}
+
+@media (min-width: 700px) {
+  .profile {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1px) {
+  p, nav li {
+    font-size: 2.5em;
+  }
+}
+
+@media (min-width: 1000px) {
+  p, nav li {
     font-size: 1em;
 }
 }
