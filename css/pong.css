@@ -1,5 +1,5 @@
 body {
-  background-image: linear-gradient(to bottom, darkred, black);
+  background-image: linear-gradient(to bottom, red, orange);
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -75,9 +75,6 @@ h2 {
   width: 20%;
 }
 
-.white-box {
-  border-radius: 25px;
-}
 
 #hamburger {
   position: fixed;
@@ -100,7 +97,6 @@ h2 {
 
   position: fixed;
   background-color: grey;
-  opacity: 0.8;
   left: 0px;
   top: 0px;
   padding: 150px 50px;
@@ -117,4 +113,26 @@ h2 {
 
 #burger-menu li {
   list-style: none;
+}
+
+.controls {
+  display: block;
+}
+
+.too-small {
+  display: none;
+  color: white;
+}
+
+@media (max-width: 1100px) {
+  canvas, .scoreboard, .controls {
+    display: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .too-small {
+    padding-top: 100px;
+    display: block;
+  }
 }

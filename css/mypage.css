@@ -32,7 +32,10 @@ a:hover {
 
 nav {
   text-align: center;
-  margin-bottom: 2vh;
+}
+
+nav li {
+  display: block;
 }
 
 footer {
@@ -67,7 +70,7 @@ footer li {
 
 
 .profile-pic {
-width: 80%;
+width: 60vw;
 display: block;
 margin: auto;
 
@@ -94,6 +97,7 @@ margin: auto;
   left: 10px;
   height: 60px;
   width: 60px;
+  display: block;
 }
 
 .home:hover {
@@ -138,6 +142,46 @@ margin: auto;
   background-color: rgb(190,190,190);
 }
 
+#hamburger {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  background-color: rgb(0,0,0,0.7);
+  padding: 5px;
+  z-index: 3000;
+  display: none;
+}
+
+.line1, .line2, .line3 {
+  width: 50px;
+  height: 5px;
+  margin: 15px;
+  background-color: white;
+}
+
+
+#burger-menu {
+
+  position: fixed;
+  background-color: grey;
+  left: 0px;
+  top: 0px;
+  padding: 150px 50px;
+  z-index: 2000;
+  display: none;
+}
+
+#burger-menu a {
+  text-decoration: none;
+  color: white;
+  font-size: 2em;
+  list-style: none;
+}
+
+#burger-menu li {
+  list-style: none;
+}
+
 @media (min-width: 1px) {
   p, nav li {
     font-size: 2.5em;
@@ -162,14 +206,20 @@ margin: auto;
   }
 }
 
-@media (min-width: 1px) {
-  p, nav li {
-    font-size: 2.5em;
+@media (max-width: 800px) {
+  nav li, .home {
+    display: none;
   }
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 801px) {
   p, nav li {
     font-size: 1.2em;
 }
+}
+
+@media (max-width: 800px) {
+  #hamburger {
+    display: block;
+  }
 }

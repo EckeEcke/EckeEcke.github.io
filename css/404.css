@@ -125,7 +125,13 @@ button {
   background-image: linear-gradient(to bottom right, red, yellow);
   color: white;
   width: 30%;
+  margin-left: 10px;
 }
+
+button:hover {
+  background-image: linear-gradient(to bottom right, yellow, red);
+}
+
 
 input {
   width: 65%;
