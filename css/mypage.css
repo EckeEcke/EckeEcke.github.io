@@ -206,9 +206,15 @@ margin: auto;
   }
 }
 
-@media (max-width: 800px) {
+@media (min-width: 1px) {
   nav li, .home {
     display: none;
+  }
+}
+
+@media (min-width: 800px) {
+  nav li, .home {
+    display: block;
   }
 }
 
@@ -218,8 +224,14 @@ margin: auto;
 }
 }
 
-@media (max-width: 800px) {
+@media (min-width: 1px) {
   #hamburger {
     display: block;
+  }
+}
+
+@media (min-width: 801px) {
+  #hamburger {
+    display: none;
   }
 }
