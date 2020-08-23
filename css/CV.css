@@ -106,6 +106,19 @@ li {
 }
 
 
-span {
-  margin-left: 80px;
+@media (max-width: 700px){
+  span {
+    margin-left: 10px;
+  }
 }
+
+@media (min-width: 701px){
+  span {
+    margin-left: 80px;
+    }
+
+}
+
+/*span {
+  margin-left: 80px;
+}*/
