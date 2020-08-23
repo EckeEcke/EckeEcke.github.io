@@ -61,6 +61,7 @@ footer li {
   padding: 40px;
   margin: 10px;
   color: black;
+  border: 2px solid grey;
 }
 
 li {
@@ -98,7 +99,7 @@ li {
 }
 
 
-img {
+.cv-icon {
   height: 70px;
   width: 70px;
   float: left;
@@ -108,4 +109,3 @@ img {
 span {
   margin-left: 80px;
 }
-
