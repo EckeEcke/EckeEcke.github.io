@@ -27,10 +27,7 @@ nav {
 
 footer {
   background-color: rgb(37, 48, 58);
-  /*position: fixed;
-  bottom: 0;
-  left: 0;*/
-  margin-top: 20vh; /*trying out*/
+  margin-top: 20vh;
   width: 100%;
   color: white;
   text-align: center;
