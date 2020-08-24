@@ -58,7 +58,7 @@ footer li {
   background-color: white;
   border-radius: 20px;
   padding: 38px;
-  margin: 10px 0px 0px 15px;
+  margin: 10px 7px;
   color: black;
   border: 2px solid grey;
 }
@@ -120,6 +120,7 @@ li {
 
 .row, .justify-content-center {
   margin-right: 0px;
+  margin-left: 0px;
 }
 
 ul {
