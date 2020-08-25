@@ -41,14 +41,11 @@ nav li {
 
 footer {
   background-color: rgb(37, 48, 58);
-  /*position: fixed;
-  bottom: 0;
-  left: 0;*/
   margin-top: 20vh; /*trying out*/
   width: 100%;
   color: white;
   text-align: center;
-  padding: 40px;
+  padding: 20px;
 }
 
 footer a {
@@ -59,7 +56,6 @@ footer a {
 
 footer li {
   list-style: none;
-  padding: 1%;
 }
 
 .social-icon {

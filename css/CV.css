@@ -33,7 +33,7 @@ footer {
   width: 100%;
   color: white;
   text-align: center;
-  padding: 40px;
+  padding: 20px;
 }
 
 footer a {
@@ -44,7 +44,6 @@ footer a {
 
 footer li {
   list-style: none;
-  padding: 1%;
 }
 
 .social-icon {
