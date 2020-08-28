@@ -7,12 +7,16 @@
 </head>
 
 <body>
+<button onclick="soundControl()" id="sound-button">&#128263;</button>
 
-<audio src="sounds/bounce.wav" id="bounce"></audio>
-<audio src="sounds/cheer2.wav" id="cheer2"></audio>
-<audio src="sounds/cheer1.wav" id="cheer1"></audio>
-<audio src="sounds/bounce1.wav" id="bounce1"></audio>
-<audio src="sounds/victory.wav" id="victory"></audio>
+
+  <audio src="sounds/bounce.wav" id="bounce"></audio>
+  <audio src="sounds/cheer2.wav" id="cheer2"></audio>
+  <audio src="sounds/cheer1.wav" id="cheer1"></audio>
+  <audio src="sounds/bounce1.wav" id="bounce1"></audio>
+  <audio src="sounds/victory.wav" id="victory"></audio>
+
+
 
 <button id="hamburger" onclick="showMenu()">
   <div class="line1"></div>
@@ -95,6 +99,8 @@
   const tolerance = 20;
   var speedBoost= 0;
   var hitCounter = 0;
+  var sounds = document.getElementsByTagName("audio");
+  sounds.muted = true;
 
 
 
@@ -105,6 +111,19 @@
     setInterval(callBoth, 1000/120);
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
+  }
+
+
+  function soundControl() {
+    //document.getElementById("sound-button").style.display="none";
+    if (sounds.muted == true){
+      sounds.muted = false;
+      document.getElementById("sound-button").innerHTML="&#128266;";
+    } else {
+      sounds.muted = true;
+      document.getElementById("sound-button").innerHTML="&#128263;";
+    }
+    console.log(sounds);
   }
 
   function callBoth() {
@@ -122,6 +141,8 @@
     countP2();
     raiseSpeed();
   }
+
+
 
   function moveEverything() {
     ballX = ballX + ballSpeedX;
@@ -216,14 +237,20 @@ function keyDownHandler (event) {
   function P1Score () {
     if (ballX == canvas.width) {
       Score1 = Score1 +1;
+      if (sounds.muted == false){
       document.getElementById("cheer1").play();
+      }
     }
+
     if (ballX == canvas.width) {
       ballX = 400;
       hitCounter = 0;
     }
+
     if (Score1 == 10) {
+      if (sounds.muted == false){
       document.getElementById("victory").play();
+      }
       alert("Player1 wins!");
       Score1 = 0;
       Score2 = 0;
@@ -240,7 +267,9 @@ function keyDownHandler (event) {
   function P2Score () {
     if (ballX == 0) {
       Score2 = Score2 +1;
+      if (sounds.muted == false){
       document.getElementById("cheer2").play();
+    }
     }
 
     if (ballX == 0) {
@@ -249,7 +278,9 @@ function keyDownHandler (event) {
     }
 
     if (Score2 == 10) {
+      if (sounds.muted == false){
       document.getElementById("victory").play();
+      }
       alert("Player2 wins!");
       Score1 = 0;
       Score2 = 0;
@@ -272,37 +303,52 @@ function keyDownHandler (event) {
       ballSpeedX = -5 - speedBoost;
       ballSpeedY = ballSpeedY -1;
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce").play();
+      }
     }
     if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y + paddleHeight/4 && ballSpeedY <= 0) { /*top paddle*/
       ballSpeedX = -5 - speedBoost;
       ballSpeedY = 2;
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce").play();
+      }
     }
     if (ballX == 760 && ballY > paddle2Y + 3*paddleHeight/4 && ballY < paddle2Y + paddleHeight+tolerance && ballSpeedY >= 0) { /*bottom paddle*/
       ballSpeedX = -5 - speedBoost;
       ballSpeedY = 2;
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce").play();
+      }
     }
+
     if (ballX == 760 && ballY >= paddle2Y + paddleHeight/4 && ballY <= paddle2Y + 3*paddleHeight/4 && ballSpeedY < 0) { /*middle paddle*/
       ballSpeedX = -5 - speedBoost;
       ballSpeedY = ballSpeedY + 1;
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce").play();
+      }
     }
+
     if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y + paddleHeight/4 && ballSpeedY > 0) { /*top paddle*/
       ballSpeedX = -5 - speedBoost;
       ballSpeedY = (-2);
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce").play();
+      }
     }
+
     if (ballX == 760 && ballY > paddle2Y + 3*paddleHeight/4 && ballY < paddle2Y + paddleHeight+tolerance && ballSpeedY < 0) { /*bottom paddle*/
       ballSpeedX = -5 - speedBoost;
       ballSpeedY = 2;
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce").play();
+      }
     }
   }
 /*  } */
@@ -318,38 +364,56 @@ function keyDownHandler (event) {
       ballSpeedX = 5 + speedBoost;
       ballSpeedY = ballSpeedY -1;
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce1").play();
+      }
     }
+
     if (ballX == 30 && ballY >= paddle1Y - tolerance && ballY < paddle1Y + paddleHeight/4 && ballSpeedY <= 0) {
       ballSpeedX = 5 + speedBoost;
       ballSpeedY = 2;
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce1").play();
+      }
     }
+
     if (ballX == 30 && ballY > paddle1Y + 3*paddleHeight/4 && ballY < paddle1Y + paddleHeight+tolerance && ballSpeedY >= 0) {
       ballSpeedX = 5 + speedBoost;
       ballSpeedY = 2;
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce1").play();
+      }
     }
+
     if (ballX == 30 && ballY >= paddle1Y + paddleHeight/4 && ballY <= paddle1Y + 3*paddleHeight/4 && ballSpeedY < 0) {
       ballSpeedX = 5 + speedBoost;
       ballSpeedY = ballSpeedY + 1;
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce1").play();
+      }
     }
+
     if (ballX == 30 && ballY >= paddle1Y - tolerance && ballY < paddle1Y + paddleHeight/4 && ballSpeedY > 0) {
       ballSpeedX = 5 + speedBoost;
       ballSpeedY = (-2);
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce1").play();
+      }
     }
+
     if (ballX == 30 && ballY > paddle1Y + 3*paddleHeight/4 && ballY < paddle1Y + paddleHeight+tolerance && ballSpeedY < 0) {
       ballSpeedX = 5 + speedBoost;
       ballSpeedY = 2;
       hitCounter = hitCounter + 1;
+      if (sounds.muted == false){
       document.getElementById("bounce1").play();
+      }
     }
+
   }
 
   function raiseSpeed () {

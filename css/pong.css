@@ -124,6 +124,17 @@ h2 {
   color: white;
 }
 
+#sound-button {
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 3.5em;
+  background-color: rgb(0,0,0,0.7);
+  border-style: none;
+  padding: 10px 12px 12px 12px;
+}
+
 @media (max-width: 1100px) {
   canvas, .scoreboard, .controls {
     display: none;
