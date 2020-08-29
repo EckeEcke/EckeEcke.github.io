@@ -4,6 +4,7 @@
   <title>Contact me</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/mypage.css">
+  <script type="text/javascript" src="js/mypage.js"></script>
 </head>
 <body>
 
@@ -51,11 +52,11 @@
   <br>
   <center>
     <div>
-      <form action="mailto:eckardt.christian@web.de" target="_top" method="get" enctype=”text/plain”>
+      <form action="mailto:eckardt.christian@web.de?subject=contact_request" target="_top" method="post" enctype=”text/plain”>
 
-        <input type="text" id="fname" name="fname" placeholder="first name">
+        <input type="text" id="fname" name="first name" placeholder="first name">
         <br><br>
-        <input type="text" id="lname" name="lname" placeholder="last name">
+        <input type="text" id="lname" name="last name" placeholder="last name">
         <br><br>
         <input type="text" id="company" name="company" placeholder="company">
         <br><br>

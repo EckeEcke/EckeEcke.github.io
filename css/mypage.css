@@ -150,9 +150,9 @@ margin: auto;
 }
 
 .line1, .line2, .line3 {
-  width: 50px;
+  width: 40px;
   height: 5px;
-  margin: 15px;
+  margin: 10px;
   background-color: white;
 }
 
