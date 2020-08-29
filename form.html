@@ -1,12 +1,12 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, maximum-scale=1.0">
-  <title>My page</title>
+  <title>Contact me</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/mypage.css">
-  <script type="text/javascript" src="js/mypage.js"></script>
 </head>
 <body>
+
   <button id="hamburger" onclick="showMenu()">
     <div class="line1"></div>
     <div class="line2"></div>
@@ -48,26 +48,26 @@
 
   <br>
   <br>
-  <br>
-  <br>
+  <center>
+    <div>
+      <form action="mailto:eckardt.christian@web.de?subject=contact-request" method="get" enctype=”text/plain”>
 
+        <input type="text" id="fname" name="fname" placeholder="first name">
+        <br><br>
+        <input type="text" id="lname" name="lname" placeholder="last name">
+        <br><br>
+        <input type="text" id="company" name="company" placeholder="company">
+        <br><br>
+        <input type="text" id="email" name="email" placeholder="your email">
+        <br><br>
+        <textarea type="text" id="message" name="message" placeholder="leave a message" rows="8"></textarea>
+        <br><br>
+        <button type="submit" class="submit-button">Send message</button>
 
-  <div class="profile">
-    <h1>Welcome to my website!</h1>
-      <div class="row justify-content-center">
-        <img src="images/profile.png" alt="My Profile" class="col-lg-5 col-md-4 col-xs-5 profile-pic">
-        <p class="col-lg-6 col-md-8 col-xs-12 profile-text">
+      </form>
+    </div>
+  </center>
 
-          <br>
-          Hello visitors,
-          <br><br>
-          feel free to check out my works in HTML, CSS and JavaScript. I built this website with responsiveness in mind, basically using the Bootstrap grid system. This page serves as a kind of portfolio to present my works to the world and anybody who is interested in working with me.<br>And now have fun discovering my creations!<br><br>Cheers<br>Chris
-
-      </div>
-  </div>
-
-
-  </div>
   <footer>
     <div class="container">
       <div class="row justify-content-center">
@@ -77,7 +77,7 @@
             <a href="#">Privacy</a>
           </li>
           <li>
-            <a href="form.html">Contact</a>
+            <a href="#">Contact</a>
           </li>
           <br>
         </ul>
@@ -106,26 +106,8 @@
       </div>
 
   </footer>
-  <div id="cookies">
-    <button onclick="closeBanner()" class="x-button">X</button>
-    <br class="clear-float">
-    <span>&#127850;&#127850;&#127850;This is just for demonstration. I am not using cookies. Only the most basic of information is saved and will not be used by me or any third party in any way. More information available in the terms of <a href="#">privacy</a>.</span>
-
-    <br><br>
-    <center>
-      <input class="form-button" type="checkbox">
-      <label>Accept all</label>
-      &nbsp; &nbsp;&nbsp;
-      <input class="form-button" type="checkbox">
-      <label>Decline</label>
-      &nbsp; &nbsp; &nbsp;
-      <button class="submit-button" type="submit">Submit</button>
-    </center>
-
-  </div>
 
   <a href="index.html"><img src="images/house.png" class="home"></a>
 
 </body>
-
 </html>

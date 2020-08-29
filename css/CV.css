@@ -60,12 +60,14 @@ footer li {
   margin: 10px 7px;
   color: black;
   border: 2px solid grey;
+  position: relative;
 }
 
 li {
   list-style: none;
-
 }
+
+
 
 #cv-active {
   color: rgb(155, 131, 103);
@@ -83,6 +85,7 @@ li {
   transform: rotate(-45deg);
   transition: 500ms;
 }
+
 
 @media (min-width: 1px) {
   .cv-col li {
@@ -105,13 +108,13 @@ li {
 
 
 @media (max-width: 700px){
-  span {
+  span, article {
     margin-left: 10px;
   }
 }
 
 @media (min-width: 701px){
-  span {
+  span, article {
     margin-left: 80px;
     }
 

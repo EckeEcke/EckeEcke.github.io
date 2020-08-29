@@ -179,6 +179,10 @@ margin: auto;
   list-style: none;
 }
 
+#fname, #lname, #company, #message, #email {
+  padding: 10px;
+}
+
 @media (min-width: 1px) {
   p, nav li {
     font-size: 1.5em;
