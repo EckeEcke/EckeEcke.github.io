@@ -122,14 +122,14 @@ input, button {
 
 
 button {
-  background-image: linear-gradient(to bottom right, red, yellow);
+  background-image: linear-gradient(to right, red, yellow);
   color: white;
   width: 30%;
-  margin-left: 10px;
 }
 
 button:hover {
-  background-image: linear-gradient(to bottom right, yellow, red);
+  animation: button-animation 0.5s linear;
+  /*background-image: linear-gradient(to bottom right, yellow, red);*/
 }
 
 
@@ -143,6 +143,7 @@ hr {
   background-image: linear-gradient(to right, red, yellow);
   border-style: none;
   margin-top: 20px;
+
 }
 
 #newsletter-text {
@@ -203,7 +204,7 @@ moving blobs
   position: absolute;
   bottom: 0px;
   left: -1000px;
-  animation: moving-blob4 12s linear infinite;
+  animation: moving-blob4 12s ease-in infinite;
   color: white;
 }
 
@@ -226,6 +227,7 @@ moving blobs
   padding-top: 100px;
   animation: blob-background 12s steps(1) infinite;
   border-shadow: 5px 5px black;
+  margin-bottom: 50px;
 }
 #blob-white-box {
   height: 400px;
@@ -244,7 +246,7 @@ moving blobs
   bottom: -120px;
   left: 80px;
   transform: rotate(-45deg);
-  animation: rocket-launch 4s ease-in infinite;
+  animation: rocket-launch 4s ease-in-out infinite;
 }
 
 #space {
@@ -253,6 +255,7 @@ moving blobs
   background-image: linear-gradient(to bottom, black, darkblue);
   position: relative;
   overflow: hidden;
+  margin-bottom: 50px;
 }
 
 
@@ -279,7 +282,17 @@ moving blobs
   100% {bottom: 600px;}
 }
 
-
+@keyframes button-animation {
+  0% {background-image: linear-gradient(to right, darkred, darkred, darkred, darkred, darkred);}
+  10% {background-image: linear-gradient(to right, darkred, darkred, darkred, darkred, red); transform: scale(1.2);}
+  20% {background-image: linear-gradient(to right, darkred, darkred, darkred, red, orange);}
+  30% {background-image: linear-gradient(to right, darkred, darkred, red, orange, yellow);}
+  40% {background-image: linear-gradient(to right, darkred, red, orange, yellow, lightyellow);}
+  50% {background-image: linear-gradient(to right, red, orange, yellow, lightyellow, lightyellow);}
+  60% {background-image: linear-gradient(to right, orange, yellow, lightyellow, lightyellow, lightyellow);}
+  70% {background-image: linear-gradient(to right, yellow, lightyellow, lightyellow, lightyellow, lightyellow);}
+  80% {background-image: linear-gradient(to right, lightyellow, lightyellow, lightyellow, lightyellow, lightyellow);}
+}
 
 
 @keyframes moving-blob1 {
@@ -334,7 +347,6 @@ moving blobs
   100% {background-color: black;}
   }
 }
-
 
 
 
