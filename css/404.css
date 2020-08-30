@@ -1,3 +1,81 @@
+#card-front, #card-back, #card2-front, #card2-back {
+  height: 400px;
+  width: 300px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  text-align: center;
+  backface-visibility: hidden;
+}
+
+#card-back {
+  transform: rotateY(-180deg);
+  background-color: white;
+}
+
+#card2-back {
+  transform: rotateY(-180deg);
+  background-image: linear-gradient(to right, palevioletred, red);
+  opacity: 0.9;
+  color: white;
+}
+
+#card-front {
+  background-color: black;
+  color: white;
+}
+
+#card2-front {
+  background-image: linear-gradient(to left, lightskyblue, white);
+  color: darkblue;
+}
+
+
+
+#card, #card2 {
+  height: 400px;
+  width: 300px;
+  padding: 0px;
+
+}
+
+#card-content, #card2-content {
+  position: relative;
+  height: 400px;
+  width: 300px;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  margin: 0px auto;
+
+}
+
+
+
+#card:hover #card-content {
+  transform: rotateY(180deg);
+}
+
+#card2:hover #card2-content{
+  transform: rotateY(180deg);
+}
+
+.card-text {
+  font-size: 1.5em;
+}
+
+.card-list {
+  text-align: left;
+  font-size: 1.2em;
+}
+
+.card-emoji {
+  font-size: 2em;
+}
+
+.profile {
+  height: 150px;
+  width: 150px;
+}
 @font-face {
   font-family: stripes;
   src: url(halogen.otf);
@@ -204,7 +282,7 @@ moving blobs
   position: absolute;
   bottom: 0px;
   left: -1000px;
-  animation: moving-blob4 12s ease-in infinite;
+  animation: moving-blob4 12s linear infinite;
   color: white;
 }
 
