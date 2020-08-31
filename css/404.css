@@ -15,7 +15,7 @@
 
 #card2-back {
   transform: rotateY(-180deg);
-  background-image: linear-gradient(to right, palevioletred, red);
+  background-image: linear-gradient(to bottom, red, palevioletred);
   opacity: 0.9;
   color: white;
 }
@@ -26,8 +26,8 @@
 }
 
 #card2-front {
-  background-image: linear-gradient(to left, lightskyblue, white);
-  color: darkblue;
+  background-image: linear-gradient(to bottom, deepskyblue, purple);
+  color: white
 }
 
 

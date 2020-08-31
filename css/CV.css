@@ -3,12 +3,20 @@
   src: url(myFont.ttf);
 }
 
+.cv-hover {
+  display: none;
+}
+
+.cv-show:hover .cv-hover {
+  display: block;
+}
 
 
 body {
   background-image: url("../images/background.jpg");
   background-size: cover;
   font-family: myFont;
+  background-attachment: fixed;
 }
 
 nav a {
@@ -67,7 +75,9 @@ li {
   list-style: none;
 }
 
-
+.cv-hover li {
+  list-style-type: disc;
+}
 
 #cv-active {
   color: rgb(155, 131, 103);
