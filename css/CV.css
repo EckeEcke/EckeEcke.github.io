@@ -3,14 +3,33 @@
   src: url(myFont.ttf);
 }
 
-.cv-hover {
+.cv-hover, .cv-hover2 {
+  display: none;
+}
+
+.cv-hover2 {
   display: none;
 }
 
 .cv-show:hover .cv-hover {
   display: block;
+  position: absolute;
+  background: white;
+  padding-right: 15%;
+  padding-bottom: 6%;
+  border-bottom: 1px solid grey;
+  width: 89%;
 }
 
+.cv-show:hover .cv-hover2 {
+  display: block;
+  background: white;
+  padding-right: 15%;
+  padding-bottom: 2%;
+  border-bottom: 1px solid grey;
+  width: 106%;
+
+}
 
 body {
   background-image: url("../images/background.jpg");
@@ -69,13 +88,14 @@ footer li {
   color: black;
   border: 2px solid grey;
   position: relative;
+  z-index: 0;
 }
 
 li {
   list-style: none;
 }
 
-.cv-hover li {
+.cv-hover li, .cv-hover2 li {
   list-style-type: disc;
 }
 
