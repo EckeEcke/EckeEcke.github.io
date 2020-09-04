@@ -15,7 +15,7 @@
 
 #card2-back {
   transform: rotateY(-180deg);
-  background-image: linear-gradient(to bottom, red, palevioletred);
+  background-color: #F34213;
   opacity: 0.9;
   color: white;
 }
@@ -26,8 +26,8 @@
 }
 
 #card2-front {
-  background-image: linear-gradient(to bottom, deepskyblue, purple);
-  color: white
+  background-color: #3E2F5B;
+  color: white;
 }
 
 
@@ -206,7 +206,6 @@ button {
 
 button:hover {
   animation: button-animation 0.5s linear;
-  /*background-image: linear-gradient(to bottom right, yellow, red);*/
 }
 
 

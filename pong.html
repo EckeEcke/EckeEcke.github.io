@@ -68,8 +68,8 @@
 <canvas id="game-canvas" width="800px" height="600px">
 </canvas>
 <article class="controls">
-  Controls P1: "w" and "a"<br>
-  Controls P2: "o" and "l"
+  Controls P1: "W" and "S"<br>
+  Controls P2: "O" and "L"
 </article>
 <article class="too-small">
   <br>
@@ -92,7 +92,7 @@
   var ballSpeedY = 0;
   var paddle1Y = 250;
   var paddle2Y = 250;
-  var upPressed = false; /*paddle controls */
+  var upPressed = false;
   var downPressed = false;
   var wPressed = false;
   var sPressed = false;
@@ -103,15 +103,13 @@
   var speedBoost= 0;
   var hitCounter = 0;
   var sounds = document.getElementsByTagName("audio");
+
   sounds.muted = true;
-
-
-
 
   window.onload = function () {
     canvas = document.getElementById("game-canvas");
     canvasContext = canvas.getContext("2d");
-    setInterval(callBoth, 1000/120);
+    setInterval(callAll, 1000/120);
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
   }
@@ -129,7 +127,7 @@
     console.log(sounds);
   }
 
-  function callBoth() {
+  function callAll() {
     drawEverything();
     moveEverything();
     moveDown1();

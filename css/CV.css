@@ -7,29 +7,7 @@
   display: none;
 }
 
-.cv-hover2 {
-  display: none;
-}
 
-.cv-show:hover .cv-hover {
-  display: block;
-  position: absolute;
-  background: white;
-  padding-right: 15%;
-  padding-bottom: 6%;
-  border-bottom: 1px solid grey;
-  width: 89%;
-}
-
-.cv-show:hover .cv-hover2 {
-  display: block;
-  background: white;
-  padding-right: 15%;
-  padding-bottom: 2%;
-  border-bottom: 1px solid grey;
-  width: 106%;
-
-}
 
 body {
   background-image: url("../images/background.jpg");
@@ -149,6 +127,36 @@ li {
     }
 
 }
+
+@media (max-width: 500px){
+	.cv-hover, .cv-hover2 {
+	display: block;
+}
+}
+
+@media (min-width: 501px){
+	.cv-show:hover .cv-hover {
+  display: block;
+  position: absolute;
+  background: white;
+  padding-right: 15%;
+  padding-bottom: 6%;
+  border-bottom: 1px solid grey;
+  width: 89%;
+	}
+}
+
+@media (min-width: 501px){
+	.cv-show:hover .cv-hover2 {
+  display: block;
+  background: white;
+  padding-right: 15%;
+  padding-bottom: 2%;
+  border-bottom: 1px solid grey;
+  width: 106%;
+  }
+  }
+
 
 .row, .justify-content-center {
   margin-right: 0px;

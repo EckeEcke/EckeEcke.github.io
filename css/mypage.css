@@ -1,3 +1,10 @@
+@keyframes cookie-animation {
+  0% {opacity: 0;}
+  50% {opacity: 0.5;}
+  100% {opacity: 1;}
+
+}
+
 
 @font-face {
   font-family: myFont;
@@ -103,16 +110,16 @@ margin: auto;
 }
 
 #cookies {
-  position: absolute;
-  top: 70px;
-  /*bottom: 0;*/
+  position: fixed;
+  bottom: 0%;
   background: rgb(211, 211, 211);
   font-size: 1.5em;
-  width: 90%;
-  height: 550px;
-  margin: 10% 5% 0 5%;
+  width: 100%;
+  height: 50%;
+  margin: 0 auto;
   padding: 30px;
   text-align: center;
+  animation: cookie-animation 1s ease-in;
 }
 
 
@@ -174,11 +181,6 @@ margin: auto;
   padding: 10px;
 }
 
-@media (min-width: 1px) {
-  p, nav li {
-    font-size: 1.5em;
-  }
-}
 
 @media (min-width: 1000px) {
   p, nav li {
@@ -190,6 +192,15 @@ margin: auto;
   .profile {
     width: 90%;
   }
+  p, nav li {
+    font-size: 1.5em;
+  }
+  nav li, .home {
+    display: none;
+  }
+  #hamburger {
+    display: block;
+  }
 }
 
 @media (min-width: 900px) {
@@ -198,32 +209,20 @@ margin: auto;
   }
 }
 
-@media (min-width: 1px) {
-  nav li, .home {
-    display: none;
-  }
-}
-
-@media (min-width: 800px) {
-  nav li, .home {
-    display: block;
-  }
-}
 
 @media (min-width: 801px) {
   p, nav li {
     font-size: 1.2em;
-}
-}
-
-@media (min-width: 1px) {
-  #hamburger {
-    display: block;
   }
-}
-
-@media (min-width: 801px) {
+  nav li, .home {
+  display: block;
+  }
   #hamburger {
     display: none;
+  }
+  #cookies {
+    width: 80%;
+    height: 40%;
+    left: 10%;
   }
 }
