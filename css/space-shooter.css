@@ -1,8 +1,17 @@
+@font-face {
+  font-family: "retro";
+  src: url(joystix.ttf);
+}
+
 body {
-  background-image: linear-gradient(to bottom, red, orange);
+  background-image: url("../images/space.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  font-family: Arial;
+  font-family: retro;
+}
+
+canvas {
+  position: relative;
 }
 
 #hamburger {
@@ -56,14 +65,14 @@ article {
 }
 
 h2 {
-  font-family: Arial;
+  font-family: retro;
   background-color: black;
   color: white;
   width: 30%;
 }
 
 #startButton {
-font-family: Arial;
+font-family: retro;
 background-Color: black;
 color: white;
 font-size: 1.5em;

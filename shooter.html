@@ -21,6 +21,7 @@
 <br><br>
 
   <canvas id="game-canvas" width= "400px" height= "600px">
+
   </canvas>
   </center>
 
@@ -72,7 +73,7 @@
   var shotY;
   var aPressed = false;
   var dPressed = false;
-  var spacePressed = false;
+  var wPressed = false;
   var shotFired = false;
 
   var snakeX = 0;
@@ -160,7 +161,13 @@
     canvasContext.fillstyle ="green"; /*spaceship*/
     canvasContext.fillRect(spaceshipX,spaceshipY,100,50);
     canvasContext.fillstyle ="white"; /*shot*/
-    canvasContext.fillRect(shotX,shotY,10,50);
+    canvasContext.fillRect(shotX,shotY,10,20);
+
+    canvasContext.fillText("🪐",150,100);
+    canvasContext.font = "150px Arial";
+
+
+
 
     if (snakeLives >=1){
     canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake1*/
@@ -233,7 +240,7 @@
       dPressed = true;
     }
     else if (event.keyCode === 87) {
-      spacePressed = true;
+      wPressed = true;
     }
   }
 
@@ -245,16 +252,16 @@
       dPressed = false;
     }
     else if (event.keyCode === 87) {
-      spacePressed = false;
+      wPressed = false;
     }
   }
 
 
   function shoot(){
-    if(spacePressed){
+    if(wPressed){
       shotFired = true;
       shotX = canonX;
-      shotY = canonY-40;
+      shotY = canonY;
       if (sounds.muted == false){
       document.getElementById("laser").play();
       }
@@ -360,7 +367,7 @@
   }
 
   function hitDetection(){
-    if (shotY <= snakeY+30 && shotY >= snakeY && shotX >= snakeX && shotX <= snakeX+50 && snakeLives >= 1){
+    if (shotY <= snakeY+20 && shotY >= snakeY && shotX >= snakeX && shotX <= snakeX+50 && snakeLives >= 1){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -369,7 +376,7 @@
       }
     }
 
-    if (shotY <= snakeY2+30 && shotY >= snakeY2 && shotX <= snakeX2+50 && shotX >= snakeX2 && snakeLives >= 2){
+    if (shotY <= snakeY2+20 && shotY >= snakeY2 && shotX <= snakeX2+50 && shotX >= snakeX2 && snakeLives >= 2){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -378,7 +385,7 @@
       }
     }
 
-    if (shotY <= snakeY3+30 && shotY >= snakeY3 && shotX <= snakeX3+50 && shotX >= snakeX3 && snakeLives >= 3){
+    if (shotY <= snakeY3+20 && shotY >= snakeY3 && shotX <= snakeX3+50 && shotX >= snakeX3 && snakeLives >= 3){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -387,7 +394,7 @@
       }
     }
 
-    if (shotY <= snakeY4+30 && shotY >= snakeY4 && shotX <= snakeX4+50 && shotX >= snakeX4 && snakeLives >= 4){
+    if (shotY <= snakeY4+20 && shotY >= snakeY4 && shotX <= snakeX4+50 && shotX >= snakeX4 && snakeLives >= 4){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -396,7 +403,7 @@
       }
     }
 
-    if (shotY <= snakeY5+30 && shotY >= snakeY5 && shotX <= snakeX5+50 && shotX >= snakeX5 && snakeLives >= 5){
+    if (shotY <= snakeY5+20 && shotY >= snakeY5 && shotX <= snakeX5+50 && shotX >= snakeX5 && snakeLives >= 5){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -405,7 +412,7 @@
       }
     }
 
-    if (shotY <= snakeY6+30 && shotY >= snakeY6 && shotX <= snakeX6+50 && shotX >= snakeX6 && snakeLives >= 6){
+    if (shotY <= snakeY6+20 && shotY >= snakeY6 && shotX <= snakeX6+50 && shotX >= snakeX6 && snakeLives >= 6){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -414,7 +421,7 @@
       }
     }
 
-    if (shotY <= snakeY7+30 && shotY >= snakeY7 && shotX <= snakeX7+50 && shotX >= snakeX7 && snakeLives >= 7){
+    if (shotY <= snakeY7+20 && shotY >= snakeY7 && shotX <= snakeX7+50 && shotX >= snakeX7 && snakeLives >= 7){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -423,7 +430,7 @@
       }
     }
 
-    if (shotY <= snakeY8+30 && shotY >= snakeY8 && shotX <= snakeX8+50 && shotX >= snakeX8 && snakeLives == 8){
+    if (shotY <= snakeY8+20 && shotY >= snakeY8 && shotX <= snakeX8+50 && shotX >= snakeX8 && snakeLives == 8){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -474,6 +481,10 @@
       snakeSpeed8 = 50;
 
       snakeLives = 8;
+      aPressed = false;
+      dPressed = false;
+      wPressed = false;
+      shotFired = false;
     }
 
     if (snakeY3 >= 450){
@@ -492,7 +503,7 @@
       shotY;
       aPressed = false;
       dPressed = false;
-      spacePressed = false;
+      wPressed = false;
       shotFired = false;
 
       snakeX = 0;
@@ -523,6 +534,10 @@
       snakeSpeed8 = 50;
 
       snakeLives = 8;
+      aPressed = false;
+      dPressed = false;
+      wPressed = false;
+      shotFired = false;
     }
   }
 
