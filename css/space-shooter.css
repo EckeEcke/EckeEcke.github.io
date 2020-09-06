@@ -68,7 +68,6 @@ h2 {
   font-family: retro;
   background-color: black;
   color: white;
-  width: 30%;
 }
 
 #startButton {
@@ -103,10 +102,16 @@ padding: 10px;
     padding-top: 100px;
     display: block;
   }
+  h2 {
+    width: 60%;
+  }
 }
 
 @media (min-width: 1101px) {
   article {
     display: none;
+  }
+  h2 {
+    width: 30%;
   }
 }

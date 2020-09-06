@@ -60,7 +60,7 @@
     </li>
   </ul>
 </div>
-
+<img id="spaceship" src="images/spaceship.png" style="display: none; background: transparent;">
 <script>
 
   var canvas;
@@ -160,6 +160,9 @@
     canvasContext.fillRect(canonX,canonY,10,canonY);
     canvasContext.fillstyle ="green"; /*spaceship*/
     canvasContext.fillRect(spaceshipX,spaceshipY,100,50);
+
+    canvasContext.drawImage(document.getElementById("spaceship"),spaceshipX,spaceshipY-60,100,130);
+
     canvasContext.fillstyle ="white"; /*shot*/
     canvasContext.fillRect(shotX,shotY,10,20);
 
@@ -260,7 +263,7 @@
   function shoot(){
     if(wPressed){
       shotFired = true;
-      shotX = canonX;
+      shotX = canonX-5;
       shotY = canonY;
       if (sounds.muted == false){
       document.getElementById("laser").play();
