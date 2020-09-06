@@ -1,0 +1,541 @@
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <link rel="stylesheet" href="css/space-shooter.css">
+</head>
+
+<body>
+
+  <center>
+    <h2>Space Shooter</h2>
+    <article class="too-small">
+      <br>
+      <br>
+      <br>
+      If you can read this, your screen is to small! You can play this game on your PC in full screen mode!
+    </article>
+    <button id="startButton" onclick="startGame()">
+    👾 Start 👾
+    </button>
+
+<br><br>
+
+  <canvas id="game-canvas" width= "400px" height= "600px">
+  </canvas>
+  </center>
+
+<button onclick="soundControl()" id="sound-button">&#128263;</button>
+<audio src="sounds/laser.wav" id="laser"></audio>
+<audio src="sounds/win-shooter.wav" id="win-shooter"></audio>
+<audio src="sounds/lose-shooter.wav" id="lose-shooter"></audio>
+<audio src="sounds/hit.wav" id="hit"></audio>
+
+<button id="hamburger" onclick="showMenu()">
+  <div class="line1"></div>
+  <div class="line2"></div>
+  <div class="line3"></div>
+</button>
+
+<div id="burger-menu">
+  <ul>
+    <li>
+      <a href="index.html">Home</a>
+    </li>
+    <hr>
+    <li>
+      <a href="CV.html">My CV</a>
+    </li>
+    <hr>
+    <li>
+      <a href="404.html">CSS</a>
+    </li>
+    <hr>
+    <li>
+      <a href="pong.html">JS Pong</a>
+    </li>
+    <hr>
+    <li>
+      <a href="shooter.html">JS Shooter</a>
+    </li>
+  </ul>
+</div>
+
+<script>
+
+  var canvas;
+  var canvasContext;
+  var spaceshipX = 150;
+  const spaceshipY = 550;
+  var canonY = 520;
+  var canonX = spaceshipX+45;
+  var shotX;
+  var shotY;
+  var aPressed = false;
+  var dPressed = false;
+  var spacePressed = false;
+  var shotFired = false;
+
+  var snakeX = 0;
+  var snakeX2 = 50;
+  var snakeX3 = 100;
+  var snakeX4 = 150;
+  var snakeX5 = 200;
+  var snakeX6 = 250;
+  var snakeX7 = 300;
+  var snakeX8 = 350;
+
+  var snakeY = 0;
+  var snakeY2 = 0;
+  var snakeY3 = 0;
+  var snakeY4 = 0;
+  var snakeY5 = 0;
+  var snakeY6 = 0;
+  var snakeY7 = 0;
+  var snakeY8 = 0;
+
+  var snakeSpeed = 50;
+  var snakeSpeed2 = 50;
+  var snakeSpeed3 = 50;
+  var snakeSpeed4 = 50;
+  var snakeSpeed5 = 50;
+  var snakeSpeed6 = 50;
+  var snakeSpeed7 = 50;
+  var snakeSpeed8 = 50;
+
+  var snakeLives = 8;
+
+  var gameSpeed = 200;
+
+  var gameRuns = false;
+
+  var sounds = document.getElementsByTagName("audio");
+
+  sounds.muted = true;
+
+
+  function soundControl() {
+    if (sounds.muted == true){
+      sounds.muted = false;
+      document.getElementById("sound-button").innerHTML="&#128266;";
+    } else {
+      sounds.muted = true;
+      document.getElementById("sound-button").innerHTML="&#128263;";
+    }
+    console.log(sounds);
+  }
+
+  window.onload = function () {
+    canvas = document.getElementById("game-canvas");
+    canvasContext = canvas.getContext("2d");
+    document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
+    alert("Controls: A = left  D = right  W = shoot");
+
+  }
+
+  function startGame(){
+    setInterval(callAll, 1000/120);
+    setInterval(moveSnake, gameSpeed);
+    document.getElementById("startButton").disabled = true;
+  }
+
+
+  function callAll(){
+    drawEverything();
+    moveShip();
+    shoot();
+    moveShot();
+    hitDetection();
+  }
+
+  function drawEverything() {
+
+    canvasContext.fillStyle = "black"; /*black background*/
+    canvasContext.fillRect(0,0,canvas.width,canvas.height);
+    canvasContext.fillStyle = "limegreen"; /*defense line*/
+    canvasContext.fillRect(0,canvas.height*0.8,canvas.width,1);
+
+    canvasContext.fillStyle = "limegreen"; /*canon*/
+    canvasContext.fillRect(canonX,canonY,10,canonY);
+    canvasContext.fillstyle ="green"; /*spaceship*/
+    canvasContext.fillRect(spaceshipX,spaceshipY,100,50);
+    canvasContext.fillstyle ="white"; /*shot*/
+    canvasContext.fillRect(shotX,shotY,10,50);
+
+    if (snakeLives >=1){
+    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake1*/
+    canvasContext.fillRect(snakeX,snakeY,50,50);
+    }
+
+    if (snakeLives >= 2){
+    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake2*/
+    canvasContext.fillRect(snakeX2,snakeY2,50,50);
+    }
+
+    if (snakeLives >= 3){
+    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake3*/
+    canvasContext.fillRect(snakeX3,snakeY3,50,50);
+    }
+
+    if (snakeLives >= 4){
+    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake4*/
+    canvasContext.fillRect(snakeX4,snakeY4,50,50);
+    }
+
+    if (snakeLives >= 5){
+    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake5*/
+    canvasContext.fillRect(snakeX5,snakeY5,50,50);
+    }
+
+    if (snakeLives >= 6){
+    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake6*/
+    canvasContext.fillRect(snakeX6,snakeY6,50,50);
+    }
+
+    if (snakeLives >= 7){
+    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake7*/
+    canvasContext.fillRect(snakeX7,snakeY7,50,50);
+    }
+
+    if (snakeLives == 8){
+    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake8*/
+    canvasContext.fillRect(snakeX8,snakeY8,50,50);
+    }
+
+  }
+
+  function moveShip(){
+    if (aPressed) {
+      spaceshipX -= 5;
+      canonX -= 5;
+    }
+    if (spaceshipX < 0){
+      spaceshipX = 0;
+      canonX = 50;
+    }
+
+    if (dPressed){
+      spaceshipX += 5;
+      canonX += 5;
+    }
+
+    if (spaceshipX>300){
+      spaceshipX = 300;
+      canonX = 350;
+    }
+  }
+
+  function keyDownHandler (event) {
+    if(event.keyCode === 65) {
+      aPressed = true;
+    }
+    else if (event.keyCode === 68) {
+      dPressed = true;
+    }
+    else if (event.keyCode === 87) {
+      spacePressed = true;
+    }
+  }
+
+  function keyUpHandler (event) {
+    if(event.keyCode === 65) {
+      aPressed = false;
+    }
+    else if (event.keyCode === 68) {
+      dPressed = false;
+    }
+    else if (event.keyCode === 87) {
+      spacePressed = false;
+    }
+  }
+
+
+  function shoot(){
+    if(spacePressed){
+      shotFired = true;
+      shotX = canonX;
+      shotY = canonY-40;
+      if (sounds.muted == false){
+      document.getElementById("laser").play();
+      }
+    }
+    }
+
+
+  function moveShot(){
+    if (shotFired){
+      shotY -= 5;
+    }
+  }
+
+  function moveSnake(){
+    snakeX -= snakeSpeed;
+    snakeX2 -= snakeSpeed2;
+    snakeX3 -= snakeSpeed3;
+    snakeX4 -= snakeSpeed4;
+    snakeX5 -= snakeSpeed5;
+    snakeX6 -= snakeSpeed6;
+    snakeX7 -= snakeSpeed7;
+    snakeX8 -= snakeSpeed8;
+
+    if (snakeX < 0){
+      snakeY += 50;
+      snakeSpeed = snakeSpeed*(-1);
+    }
+
+    if (snakeX > 350){
+      snakeY += 50;
+      snakeSpeed = snakeSpeed*(-1);
+    }
+
+    if (snakeX2 < 0){
+      snakeY2 += 50;
+      snakeSpeed2 = snakeSpeed2*(-1);
+    }
+
+    if (snakeX2 > 350){
+      snakeY2 += 50;
+      snakeSpeed2 = snakeSpeed2*(-1);
+    }
+
+    if (snakeX3 < 0){
+      snakeY3 += 50;
+      snakeSpeed3 = snakeSpeed3*(-1);
+    }
+
+    if (snakeX3 > 350){
+      snakeY3 += 50;
+      snakeSpeed3 = snakeSpeed3*(-1);
+    }
+
+    if (snakeX4 < 0){
+      snakeY4 += 50;
+      snakeSpeed4 = snakeSpeed4*(-1);
+    }
+
+    if (snakeX4 > 350){
+      snakeY4 += 50;
+      snakeSpeed4 = snakeSpeed4*(-1);
+    }
+
+    if (snakeX5 < 0){
+      snakeY5 += 50;
+      snakeSpeed5 = snakeSpeed5*(-1);
+    }
+
+    if (snakeX5 > 350){
+      snakeY5 += 50;
+      snakeSpeed5 = snakeSpeed5*(-1);
+    }
+
+    if (snakeX6 < 0){
+      snakeY6 += 50;
+      snakeSpeed6 = snakeSpeed6*(-1);
+    }
+
+    if (snakeX6 > 350){
+      snakeY6 += 50;
+      snakeSpeed6 = snakeSpeed6*(-1);
+    }
+
+    if (snakeX7 < 0){
+      snakeY7 += 50;
+      snakeSpeed7 = snakeSpeed7*(-1);
+    }
+
+    if (snakeX7 > 350){
+      snakeY7 += 50;
+      snakeSpeed7 = snakeSpeed7*(-1);
+    }
+
+    if (snakeX8 < 0){
+      snakeY8 += 50;
+      snakeSpeed8 = snakeSpeed8*(-1);
+    }
+
+    if (snakeX8 > 350){
+      snakeY8 += 50;
+      snakeSpeed8 = snakeSpeed8*(-1);
+    }
+  }
+
+  function hitDetection(){
+    if (shotY <= snakeY+30 && shotY >= snakeY && shotX >= snakeX && shotX <= snakeX+50 && snakeLives >= 1){
+      snakeLives -= 1;
+      shotFired = false;
+      shotY = 600;
+      if (sounds.muted == false){
+      document.getElementById("hit").play();
+      }
+    }
+
+    if (shotY <= snakeY2+30 && shotY >= snakeY2 && shotX <= snakeX2+50 && shotX >= snakeX2 && snakeLives >= 2){
+      snakeLives -= 1;
+      shotFired = false;
+      shotY = 600;
+      if (sounds.muted == false){
+      document.getElementById("hit").play();
+      }
+    }
+
+    if (shotY <= snakeY3+30 && shotY >= snakeY3 && shotX <= snakeX3+50 && shotX >= snakeX3 && snakeLives >= 3){
+      snakeLives -= 1;
+      shotFired = false;
+      shotY = 600;
+      if (sounds.muted == false){
+      document.getElementById("hit").play();
+      }
+    }
+
+    if (shotY <= snakeY4+30 && shotY >= snakeY4 && shotX <= snakeX4+50 && shotX >= snakeX4 && snakeLives >= 4){
+      snakeLives -= 1;
+      shotFired = false;
+      shotY = 600;
+      if (sounds.muted == false){
+      document.getElementById("hit").play();
+      }
+    }
+
+    if (shotY <= snakeY5+30 && shotY >= snakeY5 && shotX <= snakeX5+50 && shotX >= snakeX5 && snakeLives >= 5){
+      snakeLives -= 1;
+      shotFired = false;
+      shotY = 600;
+      if (sounds.muted == false){
+      document.getElementById("hit").play();
+      }
+    }
+
+    if (shotY <= snakeY6+30 && shotY >= snakeY6 && shotX <= snakeX6+50 && shotX >= snakeX6 && snakeLives >= 6){
+      snakeLives -= 1;
+      shotFired = false;
+      shotY = 600;
+      if (sounds.muted == false){
+      document.getElementById("hit").play();
+      }
+    }
+
+    if (shotY <= snakeY7+30 && shotY >= snakeY7 && shotX <= snakeX7+50 && shotX >= snakeX7 && snakeLives >= 7){
+      snakeLives -= 1;
+      shotFired = false;
+      shotY = 600;
+      if (sounds.muted == false){
+      document.getElementById("hit").play();
+      }
+    }
+
+    if (shotY <= snakeY8+30 && shotY >= snakeY8 && shotX <= snakeX8+50 && shotX >= snakeX8 && snakeLives == 8){
+      snakeLives -= 1;
+      shotFired = false;
+      shotY = 600;
+      if (sounds.muted == false){
+      document.getElementById("hit").play();
+      }
+    }
+
+    if (snakeLives == 0){
+      alert("You defeated the snake!");
+      if (sounds.muted == false){
+      document.getElementById("win-shooter").play();
+      }
+
+      canvas;
+      canvasContext;
+      spaceshipX = 150;
+      canonY = 520;
+      canonX = spaceshipX+45;
+      shotX;
+      shotY;
+
+      snakeX = 0;
+      snakeX2 = 50;
+      snakeX3 = 100;
+      snakeX4 = 150;
+      snakeX5 = 200;
+      snakeX6 = 250;
+      snakeX7 = 300;
+      snakeX8 = 350;
+
+      snakeY = 0;
+      snakeY2 = 0;
+      snakeY3 = 0;
+      snakeY4 = 0;
+      snakeY5 = 0;
+      snakeY6 = 0;
+      snakeY7 = 0;
+      snakeY8 = 0;
+
+      snakeSpeed = 50;
+      snakeSpeed2 = 50;
+      snakeSpeed3 = 50;
+      snakeSpeed4 = 50;
+      snakeSpeed5 = 50;
+      snakeSpeed6 = 50;
+      snakeSpeed7 = 50;
+      snakeSpeed8 = 50;
+
+      snakeLives = 8;
+    }
+
+    if (snakeY3 >= 450){
+
+      alert("You lose!");
+      if (sounds.muted == false){
+      document.getElementById("lose-shooter").play();
+      }
+
+      canvas;
+      canvasContext;
+      spaceshipX = 150;
+      canonY = 520;
+      canonX = spaceshipX+45;
+      shotX;
+      shotY;
+      aPressed = false;
+      dPressed = false;
+      spacePressed = false;
+      shotFired = false;
+
+      snakeX = 0;
+      snakeX2 = 50;
+      snakeX3 = 100;
+      snakeX4 = 150;
+      snakeX5 = 200;
+      snakeX6 = 250;
+      snakeX7 = 300;
+      snakeX8 = 350;
+
+      snakeY = 0;
+      snakeY2 = 0;
+      snakeY3 = 0;
+      snakeY4 = 0;
+      snakeY5 = 0;
+      snakeY6 = 0;
+      snakeY7 = 0;
+      snakeY8 = 0;
+
+      snakeSpeed = 50;
+      snakeSpeed2 = 50;
+      snakeSpeed3 = 50;
+      snakeSpeed4 = 50;
+      snakeSpeed5 = 50;
+      snakeSpeed6 = 50;
+      snakeSpeed7 = 50;
+      snakeSpeed8 = 50;
+
+      snakeLives = 8;
+    }
+  }
+
+  function showMenu(){
+    if (document.getElementById("burger-menu").style.display === "none") {
+      document.getElementById("burger-menu").style.display = "block";
+    }
+    else {
+      document.getElementById("burger-menu").style.display = "none";
+    }
+  }
+
+</script>
+
+</body>
+</html>
