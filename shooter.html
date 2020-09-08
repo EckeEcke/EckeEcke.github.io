@@ -61,6 +61,8 @@
   </ul>
 </div>
 <img id="spaceship" src="images/spaceship.png" style="display: none; background: transparent;">
+<img id="snake" src="images/snake.png" style="display: none; background: transparent;">
+<img id="snake-head" src="images/snake-head.png" style="display: none; background: transparent;">
 <script>
 
   var canvas;
@@ -173,43 +175,51 @@
 
 
     if (snakeLives >=1){
-    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake1*/
-    canvasContext.fillRect(snakeX,snakeY,50,50);
+      canvasContext.drawImage(document.getElementById("snake-head"),snakeX,snakeY,50,50);
+    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake1*/
+    /*canvasContext.fillRect(snakeX,snakeY,50,50); */
     }
 
     if (snakeLives >= 2){
-    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake2*/
-    canvasContext.fillRect(snakeX2,snakeY2,50,50);
+      canvasContext.drawImage(document.getElementById("snake"),snakeX2,snakeY2,50,50);
+    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake2*/
+    /*canvasContext.fillRect(snakeX2,snakeY2,50,50);*/
     }
 
     if (snakeLives >= 3){
-    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake3*/
-    canvasContext.fillRect(snakeX3,snakeY3,50,50);
+      canvasContext.drawImage(document.getElementById("snake"),snakeX3,snakeY3,50,50);
+    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake3*/
+    /*canvasContext.fillRect(snakeX3,snakeY3,50,50);*/
     }
 
     if (snakeLives >= 4){
-    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake4*/
-    canvasContext.fillRect(snakeX4,snakeY4,50,50);
+      canvasContext.drawImage(document.getElementById("snake"),snakeX4,snakeY4,50,50);
+    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake4*/
+    /*canvasContext.fillRect(snakeX4,snakeY4,50,50);*/
     }
 
     if (snakeLives >= 5){
-    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake5*/
-    canvasContext.fillRect(snakeX5,snakeY5,50,50);
+      canvasContext.drawImage(document.getElementById("snake"),snakeX5,snakeY5,50,50);
+    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake5*/
+    /*canvasContext.fillRect(snakeX5,snakeY5,50,50);*/
     }
 
     if (snakeLives >= 6){
-    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake6*/
-    canvasContext.fillRect(snakeX6,snakeY6,50,50);
+      canvasContext.drawImage(document.getElementById("snake"),snakeX6,snakeY6,50,50);
+    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake6*/
+    /*canvasContext.fillRect(snakeX6,snakeY6,50,50);*/
     }
 
     if (snakeLives >= 7){
-    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake7*/
-    canvasContext.fillRect(snakeX7,snakeY7,50,50);
+      canvasContext.drawImage(document.getElementById("snake"),snakeX7,snakeY7,50,50);
+    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake7*/
+    /*canvasContext.fillRect(snakeX7,snakeY7,50,50);*/
     }
 
     if (snakeLives == 8){
-    canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake8*/
-    canvasContext.fillRect(snakeX8,snakeY8,50,50);
+      canvasContext.drawImage(document.getElementById("snake"),snakeX8,snakeY8,50,50);
+    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake8*/
+    /*canvasContext.fillRect(snakeX8,snakeY8,50,50);*/
     }
 
   }
