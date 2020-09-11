@@ -20,6 +20,11 @@
 
 <br><br>
 
+  <article id="description">
+    <br><br>
+      I wanted to experiment with my learnings from building Pong and created this game from scratch. Just for fun and getting some practise. To make it more visually appealing I implemented images to the canvas. There are also sound effects and button to turn sound on or off.
+  </article>
+
   <canvas id="game-canvas" width= "400px" height= "600px">
 
   </canvas>
@@ -96,25 +101,22 @@
   var snakeY7 = 0;
   var snakeY8 = 0;
 
-  var snakeSpeed = 50;
-  var snakeSpeed2 = 50;
-  var snakeSpeed3 = 50;
-  var snakeSpeed4 = 50;
-  var snakeSpeed5 = 50;
-  var snakeSpeed6 = 50;
-  var snakeSpeed7 = 50;
-  var snakeSpeed8 = 50;
+  var snakeSpeed = 10;
+  var snakeSpeed2 = 10;
+  var snakeSpeed3 = 10;
+  var snakeSpeed4 = 10;
+  var snakeSpeed5 = 10;
+  var snakeSpeed6 = 10;
+  var snakeSpeed7 = 10;
+  var snakeSpeed8 = 10;
 
   var snakeLives = 8;
 
-  var gameSpeed = 200;
-
-  var gameRuns = false;
+  var gameSpeed = 30;
 
   var sounds = document.getElementsByTagName("audio");
 
   sounds.muted = true;
-
 
   function soundControl() {
     if (sounds.muted == true){
@@ -140,6 +142,7 @@
     setInterval(callAll, 1000/120);
     setInterval(moveSnake, gameSpeed);
     document.getElementById("startButton").disabled = true;
+    document.getElementById("description").style.display = "none";
   }
 
 
@@ -298,89 +301,89 @@
     snakeX7 -= snakeSpeed7;
     snakeX8 -= snakeSpeed8;
 
-    if (snakeX < 0){
+    if (snakeX < -50){
       snakeY += 50;
       snakeSpeed = snakeSpeed*(-1);
     }
 
-    if (snakeX > 350){
+    if (snakeX > 400){
       snakeY += 50;
       snakeSpeed = snakeSpeed*(-1);
     }
 
-    if (snakeX2 < 0){
+    if (snakeX2 < -50){
       snakeY2 += 50;
       snakeSpeed2 = snakeSpeed2*(-1);
     }
 
-    if (snakeX2 > 350){
+    if (snakeX2 > 400){
       snakeY2 += 50;
       snakeSpeed2 = snakeSpeed2*(-1);
     }
 
-    if (snakeX3 < 0){
+    if (snakeX3 < -50){
       snakeY3 += 50;
       snakeSpeed3 = snakeSpeed3*(-1);
     }
 
-    if (snakeX3 > 350){
+    if (snakeX3 > 400){
       snakeY3 += 50;
       snakeSpeed3 = snakeSpeed3*(-1);
     }
 
-    if (snakeX4 < 0){
+    if (snakeX4 < -50){
       snakeY4 += 50;
       snakeSpeed4 = snakeSpeed4*(-1);
     }
 
-    if (snakeX4 > 350){
+    if (snakeX4 > 400){
       snakeY4 += 50;
       snakeSpeed4 = snakeSpeed4*(-1);
     }
 
-    if (snakeX5 < 0){
+    if (snakeX5 < -50){
       snakeY5 += 50;
       snakeSpeed5 = snakeSpeed5*(-1);
     }
 
-    if (snakeX5 > 350){
+    if (snakeX5 > 400){
       snakeY5 += 50;
       snakeSpeed5 = snakeSpeed5*(-1);
     }
 
-    if (snakeX6 < 0){
+    if (snakeX6 < -50){
       snakeY6 += 50;
       snakeSpeed6 = snakeSpeed6*(-1);
     }
 
-    if (snakeX6 > 350){
+    if (snakeX6 > 400){
       snakeY6 += 50;
       snakeSpeed6 = snakeSpeed6*(-1);
     }
 
-    if (snakeX7 < 0){
+    if (snakeX7 < -50){
       snakeY7 += 50;
       snakeSpeed7 = snakeSpeed7*(-1);
     }
 
-    if (snakeX7 > 350){
+    if (snakeX7 > 400){
       snakeY7 += 50;
       snakeSpeed7 = snakeSpeed7*(-1);
     }
 
-    if (snakeX8 < 0){
+    if (snakeX8 < -50){
       snakeY8 += 50;
       snakeSpeed8 = snakeSpeed8*(-1);
     }
 
-    if (snakeX8 > 350){
+    if (snakeX8 > 400){
       snakeY8 += 50;
       snakeSpeed8 = snakeSpeed8*(-1);
     }
   }
 
   function hitDetection(){
-    if (shotY <= snakeY+20 && shotY >= snakeY && shotX >= snakeX && shotX <= snakeX+50 && snakeLives >= 1){
+    if (shotY <= snakeY+40 && shotY >= snakeY && shotX >= snakeX && shotX <= snakeX+50 && snakeLives >= 1){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -389,7 +392,7 @@
       }
     }
 
-    if (shotY <= snakeY2+20 && shotY >= snakeY2 && shotX <= snakeX2+50 && shotX >= snakeX2 && snakeLives >= 2){
+    if (shotY <= snakeY2+40 && shotY >= snakeY2 && shotX <= snakeX2+50 && shotX >= snakeX2 && snakeLives >= 2){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -398,7 +401,7 @@
       }
     }
 
-    if (shotY <= snakeY3+20 && shotY >= snakeY3 && shotX <= snakeX3+50 && shotX >= snakeX3 && snakeLives >= 3){
+    if (shotY <= snakeY3+40 && shotY >= snakeY3 && shotX <= snakeX3+50 && shotX >= snakeX3 && snakeLives >= 3){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -407,7 +410,7 @@
       }
     }
 
-    if (shotY <= snakeY4+20 && shotY >= snakeY4 && shotX <= snakeX4+50 && shotX >= snakeX4 && snakeLives >= 4){
+    if (shotY <= snakeY4+40 && shotY >= snakeY4 && shotX <= snakeX4+50 && shotX >= snakeX4 && snakeLives >= 4){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -416,7 +419,7 @@
       }
     }
 
-    if (shotY <= snakeY5+20 && shotY >= snakeY5 && shotX <= snakeX5+50 && shotX >= snakeX5 && snakeLives >= 5){
+    if (shotY <= snakeY5+40 && shotY >= snakeY5 && shotX <= snakeX5+50 && shotX >= snakeX5 && snakeLives >= 5){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -425,7 +428,7 @@
       }
     }
 
-    if (shotY <= snakeY6+20 && shotY >= snakeY6 && shotX <= snakeX6+50 && shotX >= snakeX6 && snakeLives >= 6){
+    if (shotY <= snakeY6+40 && shotY >= snakeY6 && shotX <= snakeX6+50 && shotX >= snakeX6 && snakeLives >= 6){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -434,7 +437,7 @@
       }
     }
 
-    if (shotY <= snakeY7+20 && shotY >= snakeY7 && shotX <= snakeX7+50 && shotX >= snakeX7 && snakeLives >= 7){
+    if (shotY <= snakeY7+40 && shotY >= snakeY7 && shotX <= snakeX7+50 && shotX >= snakeX7 && snakeLives >= 7){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -443,7 +446,7 @@
       }
     }
 
-    if (shotY <= snakeY8+20 && shotY >= snakeY8 && shotX <= snakeX8+50 && shotX >= snakeX8 && snakeLives == 8){
+    if (shotY <= snakeY8+40 && shotY >= snakeY8 && shotX <= snakeX8+50 && shotX >= snakeX8 && snakeLives == 8){
       snakeLives -= 1;
       shotFired = false;
       shotY = 600;
@@ -458,11 +461,12 @@
       document.getElementById("win-shooter").play();
       }
 
+
       canvas;
       canvasContext;
       spaceshipX = 150;
       canonY = 520;
-      canonX = spaceshipX+45;
+      canonX = spaceshipX+50;
       shotX;
       shotY;
 
@@ -484,14 +488,14 @@
       snakeY7 = 0;
       snakeY8 = 0;
 
-      snakeSpeed = 50;
-      snakeSpeed2 = 50;
-      snakeSpeed3 = 50;
-      snakeSpeed4 = 50;
-      snakeSpeed5 = 50;
-      snakeSpeed6 = 50;
-      snakeSpeed7 = 50;
-      snakeSpeed8 = 50;
+      snakeSpeed = 10;
+      snakeSpeed2 = 10;
+      snakeSpeed3 = 10;
+      snakeSpeed4 = 10;
+      snakeSpeed5 = 10;
+      snakeSpeed6 = 10;
+      snakeSpeed7 = 10;
+      snakeSpeed8 = 10;
 
       snakeLives = 8;
       aPressed = false;
@@ -500,7 +504,7 @@
       shotFired = false;
     }
 
-    if (snakeY3 >= 450){
+    if (snakeY4 >= 450){
 
       alert("You lose!");
       if (sounds.muted == false){
@@ -511,7 +515,7 @@
       canvasContext;
       spaceshipX = 150;
       canonY = 520;
-      canonX = spaceshipX+45;
+      canonX = spaceshipX+50;
       shotX;
       shotY;
       aPressed = false;
@@ -537,14 +541,14 @@
       snakeY7 = 0;
       snakeY8 = 0;
 
-      snakeSpeed = 50;
-      snakeSpeed2 = 50;
-      snakeSpeed3 = 50;
-      snakeSpeed4 = 50;
-      snakeSpeed5 = 50;
-      snakeSpeed6 = 50;
-      snakeSpeed7 = 50;
-      snakeSpeed8 = 50;
+      snakeSpeed = 10;
+      snakeSpeed2 = 10;
+      snakeSpeed3 = 10;
+      snakeSpeed4 = 10;
+      snakeSpeed5 = 10;
+      snakeSpeed6 = 10;
+      snakeSpeed7 = 10;
+      snakeSpeed8 = 10;
 
       snakeLives = 8;
       aPressed = false;

@@ -50,10 +50,14 @@
 
 <div class="black-box">
 
-<div class="text-box" position: absolute;>
+<div>
 
   <center>
     <h2>Pong</h2>
+
+    <br>
+
+
   <div class="scoreboard">
 
   <div id="Score1">
@@ -71,10 +75,23 @@
 
 <canvas id="game-canvas" width="800px" height="600px">
 </canvas>
+<br>
 <article class="controls">
-  Controls P1: "W" and "S"<br>
-  Controls P2: "O" and "L"
+  Controls P1: "W" and "S"  |  Controls P2: "O" and "L"<br>
+
+  <br><br>
+
+  <button id="startButton" onclick="startGame()">
+  &#127955; Start &#127955;
+
+  </button>
 </article>
+
+<article id="description">
+  <br><br>
+  To start with Javascript I took a Udemy course on how to build Pong using Javascript. I wrote functions drawing rectangles into a canvas element and making them move. The calculations recognize when the ball would leave the canvas and make it change direction (collision) or count the score. The score is also displayed in HTML. I implemented sounds that play if certain conditions are met. Also I built in a button to turn sound on or off.
+</article>
+
 <article class="too-small">
   <br>
   <br>
@@ -82,8 +99,6 @@
   If you can read this, your screen is to small! You can play my version of Pong on your PC in full screen mode!
 </article>
 </div>
-
-
 
 
 <script>
@@ -107,17 +122,23 @@
   var speedBoost= 0;
   var hitCounter = 0;
   var sounds = document.getElementsByTagName("audio");
+  var gameRuns = false;
 
   sounds.muted = true;
 
   window.onload = function () {
-    canvas = document.getElementById("game-canvas");
-    canvasContext = canvas.getContext("2d");
-    setInterval(callAll, 1000/120);
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
   }
 
+  function startGame(){
+    document.getElementById("game-canvas").style.display ="block";
+    canvas = document.getElementById("game-canvas");
+    canvasContext = canvas.getContext("2d");
+    setInterval(callAll, 1000/120);
+    document.getElementById("startButton").style.display ="none";
+    document.getElementById("description").style.display = "none";
+  }
 
   function soundControl() {
     //document.getElementById("sound-button").style.display="none";

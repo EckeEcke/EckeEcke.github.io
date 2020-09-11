@@ -64,6 +64,7 @@ article {
   width: 60%;
 }
 
+
 h2 {
   font-family: retro;
   background-color: black;
@@ -90,6 +91,9 @@ padding: 10px;
   padding: 10px 12px 12px 12px;
 }
 
+#description {
+  display: block;
+}
 
 @media (max-width: 1100px) {
   canvas, #startButton {
@@ -102,6 +106,8 @@ padding: 10px;
     padding-top: 100px;
     display: block;
   }
+
+
   h2 {
     width: 60%;
   }
@@ -111,6 +117,7 @@ padding: 10px;
   article {
     display: none;
   }
+
   h2 {
     width: 30%;
   }
