@@ -59,7 +59,7 @@
 }
 
 .card-text {
-  font-size: 0.9em;
+  font-size: 1em;
   /*padding: 20px;*/
   text-align: justify;
   width: 80%;
@@ -113,7 +113,7 @@ body {
 
 .description-text {
   color: white;
-  font-size: 0.9em;
+  font-size: 1em;
   padding: 8px;
   text-align: justify;
 }
@@ -319,7 +319,7 @@ moving blobs
   margin-bottom: 50px;
 }
 #blob-white-box {
-  height: 230px;
+  height: 231px;
   width: 200px;
   background-color: white;
   position: relative;
