@@ -34,7 +34,7 @@
 
 #card, #card2 {
   height: 400px;
-  width: 300px;
+  /*width: 300px;*/
   padding: 0px;
   margin: 0px auto;
 
@@ -43,7 +43,7 @@
 #card-content, #card2-content {
   position: relative;
   height: 400px;
-  width: 300px;
+  /*width: 300px;*/
   transform-style: preserve-3d;
   transition: transform 0.6s;
 }
@@ -59,7 +59,11 @@
 }
 
 .card-text {
-  font-size: 1.5em;
+  font-size: 0.9em;
+  /*padding: 20px;*/
+  text-align: justify;
+  width: 80%;
+  margin: 0px auto;
 }
 
 .card-list {
@@ -68,7 +72,7 @@
 }
 
 .card-emoji {
-  font-size: 2em;
+  font-size: 6.5em;
 }
 
 .profile {
@@ -109,18 +113,22 @@ body {
 
 .description-text {
   color: white;
+  font-size: 0.9em;
+  padding: 8px;
+  text-align: justify;
 }
 
 
 h3 {
   color: white;
+  padding: 8px;
 }
 
-h1 {
+h2 {
   font-family: stripes;
-  font-size: 60pt;
+  font-size: 50pt;
   color: white;
-  margin: 10%;
+  margin: 10px;
   text-shadow: 4px 4px 20px rgb(255,255,255,0.8);
 }
 
@@ -185,13 +193,9 @@ nav {
 
 .black-box {
   background-color: black;
-  width: 60%;
-  border-radius: 30px;
-  padding: 80px;
 }
 
 .blackbox .newsletter {
-  font-size: 30pt;
   font-family: Helvetica;
   background-color: black;
   color: white;
@@ -219,7 +223,7 @@ button:hover {
 
 
 input {
-  width: 65%;
+  width: 50px;
 }
 
 hr {
@@ -315,7 +319,7 @@ moving blobs
   margin-bottom: 50px;
 }
 #blob-white-box {
-  height: 400px;
+  height: 230px;
   width: 200px;
   background-color: white;
   position: relative;

@@ -210,7 +210,7 @@ margin: auto;
 }
 
 
-@media (min-width: 801px) {
+@media (min-width: 1001px) {
   p, nav li {
     font-size: 1.2em;
   }
