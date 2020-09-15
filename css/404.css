@@ -1,3 +1,44 @@
+#hamburger {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  background-color: rgb(0,0,0,0.7);
+  padding: 5px;
+  z-index: 3000;
+  display: none;
+}
+
+.line1, .line2, .line3 {
+  width: 40px;
+  height: 5px;
+  margin: 10px;
+  background-color: white;
+}
+
+
+#burger-menu {
+
+  position: fixed;
+  background-color: grey;
+  left: 0px;
+  top: 0px;
+  padding: 150px 50px;
+  z-index: 2000;
+  display: none;
+}
+
+#burger-menu a {
+  text-decoration: none;
+  color: white;
+  font-size: 2em;
+  list-style: none;
+}
+
+#burger-menu li {
+  list-style: none;
+}
+
+
 #card-front, #card-back, #card2-front, #card2-back {
   height: 100%;
   width: 100%;
@@ -203,7 +244,7 @@ nav {
   padding: 0;
 }
 
-input, button {
+input, #sub-button {
   border-radius: 5px;
   border-style: none;
   padding: 10px;
@@ -211,7 +252,7 @@ input, button {
 
 
 
-button {
+#sub-button {
   background-image: linear-gradient(to right, red, yellow);
   color: white;
   width: 30%;
@@ -226,7 +267,7 @@ input {
   width: 50px;
 }
 
-hr {
+#newsletter-line {
   width: 100%;
   height: 10px;
   background-image: linear-gradient(to right, red, yellow);
@@ -306,6 +347,7 @@ moving blobs
 
 .blob-text {
   margin-top: 80px;
+  font-size: 1em;
 }
 
 #blob-black-box {
@@ -360,6 +402,33 @@ moving blobs
   font-size: 3em;
 }
 
+@media (min-width: 1px) {
+
+  p, nav li {
+    font-size: 1.5em;
+  }
+  nav li, .home {
+    display: none;
+  }
+  #hamburger {
+    display: block;
+  }
+}
+
+
+@media (min-width: 1001px) {
+  p, nav li {
+    font-size: 1.2em;
+  }
+  nav li, .home {
+  display: block;
+  }
+  #hamburger {
+    display: none;
+  }
+}
+
+
 @keyframes rocket-launch {
   0% {bottom: -120px; left: 80px;}
   5% {bottom: -119px; left: 81px; transform: rotate(-39deg)}
@@ -405,12 +474,12 @@ moving blobs
 }
 
 @keyframes moving-blob3 {
-  50% {left: -200px;bottom: 300px;}
-  55% {bottom: 200px; left: 0px; color: white;}
-  60% {bottom: 180px; left: 50px; color: orangered;}
-  65% {bottom: 160px; left: 100px;color: white;}
-  70% {bottom: 140px; left: 150px; color: orangered;}
-  75% {bottom: 120px; left: 200px;}
+  50% {left: -200px;bottom: 120px;}
+  55% {bottom: 110px; left: 0px; color: white;}
+  60% {bottom: 110px; left: 50px; color: orangered;}
+  65% {bottom: 100px; left: 100px;color: white;}
+  70% {bottom: 80px; left: 150px; color: orangered;}
+  75% {bottom: 75px; left: 200px;}
   100% {left: 200px;}
 }
 
@@ -436,7 +505,6 @@ moving blobs
   100% {background-color: black;}
   }
 }
-
 
 
 

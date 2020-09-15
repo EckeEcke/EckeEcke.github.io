@@ -1,10 +1,41 @@
 <html>
 <head>
+<meta name="viewport" content="width=device-width, maximum-scale=1.0">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/404.css">
-
+<script type="text/javascript" src="js/mypage.js"></script>
 </head>
 <body>
+
+  <button id="hamburger" onclick="showMenu()">
+    <div class="line1"></div>
+    <div class="line2"></div>
+    <div class="line3"></div>
+  </button>
+
+  <div id="burger-menu">
+    <ul>
+      <li>
+        <a href="index.html">Home</a>
+      </li>
+      <hr>
+      <li>
+        <a href="CV.html">My CV</a>
+      </li>
+      <hr>
+      <li>
+        <a href="404.html">CSS</a>
+      </li>
+      <hr>
+      <li>
+        <a href="pong.html">JS Pong</a>
+      </li>
+      <hr>
+      <li>
+        <a href="shooter.html">JS Shooter</a>
+      </li>
+    </ul>
+  </div>
 
   <nav class="navbar navbar-expand-md justify-content-center">
     <ul class="navbar-nav">
@@ -23,7 +54,7 @@
     </ul>
   </nav>
 <center>
-  <div class="row justify-content-center black-box col-8 col-md-8 col-xl-6">
+  <div class="row justify-content-center black-box col-10 col-md-8 col-xl-6">
 
         <h2 class="col-10">E<span class="white-r">r</span>ror<br><span class="first-digit">4</span><span class="second-digit">0</span><span class="third-digit">4</span></h2>
 
@@ -41,9 +72,9 @@
 
 <br>
 <center>
-  <div class="black-box col-8 col-md-8 col-xl-6">
+  <div class="black-box col-10 col-md-8 col-xl-6">
       <br>
-      <hr>
+      <hr id="newsletter-line">
 
       <br>
 
@@ -55,7 +86,7 @@
         <button id="sub-button" class="col-8 col-xs-12 col-sm-5 col-md-3" type="submit">Subscribe</button>
         </form>
         <br>
-        <div class="col-10 col-xs-8 col-xl-8">
+        <div class="col-12 col-xs-8 col-md-8 col-xl-8">
           <h3>Newsletter form</h3>
           <p class="description-text">
             This is another work I created at Hamburg Coding School in the CSS course. I used an HTML-form to register for a newsletter including CSS design and a neat little button animation.
@@ -74,7 +105,7 @@
 <br>
 <br>
 <div class="row justify-content-center">
-  <div id="blob-black-box" class="col-7 col-xl-3">
+  <div id="blob-black-box" class="col-9 col-xl-3">
     <div id="blob-white-box">
 
       <div id="blob1">
@@ -102,7 +133,7 @@
   </div>
 
 
-  <div id="space" class="col-7 col-xl-3">
+  <div id="space" class="col-9 col-xl-3">
 
 
     <p id="rocket">
@@ -128,7 +159,7 @@
 <br><br>
 
 <div class="row justify-content-center">
-<div class="col-7 col-sm-5 col-xl-3">
+<div class="col-9 col-sm-5 col-xl-3">
 
   <div id="card">
     <div id="card-content">
@@ -158,7 +189,7 @@
   </div>
 </div>
 
-<div class="col-7 col-sm-5 col-xl-3">
+<div class="col-9 col-sm-5 col-xl-3">
   <div id="card2">
     <div id="card2-content">
     <div id="card2-front">
