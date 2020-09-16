@@ -164,6 +164,8 @@ margin: auto;
   padding: 150px 50px;
   z-index: 2000;
   display: none;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 #burger-menu a {
