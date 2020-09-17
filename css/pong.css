@@ -172,7 +172,10 @@ h2 {
 
 @media (max-width: 1100px) {
   .too-small {
-    padding-top: 100px;
+    padding-top: 10px;
     display: block;
+  }
+  h2 {
+    padding-top: 30px;
   }
 }
