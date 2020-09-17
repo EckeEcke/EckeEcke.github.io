@@ -8,7 +8,6 @@
 }
 
 
-
 body {
   background-image: url("../images/background.jpg");
   background-size: cover;
@@ -114,6 +113,13 @@ li {
   float: left;
 }
 
+ul {
+  margin: 0px;
+}
+
+.cv-hover li, .cv-hover2 li {
+  margin-left: 130px;
+}
 
 @media (max-width: 700px){
   span, article {
@@ -134,6 +140,12 @@ li {
 }
 }
 
+@media (max-width: 500px){
+	.cv-hover, .cv-hover2 {
+	display: block;
+}
+}
+
 @media (min-width: 501px){
 	.cv-show:hover .cv-hover {
   display: block;
@@ -146,14 +158,9 @@ li {
 	}
 }
 
-@media (min-width: 501px){
-	.cv-show:hover .cv-hover2 {
-  display: block;
-  background: white;
-  padding-right: 15%;
-  padding-bottom: 2%;
-  border-bottom: 1px solid grey;
-  width: 106%;
+@media (max-width: 500px){
+  .cv-hover li, .cv-hover2 li {
+    margin-left: 60px;
   }
   }
 
@@ -161,8 +168,4 @@ li {
 .row, .justify-content-center {
   margin-right: 0px;
   margin-left: 0px;
-}
-
-ul {
-  margin: 0px;
 }
