@@ -15,6 +15,7 @@ body {
   background-attachment: fixed;
 }
 
+
 nav a {
   color: rgb(44, 42, 43);
   font-size: 1.5em;
@@ -94,6 +95,23 @@ li {
 }
 
 
+.cv-icon {
+  height: 70px;
+  width: 70px;
+  float: left;
+}
+
+ul {
+  margin: 0px;
+}
+
+.cv-hover li, .cv-hover2 li {
+  margin-left: 110px;
+}
+
+
+
+
 @media (min-width: 1px) {
   .cv-col li {
     font-size: 1em;
@@ -107,27 +125,13 @@ li {
 }
 
 
-.cv-icon {
-  height: 70px;
-  width: 70px;
-  float: left;
-}
-
-ul {
-  margin: 0px;
-}
-
-.cv-hover li, .cv-hover2 li {
-  margin-left: 130px;
-}
-
-@media (max-width: 700px){
+@media (max-width: 500px){
   span, article {
     margin-left: 10px;
   }
 }
 
-@media (min-width: 701px){
+@media (min-width: 501px){
   span, article {
     margin-left: 80px;
     }
@@ -160,7 +164,7 @@ ul {
 
 @media (max-width: 500px){
   .cv-hover li, .cv-hover2 li {
-    margin-left: 60px;
+    margin-left: 40px;
   }
   }
 
