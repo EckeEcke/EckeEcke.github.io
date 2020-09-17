@@ -105,7 +105,7 @@ padding: 10px;
 
 @media (max-width: 1100px) {
   article {
-    padding-top: 100px;
+    padding-top: 10px;
     display: block;
   }
 
@@ -115,9 +115,18 @@ padding: 10px;
   }
 }
 
+@media (max-width: 600px){
+  article {
+    font-size: 0.9em;
+    width: 90%;
+    text-align: justify;
+  }
+}
+
 @media (min-width: 1101px) {
   article {
     display: none;
+    padding-top: 50px;
   }
 
   h2 {
