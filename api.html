@@ -1,7 +1,6 @@
-<html>
 <head>
   <meta name="viewport" content="width=device-width, maximum-scale=1.0">
-  <title>My page</title>
+  <title>APIs</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/mypage.css">
   <link rel="icon" type="image/png" href="images/favicon.png"/>
@@ -60,28 +59,27 @@
       </li>
     </ul>
   </nav>
+  <br><br><br><br>
+  <div class="profile">
+    <center>
 
-  <br>
-  <br>
+    <h1>Random Cat Facts</h1>
+    <br>
+    <p class="api-text highlight" id="cat-fact">
+      CATFACT INCOMING!
+    </p>
 
+    <br>
+        <button id="new-fact-button" class="submit-button">Get new fact</button>
 
-  <div class="profile col-12 col-xs-10 col-sm-9 col-md-8 col-lg-7 col-xl-6">
-    <h1>Welcome to my website!</h1>
-      <br>
-      <div class="row justify-content-center">
-        <img src="images/chris2.jpg" alt="My Profile" class="col-xl-9 col-lg-9 col-md-9 col-xs-10 col-12 profile-pic">
-        <p class="col-lg-9 col-md-9 col-xs-12 col-12 profile-text">
+    <br><br>
+    <p class="api-text">
+        This was an exercise I did at Hamburg Coding School to learn how to use APIs. By clicking the button my Javascript function fetches a random cat fact and puts it into HTML.
+    </p>
+    </center>
 
-          <br>
-          Hello visitors,
-          <br><br>
-          feel free to check out my works in HTML, CSS and JavaScript. I built this website with responsiveness in mind, basically using the Bootstrap grid system and media queries. This page serves as a portfolio to present my works to anybody who is interested in working with me. And now have fun discovering my creations!<br><br>Cheers<br>Chris
+    </div>
 
-      </div>
-  </div>
-
-
-  </div>
   <footer>
     <div class="container">
       <div class="row justify-content-center">
@@ -120,26 +118,23 @@
       </div>
 
   </footer>
-  <div id="cookies">
-    <span>
-      &#127850;&#127850;&#127850;
-      <br>
-      This is just for demonstration. More information would be available in the terms of <a href="#">privacy</a>.</span>
-    <br><br>
-    <center>
-      <input class="form-button" name="radio-button" type="radio">
-      <label>Accept all</label>
-      &nbsp; &nbsp;&nbsp;
-      <input class="form-button" name="radio-button" type="radio">
-      <label>Decline</label>
-      &nbsp; &nbsp; &nbsp;
-      <button onclick="closeBanner()" class="submit-button" type="submit">Submit</button>
-    </center>
 
-  </div>
+  <script>
 
-  <a href="index.html"><img src="images/house.png" class="home"></a>
+  let catFact = document.getElementById("cat-fact");
+  let factButton = document.getElementById("new-fact-button");
 
-</body>
+  function getFact(){
+    fetch("https://catfact.ninja/fact?max_length=65")
+      .then(response => response.json())
+      .then(json => catFact.innerHTML = json.fact);
+  };
 
-</html>
+  getFact();
+
+  factButton.addEventListener("click", getFact);
+
+  </script>
+    <a href="index.html"><img src="images/house.png" class="home"></a>
+  </body>
+  </html>

@@ -8,7 +8,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   font-family: retro;
-  height: 110vh;
+  height: 120vh;
 }
 
 canvas {
@@ -49,7 +49,7 @@ canvas {
 #burger-menu a {
   text-decoration: none;
   color: white;
-  font-size: 2em;
+  font-size: 1.5em;
   list-style: none;
 }
 

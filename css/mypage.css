@@ -86,6 +86,19 @@ margin: auto;
   text-align: justify;
 }
 
+.api-text {
+  font-size: 1.1em;
+  text-align: center;
+}
+
+.highlight {
+  font-weight: bolder;
+  border: 4px solid black;
+  padding: 10px;
+  background-color: white;
+}
+
+
 .profile {
   background-color: rgb(171, 173, 175, 0.7);
   border-radius: 20px;
@@ -129,6 +142,7 @@ margin: auto;
   border-style: none;
   box-shadow: 0.5px 3px black;
   background-color: rgb(230,230,230);
+  padding: 10px;
 }
 
 .submit-button:hover {
@@ -171,7 +185,7 @@ margin: auto;
 #burger-menu a {
   text-decoration: none;
   color: white;
-  font-size: 2em;
+  font-size: 1.5em;
   list-style: none;
 }
 
@@ -195,7 +209,7 @@ margin: auto;
     width: 90%;
   }
   p, nav li {
-    font-size: 1.5em;
+    font-size: 1.2em;
   }
   nav li, .home {
     display: none;
@@ -212,7 +226,7 @@ margin: auto;
 }
 
 
-@media (min-width: 1001px) {
+@media (min-width: 1151px) {
   p, nav li {
     font-size: 1.2em;
   }
