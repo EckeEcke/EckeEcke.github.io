@@ -84,7 +84,7 @@
   height: 400px;
   /*width: 300px;*/
   padding: 0px;
-  margin: 0px auto;
+  margin: 20px auto;
 
 }
 
@@ -371,7 +371,7 @@ moving blobs
   padding-top: 100px;
   animation: blob-background 12s steps(1) infinite;
   border-shadow: 5px 5px black;
-  margin-bottom: 50px;
+  margin: 15px;
 }
 #blob-white-box {
   height: 231px;
@@ -399,7 +399,7 @@ moving blobs
   background-image: linear-gradient(to bottom, black, darkblue);
   position: relative;
   overflow: hidden;
-  margin-bottom: 50px;
+  margin: 15px;
 }
 
 
