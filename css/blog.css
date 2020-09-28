@@ -1,0 +1,119 @@
+body {
+  background-image: url("../images/background2.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+
+nav a {
+  color: white;
+}
+
+nav {
+  background-color: rgb(41, 41, 41, 0.3);
+}
+
+.blog-content {
+  height: auto;
+  width: 80%;
+  margin: 20px;
+  padding: 1%;
+}
+
+.blog-image {
+  width: 100%;
+  height: auto;
+}
+
+.input-field {
+  width: 200px;
+  padding: 5px;
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+article {
+  background-color: rgb(41, 41, 41,0.7);
+  margin-top: 5px;
+  padding: 20px;
+  color: white;
+}
+
+p {
+  width: 70%;
+}
+
+textarea {
+  width: 404px;
+}
+
+#input-form {
+  background-color: rgb(41, 41, 41,0.7);
+  padding: 20px;
+  width: 100%;
+  color: white;
+  margin-top: 5px;
+}
+
+
+h4 {
+  padding: 20px;
+}
+
+@media (max-width: 800px){
+  textarea{
+    width: 200px;
+  }
+}
+
+.banner {
+  background-image: url("../images/blog-banner.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  color: white;
+  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+  padding: 10px;
+
+}
+
+
+button {
+  margin: 10px;
+}
+
+.delete-button {
+  border-style: none;
+  background-color: white;
+}
+
+#plane-emoji{
+  position: absolute;
+  bottom: -100px;
+  left: 0px;
+  animation: plane-launch 4s ease-in-out;
+  font-size: 4em;
+  transform: rotate(45deg);
+}
+
+footer {
+  background-color: rgb(41, 41, 41, 0.7);
+}
+
+.home {
+  filter: invert(1);
+}
+#burger-menu {
+  background-color: rgb(41, 41, 41, 0.9);
+}
+
+
+@keyframes plane-launch{
+    0% {bottom: 0px; left: -60px;}
+    100% {bottom: 50px; left: 680px;}
+}
