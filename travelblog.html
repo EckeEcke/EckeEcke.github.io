@@ -92,10 +92,10 @@
         <input class="input-field" id="city-input" type="text" placeholder="Enter a city" required>
         <br>
         <input class="input-field" id="image-input" type="url" placeholder="Enter an image link (optional)">
-        <input class="input-field" id="travel-time" type="month" placeholder="When did you go there?">
+        <input class="input-field" id="travel-time" type="month">
         <br>
 
-        <select class="input-field">
+        <select class="input-field" id="transport-input" required>
           <option value="" disabled selected hidden>
             How did you get there?
           </option>
@@ -115,7 +115,7 @@
             🚢
           </option>
         </select>
-        <select class="input-field">
+        <select class="input-field" id="mood-input" required>
           <option value="" disabled selected hidden>
             How did you like it?
           </option>

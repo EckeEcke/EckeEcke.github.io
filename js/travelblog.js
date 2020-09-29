@@ -6,6 +6,8 @@ const blogEntries = document.getElementById("blog-entries");
 const imageInput = document.getElementById("image-input");
 const timeInput = document.getElementById("travel-time");
 const apiKey = "18ebb74c4c845cd84cc98885effee0ae";
+const moodInput = document.getElementById("mood-input");
+const transportInput = document.getElementById("transport-input");
 
 
 
@@ -53,9 +55,13 @@ function createEntry(entry){
       <h4>${entry.city}, ${entry.country}
       <br>
       ${entry.travelTime}</h4>
-      <p>${entry.purpose}</p>
+
       <img class="blog-image" src="${entry.image}">
       <br><br>
+      <p>${entry.purpose}</p>
+      <hr>
+      <p>Transport: ${entry.transport}&nbsp; &nbsp;
+      Mood: ${entry.mood}</p>
       <span>
       ${temp}
       <br>
@@ -119,8 +125,10 @@ function saveEntries(singleEntry){
     image = "images/blog-placeholder.jpg";
   }
   let travelTime = timeInput.value;
+  let mood = moodInput.value;
+  let transport = transportInput.value;
   let btn = `<button class=delete-button onclick=deleteEntry(event)>❌</button>`;
-  singleEntry = {city, country, travelTime, purpose, image, btn};
+  singleEntry = {city, country, travelTime, purpose, image, mood, transport, btn};
   let entries = getEntries();
   entries.push(singleEntry);
   stringifiedEntries = JSON.stringify(entries);

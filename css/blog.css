@@ -47,9 +47,19 @@ article {
 
 p {
   width: 90%;
-  font-size: 1em;
+  font-size: 1.1em;
 }
 
+hr {
+  background-image: linear-gradient(to right, red, orange);
+  display: block!important;
+  height: 2px;
+  opacity: 0.6;
+}
+
+span {
+  font-size: 1.1em;
+}
 option {
   font-size: 1.2em;
 }
