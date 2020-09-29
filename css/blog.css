@@ -28,10 +28,14 @@ nav {
 
 .input-field {
   width: 200px;
-  padding: 5px;
+  padding: 0px;
   height: 30px;
   margin-bottom: 5px;
+  color: black;
+  background-color: white;
 }
+
+
 
 article {
   background-color: rgb(41, 41, 41,0.7);
@@ -46,7 +50,9 @@ p {
   font-size: 1em;
 }
 
-
+option {
+  font-size: 1.2em;
+}
 
 textarea {
   width: 404px;
@@ -86,10 +92,17 @@ h4 {
 
 }
 
+.weather-icon {
+  width: 200px;
+  margin: -30px;
+}
+
 
 button {
   margin: 10px;
 }
+
+
 
 .delete-button {
   border-style: none;

@@ -61,9 +61,11 @@ function createEntry(entry){
       <br>
       ${feelsLike}
       <br>
-      <img src="${icon}">
-
       ${weatherDescription}
+      <br>
+      <img class="weather-icon" src="${icon}">
+      <br>
+
       </span>
       <br>
       ${entry.btn}
