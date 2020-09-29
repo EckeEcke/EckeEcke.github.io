@@ -38,11 +38,15 @@ article {
   margin-top: 5px;
   padding: 20px;
   color: white;
+  position: relative;
 }
 
 p {
-  width: 70%;
+  width: 90%;
+  font-size: 1em;
 }
+
+
 
 textarea {
   width: 404px;
@@ -61,7 +65,7 @@ h4 {
   padding: 20px;
 }
 
-@media (max-width: 800px){
+@media (max-width: 625px){
   textarea{
     width: 200px;
   }
@@ -89,7 +93,12 @@ button {
 
 .delete-button {
   border-style: none;
-  background-color: white;
+  background-color: black;
+  opacity: 0.6;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  border-radius: 25%;
 }
 
 #plane-emoji{
