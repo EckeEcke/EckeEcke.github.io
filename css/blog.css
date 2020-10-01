@@ -14,6 +14,20 @@ nav {
   background-color: rgb(41, 41, 41, 0.8);
 }
 
+footer {
+  background-color: rgb(41, 41, 41, 0.9);
+}
+
+.home {
+  filter: invert(1);
+}
+
+#burger-menu {
+  background-color: rgb(41, 41, 41, 0.9);
+}
+
+
+
 .blog-content {
   height: auto;
   width: 100%;
@@ -25,6 +39,66 @@ nav {
   width: 100%;
   height: auto;
 }
+
+.blog-line {
+  background-image: linear-gradient(to right, #00ABC9, paleturquoise);
+  display: block!important;
+  height: 2px;
+  opacity: 0.6;
+}
+
+article {
+  background-color: rgb(41, 41, 41,0.9);
+  margin-top: 5px;
+  padding: 20px;
+  color: white;
+  position: relative;
+}
+
+p {
+  width: 90%;
+  font-size: 1.1em;
+}
+
+span {
+  font-size: 1.1em;
+}
+
+h3 {
+  padding: 20px;
+}
+
+.banner {
+  background-image: url("../images/blog-banner.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  color: white;
+  padding: 10px;
+
+}
+
+.weather-icon {
+  width: 200px;
+  margin: -30px;
+}
+
+.delete-button {
+  border-style: none;
+  background-color: black;
+  opacity: 0.9;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  border-radius: 25%;
+}
+
+
+
 
 .input-field {
   width: 300px;
@@ -61,30 +135,6 @@ nav {
   font-size: 0.9em!important;
 }
 
-
-article {
-  background-color: rgb(41, 41, 41,0.9);
-  margin-top: 5px;
-  padding: 20px;
-  color: white;
-  position: relative;
-}
-
-p {
-  width: 90%;
-  font-size: 1.1em;
-}
-
-.blog-line {
-  background-image: linear-gradient(to right, red, orange);
-  display: block!important;
-  height: 2px;
-  opacity: 0.6;
-}
-
-span {
-  font-size: 1.1em;
-}
 option {
   font-size: 1.2em;
 }
@@ -102,10 +152,24 @@ textarea {
   margin-top: 5px;
 }
 
-
-h3 {
-  padding: 20px;
+#submit-button {
+  background-image: linear-gradient(to right, #00ABC9, paleturquoise);
+  color: white;
+  border-style: none;
+  border-radius: 25px;
+  padding: 10px;
+  width: 200px;
+  font-size: 1.2em;
+  margin: 10px;
 }
+
+#submit-button:hover {
+  animation: button-animation 0.8s linear;
+}
+
+
+
+
 
 @media (max-width: 842px){
   textarea{
@@ -124,57 +188,8 @@ h3 {
 }
 
 
-#submit-button {
-  background-image: linear-gradient(to right, red, yellow);
-  color: white;
-  border-style: none;
-  border-radius: 25px;
-  padding: 10px;
-  width: 200px;
-  font-size: 1.2em;
-}
-
-#submit-button:hover {
-  animation: button-animation 0.8s linear;
-}
 
 
-
-.banner {
-  background-image: url("../images/blog-banner.jpeg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  height: 300px;
-  color: white;
-  padding: 10px;
-
-}
-
-.weather-icon {
-  width: 200px;
-  margin: -30px;
-}
-
-
-button {
-  margin: 10px;
-}
-
-
-
-.delete-button {
-  border-style: none;
-  background-color: black;
-  opacity: 0.9;
-  position: absolute;
-  right: 0px;
-  top: 0px;
-  border-radius: 25%;
-}
 
 #plane-emoji{
   position: absolute;
@@ -185,30 +200,11 @@ button {
   transform: rotate(45deg);
 }
 
-footer {
-  background-color: rgb(41, 41, 41, 0.9);
-}
-
-.home {
-  filter: invert(1);
-}
-#burger-menu {
-  background-color: rgb(41, 41, 41, 0.9);
-}
-
-
-
-
-
-
-
-
-
-
 @keyframes plane-launch{
     0% {bottom: 0px; left: -60px;}
     100% {bottom: 50px; left: 880px;}
 }
+
 
 @keyframes button-animation {
   0% {background-image: linear-gradient(to right, darkred, darkred, darkred, darkred, darkred);}

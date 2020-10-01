@@ -19,8 +19,6 @@ const emoji3Button = document.getElementById("🙂");
 const emoji4Button = document.getElementById("😒");
 const emoji5Button = document.getElementById("😡");
 
-
-
 let transport = "";
 let mood = "";
 
@@ -67,29 +65,29 @@ function createEntry(entry, index){
       let button = document.createElement("button");
 
       blogEntry.innerHTML =
-      `
-      <h3>${entry.city}, ${entry.country}
-      <br>
-      ${entry.travelTime}</h3>
+        `
+        <h3>${entry.city}, ${entry.country}
+        <br>
+        ${entry.travelTime}</h3>
 
-      <img class="blog-image" src="${entry.image}">
-      <br><br>
-      <p>${entry.purpose}</p>
-      <hr class="blog-line">
-      <p>Transport: ${entry.transport}&nbsp; &nbsp;
-      Mood: ${entry.mood}</p>
-      <span>
-      ${temp}
-      <br>
-      ${feelsLike}
-      <br>
-      ${weatherDescription}
-      <br>
-      <img class="weather-icon" src="${icon}">
-      <br>
-      </span>
-      <br>
-      `;
+        <img class="blog-image" src="${entry.image}">
+        <br><br>
+        <p>${entry.purpose}</p>
+        <hr class="blog-line">
+        <p>Transport: ${entry.transport}&nbsp; &nbsp;
+        Mood: ${entry.mood}</p>
+        <span>
+        ${temp}
+        <br>
+        ${feelsLike}
+        <br>
+        ${weatherDescription}
+        <br>
+        <img class="weather-icon" src="${icon}">
+        <br>
+        </span>
+        <br>
+        `;
 
       button.innerHTML = "❌";
       button.classList.add("delete-button");
