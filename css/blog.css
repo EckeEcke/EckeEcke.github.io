@@ -16,8 +16,8 @@ nav {
 
 .blog-content {
   height: auto;
-  width: 80%;
-  margin: 20px;
+  width: 100%;
+  margin: 20px 0px;
   padding: 1%;
 }
 
@@ -27,7 +27,7 @@ nav {
 }
 
 .input-field {
-  width: 200px;
+  width: 300px;
   padding: 0px;
   height: 30px;
   margin-bottom: 5px;
@@ -37,7 +37,7 @@ nav {
 }
 
 .input-field2 {
-  width: 200px;
+  width: 300px;
   padding: 0px;
   height: 110px!important;
   margin-bottom: 6px;
@@ -48,12 +48,13 @@ nav {
 }
 
 .radio-btn {
-  margin: 0 10px;
+  margin: 0 15px;
 }
 
 
 .radio-emoji {
   font-size: 1.25em;
+  margin: 0 5px;
 }
 
 .radio-head {
@@ -89,7 +90,7 @@ option {
 }
 
 textarea {
-  width: 404px;
+  width: 604px;
   border-style: none;
 }
 
@@ -102,13 +103,13 @@ textarea {
 }
 
 
-h4 {
+h3 {
   padding: 20px;
 }
 
-@media (max-width: 625px){
+@media (max-width: 842px){
   textarea{
-    width: 200px;
+    width: 300px;
   }
 }
 
@@ -116,8 +117,25 @@ h4 {
   .radio-emoji {
     font-size: 1.5em!important;
   }
+  .radio-btn {
+    margin: 0 18px;
+  }
 }
 
+
+#submit-button {
+  background-image: linear-gradient(to right, red, yellow);
+  color: white;
+  border-style: none;
+  border-radius: 25px;
+  padding: 10px;
+  width: 200px;
+  font-size: 1.2em;
+}
+
+#submit-button:hover {
+  animation: button-animation 0.8s linear;
+}
 
 
 
@@ -188,5 +206,17 @@ footer {
 
 @keyframes plane-launch{
     0% {bottom: 0px; left: -60px;}
-    100% {bottom: 50px; left: 780px;}
+    100% {bottom: 50px; left: 880px;}
+}
+
+@keyframes button-animation {
+  0% {background-image: linear-gradient(to right, darkred, darkred, darkred, darkred, darkred);}
+  10% {background-image: linear-gradient(to right, darkred, darkred, darkred, darkred, red); transform: scale(1.2);}
+  20% {background-image: linear-gradient(to right, darkred, darkred, darkred, red, orange);}
+  30% {background-image: linear-gradient(to right, darkred, darkred, red, orange, yellow);}
+  40% {background-image: linear-gradient(to right, darkred, red, orange, yellow, lightyellow);}
+  50% {background-image: linear-gradient(to right, red, orange, yellow, lightyellow, lightyellow);}
+  60% {background-image: linear-gradient(to right, orange, yellow, lightyellow, lightyellow, lightyellow);}
+  70% {background-image: linear-gradient(to right, yellow, lightyellow, lightyellow, lightyellow, lightyellow);}
+  80% {background-image: linear-gradient(to right, lightyellow, lightyellow, lightyellow, lightyellow, lightyellow);}
 }

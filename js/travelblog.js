@@ -8,7 +8,7 @@ const timeInput = document.getElementById("travel-time");
 const apiKey = "18ebb74c4c845cd84cc98885effee0ae";
 
 const planeButton = document.getElementById("✈️");
-const trainButton = document.getElementById("🚞");
+const trainButton = document.getElementById("🚄");
 const carButton = document.getElementById("🚗");
 const busButton = document.getElementById("🚌");
 const shipButton = document.getElementById("🚢");
@@ -68,9 +68,9 @@ function createEntry(entry, index){
 
       blogEntry.innerHTML =
       `
-      <h4>${entry.city}, ${entry.country}
+      <h3>${entry.city}, ${entry.country}
       <br>
-      ${entry.travelTime}</h4>
+      ${entry.travelTime}</h3>
 
       <img class="blog-image" src="${entry.image}">
       <br><br>
@@ -163,7 +163,7 @@ function checkRadio() {
       transport = "✈️";
     }
     if (trainButton.checked){
-      transport = "🚞";
+      transport = "🚄";
     }
     if (carButton.checked){
       transport ="🚗";
