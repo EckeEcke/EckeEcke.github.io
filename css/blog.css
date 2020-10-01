@@ -1,5 +1,5 @@
 body {
-  background-image: url("../images/background2.jpeg");
+  background-image: url("../images/background2.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -11,7 +11,7 @@ nav a {
 }
 
 nav {
-  background-color: rgb(41, 41, 41, 0.3);
+  background-color: rgb(41, 41, 41, 0.8);
 }
 
 .blog-content {
@@ -33,12 +33,36 @@ nav {
   margin-bottom: 5px;
   color: black;
   background-color: white;
+  border-style: none;
+}
+
+.input-field2 {
+  width: 200px;
+  padding: 0px;
+  height: 110px!important;
+  margin-bottom: 6px;
+  color: black;
+  background-color: white;
+  display: inline-block;
+  padding-top: 5px;
+}
+
+.radio-btn {
+  margin: 0 10px;
 }
 
 
+.radio-emoji {
+  font-size: 1.25em!important;
+}
+
+.radio-head {
+  font-size: 0.9em!important;
+}
+
 
 article {
-  background-color: rgb(41, 41, 41,0.7);
+  background-color: rgb(41, 41, 41,0.9);
   margin-top: 5px;
   padding: 20px;
   color: white;
@@ -50,7 +74,7 @@ p {
   font-size: 1.1em;
 }
 
-hr {
+.blog-line {
   background-image: linear-gradient(to right, red, orange);
   display: block!important;
   height: 2px;
@@ -66,10 +90,11 @@ option {
 
 textarea {
   width: 404px;
+  border-style: none;
 }
 
 #input-form {
-  background-color: rgb(41, 41, 41,0.7);
+  background-color: rgb(41, 41, 41,0.9);
   padding: 20px;
   width: 100%;
   color: white;
@@ -97,7 +122,6 @@ h4 {
   width: 100%;
   height: 300px;
   color: white;
-  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
   padding: 10px;
 
 }
@@ -117,7 +141,7 @@ button {
 .delete-button {
   border-style: none;
   background-color: black;
-  opacity: 0.6;
+  opacity: 0.9;
   position: absolute;
   right: 0px;
   top: 0px;
@@ -134,7 +158,7 @@ button {
 }
 
 footer {
-  background-color: rgb(41, 41, 41, 0.7);
+  background-color: rgb(41, 41, 41, 0.9);
 }
 
 .home {
@@ -145,7 +169,15 @@ footer {
 }
 
 
+
+
+
+
+
+
+
+
 @keyframes plane-launch{
     0% {bottom: 0px; left: -60px;}
-    100% {bottom: 50px; left: 680px;}
+    100% {bottom: 50px; left: 780px;}
 }

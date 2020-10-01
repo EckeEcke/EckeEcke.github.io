@@ -6,8 +6,23 @@ const blogEntries = document.getElementById("blog-entries");
 const imageInput = document.getElementById("image-input");
 const timeInput = document.getElementById("travel-time");
 const apiKey = "18ebb74c4c845cd84cc98885effee0ae";
-const moodInput = document.getElementById("mood-input");
-const transportInput = document.getElementById("transport-input");
+
+const planeButton = document.getElementById("✈️");
+const trainButton = document.getElementById("🚞");
+const carButton = document.getElementById("🚗");
+const busButton = document.getElementById("🚌");
+const shipButton = document.getElementById("🚢");
+
+const emoji1Button = document.getElementById("😍");
+const emoji2Button = document.getElementById("😃");
+const emoji3Button = document.getElementById("🙂");
+const emoji4Button = document.getElementById("😒");
+const emoji5Button = document.getElementById("😡");
+
+
+
+let transport = "";
+let mood = "";
 
 
 
@@ -40,7 +55,7 @@ function putInHTML(){
 
 
 
-function createEntry(entry){
+function createEntry(entry, index){
   let blogEntry = document.createElement("article");
   fetch(`https://api.openweathermap.org/data/2.5/weather?q=${entry.city}&units=metric&appid=${apiKey}`)
     .then(response => response.json())
@@ -49,6 +64,7 @@ function createEntry(entry){
       let feelsLike = "Feels like: " + data.main.feels_like  + "°C";
       let weatherDescription = data.weather[0].description;
       let icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+      let button = document.createElement("button");
 
       blogEntry.innerHTML =
       `
@@ -59,7 +75,7 @@ function createEntry(entry){
       <img class="blog-image" src="${entry.image}">
       <br><br>
       <p>${entry.purpose}</p>
-      <hr>
+      <hr class="blog-line">
       <p>Transport: ${entry.transport}&nbsp; &nbsp;
       Mood: ${entry.mood}</p>
       <span>
@@ -71,11 +87,19 @@ function createEntry(entry){
       <br>
       <img class="weather-icon" src="${icon}">
       <br>
-
       </span>
       <br>
-      ${entry.btn}
       `;
+
+      button.innerHTML = "❌";
+      button.classList.add("delete-button");
+      console.log(button)
+      blogEntry.appendChild(button);
+      button.addEventListener("click", function() {
+        console.log(index);
+        deleteEntry(index);
+        putInHTML();
+      })
       })
 
 
@@ -84,10 +108,9 @@ function createEntry(entry){
 
 
 
-function deleteEntry(){
+function deleteEntry(index){
   let entries = getEntries();
-  console.log(entries);
-  entries.splice(0, 1);
+  entries.splice(index, 1);
   stringifiedEntries = JSON.stringify(entries);
   localStorage.setItem("entries", stringifiedEntries);
   deleteFromHTML(event);
@@ -125,12 +148,51 @@ function saveEntries(singleEntry){
     image = "images/blog-placeholder.jpg";
   }
   let travelTime = timeInput.value;
-  let mood = moodInput.value;
-  let transport = transportInput.value;
-  let btn = `<button class=delete-button onclick=deleteEntry(event)>❌</button>`;
-  singleEntry = {city, country, travelTime, purpose, image, mood, transport, btn};
+  checkRadio();
+  singleEntry = {city, country, travelTime, purpose, image, mood, transport};
   let entries = getEntries();
   entries.push(singleEntry);
   stringifiedEntries = JSON.stringify(entries);
   localStorage.setItem("entries", stringifiedEntries);
 }
+
+
+function checkRadio() {
+
+    if (planeButton.checked){
+      transport = "✈️";
+    }
+    if (trainButton.checked){
+      transport = "🚞";
+    }
+    if (carButton.checked){
+      transport ="🚗";
+    }
+    if (busButton.checked){
+      transport= "🚌";
+    }
+    if (shipButton.checked){
+      transport ="🚢";
+    }
+
+
+    if (emoji1Button.checked){
+      mood = "😍";
+    }
+    if (emoji2Button.checked){
+      mood = "😃";
+    }
+    if (emoji3Button.checked){
+      mood ="🙂";
+    }
+    if (emoji4Button.checked){
+      mood = "😒";
+    }
+    if (emoji5Button.checked){
+      mood ="😡";
+    }
+
+    return mood;
+    return transport;
+
+  }

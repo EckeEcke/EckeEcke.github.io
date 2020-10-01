@@ -75,7 +75,9 @@
       <br>
       <h1>My travel blog️</h1>
       <p>
-        Create blog entries, save them in your browser and display them on this site.
+        Create blog entries
+        <br>Save them in your browser
+        <br>Display them on this site
       </p>
       <span id="plane-emoji">✈️</span>
     </div>
@@ -94,48 +96,52 @@
         <input class="input-field" id="image-input" type="url" placeholder="Enter an image link (optional)">
         <input class="input-field" id="travel-time" type="month">
         <br>
+        <span>
 
-        <select class="input-field" id="transport-input" required>
-          <option value="" disabled selected hidden>
-            How did you get there?
-          </option>
-          <option>
-            ✈️
-          </option>
-          <option>
-            🚞
-          </option>
-          <option>
-            🚗
-          </option>
-          <option>
-            🚌
-          </option>
-          <option>
-            🚢
-          </option>
-        </select>
-        <select class="input-field" id="mood-input" required>
-          <option value="" disabled selected hidden>
-            How did you like it?
-          </option>
-          <option>
-            &#128525;
-          </option>
-          <option>
-            &#128512;
-          </option>
-          <option>
-            &#128578;
-          </option>
-          <option>
-            &#128530;
-          </option>
-          <option>
-            &#128545;
-          </option>
-        </select>
+              <span class="radio-buttons input-field2">
+                <center>
+                <span class="radio-head">How did you get there?</span>
+                <br>
+                <input type="radio" name="transport" id="✈️" class="radio-btn" required>
+                <input type="radio" name="transport" id="🚞" class="radio-btn">
+                <input type="radio" name="transport" id="🚗" class="radio-btn">
+                <input type="radio" name="transport" id="🚌" class="radio-btn">
+                <input type="radio" name="transport" id="🚢" class="radio-btn">
+              <br>
+                <span class="radio-emoji">✈️</span>
+                <span class="radio-emoji">🚞</span>
+                <span class="radio-emoji">🚗</span>
+                <span class="radio-emoji">🚌</span>
+                <span class="radio-emoji">🚢</span>
+                </center>
+          </span>
+
+
+
+          <span class="radio-buttons input-field2">
+            <center>
+              <span class="radio-head">How was your trip?</span>
+              <br>
+              <input type="radio" name="mood" id="😍" class="radio-btn" required>
+              <input type="radio" name="mood" id="😃" class="radio-btn">
+              <input type="radio" name="mood" id="🙂" class="radio-btn">
+              <input type="radio" name="mood" id="😒" class="radio-btn">
+              <input type="radio" name="mood" id="😡" class="radio-btn">
+            <br>
+              <span class="radio-emoji">😍</span>
+              <span class="radio-emoji">😃</span>
+              <span class="radio-emoji">🙂</span>
+              <span class="radio-emoji">😒</span>
+              <span class="radio-emoji">😡</span>
+            </center>
+
+
+          </span>
+
+
+
         <br>
+
         <textarea id="purpose-input" type="text" placeholder="Why did you go there? (optional)" rows=3></textarea>
         <br>
         <button id="submit-button" type="submit">Create entry</button>
