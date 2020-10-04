@@ -34,28 +34,14 @@ let transport = "";
 let mood = "";
 
 
-
+window.onload = function(){
+  putInHTML();
+};
 
 form.addEventListener("submit", onFormSubmit);
 
-editBtn.addEventListener("click", function(){
-  console.log(editableCity);
-  console.log(imageLinks);
-  for(let i =0;i<editableContent.length;i++){
-     editableContent[i].contentEditable = 'true';
-
-   };
-   for(let i=0;i<imageLinks.length;i++){
-     imageLinks[0].style.display = "block";
-   };
 
 
-});
-
-window.onload = function(){
-  getEntries();
-  putInHTML();
-};
 
 
 function onFormSubmit(event){
@@ -72,7 +58,7 @@ function onFormSubmit(event){
 
 function putInHTML(){
   let entries = getEntries();
-
+  console.log(entries);
   entries.forEach(createEntry);
 
 };
@@ -95,16 +81,16 @@ function createEntry(entry, index){
 
       blogEntry.innerHTML =
         `
-        <h3><span class="city edit">${entry.city}</span>, <span class="country edit">${entry.country}</span>
+        <h3><span class="city edit" contentEditable="false">${entry.city}</span>, <span class="country edit" contentEditable="false">${entry.country}</span>
         <br>
-        <span class="time edit">${entry.travelTime}</span></h3>
+        <span class="time edit" contentEditable="false">${entry.travelTime}</span></h3>
 
         <img class="blog-image" src="${entry.image}">
 
-        <span class="image-link">Enter new image link: <br><span class="image edit" contentEditable>${entry.image}</span></span>
+        <span class="image-link" style="display: none;">Enter new image link: <br><span class="image edit" contentEditable>${entry.image}</span></span>
 
         <br><br>
-        <p class="purpose edit">${entry.purpose}</p>
+        <p class="purpose edit" contentEditable="false">${entry.purpose}</p>
 
         <hr class="blog-line">
 
@@ -191,6 +177,12 @@ function createEntry(entry, index){
           console.log(entries);
           stringifiedEntries = JSON.stringify(entries);
           localStorage.setItem("entries", stringifiedEntries);
+
+          editableCity[index].contentEditable = "false";
+          editableCountry[index].contentEditable = "false";
+          editableTime[index].contentEditable = "false";
+          editablePurpose[index].contentEditable = "false";
+          imageLinks[index].style.display = "none";
         });
 
 

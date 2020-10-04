@@ -87,20 +87,6 @@ h3 {
   margin: -30px;
 }
 
-.delete-button {
-  border-style: none;
-  background-color: white;
-  opacity: 0.9;
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  border-radius: 25%;
-  height: 30px;
-  width: 40px;
-}
-
-
-
 
 .input-field {
   width: 300px;
@@ -186,10 +172,17 @@ textarea {
   opacity: 0.9;
   border-radius: 25%;
   position: absolute;
-  right: 5px;
-  top: 45px;
+  /*right: 5px;
+  top: 45px;*/
   height: 30px;
   width: 40px;
+  bottom: 10px;
+  right: 10px;
+}
+
+.edit-button:hover {
+  background-color: beige;
+  transform: scale(1.2);
 }
 
 .edit-save-button{
@@ -198,11 +191,38 @@ textarea {
   opacity: 0.9;
   border-radius: 25%;
   position: absolute;
-  right: 5px;
-  top: 85px;
+  /*right: 5px;
+  top: 85px;*/
   height: 30px;
   width: 40px;
+  bottom: 10px;
+  right: 55px;
 }
+
+.edit-save-button:hover {
+  background-color: beige;
+  transform: scale(1.2);
+}
+
+.delete-button {
+  border-style: none;
+  background-color: white;
+  opacity: 0.9;
+  position: absolute;
+  /*right: 5px;
+  top: 5px;*/
+  border-radius: 25%;
+  height: 30px;
+  width: 40px;
+  bottom: 10px;
+  right: 100px;
+}
+
+.delete-button:hover {
+  background-color: beige;
+  transform: scale(1.2);
+}
+
 
 
 .image-link {
