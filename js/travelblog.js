@@ -160,21 +160,19 @@ function createEntry(entry, index){
         button3.classList.add("edit-save-button");
         blogEntry.appendChild(button3);
         button3.addEventListener("click", function(){
-          console.log(index);
+          let mood = entry.mood;
+          let transport = entry.transport;
           let country = editableCountry[index].textContent;
           let city = editableCity[index].textContent;
           let purpose = editablePurpose[index].textContent;
           let image = images[index].textContent;
-          console.log(index);
           if (image === ""){
             image = "images/blog-placeholder.jpg";
           }
           let travelTime = editableTime[index].textContent;
           let singleEntry = {city, country, travelTime, purpose, image, mood, transport};
-          console.log(singleEntry);
           let entries = getEntries();
           entries.splice(index, 1, singleEntry);
-          console.log(entries);
           stringifiedEntries = JSON.stringify(entries);
           localStorage.setItem("entries", stringifiedEntries);
 
@@ -183,6 +181,7 @@ function createEntry(entry, index){
           editableTime[index].contentEditable = "false";
           editablePurpose[index].contentEditable = "false";
           imageLinks[index].style.display = "none";
+          location.reload();
         });
 
 
