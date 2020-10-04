@@ -19,17 +19,43 @@ const emoji3Button = document.getElementById("🙂");
 const emoji4Button = document.getElementById("😒");
 const emoji5Button = document.getElementById("😡");
 
+
+const editBtn = document.getElementById("edit-button");
+const editableCity = document.getElementsByClassName("city");
+const editableCountry = document.getElementsByClassName("country");
+const editableTime = document.getElementsByClassName("time");
+const editablePurpose = document.getElementsByClassName("purpose");
+const images = document.getElementsByClassName("image");
+const imageLinks = document.getElementsByClassName("image-link");
+
+
+
 let transport = "";
 let mood = "";
 
 
 
+
 form.addEventListener("submit", onFormSubmit);
+
+editBtn.addEventListener("click", function(){
+  console.log(editableCity);
+  console.log(imageLinks);
+  for(let i =0;i<editableContent.length;i++){
+     editableContent[i].contentEditable = 'true';
+
+   };
+   for(let i=0;i<imageLinks.length;i++){
+     imageLinks[0].style.display = "block";
+   };
+
+
+});
 
 window.onload = function(){
   getEntries();
   putInHTML();
-}
+};
 
 
 function onFormSubmit(event){
@@ -39,7 +65,7 @@ function onFormSubmit(event){
   getEntries();
   putInHTML();
   form.reset();
-}
+};
 
 
 
@@ -49,7 +75,7 @@ function putInHTML(){
 
   entries.forEach(createEntry);
 
-}
+};
 
 
 
@@ -63,19 +89,28 @@ function createEntry(entry, index){
       let weatherDescription = data.weather[0].description;
       let icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
       let button = document.createElement("button");
+      let button2 = document.createElement("button");
+      let button3 = document.createElement("button");
+      let editEmoji = "🖍️";
 
       blogEntry.innerHTML =
         `
-        <h3>${entry.city}, ${entry.country}
+        <h3><span class="city edit">${entry.city}</span>, <span class="country edit">${entry.country}</span>
         <br>
-        ${entry.travelTime}</h3>
+        <span class="time edit">${entry.travelTime}</span></h3>
 
         <img class="blog-image" src="${entry.image}">
+
+        <span class="image-link">Enter new image link: <br><span class="image edit" contentEditable>${entry.image}</span></span>
+
         <br><br>
-        <p>${entry.purpose}</p>
+        <p class="purpose edit">${entry.purpose}</p>
+
         <hr class="blog-line">
-        <p>Transport: ${entry.transport}&nbsp; &nbsp;
-        Mood: ${entry.mood}</p>
+
+        <p>Transport: <span class="transport">${entry.transport}</span>&nbsp; &nbsp;
+        Mood: <span class="mood">${entry.mood}</span></p>
+
         <span>
         ${temp}
         <br>
@@ -89,20 +124,79 @@ function createEntry(entry, index){
         <br>
         `;
 
-      button.innerHTML = "❌";
+      console.log(blogEntry);
+      button.innerHTML = "🗑️";
       button.classList.add("delete-button");
-      console.log(button)
       blogEntry.appendChild(button);
       button.addEventListener("click", function() {
-        console.log(index);
         deleteEntry(index);
         putInHTML();
-      })
-      })
+      });
+
+      button2.innerHTML = `<span class="edit-icon">${editEmoji} </span>`;
+      button2.classList.add("edit-button");
+      blogEntry.appendChild(button2);
+
+      button2.addEventListener("click", function(){
+          if(editableCity[index].contentEditable === "false"){
+             editableCity[index].contentEditable = 'true';
+          } else{
+            editableCity[index].contentEditable = "false";
+          };
+
+          if(editableCountry[index].contentEditable === "false"){
+              editableCountry[index].contentEditable = "true";
+          }else{
+            editableCountry[index].contentEditable = "false";
+          };
+
+          if(editableTime[index].contentEditable === "false"){
+              editableTime[index].contentEditable = "true";
+          }else{
+            editableTime[index].contentEditable = "false";
+          };
 
 
-  blogEntries.appendChild(blogEntry);
-}
+          if(editablePurpose[index].contentEditable === "false"){
+              editablePurpose[index].contentEditable = "true";
+          }else{
+            editablePurpose[index].contentEditable = "false";
+          };
+
+          if(imageLinks[index].style.display == "none"){
+             imageLinks[index].style.display = "block";
+           }else{
+             imageLinks[index].style.display = "none";
+           };
+        });
+
+        button3.innerHTML = `💾`;
+        button3.classList.add("edit-save-button");
+        blogEntry.appendChild(button3);
+        button3.addEventListener("click", function(){
+          console.log(index);
+          let country = editableCountry[index].textContent;
+          let city = editableCity[index].textContent;
+          let purpose = editablePurpose[index].textContent;
+          let image = images[index].textContent;
+          console.log(index);
+          if (image === ""){
+            image = "images/blog-placeholder.jpg";
+          }
+          let travelTime = editableTime[index].textContent;
+          let singleEntry = {city, country, travelTime, purpose, image, mood, transport};
+          console.log(singleEntry);
+          let entries = getEntries();
+          entries.splice(index, 1, singleEntry);
+          console.log(entries);
+          stringifiedEntries = JSON.stringify(entries);
+          localStorage.setItem("entries", stringifiedEntries);
+        });
+
+
+      blogEntries.appendChild(blogEntry);
+});
+};
 
 
 
@@ -194,3 +288,23 @@ function checkRadio() {
     return transport;
 
   }
+
+function saveEdits(index){
+  console.log(index);
+  let country = editableCountry[index].textContent;
+  let city = editableCity[index].textContent;
+  let purpose = editablePurpose[index].textContent;
+  let image = images[index].textContent;
+  console.log(index);
+  if (image === ""){
+    image = "images/blog-placeholder.jpg";
+  }
+  let travelTime = editableTime[index].textContent;
+  let singleEntry = {city, country, travelTime, purpose, image, mood, transport};
+  console.log(singleEntry);
+  let entries = getEntries();
+  entries.splice(index, 1, singleEntry);
+  console.log(entries);
+  stringifiedEntries = JSON.stringify(entries);
+  localStorage.setItem("entries", stringifiedEntries);
+}
