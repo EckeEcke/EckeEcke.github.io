@@ -3,10 +3,11 @@ function closeBanner(){
 }
 
 function showMenu(){
-  if (document.getElementById("burger-menu").style.display === "none") {
-    document.getElementById("burger-menu").style.display = "block";
+  const hamburgerElement = document.getElementById("hamburger");
+  if (hamburgerElement.classList.contains("hamburger-open")) {
+    hamburgerElement.classList.remove("hamburger-open")
   }
   else {
-    document.getElementById("burger-menu").style.display = "none";
+    hamburgerElement.classList.add("hamburger-open")
   }
 }
