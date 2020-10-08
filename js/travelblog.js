@@ -124,32 +124,15 @@ function createEntry(entry, index){
       blogEntry.appendChild(editButton);
 
       editButton.addEventListener("click", function(){
-          if(editableCity[index].contentEditable === "false"){
-             editableCity[index].contentEditable = 'true';
-          } else{
-            editableCity[index].contentEditable = "false";
-          };
+          // Boolean("false") === true; Boolean("true") === false;
+          // true.toString() === "true"; false.toString() === "false"
+          const negateBooleanString = (booleanString) => (!Boolean(booleanString)).toString()
+          editableCity[index].contentEditable = negateBooleanString(editableCity[index].contentEditable)
+          editableCountry[index].contentEditable = negateBooleanString(editableCountry[index].contentEditable)
+          editableTime[index].contentEditable = negateBooleanString(editableTime[index].contentEditable)
+          editablePurpose[index].contentEditable = negateBooleanString(editablePurpose[index].contentEditable)
 
-          if(editableCountry[index].contentEditable === "false"){
-              editableCountry[index].contentEditable = "true";
-          }else{
-            editableCountry[index].contentEditable = "false";
-          };
-
-          if(editableTime[index].contentEditable === "false"){
-              editableTime[index].contentEditable = "true";
-          }else{
-            editableTime[index].contentEditable = "false";
-          };
-
-
-          if(editablePurpose[index].contentEditable === "false"){
-              editablePurpose[index].contentEditable = "true";
-          }else{
-            editablePurpose[index].contentEditable = "false";
-          };
-
-          if(imageLinks[index].style.display == "none"){
+          if(imageLinks[index].style.display === "none"){
              imageLinks[index].style.display = "block";
            }else{
              imageLinks[index].style.display = "none";
