@@ -126,7 +126,7 @@ function createEntry(entry, index){
       editButton.addEventListener("click", function(){
           // Boolean("false") === true; Boolean("true") === false;
           // true.toString() === "true"; false.toString() === "false"
-          const negateBooleanString = (booleanString) => (!Boolean(booleanString)).toString()
+          const negateBooleanString = (booleanString) => booleanString === "true" ? "false" : "true"
           editableCity[index].contentEditable = negateBooleanString(editableCity[index].contentEditable)
           editableCountry[index].contentEditable = negateBooleanString(editableCountry[index].contentEditable)
           editableTime[index].contentEditable = negateBooleanString(editableTime[index].contentEditable)
@@ -257,10 +257,6 @@ function checkRadio() {
     if (emoji5Button.checked){
       mood ="😡";
     }
-
-    return mood;
-    return transport;
-
   }
 
 function saveEdits(index){
