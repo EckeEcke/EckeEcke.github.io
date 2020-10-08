@@ -57,7 +57,7 @@ function onFormSubmit(event){
 
 
 function putInHTML(){
-  let entries = getEntries();
+  const entries = getEntries();
   console.log(entries);
   entries.forEach(createEntry);
 
@@ -66,18 +66,18 @@ function putInHTML(){
 
 
 function createEntry(entry, index){
-  let blogEntry = document.createElement("article");
+  const blogEntry = document.createElement("article");
   fetch(`https://api.openweathermap.org/data/2.5/weather?q=${entry.city}&units=metric&appid=${apiKey}`)
     .then(response => response.json())
     .then(data => {
-      let temp = "Temperature: " +data.main.temp + "°C";
-      let feelsLike = "Feels like: " + data.main.feels_like  + "°C";
-      let weatherDescription = data.weather[0].description;
-      let icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-      let button = document.createElement("button");
-      let button2 = document.createElement("button");
-      let button3 = document.createElement("button");
-      let editEmoji = "🖍️";
+      const temp = "Temperature: " +data.main.temp + "°C";
+      const feelsLike = "Feels like: " + data.main.feels_like  + "°C";
+      const weatherDescription = data.weather[0].description;
+      const icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+      const deleteButton = document.createElement("button");
+      const editButton = document.createElement("button");
+      const saveButton = document.createElement("button");
+      const editEmoji = "🖍️";
 
       blogEntry.innerHTML =
         `
@@ -111,67 +111,50 @@ function createEntry(entry, index){
         `;
 
       console.log(blogEntry);
-      button.innerHTML = "🗑️";
-      button.classList.add("delete-button");
-      blogEntry.appendChild(button);
-      button.addEventListener("click", function() {
+      deleteButton.innerHTML = "🗑️";
+      deleteButton.classList.add("delete-button");
+      blogEntry.appendChild(deleteButton);
+      deleteButton.addEventListener("click", function() {
         deleteEntry(index);
         putInHTML();
       });
 
-      button2.innerHTML = `<span class="edit-icon">${editEmoji} </span>`;
-      button2.classList.add("edit-button");
-      blogEntry.appendChild(button2);
+      editButton.innerHTML = `<span class="edit-icon">${editEmoji} </span>`;
+      editButton.classList.add("edit-button");
+      blogEntry.appendChild(editButton);
 
-      button2.addEventListener("click", function(){
-          if(editableCity[index].contentEditable === "false"){
-             editableCity[index].contentEditable = 'true';
-          } else{
-            editableCity[index].contentEditable = "false";
-          };
+      editButton.addEventListener("click", function(){
+          // Boolean("false") === true; Boolean("true") === false;
+          // true.toString() === "true"; false.toString() === "false"
+          const negateBooleanString = (booleanString) => booleanString === "true" ? "false" : "true"
+          editableCity[index].contentEditable = negateBooleanString(editableCity[index].contentEditable)
+          editableCountry[index].contentEditable = negateBooleanString(editableCountry[index].contentEditable)
+          editableTime[index].contentEditable = negateBooleanString(editableTime[index].contentEditable)
+          editablePurpose[index].contentEditable = negateBooleanString(editablePurpose[index].contentEditable)
 
-          if(editableCountry[index].contentEditable === "false"){
-              editableCountry[index].contentEditable = "true";
-          }else{
-            editableCountry[index].contentEditable = "false";
-          };
-
-          if(editableTime[index].contentEditable === "false"){
-              editableTime[index].contentEditable = "true";
-          }else{
-            editableTime[index].contentEditable = "false";
-          };
-
-
-          if(editablePurpose[index].contentEditable === "false"){
-              editablePurpose[index].contentEditable = "true";
-          }else{
-            editablePurpose[index].contentEditable = "false";
-          };
-
-          if(imageLinks[index].style.display == "none"){
+          if(imageLinks[index].style.display === "none"){
              imageLinks[index].style.display = "block";
            }else{
              imageLinks[index].style.display = "none";
            };
         });
 
-        button3.innerHTML = `💾`;
-        button3.classList.add("edit-save-button");
-        blogEntry.appendChild(button3);
-        button3.addEventListener("click", function(){
-          let mood = entry.mood;
-          let transport = entry.transport;
-          let country = editableCountry[index].textContent;
-          let city = editableCity[index].textContent;
-          let purpose = editablePurpose[index].textContent;
+        saveButton.innerHTML = `💾`;
+        saveButton.classList.add("edit-save-button");
+        blogEntry.appendChild(saveButton);
+        saveButton.addEventListener("click", function(){
+          const mood = entry.mood;
+          const transport = entry.transport;
+          const country = editableCountry[index].textContent;
+          const city = editableCity[index].textContent;
+          const purpose = editablePurpose[index].textContent;
           let image = images[index].textContent;
           if (image === ""){
             image = "images/blog-placeholder.jpg";
           }
-          let travelTime = editableTime[index].textContent;
-          let singleEntry = {city, country, travelTime, purpose, image, mood, transport};
-          let entries = getEntries();
+          const travelTime = editableTime[index].textContent;
+          const singleEntry = {city, country, travelTime, purpose, image, mood, transport};
+          const entries = getEntries();
           entries.splice(index, 1, singleEntry);
           stringifiedEntries = JSON.stringify(entries);
           localStorage.setItem("entries", stringifiedEntries);
@@ -192,7 +175,7 @@ function createEntry(entry, index){
 
 
 function deleteEntry(index){
-  let entries = getEntries();
+  const entries = getEntries();
   entries.splice(index, 1);
   stringifiedEntries = JSON.stringify(entries);
   localStorage.setItem("entries", stringifiedEntries);
@@ -202,38 +185,38 @@ function deleteEntry(index){
 
 
 function deleteFromHTML(event){
-  let element = event.target;
-  let parent = element.parentElement;
+  const element = event.target;
+  const parent = element.parentElement;
   blogEntries.removeChild(parent);
 }
 
 
 
 function getEntries(){
-  let entries = localStorage.getItem("entries");
+  const entries = localStorage.getItem("entries");
 
   if (entries === null){
     return [];
   }
 
-  let parsedEntries = JSON.parse(entries);
+  const parsedEntries = JSON.parse(entries);
   return parsedEntries;
 }
 
 
 
 function saveEntries(singleEntry){
-  let country = countryInput.value;
-  let city = cityInput.value;
-  let purpose = purposeInput.value;
+  const country = countryInput.value;
+  const city = cityInput.value;
+  const purpose = purposeInput.value;
   let image = imageInput.value;
   if (image === ""){
     image = "images/blog-placeholder.jpg";
   }
-  let travelTime = timeInput.value;
+  const travelTime = timeInput.value;
   checkRadio();
   singleEntry = {city, country, travelTime, purpose, image, mood, transport};
-  let entries = getEntries();
+  const entries = getEntries();
   entries.push(singleEntry);
   stringifiedEntries = JSON.stringify(entries);
   localStorage.setItem("entries", stringifiedEntries);
@@ -274,26 +257,22 @@ function checkRadio() {
     if (emoji5Button.checked){
       mood ="😡";
     }
-
-    return mood;
-    return transport;
-
   }
 
 function saveEdits(index){
   console.log(index);
-  let country = editableCountry[index].textContent;
-  let city = editableCity[index].textContent;
-  let purpose = editablePurpose[index].textContent;
+  const country = editableCountry[index].textContent;
+  const city = editableCity[index].textContent;
+  const purpose = editablePurpose[index].textContent;
   let image = images[index].textContent;
   console.log(index);
   if (image === ""){
     image = "images/blog-placeholder.jpg";
   }
-  let travelTime = editableTime[index].textContent;
-  let singleEntry = {city, country, travelTime, purpose, image, mood, transport};
+  const travelTime = editableTime[index].textContent;
+  const singleEntry = {city, country, travelTime, purpose, image, mood, transport};
   console.log(singleEntry);
-  let entries = getEntries();
+  const entries = getEntries();
   entries.splice(index, 1, singleEntry);
   console.log(entries);
   stringifiedEntries = JSON.stringify(entries);

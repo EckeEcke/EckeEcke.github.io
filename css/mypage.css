@@ -182,6 +182,10 @@ margin: auto;
   overflow-y: auto;
 }
 
+#hamburger.hamburger-open + #burger-menu {
+  display: block;
+}
+
 #burger-menu a {
   text-decoration: none;
   color: white;
