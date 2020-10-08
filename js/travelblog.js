@@ -74,9 +74,9 @@ function createEntry(entry, index){
       const feelsLike = "Feels like: " + data.main.feels_like  + "°C";
       const weatherDescription = data.weather[0].description;
       const icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-      const button = document.createElement("button");
-      const button2 = document.createElement("button");
-      const button3 = document.createElement("button");
+      const deleteButton = document.createElement("button");
+      const editButton = document.createElement("button");
+      const saveButton = document.createElement("button");
       const editEmoji = "🖍️";
 
       blogEntry.innerHTML =
@@ -111,19 +111,19 @@ function createEntry(entry, index){
         `;
 
       console.log(blogEntry);
-      button.innerHTML = "🗑️";
-      button.classList.add("delete-button");
-      blogEntry.appendChild(button);
-      button.addEventListener("click", function() {
+      deleteButton.innerHTML = "🗑️";
+      deleteButton.classList.add("delete-button");
+      blogEntry.appendChild(deleteButton);
+      deleteButton.addEventListener("click", function() {
         deleteEntry(index);
         putInHTML();
       });
 
-      button2.innerHTML = `<span class="edit-icon">${editEmoji} </span>`;
-      button2.classList.add("edit-button");
-      blogEntry.appendChild(button2);
+      editButton.innerHTML = `<span class="edit-icon">${editEmoji} </span>`;
+      editButton.classList.add("edit-button");
+      blogEntry.appendChild(editButton);
 
-      button2.addEventListener("click", function(){
+      editButton.addEventListener("click", function(){
           if(editableCity[index].contentEditable === "false"){
              editableCity[index].contentEditable = 'true';
           } else{
@@ -156,10 +156,10 @@ function createEntry(entry, index){
            };
         });
 
-        button3.innerHTML = `💾`;
-        button3.classList.add("edit-save-button");
-        blogEntry.appendChild(button3);
-        button3.addEventListener("click", function(){
+        saveButton.innerHTML = `💾`;
+        saveButton.classList.add("edit-save-button");
+        blogEntry.appendChild(saveButton);
+        saveButton.addEventListener("click", function(){
           const mood = entry.mood;
           const transport = entry.transport;
           const country = editableCountry[index].textContent;
