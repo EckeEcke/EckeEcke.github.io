@@ -57,7 +57,7 @@ function onFormSubmit(event){
 
 
 function putInHTML(){
-  let entries = getEntries();
+  const entries = getEntries();
   console.log(entries);
   entries.forEach(createEntry);
 
@@ -66,18 +66,18 @@ function putInHTML(){
 
 
 function createEntry(entry, index){
-  let blogEntry = document.createElement("article");
+  const blogEntry = document.createElement("article");
   fetch(`https://api.openweathermap.org/data/2.5/weather?q=${entry.city}&units=metric&appid=${apiKey}`)
     .then(response => response.json())
     .then(data => {
-      let temp = "Temperature: " +data.main.temp + "°C";
-      let feelsLike = "Feels like: " + data.main.feels_like  + "°C";
-      let weatherDescription = data.weather[0].description;
-      let icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-      let button = document.createElement("button");
-      let button2 = document.createElement("button");
-      let button3 = document.createElement("button");
-      let editEmoji = "🖍️";
+      const temp = "Temperature: " +data.main.temp + "°C";
+      const feelsLike = "Feels like: " + data.main.feels_like  + "°C";
+      const weatherDescription = data.weather[0].description;
+      const icon = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+      const button = document.createElement("button");
+      const button2 = document.createElement("button");
+      const button3 = document.createElement("button");
+      const editEmoji = "🖍️";
 
       blogEntry.innerHTML =
         `
@@ -160,18 +160,18 @@ function createEntry(entry, index){
         button3.classList.add("edit-save-button");
         blogEntry.appendChild(button3);
         button3.addEventListener("click", function(){
-          let mood = entry.mood;
-          let transport = entry.transport;
-          let country = editableCountry[index].textContent;
-          let city = editableCity[index].textContent;
-          let purpose = editablePurpose[index].textContent;
+          const mood = entry.mood;
+          const transport = entry.transport;
+          const country = editableCountry[index].textContent;
+          const city = editableCity[index].textContent;
+          const purpose = editablePurpose[index].textContent;
           let image = images[index].textContent;
           if (image === ""){
             image = "images/blog-placeholder.jpg";
           }
-          let travelTime = editableTime[index].textContent;
-          let singleEntry = {city, country, travelTime, purpose, image, mood, transport};
-          let entries = getEntries();
+          const travelTime = editableTime[index].textContent;
+          const singleEntry = {city, country, travelTime, purpose, image, mood, transport};
+          const entries = getEntries();
           entries.splice(index, 1, singleEntry);
           stringifiedEntries = JSON.stringify(entries);
           localStorage.setItem("entries", stringifiedEntries);
@@ -192,7 +192,7 @@ function createEntry(entry, index){
 
 
 function deleteEntry(index){
-  let entries = getEntries();
+  const entries = getEntries();
   entries.splice(index, 1);
   stringifiedEntries = JSON.stringify(entries);
   localStorage.setItem("entries", stringifiedEntries);
@@ -202,38 +202,38 @@ function deleteEntry(index){
 
 
 function deleteFromHTML(event){
-  let element = event.target;
-  let parent = element.parentElement;
+  const element = event.target;
+  const parent = element.parentElement;
   blogEntries.removeChild(parent);
 }
 
 
 
 function getEntries(){
-  let entries = localStorage.getItem("entries");
+  const entries = localStorage.getItem("entries");
 
   if (entries === null){
     return [];
   }
 
-  let parsedEntries = JSON.parse(entries);
+  const parsedEntries = JSON.parse(entries);
   return parsedEntries;
 }
 
 
 
 function saveEntries(singleEntry){
-  let country = countryInput.value;
-  let city = cityInput.value;
-  let purpose = purposeInput.value;
+  const country = countryInput.value;
+  const city = cityInput.value;
+  const purpose = purposeInput.value;
   let image = imageInput.value;
   if (image === ""){
     image = "images/blog-placeholder.jpg";
   }
-  let travelTime = timeInput.value;
+  const travelTime = timeInput.value;
   checkRadio();
   singleEntry = {city, country, travelTime, purpose, image, mood, transport};
-  let entries = getEntries();
+  const entries = getEntries();
   entries.push(singleEntry);
   stringifiedEntries = JSON.stringify(entries);
   localStorage.setItem("entries", stringifiedEntries);
@@ -282,18 +282,18 @@ function checkRadio() {
 
 function saveEdits(index){
   console.log(index);
-  let country = editableCountry[index].textContent;
-  let city = editableCity[index].textContent;
-  let purpose = editablePurpose[index].textContent;
+  const country = editableCountry[index].textContent;
+  const city = editableCity[index].textContent;
+  const purpose = editablePurpose[index].textContent;
   let image = images[index].textContent;
   console.log(index);
   if (image === ""){
     image = "images/blog-placeholder.jpg";
   }
-  let travelTime = editableTime[index].textContent;
-  let singleEntry = {city, country, travelTime, purpose, image, mood, transport};
+  const travelTime = editableTime[index].textContent;
+  const singleEntry = {city, country, travelTime, purpose, image, mood, transport};
   console.log(singleEntry);
-  let entries = getEntries();
+  const entries = getEntries();
   entries.splice(index, 1, singleEntry);
   console.log(entries);
   stringifiedEntries = JSON.stringify(entries);
