@@ -223,13 +223,13 @@ margin: auto;
   .profile {
     width: 60%;
   }
-  #burger-menu {
-    display: none;
-  }
 }
 
 
-@media (min-width: 1151px) {
+@media (min-width: 1300px) {
+  #burger-menu {
+    display: none;
+  }
   p, nav li {
     font-size: 1.2em;
   }
