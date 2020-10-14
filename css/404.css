@@ -415,6 +415,52 @@ moving blobs
   font-size: 3em;
 }
 
+
+#wrapping-my-gallery {
+  width: 300px;
+  height: 225px;
+  overflow: hidden;
+  position: relative;
+}
+
+.gallery-image {
+  width: 300px;
+  height: 225px;
+  position: absolute;
+}
+
+#first-image {
+  top: 0px;
+  left: 0px;
+  animation: move-image1 12s infinite;
+}
+
+#second-image {
+  top: 0px;
+  left: 300px;
+  animation: move-image2 12s infinite;
+}
+
+#third-image {
+  top: 0px;
+  left: 300px;
+  animation: move-image3 12s infinite;
+}
+
+#fourth-image {
+  top: 0px;
+  left: 300px;
+  animation: move-image4 12s infinite;
+}
+
+#gallery-description {
+  width: 300px;
+  height: 225px;
+  padding: 10px;
+  background-color: black;
+}
+
+
 @media (min-width: 1px) {
 
   p, nav li {
@@ -429,7 +475,7 @@ moving blobs
 }
 
 
-@media (min-width: 1001px) {
+@media (min-width: 1151px) {
   p, nav li {
     font-size: 1.2em;
   }
@@ -520,6 +566,42 @@ moving blobs
 }
 
 
+
+@keyframes move-image1 {
+  0% {left: 0px;}
+  25% {left: -300px; top: 0px;}
+  26% {top: -1000px;}
+  27% {left: 300px; top: -1000px;}
+  30% {top: 0px;}
+  75% {left: 300px;}
+  100% {left: 0px;}
+}
+
+@keyframes move-image2 {
+  0% {left: 300px;}
+  25% {left: 0px;}
+  50% {left: -300px; top: 0px;}
+  51% {top: -1000px;}
+  52% {left: 300px;}
+  100% {left: 300px;}
+}
+
+@keyframes move-image3 {
+  25% {left: 300px;}
+  50% {left: 0px;}
+  75% {left: -300px; top: 0px;}
+  76% {top: -1000px;}
+  77% {left: 300px; top: 0px;}
+}
+
+@keyframes move-image4 {
+  0% {top: -1000px;}
+  1% {left: -300px;}
+  49% {left: 300px; top: -1000px;}
+  50% {left: 300px; top: 0px;}
+  75% {left: 0px; top: 0px;}
+  100% {left: -300px;}
+}
 
 /*
 ____________________________________________________________

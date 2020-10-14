@@ -167,13 +167,10 @@ ul {
   }
   }
 
-  @media (max-width: 500px){
-    hr {
-      border: 3px solid lightgrey;
-      border-radius: 5px;
-      opacity: 0.8;
-    }
-    }
+
+hr {
+  border: 0.2px solid dimgrey;
+}
 
 .row, .justify-content-center {
   margin-right: 0px;
