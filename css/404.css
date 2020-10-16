@@ -52,8 +52,8 @@
 }
 
 
-#card-front, #card-back, #card2-front, #card2-back {
-  height: 100%;
+#card-front, #card-back {
+  height: 500px;
   width: 100%;
   position: absolute;
   top: 0px;
@@ -67,34 +67,24 @@
   background-color: white;
 }
 
-#card2-back {
-  transform: rotateY(-180deg);
-  background-color: #F34213;
-  opacity: 0.9;
-  color: white;
-}
 
 #card-front {
   background-color: black;
   color: white;
 }
 
-#card2-front {
-  background-color: #3E2F5B;
-  color: white;
-}
 
 
 
-#card, #card2 {
-  height: 400px;
-  /*width: 300px;*/
+
+#card {
+  height: 500px;
+  width: 320px;
   padding: 0px;
-  margin: 20px auto;
-
+  margin: 15px;
 }
 
-#card-content, #card2-content {
+#card-content {
   position: relative;
   height: 400px;
   /*width: 300px;*/
@@ -108,9 +98,6 @@
   transform: rotateY(180deg);
 }
 
-#card2:hover #card2-content{
-  transform: rotateY(180deg);
-}
 
 .card-text {
   font-size: 1em;
@@ -126,7 +113,7 @@
 }
 
 .card-emoji {
-  font-size: 6.5em;
+  font-size: 6.8em;
 }
 
 .profile {
@@ -255,51 +242,18 @@ nav {
 
 .black-box {
   background-color: black;
-}
-
-.blackbox .newsletter {
-  font-family: myFont;
-  background-color: black;
-  color: white;
-  margin: 0;
-  padding: 0;
-}
-
-input, #sub-button {
-  border-radius: 5px;
-  border-style: none;
-  padding: 10px;
+  height: 500px;
+  width: 320px;
+  margin: 15px;
 }
 
 
-
-#sub-button {
-  background-image: linear-gradient(to right, red, yellow);
-  color: white;
-  width: 30%;
-}
 
 button:hover {
   animation: button-animation 0.5s linear;
 }
 
 
-input {
-  width: 50px;
-}
-
-#newsletter-line {
-  width: 100%;
-  height: 10px;
-  background-image: linear-gradient(to right, red, yellow);
-  border-style: none;
-  margin-top: 20px;
-
-}
-
-#newsletter-text {
-  color: white;
-}
 
 
 /*
@@ -381,6 +335,7 @@ moving blobs
   border-shadow: 5px 5px black;
   margin: 15px;
 }
+
 #blob-white-box {
   height: 231px;
   width: 200px;
@@ -403,11 +358,12 @@ moving blobs
 
 #space {
   height: 500px;
-  width: 300px;
+  width: 320px;
   background-image: linear-gradient(to bottom, black, darkblue);
   position: relative;
   overflow: hidden;
   margin: 15px;
+
 }
 
 
@@ -429,6 +385,8 @@ moving blobs
   height: 240px;
   overflow: hidden;
   position: relative;
+  margin: 15px 15px 0 15px;
+
 }
 
 .gallery-image {
@@ -463,9 +421,10 @@ moving blobs
 
 #gallery-description {
   width: 320px;
-  height: 240px;
-  padding: 10px;
+  height: 260px;
+  padding: 15px;
   background-color: black;
+
 }
 
 
