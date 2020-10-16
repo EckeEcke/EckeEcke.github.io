@@ -3,6 +3,12 @@
   src: url(myFont.ttf);
 }
 
+
+
+
+
+
+
 #hamburger {
   position: fixed;
   top: 20px;
@@ -156,7 +162,7 @@
 
 
 body {
-  background-image: url("../images/background.jpg");
+  background-image: url("../images/background-bricks.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -181,7 +187,8 @@ h2 {
   font-family: stripes;
   font-size: 50pt;
   color: white;
-  margin: 10px;
+  margin: 0;
+  padding: 10px 0 0 0!important;
   text-shadow: 4px 4px 20px rgb(255,255,255,0.8);
 }
 
@@ -222,6 +229,7 @@ h2 {
   height: 60px;
   width: 60px;
   display: block;
+  filter: invert(1);
 }
 
 .home:hover {
@@ -230,7 +238,7 @@ h2 {
 }
 
 nav a {
-  color: rgb(44, 42, 43);
+  color: white;
   font-size: 1.5em;
 }
 

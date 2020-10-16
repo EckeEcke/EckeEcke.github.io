@@ -4,7 +4,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/mypage.css">
   <link rel="icon" type="image/png" href="images/favicon.png"/>
-  <script type="text/javascript" src="js/mypage.js"></script>
+
 </head>
 <body>
   <button id="hamburger" onclick="showMenu()">
@@ -36,7 +36,7 @@
       </li>
       <hr>
       <li>
-        <a href="api.html">API</a>
+        <a href="api.html">JS demo</a>
       </li>
       <hr>
       <li>
@@ -60,7 +60,7 @@
         <a href="shooter.html" class="nav-link">JS Shooter</a>
       </li>
       <li class="nav-item px-5">
-        <a href="api.html" class="nav-link">API</a>
+        <a href="api.html" class="nav-link">JS demo</a>
       </li>
       <li class="nav-item px-5">
         <a href="travelblog.html" class="nav-link">Travel Blog</a>
@@ -88,6 +88,23 @@
     </center>
 
     </div>
+
+    <br><br>
+
+
+
+    <p id="clock">
+    </p>
+    <center>
+      <div  id="clock-description">
+        <h4>JS clock</h4>
+        <p class="description-text">For trying out to use local time via Javascript I built this simple clock. Every full minute the digits turn red. A custom font gives it a digital look.</p>
+      </div>
+    </center>
+
+
+  <script type="text/javascript" src="js/mypage.js"></script>
+  <script type="text/javascript" src="js/jsdemo.js"></script>
 
   <footer>
     <div class="container">
@@ -121,18 +138,7 @@
 
   <script>
 
-  let catFact = document.getElementById("cat-fact");
-  let factButton = document.getElementById("new-fact-button");
 
-  function getFact(){
-    fetch("https://catfact.ninja/fact?max_length=65")
-      .then(response => response.json())
-      .then(json => catFact.innerHTML = json.fact);
-  };
-
-  getFact();
-
-  factButton.addEventListener("click", getFact);
 
   </script>
     <a href="index.html"><img src="images/house.png" class="home"></a>

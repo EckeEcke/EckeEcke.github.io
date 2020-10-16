@@ -48,7 +48,7 @@
     </li>
     <hr>
     <li>
-      <a href="api.html">API</a>
+      <a href="api.html">JS demo</a>
     </li>
     <hr>
     <li>
@@ -78,6 +78,11 @@
   </div>
 
   </div>
+  <br>
+
+
+
+
 
   </center>
 </div>
@@ -90,7 +95,7 @@
 
   <br><br>
 
-  <button id="startButton" onclick="startGame()">
+  <button id="start-button" onclick="startGame()">
   &#127955; Start &#127955;
 
   </button>
@@ -112,26 +117,34 @@
 
 <script>
 
-  var canvas;
-  var canvasContext;
-  var ballX = 400;
-  var ballSpeedX = 5;
-  var ballY = 300;
-  var ballSpeedY = 0;
-  var paddle1Y = 250;
-  var paddle2Y = 250;
-  var upPressed = false;
-  var downPressed = false;
-  var wPressed = false;
-  var sPressed = false;
-  var Score1 = 0;
-  var Score2 = 0;
+  const canvas = document.getElementById("game-canvas");
+  const startBtn = document.getElementById("start-button");
+  const soundBtn = document.getElementById("sound-button");
+  const descriptionTxt = document.getElementById("description");
+
+  const soundCheer1 = document.getElementById("cheer1");
+  const soundCheer2 = document.getElementById("cheer2");
+  const soundVictory = document.getElementById("victory");
+
+  let canvasContext;
+  let ballX = 400;
+  let ballSpeedX = 5;
+  let ballY = 300;
+  let ballSpeedY = 0;
+  let paddle1Y = 250;
+  let paddle2Y = 250;
+  let upPressed = false;
+  let downPressed = false;
+  let wPressed = false;
+  let sPressed = false;
+  let Score1 = 0;
+  let Score2 = 0;
   const paddleHeight = 100;
   const tolerance = 20;
-  var speedBoost= 0;
-  var hitCounter = 0;
-  var sounds = document.getElementsByTagName("audio");
-  var gameRuns = false;
+  let speedBoost= 0;
+  let hitCounter = 0;
+  const sounds = document.getElementsByTagName("audio");
+  let gameRuns = false;
 
   sounds.muted = true;
 
@@ -140,23 +153,25 @@
     document.addEventListener("keyup", keyUpHandler, false);
   }
 
+
   function startGame(){
-    document.getElementById("game-canvas").style.display ="block";
-    canvas = document.getElementById("game-canvas");
+    canvas.style.display ="block";
     canvasContext = canvas.getContext("2d");
     setInterval(callAll, 1000/120);
-    document.getElementById("startButton").style.display ="none";
-    document.getElementById("description").style.display = "none";
+    startBtn.style.display ="none";
+    descriptionTxt.style.display = "none";
   }
+
+
 
   function soundControl() {
     //document.getElementById("sound-button").style.display="none";
     if (sounds.muted == true){
       sounds.muted = false;
-      document.getElementById("sound-button").innerHTML="&#128266;";
+      soundBtn.innerHTML="&#128266;";
     } else {
       sounds.muted = true;
-      document.getElementById("sound-button").innerHTML="&#128263;";
+      soundBtn.innerHTML="&#128263;";
     }
     console.log(sounds);
   }
@@ -273,7 +288,7 @@ function keyDownHandler (event) {
     if (ballX == canvas.width) {
       Score1 = Score1 +1;
       if (sounds.muted == false){
-      document.getElementById("cheer1").play();
+      soundCheer1.play();
       }
     }
 
@@ -284,7 +299,7 @@ function keyDownHandler (event) {
 
     if (Score1 == 10) {
       if (sounds.muted == false){
-      document.getElementById("victory").play();
+      soundVictory.play();
       }
       alert("Player1 wins!");
       Score1 = 0;
@@ -303,7 +318,7 @@ function keyDownHandler (event) {
     if (ballX == 0) {
       Score2 = Score2 +1;
       if (sounds.muted == false){
-      document.getElementById("cheer2").play();
+      soundCheer2.play();
     }
     }
 
@@ -314,7 +329,7 @@ function keyDownHandler (event) {
 
     if (Score2 == 10) {
       if (sounds.muted == false){
-      document.getElementById("victory").play();
+      victorySound.play();
       }
       alert("Player2 wins!");
       Score1 = 0;
@@ -386,15 +401,10 @@ function keyDownHandler (event) {
       }
     }
   }
-/*  } */
+
 
   function collision1 () {
-    /*original movement if (ballX == 30 && ballY >= paddle1Y - tolerance && ballY <= paddle1Y + paddleHeight + tolerance) {
-      ballSpeedX = 5 + speedBoost;
-      ballSpeedY = 2;
-      hitCounter = hitCounter + 1;
-    }*/
-    /*experimental Y manipulation*/
+
     if (ballX == 30 && ballY >= paddle1Y + paddleHeight/4 && ballY <= paddle1Y + 3*paddleHeight/4 && ballY >=0) { /*middle paddle*/
       ballSpeedX = 5 + speedBoost;
       ballSpeedY = ballSpeedY -1;
@@ -467,9 +477,9 @@ function keyDownHandler (event) {
     canvasContext.fillRect(canvas.width/2,0,1,canvas.height);
     canvasContext.fillStyle = "white"; /*ball*/
     canvasContext.fillRect(ballX,ballY,10,10);
-    canvasContext.fillstyle ="white"; /*Paddle1*/
+    canvasContext.fillstyle = "white"; /*Paddle1*/
     canvasContext.fillRect(20,paddle1Y,10,paddleHeight);
-    canvasContext.fillStyle ="white"; /*Paddle2*/
+    canvasContext.fillStyle = "white"; /*Paddle2*/
     canvasContext.fillRect(770,paddle2Y,10,paddleHeight);
   }
 

@@ -1,9 +1,3 @@
-@keyframes cookie-animation {
-  0% {opacity: 0;}
-  50% {opacity: 0.5;}
-  100% {opacity: 1;}
-
-}
 
 
 @font-face {
@@ -11,9 +5,60 @@
   src: url(myFont.ttf);
 }
 
+@font-face {
+  font-family: digital;
+  src: url(Bitwise.ttf);
+}
+
+@font-face {
+  font-family: grunge;
+  src: url(Grunge.otf);
+}
+
+.card {
+  margin: 0;
+  padding: 0;
+}
+
+.blinking-text-div {
+  display: inline-block;
+  font-size: 1.8em;
+  color: rgb(255,255,51,1);
+  margin-left: 10px;
+}
+
+
+
+
+@keyframes blinktext {
+  0% {opacity: 0; color: yellow; transform: scaleY(1.5);};
+}
+
+
+#blinking-text1 {
+  text-decoration: underline;
+}
+
+#blinking-text2 {
+  animation: blinktext 2s;
+  animation-delay: 3s;
+}
+
+#blinking-text3 {
+  animation: blinktext 2s;
+  animation-delay: 5s;
+}
+
+#blinking-text4 {
+  animation: blinktext 2s;
+  animation-delay: 7s;
+}
+
+
+
 
 body {
-  background-image: url("../images/background.jpg");
+  background-image: url("../images/background-bricks.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -29,7 +74,7 @@ p {
   font-size: 1.2em;
 }
 nav a {
-  color: rgb(44, 42, 43);
+  color: white;;
   font-size: 1.5em;
 }
 
@@ -41,6 +86,8 @@ a:hover {
 
 nav {
   text-align: center;
+  background-color: black;
+  opacity: 0.9;
 }
 
 nav li {
@@ -48,7 +95,7 @@ nav li {
 }
 
 footer {
-  background-color: rgb(37, 48, 58);
+  background-color: black;
   margin-top: 20vh; /*trying out*/
   width: 100%;
   color: white;
@@ -115,6 +162,7 @@ margin: auto;
   height: 60px;
   width: 60px;
   display: block;
+  filter: invert(1);
 }
 
 .home:hover {
@@ -193,9 +241,33 @@ margin: auto;
   list-style: none;
 }
 
-#fname, #lname, #company, #message, #email {
-  padding: 10px;
+
+
+#clock {
+  background-color: black;
+  color: rgb(34, 252, 40);
+  font-size: 3em;
+  width: 350px;
+  font-family: digital;
+  margin: 0px auto;
+  text-align: center;
+  padding: 10px 0px 10px 10px;
 }
+
+#clock-description {
+  width: 350px;
+  background-color: black;
+  color: white;
+}
+
+.description-text {
+  color: white;
+  font-size: 1em;
+  padding: 8px;
+  text-align: justify;
+}
+
+
 
 
 @media (min-width: 1000px) {
@@ -222,6 +294,10 @@ margin: auto;
 @media (min-width: 900px) {
   .profile {
     width: 60%;
+  }
+  .blinking-text-div {
+    font-size: 3em;
+    margin-left: 40px;
   }
 }
 

@@ -9,7 +9,7 @@
 
 
 body {
-  background-image: url("../images/background.jpg");
+  background-image: url("../images/background-bricks.jpg");
   background-size: cover;
   font-family: myFont;
   background-attachment: fixed;
@@ -17,7 +17,7 @@ body {
 
 
 nav a {
-  color: rgb(44, 42, 43);
+  color: white;
   font-size: 1.5em;
 }
 
@@ -33,7 +33,7 @@ nav {
 }
 
 footer {
-  background-color: rgb(37, 48, 58);
+  background-color: black;
   margin-top: 20vh;
   width: 100%;
   color: white;
@@ -86,6 +86,7 @@ li {
   left: 10px;
   height: 60px;
   width: 60px;
+  filter: invert(1);
 }
 
 .home:hover {
