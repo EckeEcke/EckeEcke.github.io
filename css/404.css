@@ -4,7 +4,92 @@
 }
 
 
+#interface {
+  height: 500px;
+  width: 320px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: #FFC83D;
+  color: white;
+  margin: 15px;
+  padding: 30px;
+}
 
+.tile-front, .tile-back {
+  height: 125px;
+  width: 125px;
+  justify-content: center;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+}
+
+.tile-back {
+  transform: rotateY(-180deg);
+}
+
+.tile {
+  height: 125px;
+  width: 125px;
+}
+
+.tile-content{
+  height: 125px;
+  width: 125px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  transition-delay: 0.1s;
+}
+
+.tile:hover .tile-content{
+  transform: rotateY(180deg);
+}
+
+#tile-front-1, #tile-back-1 {
+  background-color: #f07167;
+}
+
+#tile-front-2, #tile-back-2 {
+  background-color: #00afb9;
+}
+
+#tile-front-3, #tile-back-3 {
+
+  background-color: #fdfcdc;
+}
+
+#tile-front-4, #tile-back-4 {
+
+  background-color: #fed9b7;
+}
+
+#tile-front-5, #tile-back-5 {
+  background-color: #f07167;
+}
+
+#tile-front-6, #tile-back-6 {
+  background-color: #bdd5ea;
+}
+
+
+#interface-description {
+  height: 250px;
+  width: 320px;
+}
+
+.interface-emoji {
+  font-size: 5em;
+}
+
+#tile-with-check {
+  color: black;
+}
 
 
 
@@ -69,7 +154,7 @@
 
 
 #card-front {
-  background-color: black;
+  background-color: #FF4500;
   color: white;
 }
 
@@ -106,19 +191,21 @@
   margin: 0px auto;
 }
 
-.card-list {
-  text-align: left;
-  font-size: 1.2em;
-}
 
 .card-emoji {
   font-size: 6.8em;
 }
 
-.profile {
-  height: auto;
-  width: 120px;
-}
+
+
+
+
+
+
+
+
+
+
 @font-face {
   font-family: stripes;
   src: url(halogen.otf);
@@ -422,7 +509,7 @@ moving blobs
   width: 320px;
   height: 260px;
   padding: 15px;
-  background-color: black;
+  background-color: #00BFFF;
 
 }
 

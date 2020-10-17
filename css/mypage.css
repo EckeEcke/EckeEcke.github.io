@@ -138,16 +138,36 @@ margin: auto;
   text-align: justify;
 }
 
+
+.api-div {
+  width: 320px;
+  height: 320px;
+  background-color: black;
+  color: white;
+  position: relative;
+  margin: 10px;
+}
+
 .api-text {
-  font-size: 1.1em;
+  font-size: 1em;
+  text-align: center;
+  color: black;
+}
+
+.api-description {
+  font-size: 1em;
   text-align: center;
 }
 
 .highlight {
+  position: absolute;
   font-weight: bolder;
-  border: 4px solid black;
   padding: 10px;
   background-color: white;
+  top: 50px;
+  left: 10px;
+  width: 300px;
+  margin: 0 auto;
 }
 
 
@@ -174,26 +194,16 @@ margin: auto;
   transition: 500ms;
 }
 
-#cookies {
-  position: fixed;
-  bottom: 0%;
-  background: rgb(211, 211, 211);
-  font-size: 1.5em;
-  width: 100%;
-  height: 70%;
-  margin: 0 auto;
-  padding: 30px;
-  text-align: center;
-  animation: cookie-animation 1s ease-in;
-}
+
 
 
 .submit-button {
   width: 100px;
-  border-radius: 5px;
+  border-radius: 20px;
   border-style: none;
   box-shadow: 0.5px 3px black;
-  background-color: rgb(230,230,230);
+  background-color: #0F6E11;
+  color: white;
   padding: 10px;
 }
 
@@ -251,18 +261,26 @@ margin: auto;
   background-color: black;
   color: rgb(34, 252, 40);
   font-size: 3em;
-  width: 350px;
+  width: 320px;
   font-family: digital;
-  margin: 0px auto;
   text-align: center;
-  padding: 10px 0px 10px 10px;
+  padding: 17px 0px 10px 10px;
 }
 
 #clock-description {
-  width: 350px;
+  width: 320px;
   background-color: black;
   color: white;
+  padding: 0 10px;
 }
+
+#js-clock {
+  width: 320px;
+  height: 320px;
+  background-color: black;
+  margin: 10px;
+}
+
 
 .description-text {
   color: white;

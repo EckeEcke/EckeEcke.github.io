@@ -68,39 +68,46 @@
     </ul>
   </nav>
   <br><br><br><br>
-  <div class="profile">
-    <center>
+  <div class="container" style="display: flex; flex-wrap: wrap; justify-content: center;">
+    <div class="api-div">
+      <center>
 
-    <h1>Random Cat Facts</h1>
-    <br>
-    <p class="api-text highlight" id="cat-fact">
-      CATFACT INCOMING!
-    </p>
+      <h3>Random Cat Facts</h3>
+      <br>
+      <p class="api-text highlight" id="cat-fact">
+        CATFACT INCOMING!
+      </p>
 
-    <br>
-        <button id="new-fact-button" class="submit-button">Get new fact</button>
+      <br><br><br>
+          <button id="new-fact-button" class="submit-button">Get new fact</button>
 
-    <br><br>
+      <br><br>
 
-    <p class="api-text">
-        This was an exercise I did at Hamburg Coding School to learn how to use APIs. By clicking the button my Javascript function fetches a random cat fact and puts it into HTML.
-    </p>
-    </center>
+      <p class="api-description">
+          This is an example for using fetch method to request random catfacts from an API and putting received data into HTML.
+      </p>
+      </center>
 
+      </div>
+
+      <br><br>
+
+
+      <div id="js-clock">
+        <br>
+        <p id="clock">
+        </p>
+        <center>
+          <br>
+          <div  id="clock-description">
+            <h4>JS clock</h4>
+            <p class="description-text">For trying out to use local time via Javascript I built this simple clock. Every full minute the digits turn red. A custom font gives it a digital look.</p>
+          </div>
+        </center>
+      </div>
     </div>
 
-    <br><br>
 
-
-
-    <p id="clock">
-    </p>
-    <center>
-      <div  id="clock-description">
-        <h4>JS clock</h4>
-        <p class="description-text">For trying out to use local time via Javascript I built this simple clock. Every full minute the digits turn red. A custom font gives it a digital look.</p>
-      </div>
-    </center>
 
 
   <script type="text/javascript" src="js/mypage.js"></script>
