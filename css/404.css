@@ -103,6 +103,7 @@
   padding: 5px;
   z-index: 3000;
   display: none;
+  border-style: none;
 }
 
 .line1, .line2, .line3 {
