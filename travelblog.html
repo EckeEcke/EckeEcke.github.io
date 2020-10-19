@@ -1,12 +1,17 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, maximum-scale=1.0">
-  <title>Blog Editor</title>
+  <title>Blog Editor ✈️</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/mypage.css">
   <link rel="stylesheet" href="css/blog.css">
   <link rel="icon" type="image/png" href="images/favicon.png"/>
-
+  <style>
+    table, tr {
+      text-align: center;
+      padding: 50px;
+    }
+  </style>
 </head>
 <body>
   <button id="hamburger" onclick="showMenu()">
@@ -102,7 +107,7 @@
         <input class="input-field" id="image-input" type="url" placeholder="Enter an image link (optional)">
         <input class="input-field" id="travel-time" type="month">
         <br>
-        <span>
+      <!--  <span>
 
               <span class="radio-buttons input-field2">
                 <center>
@@ -143,6 +148,59 @@
 
 
           </span>
+
+-->
+
+  <table class="input-field2">
+    <tr>
+      <td colspan="5" style="padding-bottom: 10px;">How did you get there?</td>
+    </tr>
+
+    <tr>
+
+      <td><input type="radio" name="transport" id="✈️" class="radio-btn" required></td>
+      <td><input type="radio" name="transport" id="🚄" class="radio-btn"></td>
+      <td><input type="radio" name="transport" id="🚗" class="radio-btn"></td>
+      <td><input type="radio" name="transport" id="🚌" class="radio-btn"></td>
+      <td><input type="radio" name="transport" id="🚢" class="radio-btn"></td>
+    </tr>
+    <tr>
+      <td>  <span class="radio-emoji">✈️</span></td>
+      <td><span class="radio-emoji">🚄</span></td>
+      <td><span class="radio-emoji">🚗</span></td>
+      <td><span class="radio-emoji">🚌</span></td>
+      <td><span class="radio-emoji">🚢</span></td>
+    </tr>
+
+  </table>
+
+  <table class="input-field2">
+
+    <tr>
+      <td colspan="5" style="padding-bottom: 10px;">How was your trip?</td>
+    </tr>
+
+    <tr>
+
+      <td><input type="radio" name="mood" id="😍" class="radio-btn" required></td>
+      <td><input type="radio" name="mood" id="😃" class="radio-btn"></td>
+      <td><input type="radio" name="mood" id="🙂" class="radio-btn"></td>
+      <td><input type="radio" name="mood" id="😒" class="radio-btn"></td>
+      <td><input type="radio" name="mood" id="😡" class="radio-btn"></td>
+    </tr>
+    <tr>
+      <td>  <span class="radio-emoji">😍</span></td>
+      <td><span class="radio-emoji">😃</span></td>
+      <td><span class="radio-emoji">🙂</span></td>
+      <td><span class="radio-emoji">😒</span></td>
+      <td><span class="radio-emoji">😡</span></td>
+    </tr>
+  </table>
+
+
+
+
+
 
 
 

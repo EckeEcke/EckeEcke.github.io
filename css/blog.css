@@ -94,7 +94,7 @@ h3 {
   width: 300px;
   padding: 0px;
   height: 30px;
-  margin-bottom: 5px;
+  margin: 0 auto 5px auto;
   color: black;
   background-color: white;
   border-style: none;
@@ -102,23 +102,23 @@ h3 {
 
 .input-field2 {
   width: 300px;
-  padding: 0px;
+  padding: 10px;
   height: 110px!important;
-  margin-bottom: 6px;
+  margin-bottom: 0px;
   color: black;
   background-color: white;
   display: inline-block;
   padding-top: 5px;
+  text-align: center;
 }
 
-.radio-btn {
-  margin: 0 15px;
+td {
+  padding: 4 11px;
 }
 
 
 .radio-emoji {
-  font-size: 1.25em;
-  margin: 0 5px;
+  font-size: 1.5em;
 }
 
 .radio-head {
@@ -235,17 +235,11 @@ textarea {
   textarea{
     width: 300px;
   }
+  .input-field2 {
+    margin-bottom: 5px;
+  }
 }
 
-@media (hover: none) and (pointer: coarse) {
-  .radio-emoji {
-    font-size: 1.5em!important;
-    margin: 0 8px;
-  }
-  .radio-btn {
-    margin: 0 18px;
-  }
-}
 
 
 
