@@ -141,7 +141,7 @@ margin: auto;
 
 .api-div {
   width: 320px;
-  height: 320px;
+  height: 360px;
   background-color: black;
   color: white;
   position: relative;
@@ -164,7 +164,7 @@ margin: auto;
   font-weight: bolder;
   padding: 10px;
   background-color: white;
-  top: 20px;
+  top: 40px;
   left: 0px;
   width: 100%;
 }
@@ -276,7 +276,7 @@ margin: auto;
 
 #js-clock {
   width: 320px;
-  height: 320px;
+  height: 360px;
   background-color: black;
   margin: 10px;
 }
