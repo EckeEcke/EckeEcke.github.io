@@ -26,6 +26,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  -webkit-backface-visibility: hidden
   backface-visibility: hidden;
 }
 
@@ -144,7 +145,8 @@
   top: 0px;
   left: 0px;
   text-align: center;
-  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden
 }
 
 #card-back {
