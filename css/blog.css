@@ -112,6 +112,10 @@ h3 {
   margin-right: auto;
 }
 
+.table-heading {
+  padding-bottom: 5px;
+}
+
 td {
   padding: 4px;
   margin: 0px auto;
