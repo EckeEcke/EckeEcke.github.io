@@ -98,8 +98,19 @@
 
   <button id="start-button" onclick="startGame()">
   &#127955; Start &#127955;
-
   </button>
+  <br><br>
+<div id="game-settings">
+  <input type="color" id="color-picker-p1" value="#ed3d0d"><label>&nbsp Choose color P1</label>
+  <br>
+  <input type="color" id="color-picker-p2" value="#26ed17"><label>&nbsp Choose color P2</label>
+  <br>
+  <input type="range" id="game-speed" min="100" max="200" value="100"><label>&nbsp Set gamespeed &nbsp</label>
+</div>
+
+
+
+
 </article>
 
 <article id="description">
@@ -123,9 +134,17 @@
   const soundBtn = document.getElementById("sound-button");
   const descriptionTxt = document.getElementById("description");
 
+  const colorInputP1 = document.getElementById("color-picker-p1");
+  const colorInputP2 = document.getElementById("color-picker-p2");
+  const gameSpeedInput = document.getElementById("game-speed");
+
   const soundCheer1 = document.getElementById("cheer1");
   const soundCheer2 = document.getElementById("cheer2");
   const soundVictory = document.getElementById("victory");
+  const inputs = document.getElementById("game-settings");
+
+  let colorPaddle1 = "#ed3d0d";
+  let colorPaddle2 = "#26ed17";
 
   let canvasContext;
   let ballX = 400;
@@ -146,8 +165,21 @@
   let hitCounter = 0;
   const sounds = document.getElementsByTagName("audio");
   let gameRuns = false;
+  let gameSpeed = 100;
 
   sounds.muted = true;
+
+  colorInputP1.addEventListener("change", function(){
+    colorPaddle1 = colorInputP1.value;
+  });
+
+  colorInputP2.addEventListener("change", function(){
+    colorPaddle2 = colorInputP2.value;
+  });
+
+  gameSpeedInput.addEventListener("change", function(){
+    gameSpeed = gameSpeedInput.value;
+  })
 
   window.onload = function () {
     document.addEventListener("keydown", keyDownHandler, false);
@@ -158,9 +190,11 @@
   function startGame(){
     canvas.style.display ="block";
     canvasContext = canvas.getContext("2d");
-    setInterval(callAll, 1000/120);
+    setInterval(callAll, 1000/gameSpeed);
     startBtn.style.display ="none";
     descriptionTxt.style.display = "none";
+    inputs.style.display = "none";
+
   }
 
 
@@ -463,7 +497,7 @@ function keyDownHandler (event) {
   }
 
   function raiseSpeed () {
-    if (hitCounter >= 10) {
+    if (hitCounter >= 20) {
       speedBoost = 5;
     }
     else {
@@ -478,9 +512,9 @@ function keyDownHandler (event) {
     canvasContext.fillRect(canvas.width/2,0,1,canvas.height);
     canvasContext.fillStyle = "white"; /*ball*/
     canvasContext.fillRect(ballX,ballY,10,10);
-    canvasContext.fillstyle = "white"; /*Paddle1*/
+    canvasContext.fillStyle = colorPaddle1;/*Paddle1*/
     canvasContext.fillRect(20,paddle1Y,10,paddleHeight);
-    canvasContext.fillStyle = "white"; /*Paddle2*/
+    canvasContext.fillStyle = colorPaddle2; /*Paddle2*/
     canvasContext.fillRect(770,paddle2Y,10,paddleHeight);
   }
 

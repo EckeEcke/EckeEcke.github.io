@@ -164,9 +164,15 @@ h2 {
   transform: scale(1.2);
 }
 
+input {
+  width: 80px;
+}
+
+
+
 
 @media (max-width: 1100px) {
-  canvas, .scoreboard, .controls, #sound-button, #description {
+  canvas, .scoreboard, .controls, #sound-button, #description, input {
     display: none !important;
   }
 }
