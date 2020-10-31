@@ -233,7 +233,27 @@ margin: auto;
 }
 
 
+.reactionBTN {
+  height: 50px;
+  width: 50px;
+  margin: 20px;
+  background-color: darkgrey;
+  border-style: none;
+  border-radius: 50%;
+}
 
+#random-game {
+  display: none;
+}
+
+#random-text {
+  display: none;
+  color: white;
+}
+
+#scoreboard {
+  font-size: 2em;
+}
 
 .profile {
   background-color: rgb(171, 173, 175, 0.9);
