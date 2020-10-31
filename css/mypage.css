@@ -255,6 +255,35 @@ margin: auto;
   font-size: 2em;
 }
 
+#marios-box {
+  width: 200px;
+  height: 160px;
+  overflow: hidden;
+  position: relative;
+  background-color: white;
+}
+
+#mario {
+  width: 600px;
+  position: absolute;
+  left: -2px;
+  bottom: -25px;
+  z-index: 1;
+}
+
+#mario-background {
+  position: absolute;
+  left: -400px;
+  bottom: 0px;
+  z-index: 0;
+  width: 600px;
+}
+
+#mario-animation {
+  padding: 2px;
+}
+
+
 .profile {
   background-color: rgb(171, 173, 175, 0.9);
   height: auto;

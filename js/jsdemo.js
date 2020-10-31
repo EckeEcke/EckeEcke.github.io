@@ -212,3 +212,33 @@ turns = 0;
 points = 0;
 }
 }
+
+
+
+
+
+
+const mario = document.getElementById("mario");
+    let marioLeft = 0;
+
+    const marioBackground = document.getElementById("mario-background");
+    let backgroundLeft = -400;
+
+    function moveMario(){
+        marioLeft -= 202;
+        if (marioLeft <= -606){
+          marioLeft = -2;
+        }
+        mario.style.left = marioLeft + "px";
+    }
+
+    function moveBackground(){
+      backgroundLeft += 1;
+      if (backgroundLeft >= -10){
+        backgroundLeft = -400;
+      }
+      marioBackground.style.left = backgroundLeft + "px";
+    }
+
+    setInterval(moveMario, 100);
+    setInterval(moveBackground, 10);
