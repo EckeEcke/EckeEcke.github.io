@@ -169,6 +169,71 @@ margin: auto;
   width: 100%;
 }
 
+#pacman-container {
+  overflow: hidden;
+};
+
+
+
+.pac-image{
+  width: 40px;
+  height: 40px;
+}
+
+#pacman {
+  position: absolute;
+  top: 110px;
+  left: 0px;
+  height: 40px;
+  width: 40px;
+}
+
+
+
+#pallet-1 {
+  position: absolute;
+  top: 110px;
+  left: 30px;
+}
+
+#pallet-2 {
+  position: absolute;
+  top: 110px;
+  left: 70px;
+}
+
+#pallet-3 {
+  position: absolute;
+  top: 110px;
+  left: 110px;
+}
+
+#pallet-4 {
+  position: absolute;
+  top: 110px;
+  left: 150px;
+}
+
+#pallet-5 {
+  position: absolute;
+  top: 110px;
+  left: 190px;
+}
+
+#pallet-6 {
+  position: absolute;
+  top: 110px;
+  left: 230px;
+}
+
+#pallet-7 {
+  position: absolute;
+  top: 110px;
+  left: 270px;
+}
+
+
+
 
 .profile {
   background-color: rgb(171, 173, 175, 0.9);

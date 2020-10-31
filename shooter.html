@@ -144,7 +144,7 @@
   }
 
   function startGame(){
-    setInterval(callAll, 1000/120);
+    setInterval(callAll, 1000/140);
     setInterval(moveSnake, gameSpeed);
     document.getElementById("startButton").disabled = true;
     document.getElementById("description").style.display = "none";
@@ -173,7 +173,7 @@
 
     canvasContext.drawImage(document.getElementById("spaceship"),spaceshipX,spaceshipY-60,100,130);
 
-    canvasContext.fillstyle ="white"; /*shot*/
+    canvasContext.fillstyle ="red"; /*shot*/
     canvasContext.fillRect(shotX,shotY,10,20);
 
     canvasContext.fillText("🪐",150,100);
@@ -184,50 +184,34 @@
 
     if (snakeLives >=1){
       canvasContext.drawImage(document.getElementById("snake-head"),snakeX,snakeY,50,50);
-    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake1*/
-    /*canvasContext.fillRect(snakeX,snakeY,50,50); */
     }
 
     if (snakeLives >= 2){
       canvasContext.drawImage(document.getElementById("snake"),snakeX2,snakeY2,50,50);
-    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake2*/
-    /*canvasContext.fillRect(snakeX2,snakeY2,50,50);*/
     }
 
     if (snakeLives >= 3){
       canvasContext.drawImage(document.getElementById("snake"),snakeX3,snakeY3,50,50);
-    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake3*/
-    /*canvasContext.fillRect(snakeX3,snakeY3,50,50);*/
     }
 
     if (snakeLives >= 4){
       canvasContext.drawImage(document.getElementById("snake"),snakeX4,snakeY4,50,50);
-    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake4*/
-    /*canvasContext.fillRect(snakeX4,snakeY4,50,50);*/
     }
 
     if (snakeLives >= 5){
       canvasContext.drawImage(document.getElementById("snake"),snakeX5,snakeY5,50,50);
-    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake5*/
-    /*canvasContext.fillRect(snakeX5,snakeY5,50,50);*/
     }
 
     if (snakeLives >= 6){
       canvasContext.drawImage(document.getElementById("snake"),snakeX6,snakeY6,50,50);
-    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake6*/
-    /*canvasContext.fillRect(snakeX6,snakeY6,50,50);*/
     }
 
     if (snakeLives >= 7){
       canvasContext.drawImage(document.getElementById("snake"),snakeX7,snakeY7,50,50);
-    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake7*/
-    /*canvasContext.fillRect(snakeX7,snakeY7,50,50);*/
     }
 
     if (snakeLives == 8){
       canvasContext.drawImage(document.getElementById("snake"),snakeX8,snakeY8,50,50);
-    /*canvasContext.fillStyle = "rgb(89, 10, 128)"; /*enemy snake8*/
-    /*canvasContext.fillRect(snakeX8,snakeY8,50,50);*/
     }
 
   }
@@ -279,7 +263,7 @@
 
 
   function shoot(){
-    if(wPressed){
+    if(wPressed && !shotFired){
       shotFired = true;
       shotX = canonX-5;
       shotY = canonY;
@@ -293,6 +277,9 @@
   function moveShot(){
     if (shotFired){
       shotY -= 5;
+      }
+    if (shotY <= -20){
+        shotFired = false;
     }
   }
 
@@ -507,6 +494,7 @@
       dPressed = false;
       wPressed = false;
       shotFired = false;
+      gameSpeed += 100;
     }
 
     if (snakeY4 >= 450){
