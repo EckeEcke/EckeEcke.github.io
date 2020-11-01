@@ -284,6 +284,43 @@ margin: auto;
 }
 
 
+
+#jumping-mario-animation {
+  position: relative;
+  height: 150px;
+  width: 150px;
+  background-color: black;
+}
+
+#jumping-box {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  bottom: 0px;
+  left: 50px;
+  overflow: hidden;
+}
+
+#jumping-mario {
+  position: absolute;
+  left: 0px;
+  bottom: -3px;
+  width: 150px;
+}
+
+#question-block {
+  top: 7px;
+  position: absolute;
+  left: 50px;
+  width: 50px;
+}
+
+
+
+
+
+
+
 .profile {
   background-color: rgb(171, 173, 175, 0.9);
   height: auto;

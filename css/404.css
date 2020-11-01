@@ -353,13 +353,7 @@ moving blobs
 */
 
 
-#scroll-content {
-  position: fixed;
-  margin: 0 auto;
-  top: 200px;;
-  right: 20px;
-  z-index: -4000;
-}
+
 
 
 
