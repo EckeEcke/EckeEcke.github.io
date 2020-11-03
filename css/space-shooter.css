@@ -37,7 +37,8 @@ canvas {
 #burger-menu {
 
   position: fixed;
-  background-color: grey;
+  background-color: #2f2f2f;
+  opacity: 0.99;
   left: 0px;
   top: 0px;
   padding: 120px 50px;
@@ -50,7 +51,7 @@ canvas {
 #burger-menu a {
   text-decoration: none;
   color: white;
-  font-size: 1.5em;
+  font-size: 1.3em;
   list-style: none;
 }
 
