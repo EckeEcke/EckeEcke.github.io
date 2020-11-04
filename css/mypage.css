@@ -322,6 +322,29 @@ footer li {
   margin: 0 auto;
 }
 
+#home-tile-image {
+  width: 400px;
+  height: 288px;
+  margin: 20px;
+}
+
+#home-tile-image img {
+  width: 100%;
+}
+
+#about-tile {
+  width: 400px;
+  background.color: black;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+}
+
+#buttons-div {
+  width: 400px;
+  margin: 20px;
+}
+
 #dk-animation {
   background-color: black;
   width: 400px;
@@ -330,8 +353,25 @@ footer li {
   margin: 10px;
 }
 
+#dk-box {
+  margin: 0 auto;
+  background-color: black;
+}
 
 
+.index-button {
+  margin: 15px;
+}
+
+.big-heading {
+  color: white;
+  font-size: 48pt;
+}
+
+.big-subheading {
+  color: white;
+  font-size: 36pt;
+}
 
 .home {
   position: absolute;
@@ -456,7 +496,8 @@ hr {
     display: none;
   }
   .index-container, #dk-animation {
-    width: 95vw;
+    width: 100vw;
+    margin: 0;
   }
 }
 
