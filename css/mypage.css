@@ -13,6 +13,12 @@
   src: url(Grunge.otf);
 }
 
+
+h1 {
+   color: white;
+   font-size: 36pt;
+}
+
 .row {
   margin: 0!important;
 }
@@ -26,7 +32,6 @@
   display: inline-block;
   font-size: 1.8em;
   color: rgb(255,255,51,1);
-  margin-left: 10px;
 }
 
 
@@ -123,19 +128,9 @@ footer li {
 }
 
 
-.profile-pic {
-width: 60vw;
-display: block;
-margin: auto;
-
+#pipeline {
+  display: inline;
 }
-
-.profile-text {
-  width: auto;
-  margin: 2px;
-  text-align: justify;
-}
-
 
 .api-div {
   width: 320px;
@@ -253,7 +248,7 @@ margin: auto;
   font-size: 2em;
 }
 
-#marios-box {
+#marios-box, #dk-box {
   width: 200px;
   height: 160px;
   overflow: hidden;
@@ -261,7 +256,7 @@ margin: auto;
   background-color: white;
 }
 
-#mario {
+#mario, #donkey {
   width: 600px;
   position: absolute;
   left: -2px;
@@ -316,16 +311,27 @@ margin: auto;
 
 
 
-
-
-
-.profile {
-  background-color: rgb(171, 173, 175, 0.9);
-  height: auto;
-  width: 60%;
-  margin: 20px auto;
-  padding: 3%;
+.index-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 900px;
+  background-color: black;
+  padding-top: 30px;
+  opacity: 0.99;
+  margin: 0 auto;
 }
+
+#dk-animation {
+  background-color: black;
+  width: 400px;
+  height: 200px;
+  padding-top: 20px;
+  margin: 10px;
+}
+
+
+
 
 .home {
   position: absolute;
@@ -445,6 +451,14 @@ hr {
 
 
 
+@media (max-width: 500px){
+  #pipeline {
+    display: none;
+  }
+  .index-container, #dk-animation {
+    width: 95vw;
+  }
+}
 
 @media (min-width: 1000px) {
   p, nav li {
@@ -453,9 +467,7 @@ hr {
 }
 
 @media (min-width: 1px) {
-  .profile {
-    width: 90%;
-  }
+
   p, nav li {
     font-size: 1.2em;
   }
@@ -468,12 +480,9 @@ hr {
 }
 
 @media (min-width: 900px) {
-  .profile {
-    width: 60%;
-  }
+
   .blinking-text-div {
     font-size: 3em;
-    margin-left: 40px;
   }
 }
 
