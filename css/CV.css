@@ -9,7 +9,7 @@
 
 
 body {
-  background-image: url("../images/background-bricks.jpg");
+  background-image: linear-gradient(to bottom, rgb(0,0,0,0.4), rgb(0,0,0,0.4)), url("../images/hamburg.jpg");
   background-size: cover;
   font-family: myFont;
   background-attachment: fixed;
