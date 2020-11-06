@@ -484,10 +484,15 @@ hr {
   #pipeline {
     display: none;
   }
-  .index-container, #dk-animation {
+  .index-container {
     width: 100vw;
     margin: 0;
   }
+  #dk-animation {
+  width: 320px;
+  margin: 0;
+}
+
   h1 {
   font-size: 2em;
   }
@@ -506,6 +511,9 @@ hr {
   text-decoration: underline;
   }
   .index-icon{ width: 70%;
+  }
+  .index-button {
+    margin: 10px 0;
   }
   #home-tile-image{
   width: 70%;
