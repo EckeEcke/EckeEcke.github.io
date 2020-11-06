@@ -254,14 +254,15 @@ let randomNumberHM;
 
 
 const randomAnimals = [
-  {"name": "MOUSE", "hint": "elephants, better watch out"},
+  {"name": "MOUSE", "hint": "I like cheese"},
   {"name": "GOOSE", "hint": "some might call me a duck"},
   {"name": "HORSE", "hint": "I was auseful animal back in the day"},
   {"name": "SNAKE", "hint": "I might me a strangler"},
   {"name": "TIGER", "hint": "ROAR!"},
   {"name": "WHALE", "hint": "big, really big, blubb"},
   {"name": "RHINO", "hint": "I´m a pretty unicorn <3"},
-  {"name": "SNAIL", "hint": "I have all the time in the world.."}
+  {"name": "SNAIL", "hint": "I have all the time in the world.."},
+  {"name": "MOLES", "hint": "We like to dig tunnels"}
 
 ];
 
@@ -313,7 +314,7 @@ function userGuess(event){
   else{
     document.getElementById("guessed-letter-5").value = "";
   }
-  if (lives == 0 && secretLetters[0] == document.getElementById("guessed-letter-1").value
+  if (lives >= 0 && secretLetters[0] == document.getElementById("guessed-letter-1").value
       && secretLetters[1] == document.getElementById("guessed-letter-2").value
       && secretLetters[2] == document.getElementById("guessed-letter-3").value
       && secretLetters[3] == document.getElementById("guessed-letter-4").value
