@@ -106,7 +106,36 @@ hr {
 }
 
 
+.letter-box{
+  width: 30px;
+  font-size: 1.2em;
+}
 
+#guess-button {
+  display: none;
+  position: absolute;
+  left: 110px;
+  top: 150px;
+}
+
+#hint {
+  width: 100%;
+  height: 15%;
+  background-color: white;
+  color: black;
+}
+
+#random-button {
+  position: absolute;
+  top: 150px;
+  left: 110px;
+}
+
+#tries-left {
+  position: absolute;
+  right: 15px;
+  top: 100px;
+}
 
 
 

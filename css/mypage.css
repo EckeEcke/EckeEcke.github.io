@@ -16,7 +16,9 @@
 
 h1 {
    color: white;
-   font-size: 36pt;
+   font-size: 48pt;
+   margin-top: 10%;
+   text-align: center;
 }
 
 .row {
@@ -47,10 +49,6 @@ body {
   font-family: myFont;
 }
 
-h1 {
-  text-align: center;
-  font-size: 4em;
-}
 
 h2 {
   text-align: center;
@@ -310,7 +308,7 @@ footer li {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 900px;
+  width: 1000px;
   background-color: rgb(0,0,0,0.7);
   padding-top: 30px;
   margin: 0 auto;
@@ -328,7 +326,6 @@ footer li {
 
 #about-tile {
   width: 400px;
-  background.color: black;
   color: white;
   padding: 15px;
   margin: 0px;
@@ -349,7 +346,7 @@ footer li {
 
 
 .index-button {
-  margin: 15px;
+  margin: 10px;
 }
 
 .big-heading {
@@ -484,10 +481,12 @@ hr {
   #pipeline {
     display: none;
   }
+
   .index-container {
-    width: 100vw;
+    width: 100%;
     margin: 0;
   }
+
   #dk-animation {
   width: 320px;
   margin: 0;
@@ -495,26 +494,31 @@ hr {
 
   h1 {
   font-size: 2em;
+  margin-top: 30%;
   }
+
   h2 {
   font-size: 1.5em;
   }
+
   .index-button{
   width: 108px;
   height: 150px;
+  margin: 10px 0;
   }
+
   a button{
   font-size: 0.6em;
   }
+
   a h4, h3 {
   font-size: 1.2em;
   text-decoration: underline;
   }
+
   .index-icon{ width: 70%;
   }
-  .index-button {
-    margin: 10px 0;
-  }
+
   #home-tile-image{
   width: 70%;
   margin-bottom: -100px;
@@ -540,7 +544,7 @@ hr {
   p, nav li {
     font-size: 1.2em;
   }
-  nav li, .home {
+  .navbar, nav li, .home {
     display: none;
   }
   #hamburger {
@@ -565,6 +569,9 @@ hr {
   }
   nav li, .home {
   display: block;
+  }
+  .navbar {
+    display: flex;
   }
   #hamburger {
     display: none;
