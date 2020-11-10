@@ -82,7 +82,7 @@ nav li {
 
 footer {
   background-color: black;
-  margin-top: 20vh; /*trying out*/
+  margin-top: 20vh;
   width: 100%;
   color: white;
   text-align: center;
@@ -256,6 +256,58 @@ footer li {
   top: 110px;
   left: 270px;
 }
+
+
+#results-demo {
+  height: 100px;
+  background-image: linear-gradient(to right, rgb(29, 29, 148), rgb(190, 12, 12));
+  overflow: hidden;
+  position: relative;
+  width: 160px;
+
+}
+
+
+#option-a, #option-b {
+  width: 50px;
+  height: 100px;
+  display: inline-block;
+  position: absolute;
+}
+
+#option-a {
+  background-color: blue;
+  top: 100px;
+  left: 20px;
+}
+
+#option-b {
+  background-color: red;
+  top: 100px;
+  left: 90px;
+}
+
+#majority-line {
+  position: absolute;
+  top: 42px;
+  width: 100%;
+  border: 1px solid orange;
+  background-color: orange;
+}
+
+#results-input {
+  display: inline-block;
+}
+
+.result-input{
+  margin: 0 5px;
+}
+
+
+
+
+
+
 
 
 .reactionBTN {

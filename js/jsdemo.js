@@ -10,6 +10,108 @@ function showMenu(){
 
 
 
+
+const optionA = document.getElementById("option-a");
+const optionB = document.getElementById("option-b");
+const inputA = document.getElementById("input-option-a");
+const inputB = document.getElementById("input-option-b");
+const voteBTN = document.getElementById("submit-vote")
+const form = document.getElementById("results-input");
+const drawBTN = document.getElementById("draw");
+
+let votesA = 0;
+let votesB = 0;
+let sumVotes = 0;
+let a = 0;
+let b = 0;
+let IntervalA;
+let intervalB;
+
+
+voteBTN.addEventListener("click", sendAndReceiveVotes);
+
+
+function sendAndReceiveVotes(){
+
+event.preventDefault();
+let vote;
+
+if (inputA.checked){
+  vote = "a";
+}
+if (inputB.checked){
+  vote = "b";
+}
+
+const proxyURL = "https://cors-anywhere.herokuapp.com/";
+const url = `https://simple-vote-app.herokuapp.com/votes?vote=${vote}`;
+  console.log(vote);
+fetch(proxyURL+url)
+  .then(response => response.json())
+  .then(data => {
+    votesA = data.votesA;
+    votesB = data.votesB;
+    sumVotes = data.votesTotal;
+  })
+  .then(function(){
+    showvotesA();
+    showvotesB();
+    console.log("drawing");
+  })};
+
+function showvotesA(){
+  let percentageA = Math.round(votesA*100/sumVotes);
+  intervalA = setInterval(function(){
+    if (a<percentageA){
+      a += 1;
+      optionA.style.top = 100 - a + "px";
+    }
+    if (a > percentageA){
+      a -= 1;
+      optionA.style.top = 100 - a + "px";
+      console.log("a=" + a);
+    }
+    if (a == percentageA){
+      stopvotesA();
+    }
+    }, 1000/60);
+    
+
+}
+
+function showvotesB(){
+  let percentageB = Math.round(votesB*100/sumVotes);
+  intervalB = setInterval(function(){
+    if (b<percentageB){
+      b += 1;
+      optionB.style.top = 100 - b + "px";
+    }
+    if (b > percentageB){
+      b -= 1;
+      optionB.style.top = 100 - b + "px";
+    }
+    
+    if (b == percentageB){
+      stopvotesB();
+    }
+    }, 1000/60);
+    
+    
+}
+
+function stopvotesA(){
+    clearInterval(intervalA);
+}
+
+function stopvotesB(){
+    clearInterval(intervalB);
+  }
+
+
+
+
+
+
 let catFact = document.getElementById("cat-fact");
 let factButton = document.getElementById("new-fact-button");
 
@@ -256,18 +358,20 @@ let randomNumberHM;
 const randomAnimals = [
   {"name": "MOUSE", "hint": "I like cheese"},
   {"name": "GOOSE", "hint": "some might call me a duck"},
-  {"name": "HORSE", "hint": "I was auseful animal back in the day"},
+  {"name": "HORSE", "hint": "Take me for a ride"},
   {"name": "SNAKE", "hint": "I might me a strangler"},
   {"name": "TIGER", "hint": "ROAR!"},
   {"name": "WHALE", "hint": "big, really big, blubb"},
   {"name": "RHINO", "hint": "I´m a pretty unicorn <3"},
-  {"name": "SNAIL", "hint": "I have all the time in the world.."},
-  {"name": "MOLES", "hint": "We like to dig tunnels"}
+  {"name": "SNAIL", "hint": "I have all the time in the world"},
+  {"name": "MOLES", "hint": "We like to dig tunnels"},
+  {"name": "PANDA", "hint": "Bamboo <3"},
+  {"name": "KOALA", "hint": "meet me down under"},
+  {"name": "SHARK", "hint": "I make no friends at beach"}
 
 ];
 
 
-console.log(randomAnimals.length);
 const randomButton = document.getElementById("random-button");
 const guessButton = document.getElementById("guess-button");
 
