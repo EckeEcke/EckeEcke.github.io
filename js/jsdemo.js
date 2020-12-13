@@ -31,7 +31,7 @@ let intervalB;
 voteBTN.addEventListener("click", sendAndReceiveVotes);
 
 
-function sendAndReceiveVotes(){
+function sendAndReceiveVotes(event){
 
 event.preventDefault();
 let vote;
@@ -229,20 +229,6 @@ movePacman();
 setInterval(pacAnimation, 300);
 
 
-const kong = document.getElementById("donkey");
-    let dkLeft = 0;
-
-
-
-    function moveDK(){
-        dkLeft -= 202;
-        if (dkLeft <= -606){
-          dkLeft = -2;
-        }
-        kong.style.left = dkLeft + "px";
-    }
-
-    setInterval(moveDK, 250);
 
 
 const randomGame = document.getElementById("random-game");
@@ -344,110 +330,9 @@ points = 0;
 
 
 
-let secretWord = document.getElementById("secret-word");
-const formGuess = document.getElementById("guessed-word");
-const playField = document.getElementById("put-words-here");
-const hint = document.getElementById("hint");
-const triesLeft = document.getElementById("tries-left");
-let submitGuess;
-let lives = 5;
-let secretLetters = [];
-let randomNumberHM;
-
-
-const randomAnimals = [
-  {"name": "MOUSE", "hint": "I like cheese"},
-  {"name": "GOOSE", "hint": "some might call me a duck"},
-  {"name": "HORSE", "hint": "Take me for a ride"},
-  {"name": "SNAKE", "hint": "I might me a strangler"},
-  {"name": "TIGER", "hint": "ROAR!"},
-  {"name": "WHALE", "hint": "big, really big, blubb"},
-  {"name": "RHINO", "hint": "I´m a pretty unicorn <3"},
-  {"name": "SNAIL", "hint": "I have all the time in the world"},
-  {"name": "MOLES", "hint": "We like to dig tunnels"},
-  {"name": "PANDA", "hint": "Bamboo <3"},
-  {"name": "KOALA", "hint": "meet me down under"},
-  {"name": "SHARK", "hint": "I make no friends at beach"}
-
-];
-
-
-const randomButton = document.getElementById("random-button");
-const guessButton = document.getElementById("guess-button");
-
-
-formGuess.addEventListener("submit", userGuess);
-randomButton.addEventListener("click", randomName);
 
 
 
-function userGuess(event){
-  event.preventDefault();
-  console.log(secretLetters)
-  console.log(secretWord);
-  lives = lives - 1;
-  triesLeft.innerHTML = `Tries: ${lives}`;
-  console.log(lives);
-  if (secretLetters[0] == document.getElementById("guessed-letter-1").value){
-    document.getElementById("guessed-letter-1").value = secretLetters[0];
-  }
-  else{
-    document.getElementById("guessed-letter-1").value = "";
-  }
-  if (secretLetters[1] == document.getElementById("guessed-letter-2").value){
-    document.getElementById("guessed-letter-2").value = secretLetters[1];
-  }
-  else{
-    document.getElementById("guessed-letter-2").value = "";
-  }
-  if (secretLetters[2] == document.getElementById("guessed-letter-3").value){
-    document.getElementById("guessed-letter-3").value = secretLetters[2];
-  }
-  else{
-    document.getElementById("guessed-letter-3").value = "";
-  }
-  if (secretLetters[3] == document.getElementById("guessed-letter-4").value){
-    document.getElementById("guessed-letter-4").value = secretLetters[3];
-  }
-  else{
-    document.getElementById("guessed-letter-4").value = "";
-  }
-  if (secretLetters[4] == document.getElementById("guessed-letter-5").value){
-    document.getElementById("guessed-letter-5").value = secretLetters[4];
-  }
-  else{
-    document.getElementById("guessed-letter-5").value = "";
-  }
-  if (lives >= 0 && secretLetters[0] == document.getElementById("guessed-letter-1").value
-      && secretLetters[1] == document.getElementById("guessed-letter-2").value
-      && secretLetters[2] == document.getElementById("guessed-letter-3").value
-      && secretLetters[3] == document.getElementById("guessed-letter-4").value
-      && secretLetters[4] == document.getElementById("guessed-letter-5").value){
-        alert("You win");
-        window.location.reload();
-      }
-   else if (lives == 0){
-    alert(`You lose! The correct answer was "${randomAnimals[randomNumberHM].name}"`);
-    window.location.reload();
-  }
-
-
-}
-
-function randomName(){
-randomNumberHM = random(0,randomAnimals.length-1);
-secretWord = randomAnimals[randomNumberHM].name;
-hint.innerHTML = randomAnimals[randomNumberHM].hint;
-secretLetters = secretWord.split("");
-randomButton.style.display = "none";
-guessButton.style.display = "block";
-return secretLetters;
-}
-
-function random(min, max) {
-  x = Math.floor(Math.random() * (max +1 -min)) + min;
-  return x;
-}
 
 
 

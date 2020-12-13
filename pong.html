@@ -375,11 +375,7 @@ function keyDownHandler (event) {
   }
 
   function collision2 () {
-    /*if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY <= paddle2Y + paddleHeight + tolerance) {
-      ballSpeedX = -ballSpeedX;
-      ballSpeedX = (5 + speedBoost)*(-1);
-      hitCounter = hitCounter + 1;
-    } just trying out new collision for P2*/
+
     if (ballX == 760 && ballY >= paddle2Y + paddleHeight/4 && ballY <= paddle2Y + 3*paddleHeight/4 && ballY >=0) { /*middle paddle*/
       ballSpeedX = -5 - speedBoost;
       ballSpeedY = ballSpeedY -1;
