@@ -5,132 +5,154 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/mypage.css">
   <link rel="icon" type="image/png" href="images/favicon.png"/>
+  
 
 </head>
 <body>
+
+  <a href="index.html" style="display: block">
+    <img id="logo" src="images/logo.png">
+  </a>
+
   <button id="hamburger" onclick="showMenu()">
     <div class="line1"></div>
     <div class="line2"></div>
     <div class="line3"></div>
   </button>
+    <div id="burger-menu">
+      <ul>
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+        <hr class="nav-line">
+        <li>
+          <a href="https://nifty-hopper-c1da01.netlify.app/" target="_blank">React Travel Blog</a>
+        </li>
+        <hr class="nav-line">
+        <li>
+          <a href="shooter.html">JS Space Shooter</a>
+        </li>
+        <hr class="nav-line">
+        <li>
+          <a href="pong.html">JS Pong</a>
+        </li>
+        <hr class="nav-line">
+        <li>
+          <a href="jsdemos.html">Demos</a>
+        </li>
+      </ul>
+    </div>
+ 
+    <br><br><br>
 
-  <div id="burger-menu">
-    <ul>
-      <li>
-        <a href="index.html">Home</a>
-      </li>
-      <hr>
-      <li>
-        <a href="jsdemos.html">Demos</a>
-      </li>
-      <hr>
-      <li>
-        <a href="shooter.html">JS Shooter</a>
-      </li>
-      <hr>
-      <li>
-        <a href="pong.html">JS Pong</a>
-      </li>
-      <hr>
-      <li>
-        <a href="travelblog.html">Blog Editor</a>
-      </li>
-      <hr>
-      <li>
-        <a href="CV.html">My CV</a>
-      </li>
-    </ul>
-  </div>
-  <nav class="navbar navbar-expand-md justify-content-center">
-    <ul class="navbar-nav">
-      <li class="nav-item px-5">
-        <a href="jsdemos.html" class="nav-link">Demos</a>
-      </li>
-      <li class="nav-item px-5">
-        <a href="shooter.html" class="nav-link">JS Shooter</a>
-      </li>
-      <li class="nav-item px-5">
-        <a href="pong.html" class="nav-link">JS Pong</a>
-      </li>
-      <li class="nav-item px-5">
-        <a href="travelblog.html" class="nav-link">Blog Editor</a>
-      </li>
-      <li class="nav-item px-5">
-        <a href="CV.html" class="nav-link"> My CV</a>
-      </li>
-    </ul>
-  </nav>
+    <div id="header-image" style="background-image: url('test.jpg'); min-height: 70vh; max-width: 100vw; background-size: cover; background-repeat: no-repeat; color: black;">
 
-    <h1>Christian Eckardt</h1>
-      <h2>Web Developement <span id="pipeline">| </span>Online Portfolio</h2>
 
-  <br>
-  <br>
+      <h1>Christian Eckardt</h1>
+      <br>
+      <h2>Full Stack Web Developer</h2>
+      <br><br>
+      <button id="homepage-CTA-BTN" onClick="scrollToFooter()">Contact me</button>
+      <br>
+    </div>
+    
+    <br><br>
+
   <center>
-    <a href="jsdemos.html"><button class="index-button"><img src="images/star.png" class="index-icon"><br><br><h4>Demos</h4>A collection of little demos I have built</button></a>
-    <a href="pong.html"><button class="index-button"><img src="images/pong.png" class="index-icon"><br><br><h4>Play Pong</h4>My Javascript version of classic Pong game</button></a>
-    <a href="shooter.html"><button class="index-button"><img src="images/spacecraft.png" class="index-icon"><br><br><h4>Play Shooter</h4>A space shooter game I created in Javascript</button></a>
-    <a href="travelblog.html"><button class="index-button"><img src="images/writing.png" class="index-icon"><br><br><h4>Blog Editor</h4>Create, save and edit your own travel blog</button></a>
-    <a href="cv.html"><button class="index-button"><img src="images/cv.png" class="index-icon"><br><br><h4>My CV</h4>To find out more about me check my cv</button></a>
+    <p>Find out more</p>
+    <button id="scroll-to-tiles-BTN"><img id="scroll-arrow" src="images/scroll-arrow.png" onClick="scrollToTiles()"></button>
   </center>
   <br>
-<br><br><br><br>
+
+  <div id="about-tile">
+    <h3 style="text-align: center;">About me:</h3>
+    <p>
+      I am a Full Stack Web Developer based in Hamburg. This website serves as a portfolio to present my works and developing skills to everybody
+      who is interested in working with me or just curious.
+      Feel free to check out applications, animations, games and other stuff I build in Javascript and CSS.
+    </p>
+  
+  </div>
+
+<br><br>
 <div class="index-container">
-<div id="home-tile-image">
-  <img src="images/chris2.jpg" alt="My Profile">
-</div>
 
-<div id="about-tile">
-  <h3>About me:</h3>
-  <p>
-    My name is Christian Eckardt, based in Hamburg and ready to start my new career as a web developer. This website serves as a portfolio to present my works and developing skills to everybody
-    who is interested in working with me or just curious.
-    Feel free to check out animations, games and other stuff I build in Javascript and CSS.
-  </p>
+<a href="https://nifty-hopper-c1da01.netlify.app/" style="display: block" target="_blank">
+  <div class="index-content-tile" id="blog-tile" style="position: relative; text-align: center; background-image: url('images/travel-pixelart.jpg'); object-fit: cover; background-repeat: no-repeat;">
+    <h2 style="z-index: 2000; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">React Travel Blog Editor</h2>
+  </div>
+</a>
 
-</div>
-<div id="buttons-div">
+<a href="shooter.html" style="display: block">
+  <div class="index-content-tile" id="space-tile" style="position: relative; text-align: center; background-image: url('images/space.jpg'); object-fit: cover; background-repeat: no-repeat;">
+    <h2 style="z-index: 2000; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">JS Space Shooter</h2>
+  </div>
+</a>
 
-</div>
+<a href="pong.html" style="display: block">
+  <div class="index-content-tile" id="pong-tile" style="position: relative; text-align: center; background-image: url('images/pong.jpg'); object-fit: cover; background-repeat: no-repeat; background-position: center;">
+    <h2 style="z-index: 2000; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">JS Pong</h2>
+  </div>
+</a>
 
+<a href="jsdemos.html" style="display: block">
+  <div class="index-content-tile" id="demos-tile" style="position: relative; text-align: center; background-image: url('images/office-pixelart.jpg'); object-fit: cover; background-repeat: no-repeat;">
+    <h2 style="z-index: 2000; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">Demos</h2>
+  </div>
+</a>
 
 
 
 
 
   </div>
-</div>
-  <footer>
-    <div class="container">
-      <div class="row justify-content-center">
-        <ul class="col-sm-3 col-md-4">
-          <h4>Impressum</h4>
-          <li>
-          Christian Eckardt
-          </li>
-          <li>
-            Zesenstraße 9
-          </li>
-          <li>
-            22301 Hamburg
-          </li>
-          <br>
-        </ul>
 
-        <div class="col-sm-3 col-md-4">
-          <h4>Follow me</h4>
-          <a href="https://www.linkedin.com/in/christian-eckardt-41527216a/"><img src="images/linkedin.png" class="social-icon"></a><a href="https://www.xing.com/profile/Christian_Eckardt21/cv"><img src="images/xing.png" class="social-icon"></a><a href="https://github.com/EckeEcke"><img src="images/github.png" class="social-icon"></a>
-          <br>
-        </div>
+  <div style="display: block; margin: 40px auto; text-align: center">
+    <br><br><br>
+    <h3 style="color: black;">Follow me</h2>
+    <a href="https://www.linkedin.com/in/christian-eckardt-41527216a/" target="_blank"><img src="images/linkedin.png" class="social-icon"></a>
+    <a href="https://www.xing.com/profile/Christian_Eckardt21/cv" target="_blank"><img src="images/xing.png" class="social-icon"></a>
+    <a href="https://github.com/EckeEcke" target="_blank"><img src="images/github.png" class="social-icon"></a>
+  </div>
 
+<br><br>
+
+<footer id="footer">
+  <div id="contact-information-box" style="background-color: black; color: white; width: 100%;">
+    <br><br>
+    <h2>Contact</h2>
+    <br>
+    <div style="text-align: center; display: flex;
+    flex-wrap: wrap;
+    justify-content: center;">
+
+      <img src="images/chris2.jpg" style="width: 250px; height: 250px; object-fit: cover; margin: 30px;">
+
+      <div style="margin: 30px">
+        <h4>Address</h4>
+      <p>
+      Christian Eckardt
+      <br>
+      Zesenstraße 9
+      <br>
+      22301 Hamburg    
+      </p>
+
+      <h4>Phone</h4>
+      <p>0178 5325488</p>
+
+      <h4>Mail</h4>
+      <p>eckardt.christian@web.de</p>
       </div>
+      <br><br>
 
-      </div>
+    </div>
+    
+  </div>
 
-  </footer>
+</footer>
 
 
-  <a href="index.html"><img src="images/house.png" class="home"></a>
     <script type="text/javascript" src="js/mypage.js"></script>
 </body>
 

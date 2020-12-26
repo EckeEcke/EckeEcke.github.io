@@ -1,75 +1,58 @@
+<html>
 <head>
   <meta name="viewport" content="width=device-width, maximum-scale=1.0">
-  <title>Demos</title>
+  <title>Christian Eckardt Web Developer 🚀</title>
+  <link rel="stylesheet" href="css/demos.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/mypage.css">
-  <link rel="stylesheet" href="css/demos.css">
   <link rel="icon" type="image/png" href="images/favicon.png"/>
+  
 
 </head>
-<body>
+<body style="background-image: url('images/demos-background.jpeg'); background-repeat: no-repeat; background-size: cover">
+
+  <a href="index.html" style="display: block">
+    <img id="logo" src="images/logo.png">
+  </a>
+
   <button id="hamburger" onclick="showMenu()">
     <div class="line1"></div>
     <div class="line2"></div>
     <div class="line3"></div>
   </button>
+    <div id="burger-menu">
+      <ul>
+        <li>
+          <a href="index.html">Home</a>
+        </li>
+        <hr class="nav-line">
+        <li>
+          <a href="https://nifty-hopper-c1da01.netlify.app/" target="_blank">React Travel Blog</a>
+        </li>
+        <hr class="nav-line">
+        <li>
+          <a href="shooter.html">JS Space Shooter</a>
+        </li>
+        <hr class="nav-line">
+        <li>
+          <a href="pong.html">JS Pong</a>
+        </li>
+        <hr class="nav-line">
+        <li>
+          <a href="jsdemos.html">Demos</a>
+        </li>
+      </ul>
+    </div>
+ 
 
-  <div id="burger-menu">
-    <ul>
-      <li>
-        <a href="index.html">Home</a>
-      </li>
-      <hr>
-      <li>
-        <a href="jsdemos.html">Demos</a>
-      </li>
-      <hr>
-      <li>
-        <a href="shooter.html">JS Shooter</a>
-      </li>
-      <hr>
-      <li>
-        <a href="pong.html">JS Pong</a>
-      </li>
-      <hr>
-      <li>
-        <a href="travelblog.html">Blog Editor</a>
-      </li>
-      <hr>
-      <li>
-        <a href="CV.html">My CV</a>
-      </li>
-    </ul>
-  </div>
-  <nav class="navbar navbar-expand-md justify-content-center">
-    <ul class="navbar-nav">
-      <li class="nav-item px-5">
-        <a href="jsdemos.html" class="nav-link">Demos</a>
-      </li>
-      <li class="nav-item px-5">
-        <a href="shooter.html" class="nav-link">JS Shooter</a>
-      </li>
-      <li class="nav-item px-5">
-        <a href="pong.html" class="nav-link">JS Pong</a>
-      </li>
-      <li class="nav-item px-5">
-        <a href="travelblog.html" class="nav-link">Blog Editor</a>
-      </li>
-      <li class="nav-item px-5">
-        <a href="CV.html" class="nav-link"> My CV</a>
-      </li>
-    </ul>
-  </nav>
-
-
-  <h1 class="big-heading">DEMOS</h1>
+    <h1 class="big-heading">DEMOS</h1>
   <br><br>
   <br>
 
 
 
   <div class="container" style="display: flex; flex-wrap: wrap; justify-content: center;">
-    <div class="api-div">
+    <div class="demo-div">
       <center>
 
 
@@ -92,7 +75,7 @@
       </div>
 
       <center>
-        <div class="api-div">
+        <div class="demo-div">
           <div id="jumping-mario-animation">
              <div id="jumping-box">
                <image id="jumping-mario" src="images/jumpman.png"></image>
@@ -111,7 +94,7 @@
 
 
       <center>
-        <div class="api-div">
+        <div class="demo-div">
           <br>
           <div id="results-demo">
             <hr id="majority-line">
@@ -161,7 +144,7 @@
 
 
 
-      <div class="api-div" id="pacman-container">
+      <div class="demo-div" id="pacman-container">
         <div id="pacman"></div>
         <div id="pallet-1" class="pallet"></div>
         <div id="pallet-2" class="pallet"></div>
@@ -181,7 +164,7 @@
       </div>
 
       <center>
-        <div class="api-div">
+        <div class="demo-div">
           <br>
           <div id="mario-animation">
               <div id="marios-box">
@@ -199,7 +182,7 @@
 
 
 <center>
-  <div class="api-div">
+  <div class="demo-div">
     <div id="random-game">
       <p id="scoreboard">Points: 0</p>
 
@@ -288,44 +271,6 @@
 </div>
 
 
-
-  <script type="text/javascript" src="js/jsdemo.js"></script>
-
-  <footer>
-    <div class="container">
-      <div class="row justify-content-center">
-
-        <ul class="col-sm-3 col-md-4">
-          <h4>Impressum</h4>
-          <li>
-          Christian Eckardt
-          </li>
-          <li>
-            Zesenstraße 9
-          </li>
-          <li>
-            22301 Hamburg
-          </li>
-          <br>
-        </ul>
-
-        <div class="col-sm-3 col-md-4">
-          <h4>Follow me</h4>
-          <a href="https://www.linkedin.com/in/christian-eckardt-41527216a/"><img src="images/linkedin.png" class="social-icon"></a><a href="https://www.xing.com/profile/Christian_Eckardt21/cv"><img src="images/xing.png" class="social-icon"></a><a href="https://github.com/EckeEcke"><img src="images/github.png" class="social-icon"></a>
-          <br>
-        </div>
-
-      </div>
-
-      </div>
-
-  </footer>
-
-  <script>
-
-
-
-  </script>
-    <a href="index.html"><img src="images/house.png" class="home"></a>
-  </body>
-  </html>
+<script type="text/javascript" src="js/jsdemo.js"></script>
+    </body>
+    </html>

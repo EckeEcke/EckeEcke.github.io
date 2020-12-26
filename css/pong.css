@@ -43,7 +43,7 @@ canvas {
 #Score1 {
 
   position: absolute;
-  top: 90px;
+  top: 120px;
   left: 35%;
   color: white;
   font-size: 50;
@@ -51,7 +51,7 @@ canvas {
 
 #Score2 {
   position: absolute;
-  top: 90px;
+  top: 120px;
   right: 35%;
   color: white;
   font-size: 50;
@@ -87,7 +87,7 @@ h2 {
 #hamburger {
   position: fixed;
   top: 20px;
-  left: 20px;
+  right: 20px;
   background-color: rgb(0,0,0,0.7);
   padding: 5px;
   z-index: 3000;
@@ -105,15 +105,16 @@ h2 {
 #burger-menu {
 
   position: fixed;
-  background-color: #2f2f2f;
+  background-color: black;
   opacity: 0.99;
-  left: 0px;
+  right: 0px;
   top: 0px;
   padding: 120px 50px;
   z-index: 2000;
   display: none;
   height: 100vh;
   overflow-y: auto;
+  border-left: 1px solid white;
 }
 
 hr {
@@ -132,6 +133,26 @@ hr {
   list-style: none;
 }
 
+.nav-line {
+  background-color: white;
+  height: 2px;
+}
+
+
+
+#logo {
+  position: absolute;
+  top: 24px;
+  left: 20px;
+  padding: 5px;
+  border: 1px solid white;
+  height: 54px;
+  width: 54px;
+  background-color: black;
+
+}
+
+
 .controls {
   display: block;
   text-align: center;
@@ -146,9 +167,9 @@ hr {
 #sound-button {
   display: block;
   position: absolute;
-  top: 20px;
+  top: 80%;
   right: 20px;
-  font-size: 3.5em;
+  font-size: 3.2em;
   background-color: rgb(0,0,0,0.7);
   border-style: none;
   padding: 10px 12px 12px 12px;

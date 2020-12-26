@@ -16,8 +16,7 @@
 
 h1 {
    color: white;
-   font-size: 48pt;
-   margin-top: 10%;
+   font-size: 52pt;
    text-align: center;
 }
 
@@ -32,78 +31,24 @@ h1 {
 
 
 
-@keyframes blinktext {
-  0% {opacity: 0; color: yellow; transform: scaleY(1.5);};
-}
-
-
-
-
 
 body {
-  background-image: linear-gradient(to bottom, rgb(0,0,0,0.4), rgb(0,0,0,0.4)), url("../images/hamburg.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
   font-family: myFont;
 }
+
 
 
 h2 {
   text-align: center;
   color: white;
-  font-size: 3em;
+  font-size: 42pt;
 }
 
-p {
-  font-size: 1.2em;
-}
-nav a {
-  color: white;;
-  font-size: 1.5em;
-}
-
-a:hover {
-  color: rgb(155, 131, 103);
-  text-decoration: none;
-  transition: 400ms;
-}
-
-nav {
-  text-align: center;
-  background-color: black;
-  opacity: 0.9;
-}
-
-nav li {
-  display: block;
-}
-
-footer {
-  background-color: black;
-  margin-top: 20vh;
-  width: 100%;
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
-
-footer a {
-  text-decoration: none;
-  color: white;
-  list-style: none;
-}
-
-footer li {
-  list-style: none;
-}
 
 .social-icon {
-  height: 3em;
+  height: 3.2em;
   width: auto;
-  filter: invert(1);
-  padding: 10px;
+  margin: 20px;
 }
 
 .index-icon {
@@ -126,319 +71,70 @@ footer li {
   transform: scale(1.1);
 }
 
+#home-tile-image img {
+  width: 100vw;
+  max-width: 500px;
+}
+
+#about-tile {
+  width: 100vw;
+  max-width: 540px;
+  color: black; 
+  padding: 20px;
+  margin: 10px auto;
+}
+
+
 
 #pipeline {
   display: inline;
 }
 
-.api-div {
-  width: 320px;
-  height: 360px;
-  background-color: black;
-  color: white;
-  position: relative;
-  margin: 10px;
+#header-image {
+  padding-top: 10%;
 }
-
-.api-text {
-  font-size: 1.1em;
-  text-align: center;
-  color: black;
-}
-
-.api-description {
-  font-size: 1em;
-  text-align: center;
-}
-
-.highlight {
-  position: absolute;
-  font-weight: bolder;
-  padding: 10px;
-  background-color: white;
-  top: 40px;
-  left: 0px;
-  width: 100%;
-}
-
-
-.letter-box{
-  width: 30px;
-  font-size: 1.2em;
-}
-
-#guess-button {
-  display: none;
-  position: absolute;
-  left: 110px;
-  top: 150px;
-}
-
-#hint {
-  width: 100%;
-  height: 15%;
-  background-color: white;
-  color: black;
-}
-
-#random-button {
-  position: absolute;
-  top: 150px;
-  left: 110px;
-}
-
-#tries-left {
-  position: absolute;
-  right: 10px;
-  top: 97px;
-}
-
-
-#pacman-container {
-  overflow: hidden;
-};
-
-
-
-.pac-image{
-  width: 40px;
-  height: 40px;
-}
-
-#pacman {
-  position: absolute;
-  top: 110px;
-  left: 0px;
-  height: 40px;
-  width: 40px;
-}
-
-
-
-#pallet-1 {
-  position: absolute;
-  top: 110px;
-  left: 30px;
-}
-
-#pallet-2 {
-  position: absolute;
-  top: 110px;
-  left: 70px;
-}
-
-#pallet-3 {
-  position: absolute;
-  top: 110px;
-  left: 110px;
-}
-
-#pallet-4 {
-  position: absolute;
-  top: 110px;
-  left: 150px;
-}
-
-#pallet-5 {
-  position: absolute;
-  top: 110px;
-  left: 190px;
-}
-
-#pallet-6 {
-  position: absolute;
-  top: 110px;
-  left: 230px;
-}
-
-#pallet-7 {
-  position: absolute;
-  top: 110px;
-  left: 270px;
-}
-
-
-#results-demo {
-  height: 100px;
-  background-image: linear-gradient(to right, rgb(29, 29, 148), rgb(190, 12, 12));
-  overflow: hidden;
-  position: relative;
-  width: 160px;
-
-}
-
-
-#option-a, #option-b {
-  width: 50px;
-  height: 100px;
-  display: inline-block;
-  position: absolute;
-}
-
-#option-a {
-  background-color: blue;
-  top: 100px;
-  left: 20px;
-}
-
-#option-b {
-  background-color: red;
-  top: 100px;
-  left: 90px;
-}
-
-#majority-line {
-  position: absolute;
-  top: 34px;
-  width: 100%;
-  border: 1px solid orange;
-  background-color: orange;
-}
-
-#results-input {
-  display: inline-block;
-}
-
-.result-input{
-  margin: 0 5px;
-}
-
-
-
-
-
-
-
-
-.reactionBTN {
-  height: 50px;
-  width: 50px;
-  margin: 20px;
-  background-color: darkgrey;
-  border-style: none;
-  border-radius: 50%;
-}
-
-#random-game {
-  display: none;
-}
-
-#random-text {
-  display: none;
-  color: white;
-}
-
-#scoreboard {
-  font-size: 2em;
-}
-
-#marios-box, #dk-box {
-  width: 200px;
-  height: 160px;
-  overflow: hidden;
-  position: relative;
-  background-color: white;
-}
-
-#mario, #donkey {
-  width: 600px;
-  position: absolute;
-  left: -2px;
-  bottom: -25px;
-  z-index: 1;
-}
-
-#mario-background {
-  position: absolute;
-  left: -400px;
-  bottom: 0px;
-  z-index: 0;
-  width: 600px;
-}
-
-#mario-animation {
-  padding: 2px;
-}
-
-
-
-#jumping-mario-animation {
-  position: relative;
-  height: 150px;
-  width: 150px;
-  background-color: black;
-}
-
-#jumping-box {
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  bottom: 0px;
-  left: 50px;
-  overflow: hidden;
-}
-
-#jumping-mario {
-  position: absolute;
-  left: 0px;
-  bottom: -3px;
-  width: 150px;
-}
-
-#question-block {
-  top: 7px;
-  position: absolute;
-  left: 50px;
-  width: 50px;
-}
-
-
-
 
 .index-container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 1000px;
-  background-color: rgb(0,0,0,0.7);
+  max-width: 100vw;
   padding-top: 30px;
   margin: 0 auto;
 }
 
-#home-tile-image {
-  width: 400px;
-  height: 288px;
-  margin: 20px;
+.index-content-tile {
+  width: 600px;
+  max-width: 100vw;
+  height: 400px;
+
 }
 
-#home-tile-image img {
+.index-content-tile h2 {
+  opacity: 0;
+}
+
+.index-content-tile:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0);
+  transition: background 1s ease;
 }
 
-#about-tile {
-  width: 400px;
-  color: white;
-  padding: 15px;
-  margin: 0px;
+.index-content-tile:hover:after {
+  background: rgba(0, 0, 0, 0.4);
 }
 
-
-#dk-animation {
-  width: 400px;
-  height: 200px;
-  padding-top: 40px;
-  margin: 0 -30px;
-}
-
-#dk-box {
-  margin: 0 auto;
-  background-color: rgb(0,0,0,0);
+.index-content-tile:hover h2 {
+  opacity: 1;
+  transition: 1s ease;
 }
 
 
-.index-button {
-  margin: 10px;
-}
 
 .big-heading {
   color: white;
@@ -450,20 +146,7 @@ footer li {
   font-size: 36pt;
 }
 
-.home {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  height: 60px;
-  width: 60px;
-  display: block;
-  filter: invert(1);
-}
 
-.home:hover {
-  transform: rotate(-45deg);
-  transition: 500ms;
-}
 
 
 
@@ -484,21 +167,32 @@ footer li {
   background-color: rgb(190,190,190);
 }
 
+#logo {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  border: 6px solid black;
+  height: 54px;
+  width: 54px;
+  background-color: black;
+}
+
+
+
 #hamburger {
   position: fixed;
-  top: 10px;
-  left: 10px;
+  top: 8px;
+  right: 8px;
   background-color: rgb(0,0,0,0.7);
   padding: 5px;
   z-index: 3000;
-  display: none;
   border-style: none;
 }
 
 .line1, .line2, .line3 {
-  width: 40px;
-  height: 5px;
-  margin: 10px;
+  width: 30px;
+  height: 4px;
+  margin: 8px;
   background-color: white;
 }
 
@@ -506,33 +200,52 @@ footer li {
 #burger-menu {
 
   position: fixed;
-  background-color: #2f2f2f;
-  opacity: 0.99;
-  left: 0px;
+  background-color: white;
+  opacity: 0.96;
+  right: 0px;
   top: 0px;
-  padding: 120px 50px;
-  z-index: 2000;
+  padding: 100px 80px 100px 0px;
+  z-index: 2500;
   display: none;
   height: 100vh;
-  overflow-y: auto;
+  border-left: 1px solid black;
 }
 
 #burger-menu a {
   text-decoration: none;
-  color: white;
+  color: black;
   font-size: 1.3em;
-  list-style: none;
 }
 
 #burger-menu li {
   list-style: none;
 }
 
-hr {
+.nav-line {
   background-color: white;
+  height: 2px;
 }
 
+#homepage-CTA-BTN {
+  background-color:#039BE5;
+  display: block;
+  margin: 0 auto;
+  color: white;
+  padding: 10px;
+  border-style: none;
+  width: 200px;
+  border-radius: 20px;
+}
 
+#scroll-arrow {
+  width: 32px;
+}
+
+#scroll-to-tiles-BTN {
+  background: none;
+  border-style: none;
+  animation: arrow-animation 5s infinite linear;
+}
 
 #clock {
   background-color: black;
@@ -568,6 +281,17 @@ hr {
 
 
 
+
+@keyframes arrow-animation {
+  0% {transform: translateY(0)}
+  8% {transform: translateY(10px)}
+  16% {transform: translateY(20px)}
+  24% {transform: translateY(10px)}
+  32% {transform: translateY(0)}
+}
+
+
+
 @media (max-width: 500px){
   #pipeline {
     display: none;
@@ -583,13 +307,17 @@ hr {
   margin: 0;
 }
 
+  .index-content-tile h2 {
+    opacity: 1;
+  }
+
   h1 {
-  font-size: 2em;
-  margin-top: 30%;
+  font-size: 2.4em;
+  padding-top: 25%;
   }
 
   h2 {
-  font-size: 1.5em;
+  font-size: 2em;
   }
 
   .index-button{
@@ -610,74 +338,7 @@ hr {
   .index-icon{ width: 70%;
   }
 
-
-
-  #home-tile-image{
-  width: 70%;
-  margin-bottom: -100px;
-  }
-  #about-tile {
-    width: 70%;
-    margin: 0 auto;
-    text-align: justify;
-  }
-  #about-tile p {
-  font-size: 0.8em;
-  }
-  #tries-left {
-    top: 92px;
-    right: 4px;
-  }
-
-
-}
-
-@media (min-width: 1000px) {
-  p, nav li {
-    font-size: 1em;
-}
-}
-
-@media (min-width: 1px) {
-
-  p, nav li {
-    font-size: 1.2em;
-  }
-  .navbar, nav li, .home {
-    display: none;
-  }
-  #hamburger {
-    display: block;
-  }
-}
-
-@media (min-width: 900px) {
-
-  .blinking-text-div {
-    font-size: 3em;
-  }
 }
 
 
-@media (min-width: 1300px) {
-  #burger-menu {
-    display: none;
-  }
-  p, nav li {
-    font-size: 1.2em;
-  }
-  nav li, .home {
-  display: block;
-  }
-  .navbar {
-    display: flex;
-  }
-  #hamburger {
-    display: none;
-  }
-  #cookies {
-    width: 80%;
-    height: 40%;
-    left: 10%;
-  }
-}
+

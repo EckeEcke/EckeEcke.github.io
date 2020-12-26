@@ -6,25 +6,11 @@ body {
   background-attachment: fixed;
 }
 
-nav a {
-  color: white;
-}
-
-nav {
-  background-color: rgb(41, 41, 41, 0.8);
-}
 
 footer {
   background-color: rgb(41, 41, 41, 0.9);
 }
 
-.home {
-  filter: invert(1);
-}
-
-#burger-menu {
-  background-color: rgb(41, 41, 41, 0.9);
-}
 
 .mood, .transport {
   font-size: 1.2em;
@@ -180,8 +166,6 @@ textarea {
   opacity: 0.9;
   border-radius: 25%;
   position: absolute;
-  /*right: 5px;
-  top: 45px;*/
   height: 30px;
   width: 40px;
   bottom: 10px;
@@ -199,8 +183,6 @@ textarea {
   opacity: 0.9;
   border-radius: 25%;
   position: absolute;
-  /*right: 5px;
-  top: 85px;*/
   height: 30px;
   width: 40px;
   bottom: 10px;
@@ -217,8 +199,6 @@ textarea {
   background-color: white;
   opacity: 0.9;
   position: absolute;
-  /*right: 5px;
-  top: 5px;*/
   border-radius: 25%;
   height: 30px;
   width: 40px;
