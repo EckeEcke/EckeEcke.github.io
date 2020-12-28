@@ -51,6 +51,12 @@ h2 {
   margin: 20px;
 }
 
+.social-icon:hover {
+  filter: invert(0.2);
+  transform: scale(1.1);
+  transition: 0.5s;
+}
+
 .index-icon {
   filter: invert(1);
   width: 80%;
@@ -85,10 +91,6 @@ h2 {
 }
 
 
-
-#pipeline {
-  display: inline;
-}
 
 #header-image {
   padding-top: 10%;
@@ -169,8 +171,8 @@ h2 {
 
 #logo {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 10px;
+  left: 10px;
   border: 6px solid black;
   height: 54px;
   width: 54px;
@@ -181,8 +183,8 @@ h2 {
 
 #hamburger {
   position: fixed;
-  top: 8px;
-  right: 8px;
+  top: 10px;
+  right: 10px;
   background-color: rgb(0,0,0,0.7);
   padding: 5px;
   z-index: 3000;
@@ -195,6 +197,7 @@ h2 {
   margin: 8px;
   background-color: white;
 }
+
 
 
 #burger-menu {
@@ -221,6 +224,11 @@ h2 {
   list-style: none;
 }
 
+#burger-menu a:hover {
+  color: #039BE5;
+  transition: 0.5s;
+}
+
 .nav-line {
   background-color: white;
   height: 2px;
@@ -237,8 +245,19 @@ h2 {
   border-radius: 20px;
 }
 
+#homepage-CTA-BTN:hover {
+  background-color: #21214b;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  transition: 0.5s;
+}
+
 #scroll-arrow {
   width: 32px;
+}
+
+#scroll-arrow:hover {
+  transform: scale(1.4);
+  transition: 0.5s;
 }
 
 #scroll-to-tiles-BTN {
@@ -293,19 +312,12 @@ h2 {
 
 
 @media (max-width: 500px){
-  #pipeline {
-    display: none;
-  }
 
   .index-container {
     width: 100%;
     margin: 0;
   }
 
-  #dk-animation {
-  width: 320px;
-  margin: 0;
-}
 
   .index-content-tile h2 {
     opacity: 1;
@@ -328,14 +340,6 @@ h2 {
 
   a button{
   font-size: 0.6em;
-  }
-
-  a h4, h3 {
-  font-size: 1.2em;
-  text-decoration: underline;
-  }
-
-  .index-icon{ width: 70%;
   }
 
 }
