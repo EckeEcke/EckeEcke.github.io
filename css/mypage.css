@@ -274,6 +274,26 @@ h2 {
   animation: arrow-animation 5s infinite linear;
 }
 
+#scroll-back-top-BTN {
+  display: none;
+  background: none;
+  transform: rotate(180deg);
+  border-style: none;
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+}
+
+#scroll-arrow-up {
+  width: 36px;
+  height: 36px;
+  background-color: white;
+  opacity: 0.7;
+  animation: arrow-animation 5s infinite linear;
+}
+
+
+
 #clock {
   background-color: black;
   color: rgb(34, 252, 40);
@@ -327,7 +347,7 @@ h2 {
   }
 
   #header-image {
-    min-height: 72vh;
+    min-height: 68vh;
   }
 
   .index-content-tile h2 {
