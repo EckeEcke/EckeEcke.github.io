@@ -190,7 +190,7 @@ h2 {
 
 
 #hamburger {
-  position: fixed;
+  position: absolute;
   top: 10px;
   right: 10px;
   background-color: rgb(0,0,0,0.7);
@@ -217,9 +217,10 @@ h2 {
   top: 0px;
   padding: 100px 80px 100px 0px;
   z-index: 2500;
-  display: none;
-  height: 100vh;
+  height: 0vh;
   border-left: 1px solid black;
+  transition: 0.5s;
+  opacity: 0;
 }
 
 #burger-menu a {
@@ -280,14 +281,14 @@ h2 {
   transform: rotate(180deg);
   border-style: none;
   position: fixed;
-  right: 10px;
-  bottom: 10px;
+  right: 0;
+  bottom: 0;
   z-index: 100;
 }
 
 #scroll-arrow-up {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   background-color: white;
   opacity: 0.7;
   animation: arrow-animation 5s infinite linear;

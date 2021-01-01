@@ -38,14 +38,14 @@ canvas {
 
   position: fixed;
   background-color: black;
-  opacity: 0.99;
+  opacity: 0;
   right: 0px;
   top: 0px;
   padding: 100px 60px 100px 0px;
   z-index: 2000;
-  display: none;
-  height: 100vh;
+  height: 0;
   overflow-y: auto;
+  transition: 0.5s;
 }
 
 #burger-menu a {

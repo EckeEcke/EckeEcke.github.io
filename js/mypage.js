@@ -1,9 +1,13 @@
 function showMenu(){
-  if (document.getElementById("burger-menu").style.display === "none") {
-    document.getElementById("burger-menu").style.display = "block";
+  if (document.getElementById("burger-menu").style.height === "0vh") {
+    document.getElementById("burger-menu").style.height = "100vh";
+    document.getElementById("burger-menu").style.opacity = "0.99";
+    document.getElementById("hamburger").style.position = "fixed";
   }
   else {
-    document.getElementById("burger-menu").style.display = "none";
+    document.getElementById("burger-menu").style.height = "0vh";
+    document.getElementById("burger-menu").style.opacity = "0";
+    document.getElementById("hamburger").style.position = "absolute";
   }
 }
 

@@ -104,15 +104,15 @@ h2 {
 
   position: fixed;
   background-color: black;
-  opacity: 0.99;
+  opacity: 0;
   right: 0px;
   top: 0px;
   padding: 120px 50px;
   z-index: 2000;
-  display: none;
-  height: 100vh;
+  height: 0;
   overflow-y: auto;
   border-left: 1px solid white;
+  transition: 0.5s;
 }
 
 hr {

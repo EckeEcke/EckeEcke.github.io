@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="css/pong.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="icon" type="image/png" href="images/favicon.png"/>
-<script type="text/javascript" src="script.js"></script>
 </head>
 
 <body>
@@ -515,13 +514,15 @@ function keyDownHandler (event) {
 
 
   function showMenu(){
-    if (document.getElementById("burger-menu").style.display === "none") {
-      document.getElementById("burger-menu").style.display = "block";
-    }
-    else {
-      document.getElementById("burger-menu").style.display = "none";
-    }
+  if (document.getElementById("burger-menu").style.height === "0vh") {
+    document.getElementById("burger-menu").style.height = "100vh";
+    document.getElementById("burger-menu").style.opacity = "0.99";
   }
+  else {
+    document.getElementById("burger-menu").style.height = "0vh";
+    document.getElementById("burger-menu").style.opacity = "0";
+  }
+}
 
 </script>
 
