@@ -14,6 +14,7 @@
 }
 
 
+
 h1 {
    color: white;
    font-size: 52pt;
@@ -33,7 +34,7 @@ h1 {
 
 
 body {
-  font-family: myFont;
+  font-family: "Roboto";
 }
 
 
@@ -44,13 +45,30 @@ h2 {
   font-size: 42pt;
 }
 
+h3 {
+  font-size: 2.5em;
+}
+
 #header-image {
-  background-image: url('../images/test.jpg'); 
+  font-family: "Oswald";
+  background-color: black;
   min-height: 80vh; 
   max-width: 100vw; 
-  background-size: cover; 
-  background-repeat: no-repeat; 
-  color: black;
+  padding-top: 10%;
+}
+
+#header-image h1, #header-image h2, #header-image button {
+  opacity: 0;
+  animation: show-title-animation 2s linear;
+  animation-fill-mode: forwards;
+}
+
+#header-image h2 {
+  animation-delay: 1s;
+}
+
+#header-image button {
+  animation-delay: 2s;
 }
 
 .social-icon {
@@ -98,11 +116,6 @@ h2 {
   margin: 10px auto;
 }
 
-
-
-#header-image {
-  padding-top: 10%;
-}
 
 .index-container {
   display: flex;
@@ -174,25 +187,23 @@ h2 {
 .submit-button:hover {
   box-shadow: 1px -2px black;
   transition: 500ms;
-  background-color: rgb(190,190,190);
+  background-color: rgba(255, 255, 255, 0.705);
 }
 
 #logo {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  border: 6px solid black;
-  height: 54px;
-  width: 54px;
-  background-color: black;
+  top: 8px;
+  left: 8px;
+  height: 80px;
+  filter: invert(1);
 }
 
 
 
 #hamburger {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 8px;
+  right: 8px;
   background-color: rgb(0,0,0,0.7);
   padding: 5px;
   z-index: 3000;
@@ -204,6 +215,7 @@ h2 {
   height: 4px;
   margin: 8px;
   background-color: white;
+  border-radius: 20px;
 }
 
 
@@ -216,7 +228,7 @@ h2 {
   right: 0px;
   top: 0px;
   padding: 100px 80px 100px 0px;
-  z-index: 2500;
+  z-index: -3000;
   height: 0vh;
   border-left: 1px solid black;
   transition: 0.5s;
@@ -339,6 +351,11 @@ h2 {
   32% {transform: translateY(0)}
 }
 
+@keyframes show-title-animation {
+  0% {opacity: 0}
+  100% {opacity: 1}
+}
+
 
 
 @media (max-width: 770px){
@@ -364,6 +381,7 @@ h2 {
   h2 {
   font-size: 2em;
   }
+
 
   .index-button{
   width: 108px;

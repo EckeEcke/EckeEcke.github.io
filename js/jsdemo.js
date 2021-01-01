@@ -28,6 +28,12 @@ document.addEventListener("scroll", function(){
 
 
 
+
+
+
+
+
+
 const optionA = document.getElementById("option-a");
 const optionB = document.getElementById("option-b");
 const inputA = document.getElementById("input-option-a");
