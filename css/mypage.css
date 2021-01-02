@@ -403,6 +403,10 @@ h3 {
     overflow-x: hidden;
   }
 
+  #homepage-CTA-BTN {
+    margin-bottom: 10px;
+  }
+
   .index-content-tile h2 {
     opacity: 1;
   }
@@ -434,6 +438,13 @@ h3 {
 
 
 @media screen and (orientation:landscape) {
-  h1 {margin-top: 25%;}
-  #header-image {min-height: 80vh;}
+  h1 {
+    margin-top: 25%;}
+
+  #header-image {
+    min-height: 80vh;}
+    
+  #homepage-CTA-BTN {
+    margin-bottom: 10px;
+  }
 }
