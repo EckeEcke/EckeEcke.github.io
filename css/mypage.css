@@ -14,7 +14,6 @@
 }
 
 
-
 h1 {
    color: white;
    font-size: 52pt;
@@ -50,6 +49,10 @@ h3 {
 }
 
 #header-image {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   font-family: "Oswald";
   background-color: black;
   min-height: 80vh; 
@@ -175,7 +178,7 @@ h3 {
 
 
 .submit-button {
-  width: 100px;
+  min-width: 100px;
   border-radius: 20px;
   border-style: none;
   box-shadow: 0.5px 3px black;
@@ -256,14 +259,13 @@ h3 {
 }
 
 #homepage-CTA-BTN {
-  background-color:#039BE5;
+  background-color:#e57003;
   display: block;
   margin: 0 auto;
   color: white;
   padding: 10px;
   border-style: none;
   width: 200px;
-  border-radius: 20px;
 }
 
 #homepage-CTA-BTN:hover {
@@ -280,6 +282,11 @@ h3 {
   transform: scale(1.4);
   transition: 0.5s;
 }
+
+#scroll-arrow-div {
+  height: 20vh;
+}
+
 
 #scroll-to-tiles-BTN {
   background: none;
@@ -367,6 +374,7 @@ h3 {
 
   #header-image {
     min-height: 68vh;
+    padding-top: 8%;
   }
 
   .index-content-tile h2 {
@@ -375,13 +383,15 @@ h3 {
 
   h1 {
   font-size: 2.4em;
-  padding-top: 30%;
   }
 
   h2 {
   font-size: 2em;
   }
 
+  #logo {
+    height: 54px;
+  }
 
   .index-button{
   width: 108px;

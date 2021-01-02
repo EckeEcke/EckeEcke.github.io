@@ -3,6 +3,9 @@
   src: url(myFont.ttf);
 }
 
+body {
+  font-family: "Roboto";
+}
 
 #card-front, #card-back {
   height: 360px;
