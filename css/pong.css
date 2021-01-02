@@ -35,27 +35,6 @@ canvas {
   border: 2px solid white;
 }
 
-.scoreboard {
- 	margin: auto;
-	display: inline-block;
-}
-
-#Score1 {
-
-  position: absolute;
-  top: 120px;
-  left: 35%;
-  color: white;
-  font-size: 50;
-}
-
-#Score2 {
-  position: absolute;
-  top: 120px;
-  right: 35%;
-  color: white;
-  font-size: 50;
-}
 
 .black-box {
   width: 100%;
@@ -175,6 +154,7 @@ hr {
   padding: 10px;
   font-size: 1.2em;
   border-style: none;
+  display: block;
 }
 
 #startButton:hover {

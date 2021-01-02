@@ -62,19 +62,6 @@
     <h2>Pong</h2>
 
     <br>
-
-
-  <div class="scoreboard">
-
-  <div id="Score1">
-  <div id="P1Score"></div>
-  </div>
-  <div id="Score2">
-  <div id="P2Score">
-  </div>
-  </div>
-
-  </div>
   <br>
 
 
@@ -92,9 +79,12 @@
 
   <br><br>
 
-  <button id="start-button" onclick="startGame()">
-  &#127955; Start &#127955;
-  </button>
+  <center>
+    <button id="start-button" onclick="startGame()">
+      &#127955; Start &#127955;
+      </button>
+  </center>
+  
   <br><br>
 <div id="game-settings">
   <input type="color" id="color-picker-p1" value="#ed3d0d"><label>&nbsp Choose color P1</label>
@@ -111,7 +101,9 @@
 
 <article id="description">
   <br><br>
-  To start with Javascript I took a Udemy course on how to build Pong using Javascript. I wrote functions drawing rectangles into a canvas element and making them move. The calculations recognize when the ball would leave the canvas and make it change direction (collision) or count the score. The score is also displayed in HTML. I implemented sounds that play if certain conditions are met. Also I built in a button to turn sound on or off.
+  To start with Javascript I took a Udemy course on how to build Pong using Javascript. I wrote functions drawing objects into a canvas element and making them move with setInterval. 
+  I coded a collision detection into the game preventing the ball from leaving the canvas, making it bounce from paddles and counting scores. 
+  The score is tracked and displayed in canvas. I implemented sound controls and sounds that play if certain conditions are met.
 </article>
 
 <article class="too-small">
@@ -141,6 +133,8 @@
 
   let colorPaddle1 = "#ed3d0d";
   let colorPaddle2 = "#26ed17";
+
+  let runGame;
 
   let canvasContext;
   let ballX = 400;
@@ -186,17 +180,23 @@
   function startGame(){
     canvas.style.display ="block";
     canvasContext = canvas.getContext("2d");
-    setInterval(callAll, 1000/gameSpeed);
+    runGame = setInterval(callAll, 1000/gameSpeed);
     startBtn.style.display ="none";
     descriptionTxt.style.display = "none";
     inputs.style.display = "none";
 
   }
 
-
+  function drawScore(){
+    canvasContext.font = "48px retro";
+    canvasContext.fillStyle = "white";
+    canvasContext.fillText(Score1, canvas.width/4, 60);
+    canvasContext.font = "48px retro";
+    canvasContext.fillStyle = "white";
+    canvasContext.fillText(Score2, 3*canvas.width/4, 60);
+  }
 
   function soundControl() {
-    //document.getElementById("sound-button").style.display="none";
     if (sounds.muted == true){
       sounds.muted = false;
       soundBtn.innerHTML="&#128266;";
@@ -218,9 +218,8 @@
     moveUp2();
     P1Score();
     P2Score();
-    countP1();
-    countP2();
     raiseSpeed();
+    drawScore();
   }
 
 
@@ -332,18 +331,30 @@ function keyDownHandler (event) {
       if (sounds.muted == false){
       soundVictory.play();
       }
-      alert("Player1 wins!");
-      Score1 = 0;
-      Score2 = 0;
-      paddle1Y = 250;
-      paddle2Y = 250;
+      clearInterval(runGame);
+      canvasContext.font = "48px retro";
+      canvasContext.fillStyle = "white";
+      canvasContext.fillText("Win!", 120, 350);
+      canvasContext.font = "48px retro";
+      canvasContext.fillStyle = "white";
+      canvasContext.fillText("Lose", 130+canvas.width/2, 350);
+
+      setTimeout(resetGame, 5000);
+      function resetGame(){
+        startBtn.style.display ="block";
+        inputs.style.display = "block";
+        canvas.style.display ="none";
+
+        Score1 = 0;
+        Score2 = 0;
+        paddle1Y = 250;
+        paddle2Y = 250;
+      }
     }
   }
 
 
-  function countP1 () {
-    document.getElementById("P1Score").innerHTML = Score1;
-  }
+
 
   function P2Score () {
     if (ballX == 0) {
@@ -362,125 +373,84 @@ function keyDownHandler (event) {
       if (sounds.muted == false){
       victorySound.play();
       }
-      alert("Player2 wins!");
-      Score1 = 0;
-      Score2 = 0;
-      paddle1Y = 250;
-      paddle2Y = 250;
+      clearInterval(runGame);
+
+      canvasContext.font = "48px retro";
+      canvasContext.fillStyle = "white";
+      canvasContext.fillText("Lose", 120, 350);
+      canvasContext.font = "48px retro";
+      canvasContext.fillStyle = "white";
+      canvasContext.fillText("Win!", 130+canvas.width/2, 350);
+
+      setTimeout(resetGame, 5000);
+      function resetGame(){
+        startBtn.style.display ="block";
+        inputs.style.display = "block";
+        canvas.style.display ="none";
+
+        Score1 = 0;
+        Score2 = 0;
+        paddle1Y = 250;
+        paddle2Y = 250;
+      }
+      
     }
   }
 
-  function countP2 () {
-    document.getElementById("P2Score").innerHTML = Score2;
-  }
+
 
   function collision2 () {
 
-    if (ballX == 760 && ballY >= paddle2Y + paddleHeight/4 && ballY <= paddle2Y + 3*paddleHeight/4 && ballY >=0) { /*middle paddle*/
-      ballSpeedX = -5 - speedBoost;
-      ballSpeedY = ballSpeedY -1;
-      hitCounter = hitCounter + 1;
-      if (sounds.muted == false){
-      document.getElementById("bounce").play();
-      }
-    }
-    if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y + paddleHeight/4 && ballSpeedY <= 0) { /*top paddle*/
-      ballSpeedX = -5 - speedBoost;
-      ballSpeedY = 2;
-      hitCounter = hitCounter + 1;
-      if (sounds.muted == false){
-      document.getElementById("bounce").play();
-      }
-    }
-    if (ballX == 760 && ballY > paddle2Y + 3*paddleHeight/4 && ballY < paddle2Y + paddleHeight+tolerance && ballSpeedY >= 0) { /*bottom paddle*/
-      ballSpeedX = -5 - speedBoost;
-      ballSpeedY = 2;
-      hitCounter = hitCounter + 1;
-      if (sounds.muted == false){
-      document.getElementById("bounce").play();
-      }
-    }
 
-    if (ballX == 760 && ballY >= paddle2Y + paddleHeight/4 && ballY <= paddle2Y + 3*paddleHeight/4 && ballSpeedY < 0) { /*middle paddle*/
+    if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y -1 + paddleHeight/2) { /*top paddle*/
       ballSpeedX = -5 - speedBoost;
-      ballSpeedY = ballSpeedY + 1;
       hitCounter = hitCounter + 1;
+      if(ballSpeedY <= 0){
+        ballSpeedY = -4;
+      } else {
+        ballSpeedY = 2;
+      }
       if (sounds.muted == false){
       document.getElementById("bounce").play();
       }
     }
-
-    if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y + paddleHeight/4 && ballSpeedY > 0) { /*top paddle*/
+    if (ballX == 760 && ballY >= paddle2Y + paddleHeight/2 && ballY < paddle2Y + paddleHeight+tolerance) { /*bottom paddle*/
       ballSpeedX = -5 - speedBoost;
-      ballSpeedY = (-2);
       hitCounter = hitCounter + 1;
-      if (sounds.muted == false){
-      document.getElementById("bounce").play();
+      if(ballSpeedY >= 0){
+        ballSpeedY = 4;
+      } else {
+        ballSpeedY = -2;
       }
-    }
-
-    if (ballX == 760 && ballY > paddle2Y + 3*paddleHeight/4 && ballY < paddle2Y + paddleHeight+tolerance && ballSpeedY < 0) { /*bottom paddle*/
-      ballSpeedX = -5 - speedBoost;
-      ballSpeedY = 2;
-      hitCounter = hitCounter + 1;
       if (sounds.muted == false){
       document.getElementById("bounce").play();
       }
     }
   }
 
-
   function collision1 () {
 
-    if (ballX == 30 && ballY >= paddle1Y + paddleHeight/4 && ballY <= paddle1Y + 3*paddleHeight/4 && ballY >=0) { /*middle paddle*/
+
+    if (ballX == 30 && ballY >= paddle1Y - tolerance && ballY < paddle1Y -1 + paddleHeight/2) { /*top paddle*/
       ballSpeedX = 5 + speedBoost;
-      ballSpeedY = ballSpeedY -1;
       hitCounter = hitCounter + 1;
+      if(ballSpeedY <= 0){
+        ballSpeedY = -4;
+      } else {
+        ballSpeedY = 2;
+      }
       if (sounds.muted == false){
       document.getElementById("bounce1").play();
       }
     }
-
-    if (ballX == 30 && ballY >= paddle1Y - tolerance && ballY < paddle1Y + paddleHeight/4 && ballSpeedY <= 0) {
+    if (ballX == 30 && ballY >= paddle1Y + paddleHeight/2 && ballY < paddle1Y + paddleHeight+tolerance) { /*bottom paddle*/
       ballSpeedX = 5 + speedBoost;
-      ballSpeedY = 2;
       hitCounter = hitCounter + 1;
-      if (sounds.muted == false){
-      document.getElementById("bounce1").play();
+      if(ballSpeedY >= 0){
+        ballSpeedY = 4;
+      } else {
+        ballSpeedY = -2;
       }
-    }
-
-    if (ballX == 30 && ballY > paddle1Y + 3*paddleHeight/4 && ballY < paddle1Y + paddleHeight+tolerance && ballSpeedY >= 0) {
-      ballSpeedX = 5 + speedBoost;
-      ballSpeedY = 2;
-      hitCounter = hitCounter + 1;
-      if (sounds.muted == false){
-      document.getElementById("bounce1").play();
-      }
-    }
-
-    if (ballX == 30 && ballY >= paddle1Y + paddleHeight/4 && ballY <= paddle1Y + 3*paddleHeight/4 && ballSpeedY < 0) {
-      ballSpeedX = 5 + speedBoost;
-      ballSpeedY = ballSpeedY + 1;
-      hitCounter = hitCounter + 1;
-      if (sounds.muted == false){
-      document.getElementById("bounce1").play();
-      }
-    }
-
-    if (ballX == 30 && ballY >= paddle1Y - tolerance && ballY < paddle1Y + paddleHeight/4 && ballSpeedY > 0) {
-      ballSpeedX = 5 + speedBoost;
-      ballSpeedY = (-2);
-      hitCounter = hitCounter + 1;
-      if (sounds.muted == false){
-      document.getElementById("bounce1").play();
-      }
-    }
-
-    if (ballX == 30 && ballY > paddle1Y + 3*paddleHeight/4 && ballY < paddle1Y + paddleHeight+tolerance && ballSpeedY < 0) {
-      ballSpeedX = 5 + speedBoost;
-      ballSpeedY = 2;
-      hitCounter = hitCounter + 1;
       if (sounds.muted == false){
       document.getElementById("bounce1").play();
       }

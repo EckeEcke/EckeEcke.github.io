@@ -80,54 +80,54 @@
 <img id="snake-head" src="images/snake-head.png" style="display: none; background: transparent;">
 <script>
 
-  var canvas;
-  var canvasContext;
-  var spaceshipX = 150;
+  let canvas;
+  let canvasContext;
+  let spaceshipX = 150;
   const spaceshipY = 550;
-  var canonY = 520;
-  var canonX = spaceshipX+50;
-  var shotX;
-  var shotY;
-  var aPressed = false;
-  var dPressed = false;
-  var wPressed = false;
-  var shotFired = false;
+  let canonY = 520;
+  let canonX = spaceshipX+50;
+  let shotX;
+  let shotY;
+  let aPressed = false;
+  let dPressed = false;
+  let wPressed = false;
+  let shotFired = false;
 
   let score = 0;
   
 
-  var snakeX = 0;
-  var snakeX2 = 50;
-  var snakeX3 = 100;
-  var snakeX4 = 150;
-  var snakeX5 = 200;
-  var snakeX6 = 250;
-  var snakeX7 = 300;
-  var snakeX8 = 350;
+  let snakeX = 0;
+  let snakeX2 = 50;
+  let snakeX3 = 100;
+  let snakeX4 = 150;
+  let snakeX5 = 200;
+  let snakeX6 = 250;
+  let snakeX7 = 300;
+  let snakeX8 = 350;
 
-  var snakeY = 0;
-  var snakeY2 = 0;
-  var snakeY3 = 0;
-  var snakeY4 = 0;
-  var snakeY5 = 0;
-  var snakeY6 = 0;
-  var snakeY7 = 0;
-  var snakeY8 = 0;
+  let snakeY = 0;
+  let snakeY2 = 0;
+  let snakeY3 = 0;
+  let snakeY4 = 0;
+  let snakeY5 = 0;
+  let snakeY6 = 0;
+  let snakeY7 = 0;
+  let snakeY8 = 0;
 
-  var snakeSpeed = 10;
-  var snakeSpeed2 = 10;
-  var snakeSpeed3 = 10;
-  var snakeSpeed4 = 10;
-  var snakeSpeed5 = 10;
-  var snakeSpeed6 = 10;
-  var snakeSpeed7 = 10;
-  var snakeSpeed8 = 10;
+  let snakeSpeed = 10;
+  let snakeSpeed2 = 10;
+  let snakeSpeed3 = 10;
+  let snakeSpeed4 = 10;
+  let snakeSpeed5 = 10;
+  let snakeSpeed6 = 10;
+  let snakeSpeed7 = 10;
+  let snakeSpeed8 = 10;
 
-  var snakeLives = 8;
+  let snakeLives = 8;
 
   let gameSpeed = 30;
 
-  var sounds = document.getElementsByTagName("audio");
+  let sounds = document.getElementsByTagName("audio");
 
   let intervalGame;
 
@@ -576,12 +576,12 @@
 
       canvasContext.font = "24px retro";
       canvasContext.fillStyle = "limegreen";
-      canvasContext.fillText("Play again?", 95, canvas.height/2);
+      canvasContext.fillText("Play again?", 92, canvas.height/2);
 
       if(isHighscore){
         canvasContext.font = "24px retro";
         canvasContext.fillStyle = "limegreen";
-        canvasContext.fillText("New Highscore", 75, 200);
+        canvasContext.fillText("New Highscore", 72, 200);
       }
 
       isHighscore = false;
