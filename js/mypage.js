@@ -1,22 +1,28 @@
+const burgerMenu = document.getElementById("burger-menu");
+
 function showMenu(){
-  if (document.getElementById("burger-menu").style.height === "0vh") {
-    document.getElementById("burger-menu").style.height = "100vh";
-    document.getElementById("burger-menu").style.opacity = "0.99";
-    document.getElementById("burger-menu").style.zIndex = "2500";
-    document.getElementById("hamburger").style.position = "fixed";
+  if (burgerMenu.style.height === "0vh") {
+    burgerMenu.style.height = "100vh";
+    burgerMenu.style.opacity = "0.99";
+    burgerMenu.style.zIndex = "2500";
+    burgerMenu.style.position = "fixed";
   }
   else {
-    document.getElementById("burger-menu").style.height = "0vh";
-    document.getElementById("burger-menu").style.opacity = "0";
-    document.getElementById("burger-menu").style.zIndex = "-3000";
-    document.getElementById("hamburger").style.position = "absolute";
+    burgerMenu.style.height = "0vh";
+    burgerMenu.style.opacity = "0";
+    burgerMenu.style.zIndex = "-3000";
+    burgerMenu.style.position = "absolute";
   }
 }
+
+
 
 const footer = document.getElementById("footer");
 const blogTile = document.getElementById("blog-tile");
 const body = document.getElementById("body");
 const scrollTopBTN = document.getElementById("scroll-back-top-BTN");
+
+
 
 function scrollToFooter(){
   footer.scrollIntoView({behavior: "smooth"});
@@ -37,3 +43,38 @@ document.addEventListener("scroll", function(){
     scrollTopBTN.style.display = "none";
   }
 })
+
+
+const marioBox = document.getElementById("homepage-running-mario");
+
+let marioLeft = -30;
+
+function movingBox(){
+
+  marioBox.style.left = marioLeft + "%";
+
+  if(marioLeft<160){
+    marioLeft += 0.5;
+  }
+
+  if(marioLeft>=160){
+    marioLeft = -60;
+  }
+}
+
+setInterval(movingBox, window.innerWidth/24);
+
+const homepageMario = document.getElementById("homepage-mario");
+
+let spritesheetPosition = 0;
+
+function animateMario(){
+  spritesheetPosition += 50;
+  homepageMario.style.right = -spritesheetPosition + "px";
+
+  if(spritesheetPosition == 100){
+    spritesheetPosition = 0;
+  }
+}
+
+setInterval(animateMario, 102);

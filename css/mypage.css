@@ -36,7 +36,9 @@ body {
   font-family: "Roboto";
 }
 
-
+body, html {
+  overflow-x: hidden;
+}
 
 h2 {
   text-align: center;
@@ -199,6 +201,7 @@ h3 {
   left: 8px;
   height: 80px;
   filter: invert(1);
+  z-index: 1;
 }
 
 
@@ -214,8 +217,8 @@ h3 {
 }
 
 .line1, .line2, .line3 {
-  width: 30px;
-  height: 4px;
+  width: 40px;
+  height: 6px;
   margin: 8px;
   background-color: white;
   border-radius: 20px;
@@ -269,10 +272,30 @@ h3 {
 }
 
 #homepage-CTA-BTN:hover {
-  background-color: #21214b;
+  background-image: linear-gradient(to right, orange, orange, orange, orange, orange);
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   transition: 0.5s;
+  transform: scale(1.1);
 }
+
+#homepage-running-mario {
+  position: absolute; 
+  height: 60px; 
+  width: 50px;
+  left: -60px; 
+  bottom: 0px; 
+  overflow: hidden;
+}
+
+#homepage-mario {
+  position: absolute;  
+  right: -100px; 
+  height: 60px; 
+  width: 150px; 
+  background-color: black;
+}
+
+
 
 #scroll-arrow {
   width: 32px;
@@ -350,6 +373,7 @@ h3 {
 
 
 
+
 @keyframes arrow-animation {
   0% {transform: translateY(0)}
   8% {transform: translateY(10px)}
@@ -365,7 +389,7 @@ h3 {
 
 
 
-@media (max-width: 770px){
+@media (max-width: 500px){
 
   .index-container {
     width: 100%;
@@ -375,6 +399,8 @@ h3 {
   #header-image {
     min-height: 68vh;
     padding-top: 8%;
+    position: relative;
+    overflow-x: hidden;
   }
 
   .index-content-tile h2 {
@@ -383,6 +409,7 @@ h3 {
 
   h1 {
   font-size: 2.4em;
+  margin-top: 30%;
   }
 
   h2 {
