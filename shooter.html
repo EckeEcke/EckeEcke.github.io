@@ -26,7 +26,13 @@
     </button>
     <br><br>
   <article id="description">
-      I wanted to experiment with my learnings from building Pong and created this game from scratch. Just for fun and getting some practise. To make it more visually appealing I implemented images to the canvas. There are also sound effects and button to turn sound on or off.
+      I wanted to experiment with my learnings from building Pong and created this game 
+      from scratch. Just for fun and getting some practise. To make it more visually appealing 
+      I implemented images to the canvas. There are also sound effects and button to turn sound on or off.
+      <br><br>
+      Controls
+      <br>
+      LEFT: A | RIGHT: D | SHOOT: W
   </article>
 
   <canvas id="game-canvas" width= "400px" height= "600px">
@@ -129,6 +135,8 @@
 
   let highScore = 0;
 
+  let isHighscore = false;
+
 
   sounds.muted = true;
 
@@ -148,8 +156,6 @@
     canvasContext = canvas.getContext("2d");
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
-    alert("Controls: A = left  D = right  W = shoot");
-
   }
 
   function startGame(){
@@ -171,8 +177,24 @@
   function setScore(){
     canvasContext.font = "24px retro";
     canvasContext.fillStyle = "limegreen";
-    canvasContext.fillText("Score: " + score, 12, 30);
+    canvasContext.fillText("Score", 12, 30);
+    canvasContext.font = "24px retro";
+    canvasContext.fillStyle = "white";
+    canvasContext.fillText(score, 12, 60);
+    canvasContext.font = "24px retro";
+    canvasContext.fillStyle = "limegreen";
+    canvasContext.fillText("Hi-Score", 25+canvas.width/2, 30);
+    canvasContext.font = "24px retro";
+    canvasContext.fillStyle = "white";
+    canvasContext.fillText(highScore, 25+canvas.width/2, 60);
+
+    if(score>highScore){
+      highScore = score;
+      isHighscore = true;
+    }
   }
+
+
 
   function callAll(){
     drawEverything();
@@ -540,11 +562,6 @@
     }
 
     if (snakeY4 >= 450){
-
-      if(score>highScore){
-        highScore = score;
-        alert("New Highscore! " + highScore)
-      }
     
       score = 0;
       clearInterval(intervalSnake);
@@ -559,8 +576,15 @@
 
       canvasContext.font = "24px retro";
       canvasContext.fillStyle = "limegreen";
-      canvasContext.fillText("Play again?", 100, canvas.height/2);
+      canvasContext.fillText("Play again?", 95, canvas.height/2);
 
+      if(isHighscore){
+        canvasContext.font = "24px retro";
+        canvasContext.fillStyle = "limegreen";
+        canvasContext.fillText("New Highscore", 75, 200);
+      }
+
+      isHighscore = false;
       gameSpeed = 30;
       canvas;
       canvasContext;
