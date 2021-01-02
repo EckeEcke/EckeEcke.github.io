@@ -403,6 +403,10 @@ h3 {
     overflow-x: hidden;
   }
 
+  #hamburger {
+    top: 6px;
+  }
+
   #homepage-CTA-BTN {
     margin-bottom: 10px;
   }
@@ -437,13 +441,13 @@ h3 {
 }
 
 
-@media screen and (orientation:landscape) {
+@media screen and (orientation:landscape) and (max-width: 600px) {
   h1 {
     margin-top: 25%;}
 
   #header-image {
     min-height: 80vh;}
-    
+
   #homepage-CTA-BTN {
     margin-bottom: 10px;
   }

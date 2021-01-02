@@ -10,15 +10,17 @@
 <body>
 
   <a href="index.html" style="display: block">
-    <img id="logo" src="images/logo.png">
+    <img id="logo" src="images/logo-chris.png">
   </a>  
 
   <center>
+    <br>
     <h2>Space Shooter</h2>
     <article class="too-small">
       <br>
       If you can read this, your screen is to small! You can play this game on your PC in full screen mode!
     </article>
+    <br>
     <button id="startButton" onclick="startGame()">
     👾 Start 👾
     </button>
@@ -85,6 +87,9 @@
   var wPressed = false;
   var shotFired = false;
 
+  let score = 0;
+  
+
   var snakeX = 0;
   var snakeX2 = 50;
   var snakeX3 = 100;
@@ -114,9 +119,16 @@
 
   var snakeLives = 8;
 
-  var gameSpeed = 30;
+  let gameSpeed = 30;
 
   var sounds = document.getElementsByTagName("audio");
+
+  let intervalGame;
+
+  let intervalSnake;
+
+  let highScore = 0;
+
 
   sounds.muted = true;
 
@@ -141,12 +153,26 @@
   }
 
   function startGame(){
-    setInterval(callAll, 1000/140);
-    setInterval(moveSnake, gameSpeed);
+    canvasContext.fillStyle = "black"; /*black background*/
+    canvasContext.fillRect(0,0,canvas.width,canvas.height);
+    canvasContext.font = "24px retro";
+    canvasContext.fillStyle = "limegreen";
+    canvasContext.fillText("Save Earth!", 100, canvas.height/2);
+    setTimeout(cooldown, 2000);
+    function cooldown(){
+      intervalGame = setInterval(callAll, 1000/140);
+      intervalSnake = setInterval(moveSnake, gameSpeed);
+    }
     document.getElementById("startButton").disabled = true;
+    document.getElementById("startButton").innerHTML = "Good Luck";
     document.getElementById("description").style.display = "none";
   }
 
+  function setScore(){
+    canvasContext.font = "24px retro";
+    canvasContext.fillStyle = "limegreen";
+    canvasContext.fillText("Score: " + score, 12, 30);
+  }
 
   function callAll(){
     drawEverything();
@@ -154,6 +180,7 @@
     shoot();
     moveShot();
     hitDetection();
+    setScore();
   }
 
   function drawEverything() {
@@ -172,9 +199,6 @@
 
     canvasContext.fillstyle ="red"; /*shot*/
     canvasContext.fillRect(shotX,shotY,10,20);
-
-    canvasContext.fillText("🪐",150,100);
-    canvasContext.font = "150px Arial";
 
 
 
@@ -374,6 +398,7 @@
   function hitDetection(){
     if (shotY <= snakeY+40 && shotY >= snakeY && shotX >= snakeX && shotX <= snakeX+50 && snakeLives >= 1){
       snakeLives -= 1;
+      score += 10;
       shotFired = false;
       shotY = 600;
       if (sounds.muted == false){
@@ -383,6 +408,7 @@
 
     if (shotY <= snakeY2+40 && shotY >= snakeY2 && shotX <= snakeX2+50 && shotX >= snakeX2 && snakeLives >= 2){
       snakeLives -= 1;
+      score += 10;
       shotFired = false;
       shotY = 600;
       if (sounds.muted == false){
@@ -392,6 +418,7 @@
 
     if (shotY <= snakeY3+40 && shotY >= snakeY3 && shotX <= snakeX3+50 && shotX >= snakeX3 && snakeLives >= 3){
       snakeLives -= 1;
+      score += 10;
       shotFired = false;
       shotY = 600;
       if (sounds.muted == false){
@@ -401,6 +428,7 @@
 
     if (shotY <= snakeY4+40 && shotY >= snakeY4 && shotX <= snakeX4+50 && shotX >= snakeX4 && snakeLives >= 4){
       snakeLives -= 1;
+      score += 10;
       shotFired = false;
       shotY = 600;
       if (sounds.muted == false){
@@ -410,6 +438,7 @@
 
     if (shotY <= snakeY5+40 && shotY >= snakeY5 && shotX <= snakeX5+50 && shotX >= snakeX5 && snakeLives >= 5){
       snakeLives -= 1;
+      score += 10;
       shotFired = false;
       shotY = 600;
       if (sounds.muted == false){
@@ -419,6 +448,7 @@
 
     if (shotY <= snakeY6+40 && shotY >= snakeY6 && shotX <= snakeX6+50 && shotX >= snakeX6 && snakeLives >= 6){
       snakeLives -= 1;
+      score += 10;
       shotFired = false;
       shotY = 600;
       if (sounds.muted == false){
@@ -428,6 +458,7 @@
 
     if (shotY <= snakeY7+40 && shotY >= snakeY7 && shotX <= snakeX7+50 && shotX >= snakeX7 && snakeLives >= 7){
       snakeLives -= 1;
+      score += 10;
       shotFired = false;
       shotY = 600;
       if (sounds.muted == false){
@@ -437,6 +468,7 @@
 
     if (shotY <= snakeY8+40 && shotY >= snakeY8 && shotX <= snakeX8+50 && shotX >= snakeX8 && snakeLives == 8){
       snakeLives -= 1;
+      score += 10;
       shotFired = false;
       shotY = 600;
       if (sounds.muted == false){
@@ -445,9 +477,23 @@
     }
 
     if (snakeLives == 0){
-      alert("You defeated the snake!");
+      
+      clearInterval(intervalSnake);
+      clearInterval(intervalGame);
+      gameSpeed -= 2;
+      canvasContext.font = "24px retro";
+      canvasContext.fillStyle = "limegreen";
+      canvasContext.fillText("Next round!", 100, canvas.height/2);
+      setTimeout(cooldown, 2000);
+      function cooldown(){
+        intervalGame = setInterval(callAll, 1000/140);
+        intervalSnake = setInterval(moveSnake, gameSpeed);
+      }
+      
+
       if (sounds.muted == false){
       document.getElementById("win-shooter").play();
+      
       }
 
 
@@ -491,16 +537,31 @@
       dPressed = false;
       wPressed = false;
       shotFired = false;
-      gameSpeed += 100;
     }
 
     if (snakeY4 >= 450){
 
-      alert("You lose!");
+      if(score>highScore){
+        highScore = score;
+        alert("New Highscore! " + highScore)
+      }
+    
+      score = 0;
+      clearInterval(intervalSnake);
+      clearInterval(intervalGame);
+      document.getElementById("startButton").innerHTML = "👾 Retry 👾";
+      document.getElementById("startButton").disabled = false;
+      
+
       if (sounds.muted == false){
       document.getElementById("lose-shooter").play();
       }
 
+      canvasContext.font = "24px retro";
+      canvasContext.fillStyle = "limegreen";
+      canvasContext.fillText("Play again?", 100, canvas.height/2);
+
+      gameSpeed = 30;
       canvas;
       canvasContext;
       spaceshipX = 150;
@@ -548,14 +609,20 @@
     }
   }
 
+
+  const burgerMenu = document.getElementById("burger-menu");
+  const hamburger = document.getElementById("hamburger");
+
   function showMenu(){
-  if (document.getElementById("burger-menu").style.height === "0vh") {
-    document.getElementById("burger-menu").style.height = "100vh";
-    document.getElementById("burger-menu").style.opacity = "0.99";
+  if (burgerMenu.style.height === "0vh") {
+    burgerMenu.style.height = "100vh";
+    burgerMenu.style.opacity = "0.99";
+    hamburger.style.position = "fixed";
   }
   else {
-    document.getElementById("burger-menu").style.height = "0vh";
-    document.getElementById("burger-menu").style.opacity = "0";
+    burgerMenu.style.height = "0vh";
+    burgerMenu.style.opacity = "0";
+    hamburger.style.position = "absolute";
   }
 }
 

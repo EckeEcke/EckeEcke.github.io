@@ -140,14 +140,11 @@ hr {
 
 #logo {
   position: absolute;
-  top: 24px;
-  left: 20px;
-  padding: 5px;
-  border: 1px solid white;
-  height: 54px;
-  width: 54px;
-  background-color: black;
-
+  top: 8px;
+  left: 8px;
+  height: 80px;
+  filter: invert(1);
+  z-index: 1;
 }
 
 
@@ -205,6 +202,15 @@ input {
     display: block;
   }
   h2 {
-    padding-top: 30px;
+    padding-top: 60px;
+  }
+
+  #logo {
+    height: 56px;
+  }
+
+  #hamburger {
+    top: 6px;
+    right: 6px;
   }
 }

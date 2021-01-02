@@ -54,7 +54,7 @@ function movingBox(){
   marioBox.style.left = marioLeft + "%";
 
   if(marioLeft<160){
-    marioLeft += 0.5;
+    marioLeft += 0.25;
   }
 
   if(marioLeft>=160){
@@ -62,18 +62,23 @@ function movingBox(){
   }
 }
 
-setInterval(movingBox, window.innerWidth/24);
+setInterval(movingBox, window.innerWidth/48);
 
 const homepageMario = document.getElementById("homepage-mario");
 
 let spritesheetPosition = 0;
+let sheetMovement = 50;
 
 function animateMario(){
-  spritesheetPosition += 50;
+  spritesheetPosition += sheetMovement;
   homepageMario.style.right = -spritesheetPosition + "px";
 
   if(spritesheetPosition == 100){
-    spritesheetPosition = 0;
+    sheetMovement = -50;
+  }
+
+  if(spritesheetPosition == 0){
+    sheetMovement = 50;
   }
 }
 
