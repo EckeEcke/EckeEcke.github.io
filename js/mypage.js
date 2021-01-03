@@ -50,7 +50,6 @@ const marioBox = document.getElementById("homepage-running-mario");
 let marioLeft = -30;
 
 function movingBox(){
-
   marioBox.style.left = marioLeft + "%";
 
   if(marioLeft<160){
@@ -83,3 +82,9 @@ function animateMario(){
 }
 
 setInterval(animateMario, 102);
+
+
+function itsMeMario(){
+  document.getElementById("mario-sound").volume = 0.2;
+  document.getElementById("mario-sound").play();
+}

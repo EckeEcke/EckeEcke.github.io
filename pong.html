@@ -280,7 +280,14 @@
       Score2 = 0;
       paddle1Y = 250;
       paddle2Y = 250;
+      ballSpeedY = 0;
       }
+
+  function resetAfterScore(){
+      ballX = 400;
+      ballY = 300;
+      hitCounter = 0;
+    }
 
 
 function keyDownHandler (event) {
@@ -324,17 +331,18 @@ function keyDownHandler (event) {
 
 
 
+
   function P1Score () {
     if (ballX == canvas.width) {
       Score1 = Score1 +1;
+      console.log(ballY);
       if (sounds.muted == false){
       soundCheer1.play();
       }
     }
 
     if (ballX == canvas.width) {
-      ballX = 400;
-      hitCounter = 0;
+      resetAfterScore();
     }
 
     if (Score1 == 10) {
@@ -343,9 +351,7 @@ function keyDownHandler (event) {
       }
 
       clearInterval(runGame);
-
       drawVictoryMessage("Win!", "Lose");
-
       setTimeout(resetGame, 5000);
     }
   }
@@ -354,14 +360,14 @@ function keyDownHandler (event) {
   function P2Score () {
     if (ballX == 0) {
       Score2 = Score2 +1;
+      console.log(ballY);
       if (sounds.muted == false){
       soundCheer2.play();
     }
     }
 
     if (ballX == 0) {
-      ballX = 400;
-      hitCounter = 0;
+      resetAfterScore();
     }
 
     if (Score2 == 10) {
@@ -369,11 +375,9 @@ function keyDownHandler (event) {
       victorySound.play();
       }
 
-    clearInterval(runGame);
-
-    drawVictoryMessage("Lose", "Win!");
-
-    setTimeout(resetGame, 5000);     
+      clearInterval(runGame);
+      drawVictoryMessage("Lose", "Win!");
+      setTimeout(resetGame, 5000);     
     }
   }
 
