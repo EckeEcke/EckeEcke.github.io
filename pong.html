@@ -60,15 +60,8 @@
   <br><br>
   <center>
     <h2>Pong</h2>
-
-    <br>
-  <br>
-
-
-
-
-
   </center>
+  <br><br>
 </div>
 
 <canvas id="game-canvas" width="800px" height="600px">
@@ -190,7 +183,7 @@
   function drawScore(){
     canvasContext.font = "48px retro";
     canvasContext.fillStyle = "white";
-    canvasContext.fillText(Score1, canvas.width/4, 60);
+    canvasContext.fillText(Score1, canvas.width/4-20, 60);
     canvasContext.font = "48px retro";
     canvasContext.fillStyle = "white";
     canvasContext.fillText(Score2, 3*canvas.width/4, 60);
@@ -210,12 +203,10 @@
   function callAll() {
     drawEverything();
     moveEverything();
-    moveDown1();
     collision2();
     collision1();
-    moveUp1();
-    moveDown2();
-    moveUp2();
+    move1();
+    move2();
     P1Score();
     P2Score();
     raiseSpeed();
@@ -248,42 +239,49 @@
 
 
 
-  function moveUp1 (event) {
+  function move1 (event) {
     if(wPressed) {
       paddle1Y = paddle1Y - 10;
     }
     if(paddle1Y < 0) {
       paddle1Y = 0;
     }
-  }
-
-  function moveDown1 (event) {
-      if(sPressed) {
+    if(sPressed) {
         paddle1Y = paddle1Y + 8;
       }
       if(paddle1Y > 500) {
         paddle1Y = 500;
       }
+  }
 
-    }
-  function moveDown2 (event) {
+
+  function move2 (event) {
       if(downPressed) {
         paddle2Y = paddle2Y + 8;
       }
       if(paddle2Y > 500) {
         paddle2Y = 500;
       }
-
-    }
-
-    function moveUp2 (event) {
       if(upPressed) {
         paddle2Y = paddle2Y - 10;
       }
       if(paddle2Y < 0) {
         paddle2Y = 0;
       }
+
     }
+
+  function resetGame(){
+      startBtn.style.display ="block";
+      inputs.style.display = "block";
+      canvas.style.display ="none";
+
+      Score1 = 0;
+      Score2 = 0;
+      paddle1Y = 250;
+      paddle2Y = 250;
+      }
+
 
 function keyDownHandler (event) {
   if(event.keyCode === 87) {
@@ -314,6 +312,18 @@ function keyDownHandler (event) {
     }
   }
 
+
+  function drawVictoryMessage(message1, message2){
+    canvasContext.font = "48px retro";
+      canvasContext.fillStyle = "white";
+      canvasContext.fillText(message1, 120, 350);
+      canvasContext.font = "48px retro";
+      canvasContext.fillStyle = "white";
+      canvasContext.fillText(message2, 130+canvas.width/2, 350);
+  }
+
+
+
   function P1Score () {
     if (ballX == canvas.width) {
       Score1 = Score1 +1;
@@ -331,29 +341,14 @@ function keyDownHandler (event) {
       if (sounds.muted == false){
       soundVictory.play();
       }
+
       clearInterval(runGame);
-      canvasContext.font = "48px retro";
-      canvasContext.fillStyle = "white";
-      canvasContext.fillText("Win!", 120, 350);
-      canvasContext.font = "48px retro";
-      canvasContext.fillStyle = "white";
-      canvasContext.fillText("Lose", 130+canvas.width/2, 350);
+
+      drawVictoryMessage("Win!", "Lose");
 
       setTimeout(resetGame, 5000);
-      function resetGame(){
-        startBtn.style.display ="block";
-        inputs.style.display = "block";
-        canvas.style.display ="none";
-
-        Score1 = 0;
-        Score2 = 0;
-        paddle1Y = 250;
-        paddle2Y = 250;
-      }
     }
   }
-
-
 
 
   function P2Score () {
@@ -373,27 +368,12 @@ function keyDownHandler (event) {
       if (sounds.muted == false){
       victorySound.play();
       }
-      clearInterval(runGame);
 
-      canvasContext.font = "48px retro";
-      canvasContext.fillStyle = "white";
-      canvasContext.fillText("Lose", 120, 350);
-      canvasContext.font = "48px retro";
-      canvasContext.fillStyle = "white";
-      canvasContext.fillText("Win!", 130+canvas.width/2, 350);
+    clearInterval(runGame);
 
-      setTimeout(resetGame, 5000);
-      function resetGame(){
-        startBtn.style.display ="block";
-        inputs.style.display = "block";
-        canvas.style.display ="none";
+    drawVictoryMessage("Lose", "Win!");
 
-        Score1 = 0;
-        Score2 = 0;
-        paddle1Y = 250;
-        paddle2Y = 250;
-      }
-      
+    setTimeout(resetGame, 5000);     
     }
   }
 
@@ -406,7 +386,7 @@ function keyDownHandler (event) {
       ballSpeedX = -5 - speedBoost;
       hitCounter = hitCounter + 1;
       if(ballSpeedY <= 0){
-        ballSpeedY = -4;
+        ballSpeedY = -3;
       } else {
         ballSpeedY = 2;
       }
@@ -418,7 +398,7 @@ function keyDownHandler (event) {
       ballSpeedX = -5 - speedBoost;
       hitCounter = hitCounter + 1;
       if(ballSpeedY >= 0){
-        ballSpeedY = 4;
+        ballSpeedY = 3;
       } else {
         ballSpeedY = -2;
       }
@@ -435,7 +415,7 @@ function keyDownHandler (event) {
       ballSpeedX = 5 + speedBoost;
       hitCounter = hitCounter + 1;
       if(ballSpeedY <= 0){
-        ballSpeedY = -4;
+        ballSpeedY = -3;
       } else {
         ballSpeedY = 2;
       }
@@ -447,7 +427,7 @@ function keyDownHandler (event) {
       ballSpeedX = 5 + speedBoost;
       hitCounter = hitCounter + 1;
       if(ballSpeedY >= 0){
-        ballSpeedY = 4;
+        ballSpeedY = 3;
       } else {
         ballSpeedY = -2;
       }
@@ -466,6 +446,8 @@ function keyDownHandler (event) {
     speedBoost = 0;
   }
   }
+
+  
   function drawEverything() {
 
     canvasContext.fillStyle = "black"; /*black background*/
