@@ -80,11 +80,16 @@
   
   <br><br>
 <div id="game-settings">
-  <input type="color" id="color-picker-p1" value="#ed3d0d"><label>&nbsp Choose color P1</label>
+  <input class="option-input" type="color" id="color-picker-p1" value="#ed3d0d"><label>&nbsp Choose color P1</label>
   <br>
-  <input type="color" id="color-picker-p2" value="#26ed17"><label>&nbsp Choose color P2</label>
+  <input class="option-input" type="color" id="color-picker-p2" value="#26ed17"><label>&nbsp Choose color P2</label>
   <br>
-  <input type="range" id="game-speed" min="100" max="200" value="100"><label>&nbsp Set gamespeed &nbsp</label>
+  <input class="option-input" type="range" id="game-speed" min="100" max="200" value="100"><label>&nbsp Set gamespeed &nbsp</label>
+  <br><br>
+  <input class="playmode-input" name="playmode" id="1player-mode" type="radio" checked>
+  <label>1 Player &nbsp</label>
+  <input class="playmode-input" name="playmode" id="2player-mode" type="radio">
+  <label>2 Player</label>
 </div>
 
 
@@ -96,7 +101,7 @@
   <br><br>
   To start with Javascript I took a Udemy course on how to build Pong using Javascript. I wrote functions drawing objects into a canvas element and making them move with setInterval. 
   I coded a collision detection into the game preventing the ball from leaving the canvas, making it bounce from paddles and counting scores. 
-  The score is tracked and displayed in canvas. I implemented sound controls and sounds that play if certain conditions are met.
+  The score is tracked and displayed in canvas. I implemented sound controls and sounds that play if certain conditions are met. Finally I implemented a basic CPU opponent to play against.
 </article>
 
 <article class="too-small">
@@ -118,6 +123,9 @@
   const colorInputP1 = document.getElementById("color-picker-p1");
   const colorInputP2 = document.getElementById("color-picker-p2");
   const gameSpeedInput = document.getElementById("game-speed");
+
+  const onePlayerBTN = document.getElementById("1player-mode");
+  const twoPlayerBTN = document.getElementById("2player-mode");
 
   const soundCheer1 = document.getElementById("cheer1");
   const soundCheer2 = document.getElementById("cheer2");
@@ -150,6 +158,7 @@
   let gameRuns = false;
   let gameSpeed = 100;
 
+
   sounds.muted = true;
 
   colorInputP1.addEventListener("change", function(){
@@ -173,7 +182,11 @@
   function startGame(){
     canvas.style.display ="block";
     canvasContext = canvas.getContext("2d");
-    runGame = setInterval(callAll, 1000/gameSpeed);
+    if(onePlayerBTN.checked){
+      runGame = setInterval(onePlayerMode, 1000/gameSpeed)
+    } else {
+      rungame = setInterval(twoPlayerMode, 1000/gameSpeed)
+    }
     startBtn.style.display ="none";
     descriptionTxt.style.display = "none";
     inputs.style.display = "none";
@@ -200,7 +213,7 @@
     console.log(sounds);
   }
 
-  function callAll() {
+  function twoPlayerMode() {
     drawEverything();
     moveEverything();
     collision2();
@@ -213,6 +226,18 @@
     drawScore();
   }
 
+  function onePlayerMode(){
+    drawEverything();
+    moveEverything();
+    collision2();
+    collision1();
+    move1();
+    P1Score();
+    P2Score();
+    raiseSpeed();
+    drawScore();
+    moveAI();
+  }
 
 
   function moveEverything() {
@@ -230,9 +255,11 @@
     ballY = ballY + ballSpeedY;
     if (ballY >= canvas.height) {
       ballSpeedY = -ballSpeedY;
+      ballY = canvas.height;
     }
     if (ballY <= 0) {
       ballSpeedY = -ballSpeedY;
+      ballY = 0;
     }
 
   }
@@ -270,6 +297,29 @@
       }
 
     }
+
+
+  function moveAI(){
+    if(ballSpeedX>0){
+      moveAItoBall();
+    }
+    if(paddle2Y < 0) {
+        paddle2Y = 0;
+      }
+    if(paddle2Y > 500) {
+        paddle2Y = 500;
+      }
+  }
+
+  function moveAItoBall(){
+    if(ballY>paddle2Y+50){
+      paddle2Y += 5;
+    }
+
+    if(ballY<paddle2Y+50){
+      paddle2Y -= 5;
+    }
+  }
 
   function resetGame(){
       startBtn.style.display ="block";
@@ -385,10 +435,13 @@ function keyDownHandler (event) {
 
   function collision2 () {
 
-
-    if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y -1 + paddleHeight/2) { /*top paddle*/
+    if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y + paddleHeight+tolerance){
       ballSpeedX = -5 - speedBoost;
       hitCounter = hitCounter + 1;
+    }
+
+
+    if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y -1 + paddleHeight/2) { /*top paddle*/
       if(ballSpeedY <= 0){
         ballSpeedY = -3;
       } else {
@@ -399,8 +452,6 @@ function keyDownHandler (event) {
       }
     }
     if (ballX == 760 && ballY >= paddle2Y + paddleHeight/2 && ballY < paddle2Y + paddleHeight+tolerance) { /*bottom paddle*/
-      ballSpeedX = -5 - speedBoost;
-      hitCounter = hitCounter + 1;
       if(ballSpeedY >= 0){
         ballSpeedY = 3;
       } else {

@@ -163,8 +163,12 @@ hr {
   transform: scale(1.2);
 }
 
-input {
+.option-input {
   width: 80px;
+}
+
+.playmode-input {
+  
 }
 
 
