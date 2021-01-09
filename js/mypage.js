@@ -1,17 +1,19 @@
 const burgerMenu = document.getElementById("burger-menu");
 
 function showMenu(){
-  if (burgerMenu.style.height === "0vh") {
+  if (burgerMenu.show == "false") {
     burgerMenu.style.height = "100vh";
     burgerMenu.style.opacity = "0.99";
     burgerMenu.style.zIndex = "2500";
-    burgerMenu.style.position = "fixed";
+    hamburger.style.position = "fixed";
+    burgerMenu.show = "true";
   }
   else {
     burgerMenu.style.height = "0vh";
     burgerMenu.style.opacity = "0";
     burgerMenu.style.zIndex = "-3000";
-    burgerMenu.style.position = "absolute";
+    hamburger.style.position = "absolute";
+    burgerMenu.show = "false";
   }
 }
 
