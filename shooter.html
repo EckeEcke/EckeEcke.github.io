@@ -15,29 +15,29 @@
 
   <center>
     <br>
+    <br>
     <h2>Space Shooter</h2>
     <article class="too-small">
       <br>
       If you can read this, your screen is to small! You can play this game on your PC in full screen mode!
     </article>
     <br>
-    <button id="startButton" onclick="startGame()">
-    👾 Start 👾
-    </button>
-    <br><br>
+    
+
+
+
+  <canvas id="game-canvas" width= "400px" height= "600px"></canvas>
+
+  <br><br><br><br>
+
   <article id="description">
-      I wanted to experiment with my learnings from building Pong and created this game 
-      from scratch. Just for fun and getting some practise. To make it more visually appealing 
-      I implemented images to the canvas. There are also sound effects and button to turn sound on or off.
-      <br><br>
-      Controls
-      <br>
-      LEFT: A | RIGHT: D | SHOOT: W
+
+    I wanted to experiment with my learnings from building Pong and created this game 
+    from scratch. Just for fun and getting some practise. To make it more visually appealing 
+    I implemented images to the canvas. There are also sound effects and button to turn sound on or off.
+    
   </article>
 
-  <canvas id="game-canvas" width= "400px" height= "600px">
-
-  </canvas>
   </center>
 
 <button onclick="soundControl()" id="sound-button">&#128263;</button>
@@ -75,9 +75,13 @@
         </li>
       </ul>
 </div>
-<img id="spaceship" src="images/spaceship.png" style="display: none; background: transparent;">
-<img id="snake" src="images/snake.png" style="display: none; background: transparent;">
-<img id="snake-head" src="images/snake-head.png" style="display: none; background: transparent;">
+<img id="spaceship" src="images/spaceship.png" style="display: none; height:0;">
+
+<img id="snake1" src="images/snake.png" style="display: none; height:0;">
+<img id="snake-head1" src="images/snake-head.png" style="display: none; height:0;">
+<img id="background" src="images/space-pixel-background.jpg" style="display:none;height:0;">
+<img id="trumphead" src="images/trumphead.png" style="display: none;height:0;">
+
 <script>
 
   let canvas;
@@ -92,9 +96,13 @@
   let dPressed = false;
   let wPressed = false;
   let shotFired = false;
+  let sPressed = false;
 
   let score = 0;
-  
+  let color = 0;
+
+  let snakeHead = document.getElementById("snake-head1");
+  let snakeBody = document.getElementById("snake1");
 
   let snakeX = 0;
   let snakeX2 = 50;
@@ -127,11 +135,15 @@
 
   let gameSpeed = 30;
 
+  let backgroundScrollPosition = 0;
+
   let sounds = document.getElementsByTagName("audio");
 
   let intervalGame;
 
   let intervalSnake;
+
+  let intervalBackground;
 
   let highScore = 0;
 
@@ -156,25 +168,41 @@
     canvasContext = canvas.getContext("2d");
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
-  }
-
-  function startGame(){
+    document.addEventListener("keydown", event => {if(event.keyCode === 83 && !sPressed){
+      startGame();
+      sPressed = true;
+    console.log(event)}
+    });
+    canvasContext.textAlign = "center";
     canvasContext.fillStyle = "black"; /*black background*/
     canvasContext.fillRect(0,0,canvas.width,canvas.height);
     canvasContext.font = "24px retro";
     canvasContext.fillStyle = "limegreen";
-    canvasContext.fillText("Save Earth!", 100, canvas.height/2);
+    canvasContext.fillText("Press S to start", canvas.width/2, canvas.height/3);
+    canvasContext.fillText("Controls", canvas.width/2, canvas.height/2+50);
+    canvasContext.fillText("Left: A", canvas.width/2, canvas.height/2+100);
+    canvasContext.fillText("Right: D", canvas.width/2, canvas.height/2+150);
+    canvasContext.fillText("Shoot: W", canvas.width/2, canvas.height/2+200);
+  }
+
+  function startGame(){
+    canvasContext.textAlign = "center";
+    canvasContext.fillStyle = "black"; /*black background*/
+    canvasContext.fillRect(0,0,canvas.width,canvas.height);
+    canvasContext.font = "24px retro";
+    canvasContext.fillStyle = "limegreen";
+    canvasContext.fillText("Save Earth!", canvas.width/2, canvas.height/2);
     setTimeout(cooldown, 2000);
     function cooldown(){
       intervalGame = setInterval(callAll, 1000/140);
       intervalSnake = setInterval(moveSnake, gameSpeed);
+      intervalBackground = setInterval(moveBackground,1000/30);
     }
-    document.getElementById("startButton").disabled = true;
-    document.getElementById("startButton").innerHTML = "Good Luck";
     document.getElementById("description").style.display = "none";
   }
 
   function setScore(){
+    canvasContext.textAlign = "start";
     canvasContext.font = "24px retro";
     canvasContext.fillStyle = "limegreen";
     canvasContext.fillText("Score", 12, 30);
@@ -209,54 +237,58 @@
 
     canvasContext.fillStyle = "black"; /*black background*/
     canvasContext.fillRect(0,0,canvas.width,canvas.height);
-    canvasContext.fillStyle = "limegreen"; /*defense line*/
-    canvasContext.fillRect(0,canvas.height*0.8,canvas.width,1);
+    canvasContext.drawImage(document.getElementById("background"),0,backgroundScrollPosition);
 
     canvasContext.fillStyle = "limegreen"; /*canon*/
-    canvasContext.fillRect(canonX,canonY,10,canonY);
-    canvasContext.fillstyle ="green"; /*spaceship*/
-    canvasContext.fillRect(spaceshipX,spaceshipY,100,50);
+    canvasContext.fillRect(canonX,canonY,0,canonY);
 
     canvasContext.drawImage(document.getElementById("spaceship"),spaceshipX,spaceshipY-60,100,130);
 
-    canvasContext.fillstyle ="red"; /*shot*/
+    canvasContext.fillstyle = "limegreen"; /*shot*/
     canvasContext.fillRect(shotX,shotY,10,20);
 
 
 
+    canvasContext.filter = `hue-rotate(${color}deg)`;
 
     if (snakeLives >=1){
-      canvasContext.drawImage(document.getElementById("snake-head"),snakeX,snakeY,50,50);
+      canvasContext.drawImage(snakeHead,snakeX,snakeY,50,50);
     }
 
     if (snakeLives >= 2){
-      canvasContext.drawImage(document.getElementById("snake"),snakeX2,snakeY2,50,50);
+      canvasContext.drawImage(snakeBody,snakeX2,snakeY2,50,50);
     }
 
     if (snakeLives >= 3){
-      canvasContext.drawImage(document.getElementById("snake"),snakeX3,snakeY3,50,50);
+      canvasContext.drawImage(snakeBody,snakeX3,snakeY3,50,50);
     }
 
     if (snakeLives >= 4){
-      canvasContext.drawImage(document.getElementById("snake"),snakeX4,snakeY4,50,50);
+      canvasContext.drawImage(snakeBody,snakeX4,snakeY4,50,50);
     }
 
     if (snakeLives >= 5){
-      canvasContext.drawImage(document.getElementById("snake"),snakeX5,snakeY5,50,50);
+      canvasContext.drawImage(snakeBody,snakeX5,snakeY5,50,50);
     }
 
     if (snakeLives >= 6){
-      canvasContext.drawImage(document.getElementById("snake"),snakeX6,snakeY6,50,50);
+      canvasContext.drawImage(snakeBody,snakeX6,snakeY6,50,50);
     }
 
     if (snakeLives >= 7){
-      canvasContext.drawImage(document.getElementById("snake"),snakeX7,snakeY7,50,50);
+      canvasContext.drawImage(snakeBody,snakeX7,snakeY7,50,50);
     }
 
     if (snakeLives == 8){
-      canvasContext.drawImage(document.getElementById("snake"),snakeX8,snakeY8,50,50);
+      canvasContext.drawImage(snakeBody,snakeX8,snakeY8,50,50);
     }
 
+    canvasContext.filter = "none";
+
+  }
+
+  function moveBackground(){
+    backgroundScrollPosition -= 1;
   }
 
   function moveShip(){
@@ -418,90 +450,100 @@
   }
 
   function hitDetection(){
+
+    let hit = false;
+
     if (shotY <= snakeY+40 && shotY >= snakeY && shotX >= snakeX && shotX <= snakeX+50 && snakeLives >= 1){
-      snakeLives -= 1;
-      score += 10;
-      shotFired = false;
-      shotY = 600;
-      if (sounds.muted == false){
-      document.getElementById("hit").play();
-      }
+      hit = true;
     }
 
     if (shotY <= snakeY2+40 && shotY >= snakeY2 && shotX <= snakeX2+50 && shotX >= snakeX2 && snakeLives >= 2){
-      snakeLives -= 1;
-      score += 10;
-      shotFired = false;
-      shotY = 600;
-      if (sounds.muted == false){
-      document.getElementById("hit").play();
-      }
+      hit = true;
     }
 
     if (shotY <= snakeY3+40 && shotY >= snakeY3 && shotX <= snakeX3+50 && shotX >= snakeX3 && snakeLives >= 3){
-      snakeLives -= 1;
-      score += 10;
-      shotFired = false;
-      shotY = 600;
-      if (sounds.muted == false){
-      document.getElementById("hit").play();
-      }
+      hit = true;
     }
 
     if (shotY <= snakeY4+40 && shotY >= snakeY4 && shotX <= snakeX4+50 && shotX >= snakeX4 && snakeLives >= 4){
-      snakeLives -= 1;
-      score += 10;
-      shotFired = false;
-      shotY = 600;
-      if (sounds.muted == false){
-      document.getElementById("hit").play();
-      }
+      hit = true;
     }
 
     if (shotY <= snakeY5+40 && shotY >= snakeY5 && shotX <= snakeX5+50 && shotX >= snakeX5 && snakeLives >= 5){
-      snakeLives -= 1;
-      score += 10;
-      shotFired = false;
-      shotY = 600;
-      if (sounds.muted == false){
-      document.getElementById("hit").play();
-      }
+      hit = true;
     }
 
     if (shotY <= snakeY6+40 && shotY >= snakeY6 && shotX <= snakeX6+50 && shotX >= snakeX6 && snakeLives >= 6){
-      snakeLives -= 1;
-      score += 10;
-      shotFired = false;
-      shotY = 600;
-      if (sounds.muted == false){
-      document.getElementById("hit").play();
-      }
+      hit = true;
     }
 
     if (shotY <= snakeY7+40 && shotY >= snakeY7 && shotX <= snakeX7+50 && shotX >= snakeX7 && snakeLives >= 7){
-      snakeLives -= 1;
-      score += 10;
-      shotFired = false;
-      shotY = 600;
-      if (sounds.muted == false){
-      document.getElementById("hit").play();
-      }
+      hit = true;
     }
 
     if (shotY <= snakeY8+40 && shotY >= snakeY8 && shotX <= snakeX8+50 && shotX >= snakeX8 && snakeLives == 8){
-      snakeLives -= 1;
+      hit = true;
+    }
+
+    if (hit){
+      color += 3;
+      snakeLives -=1;
       score += 10;
       shotFired = false;
       shotY = 600;
-      if (sounds.muted == false){
+      if (!sounds.muted){
       document.getElementById("hit").play();
       }
     }
 
     if (snakeLives == 0){
       
+      startNextRound();
+      resetGame();
+
+    }
+
+    if (snakeY4 >= 450){
+    
+      score = 0;
       clearInterval(intervalSnake);
       clearInterval(intervalGame);
+      clearInterval(intervalBackground);
+      sPressed = false;
+      
+
+      if (!sounds.muted){
+      document.getElementById("lose-shooter").play();
+      }
+
+
+      canvasContext.font = "24px retro";
+      canvasContext.fillStyle = "limegreen";
+      canvasContext.fillText("Press S for retry", 32, canvas.height/2);
+
+      if(isHighscore){
+
+        canvasContext.fillText("New Highscore", 72, 200);
+      }
+      
+
+      isHighscore = false;
+      gameSpeed = 30;
+      resetGame();
+    }
+
+    if(score>=800){
+      snakeHead = document.getElementById("trumphead");
+      snakeBody = document.getElementById("trumphead");
+    }
+  }
+
+  function startNextRound(){
+    clearInterval(intervalSnake);
+    clearInterval(intervalGame);
+    clearInterval(intervalBackground);
+     
+      color += 20;
       gameSpeed -= 2;
       canvasContext.font = "24px retro";
       canvasContext.fillStyle = "limegreen";
@@ -510,130 +552,62 @@
       function cooldown(){
         intervalGame = setInterval(callAll, 1000/140);
         intervalSnake = setInterval(moveSnake, gameSpeed);
+        intervalBackground = setInterval(moveBackground, 1000/30);
       }
       
 
-      if (sounds.muted == false){
+      if (!sounds.muted){
       document.getElementById("win-shooter").play();
       
       }
-
-
-      canvas;
-      canvasContext;
-      spaceshipX = 150;
-      canonY = 520;
-      canonX = spaceshipX+50;
-      shotX;
-      shotY;
-
-      snakeX = 0;
-      snakeX2 = 50;
-      snakeX3 = 100;
-      snakeX4 = 150;
-      snakeX5 = 200;
-      snakeX6 = 250;
-      snakeX7 = 300;
-      snakeX8 = 350;
-
-      snakeY = 0;
-      snakeY2 = 0;
-      snakeY3 = 0;
-      snakeY4 = 0;
-      snakeY5 = 0;
-      snakeY6 = 0;
-      snakeY7 = 0;
-      snakeY8 = 0;
-
-      snakeSpeed = 10;
-      snakeSpeed2 = 10;
-      snakeSpeed3 = 10;
-      snakeSpeed4 = 10;
-      snakeSpeed5 = 10;
-      snakeSpeed6 = 10;
-      snakeSpeed7 = 10;
-      snakeSpeed8 = 10;
-
-      snakeLives = 8;
-      aPressed = false;
-      dPressed = false;
-      wPressed = false;
-      shotFired = false;
-    }
-
-    if (snakeY4 >= 450){
-    
-      score = 0;
-      clearInterval(intervalSnake);
-      clearInterval(intervalGame);
-      document.getElementById("startButton").innerHTML = "👾 Retry 👾";
-      document.getElementById("startButton").disabled = false;
-      
-
-      if (sounds.muted == false){
-      document.getElementById("lose-shooter").play();
-      }
-
-      canvasContext.font = "24px retro";
-      canvasContext.fillStyle = "limegreen";
-      canvasContext.fillText("Play again?", 92, canvas.height/2);
-
-      if(isHighscore){
-        canvasContext.font = "24px retro";
-        canvasContext.fillStyle = "limegreen";
-        canvasContext.fillText("New Highscore", 72, 200);
-      }
-
-      isHighscore = false;
-      gameSpeed = 30;
-      canvas;
-      canvasContext;
-      spaceshipX = 150;
-      canonY = 520;
-      canonX = spaceshipX+50;
-      shotX;
-      shotY;
-      aPressed = false;
-      dPressed = false;
-      wPressed = false;
-      shotFired = false;
-
-      snakeX = 0;
-      snakeX2 = 50;
-      snakeX3 = 100;
-      snakeX4 = 150;
-      snakeX5 = 200;
-      snakeX6 = 250;
-      snakeX7 = 300;
-      snakeX8 = 350;
-
-      snakeY = 0;
-      snakeY2 = 0;
-      snakeY3 = 0;
-      snakeY4 = 0;
-      snakeY5 = 0;
-      snakeY6 = 0;
-      snakeY7 = 0;
-      snakeY8 = 0;
-
-      snakeSpeed = 10;
-      snakeSpeed2 = 10;
-      snakeSpeed3 = 10;
-      snakeSpeed4 = 10;
-      snakeSpeed5 = 10;
-      snakeSpeed6 = 10;
-      snakeSpeed7 = 10;
-      snakeSpeed8 = 10;
-
-      snakeLives = 8;
-      aPressed = false;
-      dPressed = false;
-      wPressed = false;
-      shotFired = false;
-    }
   }
 
+  function resetGame(){
+      canvas;
+      canvasContext;
+      spaceshipX = 150;
+      canonY = 520;
+      canonX = spaceshipX+50;
+      shotX;
+      shotY;
 
+      snakeX = 0;
+      snakeX2 = 50;
+      snakeX3 = 100;
+      snakeX4 = 150;
+      snakeX5 = 200;
+      snakeX6 = 250;
+      snakeX7 = 300;
+      snakeX8 = 350;
+
+      snakeY = 0;
+      snakeY2 = 0;
+      snakeY3 = 0;
+      snakeY4 = 0;
+      snakeY5 = 0;
+      snakeY6 = 0;
+      snakeY7 = 0;
+      snakeY8 = 0;
+
+      snakeSpeed = 10;
+      snakeSpeed2 = 10;
+      snakeSpeed3 = 10;
+      snakeSpeed4 = 10;
+      snakeSpeed5 = 10;
+      snakeSpeed6 = 10;
+      snakeSpeed7 = 10;
+      snakeSpeed8 = 10;
+
+      snakeLives = 8;
+      aPressed = false;
+      dPressed = false;
+      wPressed = false;
+      shotFired = false;
+
+      backgroundScrollPosition = 0;
+  }
+    
+  
   const burgerMenu = document.getElementById("burger-menu");
   const hamburger = document.getElementById("hamburger");
 

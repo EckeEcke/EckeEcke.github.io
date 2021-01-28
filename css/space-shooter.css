@@ -8,7 +8,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   font-family: retro;
-  height: 120vh;
+  height: 100%;
 }
 
 
@@ -19,7 +19,7 @@ canvas {
 #hamburger {
   position: absolute;
   top: 8px;
-  right: 20px;
+  right: 8px;
   background-color: rgb(0,0,0,0.7);
   padding: 4px;
   z-index: 3000;
@@ -83,7 +83,6 @@ article {
   color: white;
   text-align: center;
   font-size: 1.2em;
-  padding: 0 30px;
   width: 60%;
 }
 
@@ -98,15 +97,15 @@ font-family: retro;
 background-Color: black;
 color: white;
 font-size: 1.5em;
-border-radius: 25px;
 padding: 10px;
+width:400px;
 }
 
 #sound-button {
   display: block;
-  position: absolute;
-  top: 80%;
-  right: 20px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
   font-size: 3em;
   background-color: rgb(0,0,0,0.7);
   border-style: none;
@@ -116,6 +115,9 @@ padding: 10px;
 #description {
   display: block;
 }
+
+
+
 
 @media (max-width: 1100px) {
   canvas, #startButton, #sound-button {
@@ -143,7 +145,6 @@ padding: 10px;
   }
 
   h2 {
-    padding-top: 30%;
     background: none;
   }
 
@@ -160,7 +161,6 @@ padding: 10px;
 @media (min-width: 1101px) {
   article {
     display: none;
-    padding-top: 50px;
   }
 
   h2 {
