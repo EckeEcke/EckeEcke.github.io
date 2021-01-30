@@ -13,18 +13,25 @@
         }
 
         table {
-            width: 500px;
+            max-width: 500px;
             text-align: center;
         }
 
-        td {
-            width: 120px;
-        }
         input {
             color: black;
             width: 60px;
             text-align: center;
         }
+
+        #color-select {
+            width: 3rem;
+            height: 3rem;
+            padding: .5rem;
+            background-color: transparent;
+            border: 0;
+            border-radius: 100%;
+        }
+        
         </style>
 
     </head>
@@ -55,7 +62,7 @@
             
             <br>
         
-            <canvas id="game-canvas" width="400px" height="400px">
+            <canvas id="game-canvas" width="300px" height="400px">
 
             </canvas>
 
@@ -86,32 +93,40 @@
             
 
             window.onload = function () {
-                canvas.addEventListener("mousedown", setDrawing, false);
-                canvas.addEventListener("mousemove", draw, false);
-                canvas.addEventListener("touchstart", setDrawing, false);
-                canvas.addEventListener("touchmove", draw, false);
-                document.addEventListener("mouseup", stopDrawing, false);
-                document.addEventListener("touchend", stopDrawing, false);
+                canvas.addEventListener("mousedown", setDrawing);
+                canvas.addEventListener("mousemove", draw);
+                canvas.addEventListener("touchstart", setDrawing);
+                canvas.addEventListener("touchmove", draw);
+                document.addEventListener("mouseup", stopDrawing);
+                document.addEventListener("touchend", stopDrawing);
             };
 
     
 
             function setDrawing(event){
+                event.preventDefault();
                 isDrawing = true;
-                p1X = event.offsetX;
-                p1Y = event.offsetY;
-                alert("start");
+                let rect = event.target.getBoundingClientRect();
+                p1X = (event.targetTOuches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
+                p1Y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
+                console.log("setDrawing works");
             }
 
             function draw(event){
+                event.preventDefault();
                 if(isDrawing){
-                    drawLine(canvasContext, p1X, p1Y, event.offsetX, event.offsetY);
-                    p1X = event.offsetX;
-                    p1Y = event.offsetY;
+                    let rect = event.target.getBoundingClientRect();
+                    let x = (event.targetTouches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
+                    let y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
+                    drawLine(canvasContext, p1X, p1Y, x, y);
+                    p1X = (event.targetTouches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
+                    p1Y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
+                    console.log(event.offsetX);
                 }
             }
 
             function drawLine(context, x1, y1, x2, y2) {
+                event.preventDefault();
                 canvasContext.lineCap = "round";
                 canvasContext.lineJoin = "round";
                 context.beginPath();
@@ -124,6 +139,8 @@
             }
 
             function stopDrawing(){
+                event.preventDefault();
+                console.log("stopDrawing works");
                 if(isDrawing){
                     isDrawing = !isDrawing;
                 }
