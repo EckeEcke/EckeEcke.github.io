@@ -65,6 +65,10 @@
                             <option value="10">10</option>
                         </select>
                     </td>
+                    <td>Rainbow:</td>
+                    <td>
+                        <input id="rainbow-checkbox" type="checkbox">
+                    </td>
 
 
                 </tr>
@@ -92,6 +96,7 @@
             let p1Y;
             const colorSelect = document.getElementById("color-select");
             const lineSelect = document.getElementById("line-width");
+            const rainbowCheckbox = document.getElementById("rainbow-checkbox");
 
             let isDrawing = false;
 
@@ -137,11 +142,15 @@
             }
 
             function drawLine(context, x1, y1, x2, y2) {
+                let color = colorSelect.value;
+                if(rainbowCheckbox.checked){
+                    color = `hsl(${x1}, 100%, 50%)`;
+                }
                 event.preventDefault();
                 canvasContext.lineCap = "round";
                 canvasContext.lineJoin = "round";
                 context.beginPath();
-                context.strokeStyle = colorSelect.value;
+                context.strokeStyle = color;
                 context.lineWidth = lineSelect.value;
                 context.moveTo(x1, y1);
                 context.lineTo(x2, y2);
