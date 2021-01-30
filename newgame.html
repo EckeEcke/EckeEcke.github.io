@@ -1,0 +1,134 @@
+<html>
+
+    <head>
+        <style>
+        * {
+            color:white;
+            font-family: Helvetica;
+        }
+
+        body {
+            background-image: linear-gradient(to right, #7b4397, #dc2430);
+        }
+
+        table {
+            width: 500px;
+            text-align: center;
+        }
+
+        td {
+            width: 120px;
+        }
+        input {
+            color: black;
+            width: 60px;
+            text-align: center;
+        }
+        </style>
+
+    </head>
+
+    <body>
+        <center>
+            <h1>Drawing App</h1>
+            <br>
+            <table>
+                <tr>
+                    <td>
+                     Select color:
+                    </td>
+                    <td>
+                        <input id="color-select" type="color"></input>
+                    </td>
+                    <td>
+                     Select weight:
+                    </td>
+                    <td>
+                        <input id="line-width" type="number" value=2 min=1 max=10></input>
+                    </td>
+
+
+                </tr>
+
+            </table>
+            
+            <br>
+        
+            <canvas id="game-canvas" width="500px" height="400px">
+
+            </canvas>
+
+        </center>
+        
+        
+        
+
+        
+
+        
+
+        <script>
+
+            let p1X;
+            let p1Y;
+            const colorSelect = document.getElementById("color-select");
+            const lineSelect = document.getElementById("line-width");
+
+            let isDrawing = false;
+
+            const canvas = document.getElementById("game-canvas");
+            const canvasContext = canvas.getContext("2d");
+
+            canvasContext.fillStyle = "white";
+            canvasContext.fillRect(0,0,canvas.width,canvas.height);
+
+            
+
+            window.onload = function () {
+                canvas.addEventListener("mousedown", setDrawing, false);
+                canvas.addEventListener("mousemove", draw, false);
+                canvas.addEventListener("touchstart", setDrawing, false);
+                canvas.addEventListener("touchmove", draw, false);
+                document.addEventListener("mouseup", stopDrawing, false);
+                document.addEventListener("touchend", stopDrawing, false);
+            };
+
+    
+
+            function setDrawing(event){
+                isDrawing = true;
+                p1X = event.offsetX;
+                p1Y = event.offsetY;
+            }
+
+            function draw(event){
+                if(isDrawing){
+                    drawLine(canvasContext, p1X, p1Y, event.offsetX, event.offsetY);
+                    p1X = event.offsetX;
+                    p1Y = event.offsetY;
+                }
+            }
+
+            function drawLine(context, x1, y1, x2, y2) {
+                canvasContext.lineCap = "round";
+                canvasContext.lineJoin = "round";
+                context.beginPath();
+                context.strokeStyle = colorSelect.value;
+                context.lineWidth = lineSelect.value;
+                context.moveTo(x1, y1);
+                context.lineTo(x2, y2);
+                context.stroke();
+                context.closePath();
+            }
+
+            function stopDrawing(){
+                if(isDrawing){
+                    isDrawing = !isDrawing;
+                }
+            };
+
+
+        </script>
+    </body>
+
+</html>

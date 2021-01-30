@@ -84,8 +84,8 @@
 
 <script>
 
-  let canvas;
-  let canvasContext;
+  const canvas = document.getElementById("game-canvas");
+  const canvasContext = canvas.getContext("2d");
   let spaceshipX = 150;
   const spaceshipY = 550;
   let canonY = 520;
@@ -153,25 +153,23 @@
   sounds.muted = true;
 
   function soundControl() {
-    if (sounds.muted == true){
-      sounds.muted = false;
+    if (sounds.muted){
+      !sounds.muted;
       document.getElementById("sound-button").innerHTML="&#128266;";
     } else {
       sounds.muted = true;
       document.getElementById("sound-button").innerHTML="&#128263;";
     }
-    console.log(sounds);
   }
 
   window.onload = function () {
-    canvas = document.getElementById("game-canvas");
-    canvasContext = canvas.getContext("2d");
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
     document.addEventListener("keydown", event => {if(event.keyCode === 83 && !sPressed){
+      score = 0;
       startGame();
       sPressed = true;
-    console.log(event)}
+    }
     });
     canvasContext.textAlign = "center";
     canvasContext.fillStyle = "black"; /*black background*/
@@ -342,7 +340,7 @@
       shotFired = true;
       shotX = canonX-5;
       shotY = canonY;
-      if (sounds.muted == false){
+      if (!sounds.muted){
       document.getElementById("laser").play();
       }
     }
@@ -505,7 +503,6 @@
 
     if (snakeY4 >= 450){
     
-      score = 0;
       clearInterval(intervalSnake);
       clearInterval(intervalGame);
       clearInterval(intervalBackground);
