@@ -19,7 +19,6 @@
 
         select {
             color: black;
-            width: 32px;
             height:28px;
             text-align: center;
             vertical-align: middle;
@@ -42,12 +41,6 @@
             vertical-align: middle;
         }
 
-        #color-img {
-            margin-left: 8px;
-            width: 30px;
-            height: 30px;
-        }
-
         #width-img {
             width: 26px;
             height: 26px;
@@ -56,20 +49,30 @@
         #rainbow-img {
             width: 40px;
             height: 40px;
+            opacity: 0.5;
+            transition: 0.3s;
         }
 
-        #rainbow-checkbox {
+        #save-img {
+            width: 28px;
+            height: 28px;
             margin-right: 8px;
         }
 
+
         input {
             vertical-align: middle;
+            margin-left: 8px;
         }
 
         div div{
             display: inline-block;
         }
 
+        button {
+            background-color: transparent;
+            border: 0;
+        }
         </style>
 
     </head>
@@ -78,8 +81,6 @@
         <center>
             <br>
             <h1>Drawing App</h1>
-
-        
             
             <br>
         
@@ -89,7 +90,6 @@
 
             <div style="width: 300px; display: flex; flex-direction: row; justify-content: space-between; align-items: baseline; background-color: white; border-top: 1px solid grey;">
                 <div>
-                    <img src="images/color-circle.svg" id="color-img">
                     <input id="color-select" type="color" value="#0A1172"></input>
                 </div>
                 <div>
@@ -103,8 +103,17 @@
                     </select>
                 </div>
                 <div>
-                    <img src="images/rainbow.svg" id="rainbow-img">
-                    <input id="rainbow-checkbox" type="checkbox">
+                    <button id="rainbow-button">
+                        <img src="images/rainbow.svg" id="rainbow-img">
+                    </button>
+                </div>
+                <div>
+                    <button id="save-button">
+                        <img src="images/diskette.svg" id="save-img">
+                    </button>
+                    <button id="delete-button">
+                        <img src="images/delete.svg" id="delete-img">
+                    </button>
                 </div>
             </div>
 
@@ -123,27 +132,64 @@
             let p1Y;
             const colorSelect = document.getElementById("color-select");
             const lineSelect = document.getElementById("line-width");
-            const rainbowCheckbox = document.getElementById("rainbow-checkbox");
+            const rainbowBTN = document.getElementById("rainbow-button");
+            const saveBTN = document.getElementById("save-button");
+            const rainbowIMG = document.getElementById("rainbow-img");
+            const deleteBTN = document.getElementById("delete-button");
+
+            let isRainbow = false;
 
             let isDrawing = false;
 
             const canvas = document.getElementById("game-canvas");
             const canvasContext = canvas.getContext("2d");
 
-            canvasContext.fillStyle = "white";
-            canvasContext.fillRect(0,0,canvas.width,canvas.height);
+            
 
             
 
             window.onload = function () {
+                canvasContext.fillStyle = "white";
+                canvasContext.fillRect(0,0,canvas.width,canvas.height);
                 canvas.addEventListener("mousedown", setDrawing);
                 canvas.addEventListener("mousemove", draw);
                 canvas.addEventListener("touchstart", setDrawing);
                 canvas.addEventListener("touchmove", draw);
                 canvas.addEventListener("mouseup", stopDrawing);
                 canvas.addEventListener("touchend", stopDrawing);
+                saveBTN.addEventListener("click", saveDrawing);
+                deleteBTN.addEventListener("click",deleteDrawing);
+                rainbowBTN.addEventListener("click",toggleRainbow);
+
+                loadDrawing();
             };
 
+            function loadDrawing(){
+                if("drawing" in localStorage) {
+                    let drawingURL = localStorage.getItem("drawing");
+                    let image = new Image;
+                    image.src = drawingURL;
+                    image.onload = () => {
+                        canvasContext.drawImage(image,0,0);
+                    }
+                    
+                    console.log("loaded");
+                }
+            }
+
+            function saveDrawing(){
+                console.log("saving");
+                localStorage.setItem("drawing", canvas.toDataURL());
+            }
+
+            function deleteDrawing(){
+                if("drawing" in localStorage){
+                    localStorage.removeItem("drawing");
+                }
+                canvasContext.fillStyle = "white";
+                canvasContext.fillRect(0,0,canvas.width,canvas.height);
+
+            }
     
 
             function setDrawing(event){
@@ -152,7 +198,6 @@
                 let rect = event.target.getBoundingClientRect();
                 p1X = (event.targetTOuches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
                 p1Y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
-                console.log("setDrawing works");
             }
 
             function draw(event){
@@ -164,13 +209,23 @@
                     drawLine(canvasContext, p1X, p1Y, x, y);
                     p1X = (event.targetTouches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
                     p1Y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
-                    console.log(event.offsetX);
+                }
+            }
+
+            function toggleRainbow(){
+                if(!isRainbow){
+                    isRainbow = true;
+                    rainbowIMG.style.opacity = 1;
+                } else {
+                    isRainbow = false;
+                    rainbowIMG.style.opacity = 0.5;
+                    
                 }
             }
 
             function drawLine(context, x1, y1, x2, y2) {
                 let color = colorSelect.value;
-                if(rainbowCheckbox.checked){
+                if(isRainbow){
 
                     color = `hsl(${x1}, 100%, 50%)`;
                 }
@@ -188,7 +243,6 @@
 
             function stopDrawing(){
                 event.preventDefault();
-                console.log("stopDrawing works");
                 if(isDrawing){
                     isDrawing = !isDrawing;
                 }
