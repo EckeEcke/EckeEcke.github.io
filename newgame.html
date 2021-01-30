@@ -17,10 +17,14 @@
             text-align: center;
         }
 
-        input {
+        select {
             color: black;
             width: 60px;
             text-align: center;
+        }
+
+        option {
+            color: black;
         }
 
         #color-select {
@@ -31,28 +35,35 @@
             border: 0;
             border-radius: 100%;
         }
-        
+
         </style>
 
     </head>
 
     <body>
         <center>
-            <h1>Drawing App</h1>
             <br>
+            <h1>Drawing App</h1>
+
             <table>
                 <tr>
                     <td>
-                     Select color:
+                     Color:
                     </td>
                     <td>
                         <input id="color-select" type="color"></input>
                     </td>
                     <td>
-                     Select weight:
+                     Weight: 
                     </td>
                     <td>
-                        <input id="line-width" type="number" value=2 min=1 max=10></input>
+                        <select id="line-width">
+                            <option value="2">2</option>
+                            <option value="4">4</option>
+                            <option value="6">6</option>
+                            <option value="8">8</option>
+                            <option value="10">10</option>
+                        </select>
                     </td>
 
 
@@ -97,8 +108,8 @@
                 canvas.addEventListener("mousemove", draw);
                 canvas.addEventListener("touchstart", setDrawing);
                 canvas.addEventListener("touchmove", draw);
-                document.addEventListener("mouseup", stopDrawing);
-                document.addEventListener("touchend", stopDrawing);
+                canvas.addEventListener("mouseup", stopDrawing);
+                canvas.addEventListener("touchend", stopDrawing);
             };
 
     
