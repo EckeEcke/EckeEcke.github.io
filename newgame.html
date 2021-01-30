@@ -13,14 +13,16 @@
         }
 
         table {
-            max-width: 500px;
+            width: 300px;
             text-align: center;
         }
 
         select {
             color: black;
-            width: 60px;
+            width: 32px;
+            height:28px;
             text-align: center;
+            vertical-align: middle;
         }
 
         option {
@@ -28,12 +30,44 @@
         }
 
         #color-select {
-            width: 3rem;
-            height: 3rem;
-            padding: .5rem;
+            width: 36px;
+            height: 40px;
             background-color: transparent;
             border: 0;
-            border-radius: 100%;
+        }
+
+        img {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+        }
+
+        #color-img {
+            margin-left: 8px;
+            width: 30px;
+            height: 30px;
+        }
+
+        #width-img {
+            width: 26px;
+            height: 26px;
+        }
+
+        #rainbow-img {
+            width: 40px;
+            height: 40px;
+        }
+
+        #rainbow-checkbox {
+            margin-right: 8px;
+        }
+
+        input {
+            vertical-align: middle;
+        }
+
+        div div{
+            display: inline-block;
         }
 
         </style>
@@ -45,41 +79,34 @@
             <br>
             <h1>Drawing App</h1>
 
-            <table>
-                <tr>
-                    <td>
-                     Color:
-                    </td>
-                    <td>
-                        <input id="color-select" type="color"></input>
-                    </td>
-                    <td>
-                     Weight: 
-                    </td>
-                    <td>
-                        <select id="line-width">
-                            <option value="2">2</option>
-                            <option value="4">4</option>
-                            <option value="6">6</option>
-                            <option value="8">8</option>
-                            <option value="10">10</option>
-                        </select>
-                    </td>
-                    <td>Rainbow:</td>
-                    <td>
-                        <input id="rainbow-checkbox" type="checkbox">
-                    </td>
-
-
-                </tr>
-
-            </table>
+        
             
             <br>
         
             <canvas id="game-canvas" width="300px" height="400px">
 
             </canvas>
+
+            <div style="width: 300px; display: flex; flex-direction: row; justify-content: space-between; align-items: baseline; background-color: white; border-top: 1px solid grey;">
+                <div>
+                    <img src="images/color-circle.svg" id="color-img">
+                    <input id="color-select" type="color" value="#0A1172"></input>
+                </div>
+                <div>
+                    <img src="images/width.svg" id="width-img"> 
+                    <select id="line-width">
+                        <option value="2">2</option>
+                        <option value="4">4</option>
+                        <option value="6">6</option>
+                        <option value="8">8</option>
+                        <option value="10">10</option>
+                    </select>
+                </div>
+                <div>
+                    <img src="images/rainbow.svg" id="rainbow-img">
+                    <input id="rainbow-checkbox" type="checkbox">
+                </div>
+            </div>
 
         </center>
         
@@ -144,6 +171,7 @@
             function drawLine(context, x1, y1, x2, y2) {
                 let color = colorSelect.value;
                 if(rainbowCheckbox.checked){
+
                     color = `hsl(${x1}, 100%, 50%)`;
                 }
                 event.preventDefault();
