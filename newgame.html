@@ -2,6 +2,7 @@
 
     <head>
         <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+        <title>Drawing App 🖌</title>
         <style>
         * {
             color:white;
@@ -11,6 +12,63 @@
         body {
             background-image: linear-gradient(to right, #7b4397, #dc2430);
         }
+
+        #hamburger {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: transparent;
+            padding: 5px;
+            z-index: 3000;
+            border-style: none;
+            transition: 0.3s;
+            }
+
+        .line1, .line2, .line3 {
+            width: 30px;
+            height: 4px;
+            margin: 6px;
+            background-color: white;
+            border-radius: 20px;
+            }
+
+
+
+        #burger-menu {
+
+            position: fixed;
+            background-color: white;
+            opacity: 0.96;
+            right: 0px;
+            top: 0px;
+            padding: 100px 80px 100px 0px;
+            z-index: -3000;
+            height: 0vh;
+            border-left: 1px solid black;
+            transition: 0.5s;
+            opacity: 0;
+            }
+
+        #burger-menu a {
+            text-decoration: none;
+            color: black;
+            font-size: 1.3em;
+            }
+
+        #burger-menu li {
+            list-style: none;
+            }
+
+        #burger-menu a:hover {
+            color: #039BE5;
+            transition: 0.5s;
+            }
+
+        .nav-line {
+            background-color: white;
+            height: 1px;
+            border-color: rgb(255,255,251,0.8);
+            }
 
         table {
             width: 300px;
@@ -22,6 +80,7 @@
             height:28px;
             text-align: center;
             vertical-align: middle;
+            border: 0;
         }
 
         option {
@@ -41,22 +100,26 @@
             vertical-align: middle;
         }
 
-        #width-img {
-            width: 26px;
-            height: 26px;
-        }
-
         #rainbow-img {
             width: 40px;
             height: 40px;
-            opacity: 0.5;
+            opacity: 0.3;
             transition: 0.3s;
         }
 
         #save-img {
             width: 28px;
             height: 28px;
+            
+        }
+
+        #delete-img {
             margin-right: 8px;
+        }
+
+        #erase-img {
+            opacity: 0.3;
+            transition: 0.3s;
         }
 
 
@@ -73,11 +136,67 @@
             background-color: transparent;
             border: 0;
         }
+
+        #UI {
+            margin-top: 30px;
+            width: 350px; 
+            display: flex; 
+            flex-direction: row; 
+            justify-content: space-between; 
+            align-items: baseline; 
+            background-color: white; 
+            padding: 10px 0;
+        } 
+
+        @media (max-width: 550px){
+            #UI {
+                position: fixed;
+                width: 100vw;
+                bottom: 0;
+                left: 0;
+                padding: 10px 0;
+            }
+        }
         </style>
 
     </head>
 
     <body>
+
+        <button id="hamburger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+          </button>
+            <div id="burger-menu">
+              <ul>
+                <li>
+                  <a href="index.html">Home</a>
+                </li>
+                <hr class="nav-line">
+                <li>
+                  <a href="https://nifty-hopper-c1da01.netlify.app/" target="_blank">React Travel Blog</a>
+                </li>
+                <hr class="nav-line">
+                <li>
+                  <a href="shooter.html">JS Space Shooter</a>
+                </li>
+                <hr class="nav-line">
+                <li>
+                  <a href="pong.html">JS Pong</a>
+                </li>
+                <hr class="nav-line">
+                <li>
+                  <a href="https://adoring-galileo-71fde2.netlify.app/">React Todo App</a>
+                </li>
+                <hr class="nav-line">
+                <li>
+                  <a href="newgame.html">Drawing App</a>
+                </li>
+              </ul>
+            </div>
+
+
         <center>
             <br>
             <h1>Drawing App</h1>
@@ -88,19 +207,23 @@
 
             </canvas>
 
-            <div style="width: 300px; display: flex; flex-direction: row; justify-content: space-between; align-items: baseline; background-color: white; border-top: 1px solid grey;">
+            <div id="UI">
                 <div>
                     <input id="color-select" type="color" value="#0A1172"></input>
                 </div>
                 <div>
-                    <img src="images/width.svg" id="width-img"> 
                     <select id="line-width">
-                        <option value="2">2</option>
-                        <option value="4">4</option>
-                        <option value="6">6</option>
-                        <option value="8">8</option>
-                        <option value="10">10</option>
+                        <option value="2">2pt</option>
+                        <option value="4">4pt</option>
+                        <option value="6">6pt</option>
+                        <option value="8">8pt</option>
+                        <option value="10">10pt</option>
                     </select>
+                </div>
+                <div>
+                    <button id="erase-button">
+                        <img src="images/eraser.svg" id="erase-img">
+                    </button>
                 </div>
                 <div>
                     <button id="rainbow-button">
@@ -111,10 +234,13 @@
                     <button id="save-button">
                         <img src="images/diskette.svg" id="save-img">
                     </button>
+                </div>
+                <div>
                     <button id="delete-button">
                         <img src="images/delete.svg" id="delete-img">
                     </button>
                 </div>
+                
             </div>
 
         </center>
@@ -136,9 +262,11 @@
             const saveBTN = document.getElementById("save-button");
             const rainbowIMG = document.getElementById("rainbow-img");
             const deleteBTN = document.getElementById("delete-button");
+            const eraseBTN = document.getElementById("erase-button");
+            const eraseIMG = document.getElementById("erase-img");
 
             let isRainbow = false;
-
+            let isErasing = false;
             let isDrawing = false;
 
             const canvas = document.getElementById("game-canvas");
@@ -160,6 +288,8 @@
                 saveBTN.addEventListener("click", saveDrawing);
                 deleteBTN.addEventListener("click",deleteDrawing);
                 rainbowBTN.addEventListener("click",toggleRainbow);
+                eraseBTN.addEventListener("click",toggleErase);
+                scrollTo(0,document.body.scrollHeight);
 
                 loadDrawing();
             };
@@ -213,21 +343,28 @@
             }
 
             function toggleRainbow(){
-                if(!isRainbow){
-                    isRainbow = true;
-                    rainbowIMG.style.opacity = 1;
-                } else {
-                    isRainbow = false;
-                    rainbowIMG.style.opacity = 0.5;
-                    
-                }
+                isRainbow = !isRainbow;
+                rainbowIMG.style.opacity = isRainbow ? 1 : 0.3;
+                isErasing = false;
+                eraseIMG.style.opacity = 0.3;
+            }
+
+            function toggleErase(){
+                isErasing = !isErasing;
+                eraseIMG.style.opacity = isErasing ? 1 : 0.3;
+                isRainbow = false;
+                rainbowIMG.style.opacity = 0.3;
             }
 
             function drawLine(context, x1, y1, x2, y2) {
                 let color = colorSelect.value;
-                if(isRainbow){
 
+                if(isRainbow){
                     color = `hsl(${x1}, 100%, 50%)`;
+                }
+
+                if(isErasing){
+                    color = "white";
                 }
                 event.preventDefault();
                 canvasContext.lineCap = "round";
@@ -247,6 +384,35 @@
                     isDrawing = !isDrawing;
                 }
             };
+
+
+
+
+
+
+            const burgerMenu = document.getElementById("burger-menu");
+            const hamburger = document.getElementById("hamburger");
+            hamburger.addEventListener("click", showMenu);
+
+            let burgerMenuShowing = false;
+
+            function showMenu(){
+                burgerMenuShowing = !burgerMenuShowing;
+            if (burgerMenuShowing) {
+                burgerMenu.style.height = "100vh";
+                burgerMenu.style.opacity = "0.99";
+                burgerMenu.style.zIndex = "2500";
+                hamburger.style.position = "fixed";
+                hamburger.style.backgroundColor = "rgb(0,0,0,0.7)";
+            }
+            else {
+                burgerMenu.style.height = "0vh";
+                burgerMenu.style.opacity = "0";
+                burgerMenu.style.zIndex = "-3000";
+                hamburger.style.position = "absolute";
+                hamburger.style.backgroundColor = "transparent";
+            }
+            }
 
 
         </script>
