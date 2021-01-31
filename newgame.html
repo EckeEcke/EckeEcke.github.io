@@ -70,9 +70,8 @@
             border-color: rgb(255,255,251,0.8);
             }
 
-        table {
-            width: 300px;
-            text-align: center;
+        canvas {
+            margin-bottom: 70px:
         }
 
         select {
@@ -284,6 +283,7 @@
                 canvas.addEventListener("touchstart", setDrawing);
                 canvas.addEventListener("touchmove", draw);
                 canvas.addEventListener("mouseup", stopDrawing);
+                canvas.addEventListener("mouseleave", stopDrawing);
                 canvas.addEventListener("touchend", stopDrawing);
                 saveBTN.addEventListener("click", saveDrawing);
                 deleteBTN.addEventListener("click",deleteDrawing);
