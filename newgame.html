@@ -369,7 +369,7 @@
 
                 isDrawing = true;
                 let rect = event.target.getBoundingClientRect();
-                p1X = (event.targetTOuches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
+                p1X = (event.targetTouches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
                 p1Y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
             }
 
