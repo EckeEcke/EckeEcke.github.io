@@ -4,6 +4,7 @@
         <meta name="viewport" content="width=device-width, maximum-scale=1.0">
         <title>Drawing App 🖌</title>
         <style>
+
         * {
             color:white;
             font-family: Helvetica;
@@ -69,11 +70,6 @@
             height: 1px;
             border-color: rgb(255,255,251,0.8);
             }
-
-
-        h1 {
-            margin: 30px 0;
-        }
 
 
         select {
@@ -169,11 +165,6 @@
                 width: 100vw;
                 left: 0;
             }
-
-            h1 {
-                font-size: 1.2em;
-                margin: 20px 0;
-            }
         }
         </style>
 
@@ -218,8 +209,6 @@
         <center>
  
             <div id="wrapper">
-                <h1>Drawing App</h1>
-                
                 <canvas id="game-canvas"></canvas>
             </div>
                
@@ -286,6 +275,7 @@
             let isRainbow = false;
             let isErasing = false;
             let isDrawing = false;
+            let startedDrawing = false;
 
             const canvas = document.getElementById("game-canvas");
             const canvasContext = canvas.getContext("2d");
@@ -313,14 +303,25 @@
 
             window.onload = function () {
                 initialize();
+                canvasContext.fillStyle = "black";
+                canvasContext.font = "30px Verdana";
+                canvasContext.textAlign = "center";
+                canvasContext.shadowColor = "grey";
+                canvasContext.shadowOffsetX = 1;
+                canvasContext.shadowOffsetY = 1;
+                canvasContext.fillText("Drawing App", canvas.width/2, canvas.height/2-20);
+                canvasContext.font = "20px Verdana";
+                canvasContext.fillText("Tap or click to start", canvas.width/2, canvas.height/2+20);
+                canvasContext.font = "40px Verdana";
+                canvasContext.fillText("🎨🖌️", canvas.width/2, canvas.height/2+90);
             };
 
             function setCanvasSize(){
                 canvas.width = window.innerWidth < 600 ? 0.8*window.innerWidth : 400;
-                canvas.height = window.innerWidth < 600 ? 1.2*window.innerWidth : 600;
-                if(window.innerWidth/window.innerHeight>0.7){
-                    canvas.width = window.innerWidth*0.6;
-                    canvas.height = window.innerWidth*0.9;
+                canvas.height = window.innerWidth < 600 ? window.innerWidth : 500;
+                if(window.innerWidth < 1025 && window.innerWidth/window.innerHeight >0.7 ){
+                    canvas.width = window.innerWidth*0.8;
+                    canvas.height = window.innerWidth;
                 }
             }
 
@@ -354,6 +355,11 @@
 
             function setDrawing(event){
                 event.preventDefault();
+                if(!startedDrawing){
+                    initialize();
+                }
+                startedDrawing = true;
+
                 isDrawing = true;
                 let rect = event.target.getBoundingClientRect();
                 p1X = (event.targetTOuches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
