@@ -70,13 +70,11 @@
             border-color: rgb(255,255,251,0.8);
             }
 
+
         h1 {
-            margin: 50px 0;
+            margin: 30px 0;
         }
 
-        canvas {
-            margin-bottom: 70px:
-        }
 
         select {
             color: black;
@@ -141,23 +139,35 @@
         }
 
         #UI {
-            margin-top: 30px;
-            width: 350px; 
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0px auto;
+            width: 400px; 
             display: flex; 
             flex-direction: row; 
             justify-content: space-between; 
             align-items: baseline; 
             background-color: white; 
             padding: 10px 0;
+            border-top: 1px solid grey;
         } 
+
+        canvas {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
 
         @media (max-width: 550px){
             #UI {
-                position: fixed;
                 width: 100vw;
-                bottom: 0;
                 left: 0;
-                padding: 10px 0;
             }
 
             h1 {
@@ -206,14 +216,14 @@
 
 
         <center>
-           
-            <h1>Drawing App</h1>
+ 
+            <div id="wrapper">
+                <h1>Drawing App</h1>
+                
+                <canvas id="game-canvas"></canvas>
+            </div>
+               
             
-            <canvas id="game-canvas" width="300px" height="400px">
-
-            </canvas>
-
-            <br><br>
 
             <div id="UI">
                 <div>
@@ -280,13 +290,11 @@
             const canvas = document.getElementById("game-canvas");
             const canvasContext = canvas.getContext("2d");
 
-            
-
-            
-
-            window.onload = function () {
+            function initialize(){
+                setCanvasSize();
                 canvasContext.fillStyle = "white";
                 canvasContext.fillRect(0,0,canvas.width,canvas.height);
+                window.addEventListener("resize", initialize);
                 canvas.addEventListener("mousedown", setDrawing);
                 canvas.addEventListener("mousemove", draw);
                 canvas.addEventListener("touchstart", setDrawing);
@@ -299,7 +307,22 @@
                 rainbowBTN.addEventListener("click",toggleRainbow);
                 eraseBTN.addEventListener("click",toggleErase);
                 loadDrawing();
+            }
+
+            
+
+            window.onload = function () {
+                initialize();
             };
+
+            function setCanvasSize(){
+                canvas.width = window.innerWidth < 600 ? 0.96*window.innerWidth : 400;
+                canvas.height = window.innerWidth < 600 ? 1.44*window.innerWidth : 600;
+                if(window.innerWidth/window.innerHeight>0.7){
+                    canvas.width = window.innerWidth*0.6;
+                    canvas.height = window.innerWidth*0.9;
+                }
+            }
 
             function loadDrawing(){
                 if("drawing" in localStorage) {
