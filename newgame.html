@@ -368,20 +368,26 @@
                 startedDrawing = true;
 
                 isDrawing = true;
-                let rect = event.target.getBoundingClientRect();
-                p1X = (event.targetTouches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
-                p1Y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
+                //let rect = event.target.getBoundingClientRect();
+                p1X = (event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX);
+                p1Y = (event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY);
             }
 
             function draw(event){
                 event.preventDefault();
                 if(isDrawing){
-                    let rect = event.target.getBoundingClientRect();
-                    let x = (event.targetTouches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
-                    let y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
+                    //let rect = event.target.getBoundingClientRect();
+                    //let x = (event.targetTouches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
+                    //let y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
+                    //drawLine(canvasContext, p1X, p1Y, x, y);
+                    //p1X = (event.targetTouches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
+                    //p1Y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
+
+                    let x = (event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX);
+                    let y = (event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY);
                     drawLine(canvasContext, p1X, p1Y, x, y);
-                    p1X = (event.targetTouches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
-                    p1Y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
+                    p1X = (event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX);
+                    p1Y = (event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY);
                 }
             }
 
