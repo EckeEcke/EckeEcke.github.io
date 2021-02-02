@@ -1,0 +1,172 @@
+@font-face {
+    font-family: myFont;
+    src: url(myFont.ttf);
+    }
+
+    * {
+        color:white;
+        font-family: myFont;
+    }
+
+    body {
+        background-image: linear-gradient(to right, #EECDA3, #EF629F);
+    }
+
+    #hamburger {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background-color: transparent;
+        padding: 5px;
+        z-index: 3000;
+        border-style: none;
+        transition: 0.3s;
+        }
+
+    .line1, .line2, .line3 {
+        width: 30px;
+        height: 4px;
+        margin: 6px;
+        background-color: white;
+        border-radius: 20px;
+        }
+
+
+
+    #burger-menu {
+
+        position: fixed;
+        background-color: white;
+        opacity: 0.96;
+        right: 0px;
+        top: 0px;
+        padding: 100px 80px 100px 0px;
+        z-index: -3000;
+        height: 0vh;
+        border-left: 1px solid black;
+        transition: 0.5s;
+        opacity: 0;
+        }
+
+    #burger-menu a {
+        text-decoration: none;
+        color: black;
+        font-size: 1.3em;
+        }
+
+    #burger-menu li {
+        list-style: none;
+        }
+
+    #burger-menu a:hover {
+        color: #039BE5;
+        transition: 0.5s;
+        }
+
+    .nav-line {
+        background-color: white;
+        height: 1px;
+        border-color: rgb(255,255,251,0.8);
+        }
+
+
+    select {
+        color: black;
+        height:28px;
+        text-align: center;
+        vertical-align: middle;
+        border: 0;
+    }
+
+    option {
+        color: black;
+    }
+
+    #color-select {
+        width: 36px;
+        height: 40px;
+        background-color: transparent;
+        border: 0;
+    }
+
+    img {
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+    }
+
+    #rainbow-img {
+        width: 40px;
+        height: 40px;
+        opacity: 0.3;
+        transition: 0.3s;
+    }
+
+    #save-img {
+        width: 28px;
+        height: 28px;
+        
+    }
+
+    #delete-img {
+        margin-right: 8px;
+    }
+
+    #erase-img {
+        opacity: 0.3;
+        transition: 0.3s;
+    }
+
+
+    input {
+        vertical-align: middle;
+        margin-left: 8px;
+    }
+
+    div div{
+        display: inline-block;
+    }
+
+    button {
+        background-color: transparent;
+        border: 0;
+    }
+
+    #UI {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: 0px auto;
+        width: 400px; 
+        display: flex; 
+        flex-direction: row; 
+        justify-content: space-between; 
+        align-items: baseline; 
+        background-color: white; 
+        padding: 10px 0;
+        border-top: 1px solid grey;
+    } 
+
+    canvas {
+        display: block;
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    @media (max-width: 550px){
+        #UI {
+            width: 100vw;
+            left: 0;
+        }
+    }
+
+    @media (orientation: landscape) and (max-width: 800px) {
+        canvas {
+            position: unset;
+        }
+    }
