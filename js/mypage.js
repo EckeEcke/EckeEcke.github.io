@@ -1,19 +1,19 @@
 const burgerMenu = document.getElementById("burger-menu");
+let burgerMenuShowing = false;
 
 function showMenu(){
-  if (burgerMenu.show == "false") {
+  burgerMenuShowing = !burgerMenuShowing;
+  if (burgerMenuShowing) {
     burgerMenu.style.height = "100vh";
     burgerMenu.style.opacity = "0.99";
     burgerMenu.style.zIndex = "2500";
     hamburger.style.position = "fixed";
-    burgerMenu.show = "true";
   }
   else {
     burgerMenu.style.height = "0vh";
     burgerMenu.style.opacity = "0";
     burgerMenu.style.zIndex = "-3000";
     hamburger.style.position = "absolute";
-    burgerMenu.show = "false";
   }
 }
 

@@ -143,9 +143,11 @@
   let ballY = 300;
   let ballSpeedY = 0;
   let paddle1Y = 250;
+  const paddle1X = 30;
   let paddle2Y = 250;
-  let upPressed = false;
-  let downPressed = false;
+  const paddle2X = 760;
+  let oPressed = false;
+  let lPressed = false;
   let wPressed = false;
   let sPressed = false;
   let Score1 = 0;
@@ -216,12 +218,11 @@
   function twoPlayerMode() {
     drawEverything();
     moveEverything();
-    collision2();
-    collision1();
+    collision(paddle2X,paddle2Y, -1);
+    collision(paddle1X,paddle1Y, 1);
     move1();
     move2();
-    P1Score();
-    P2Score();
+    setScore();
     raiseSpeed();
     drawScore();
   }
@@ -229,11 +230,10 @@
   function onePlayerMode(){
     drawEverything();
     moveEverything();
-    collision2();
-    collision1();
+    collision(paddle2X,paddle2Y, -1);
+    collision(paddle1X,paddle1Y, 1, wPressed, sPressed);
     move1();
-    P1Score();
-    P2Score();
+    setScore();
     raiseSpeed();
     drawScore();
     moveAI();
@@ -245,11 +245,11 @@
     ballY = ballY + ballSpeedY;
 
     if (ballX == canvas.width) {
-      ballSpeedX = ballSpeedX/ballSpeedX*(-1)*2;
-
+      ballSpeedX = -ballSpeedX;
     }
+
     if (ballX == 0) {
-      ballSpeedX = ballSpeedX/ballSpeedX*2;
+      ballSpeedX = -ballSpeedX;
     }
 
     ballY = ballY + ballSpeedY;
@@ -257,6 +257,7 @@
       ballSpeedY = -ballSpeedY;
       ballY = canvas.height;
     }
+
     if (ballY <= 0) {
       ballSpeedY = -ballSpeedY;
       ballY = 0;
@@ -283,13 +284,13 @@
 
 
   function move2 (event) {
-      if(downPressed) {
+      if(lPressed) {
         paddle2Y = paddle2Y + 8;
       }
       if(paddle2Y > 500) {
         paddle2Y = 500;
       }
-      if(upPressed) {
+      if(oPressed) {
         paddle2Y = paddle2Y - 10;
       }
       if(paddle2Y < 0) {
@@ -305,6 +306,7 @@
     }
     if(paddle2Y < 0) {
         paddle2Y = 0;
+        oPressed
       }
     if(paddle2Y > 500) {
         paddle2Y = 500;
@@ -314,10 +316,17 @@
   function moveAItoBall(){
     if(ballY>paddle2Y+50){
       paddle2Y += 5;
+      lPressed;
     }
 
     if(ballY<paddle2Y+50){
       paddle2Y -= 5;
+      oPressed;
+    }
+
+    if (ballY == paddle2Y+50){
+      lPressed = false;
+      oPressed = false;
     }
   }
 
@@ -336,6 +345,7 @@
   function resetAfterScore(){
       ballX = 400;
       ballY = 300;
+      ballSpeedY = 0;
       hitCounter = 0;
     }
 
@@ -348,13 +358,14 @@ function keyDownHandler (event) {
     sPressed = true;
   }
   else if (event.keyCode === 79) {
-    upPressed = true;
+    oPressed = true;
   }
   else if (event.keyCode === 76) {
-    downPressed = true;
+    lPressed = true;
   }
 }
-  function keyUpHandler (event) {
+
+function keyUpHandler (event) {
     if(event.keyCode === 87) {
       wPressed = false;
     }
@@ -362,10 +373,10 @@ function keyDownHandler (event) {
       sPressed = false;
     }
     else if (event.keyCode === 79) {
-      upPressed = false;
+      oPressed = false;
     }
     else if (event.keyCode === 76) {
-      downPressed = false;
+      lPressed = false;
     }
   }
 
@@ -379,23 +390,33 @@ function keyDownHandler (event) {
       canvasContext.fillText(message2, 130+canvas.width/2, 350);
   }
 
+  
 
 
-
-  function P1Score () {
+  function setScore () {
+    let scored = false;
     if (ballX == canvas.width) {
       Score1 = Score1 +1;
-      console.log(ballY);
       if (sounds.muted == false){
       soundCheer1.play();
       }
+      scored = true;
     }
 
-    if (ballX == canvas.width) {
+    if (ballX == 0) {
+      Score2 = Score2 +1;
+      if (sounds.muted == false){
+      soundCheer2.play();
+      }
+      scored = true;
+    }
+
+    if (scored) {
       resetAfterScore();
+      scored = false;
     }
 
-    if (Score1 == 10) {
+    if (Score1 == 7) {
       if (sounds.muted == false){
       soundVictory.play();
       }
@@ -404,87 +425,34 @@ function keyDownHandler (event) {
       drawVictoryMessage("Win!", "Lose");
       setTimeout(resetGame, 5000);
     }
-  }
 
-
-  function P2Score () {
-    if (ballX == 0) {
-      Score2 = Score2 +1;
-      console.log(ballY);
+    if (Score2 == 7) {
       if (sounds.muted == false){
-      soundCheer2.play();
-    }
-    }
-
-    if (ballX == 0) {
-      resetAfterScore();
-    }
-
-    if (Score2 == 10) {
-      if (sounds.muted == false){
-      victorySound.play();
+      soundVictory.play();
       }
 
       clearInterval(runGame);
       drawVictoryMessage("Lose", "Win!");
-      setTimeout(resetGame, 5000);     
+      setTimeout(resetGame, 5000);
     }
   }
 
 
 
-  function collision2 () {
+  function collision (paddleX, paddleY, direction, upBTN, downBTN) {
 
-    if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y + paddleHeight+tolerance){
-      ballSpeedX = -5 - speedBoost;
+
+    if (ballX == paddleX && ballY >= paddleY - tolerance && ballY < paddleY -1 + paddleHeight + tolerance) { 
+      ballSpeedX = direction * (5 + speedBoost);
       hitCounter = hitCounter + 1;
-    }
-
-
-    if (ballX == 760 && ballY >= paddle2Y - tolerance && ballY < paddle2Y -1 + paddleHeight/2) { /*top paddle*/
-      if(ballSpeedY <= 0){
-        ballSpeedY = -3;
-      } else {
+      if (ballSpeedY == 0){
         ballSpeedY = 2;
       }
-      if (sounds.muted == false){
-      document.getElementById("bounce").play();
+      if (upBTN && ballSpeedY > -3){
+        ballSpeedY -= 1;
       }
-    }
-    if (ballX == 760 && ballY >= paddle2Y + paddleHeight/2 && ballY < paddle2Y + paddleHeight+tolerance) { /*bottom paddle*/
-      if(ballSpeedY >= 0){
-        ballSpeedY = 3;
-      } else {
-        ballSpeedY = -2;
-      }
-      if (sounds.muted == false){
-      document.getElementById("bounce").play();
-      }
-    }
-  }
-
-  function collision1 () {
-
-
-    if (ballX == 30 && ballY >= paddle1Y - tolerance && ballY < paddle1Y -1 + paddleHeight/2) { /*top paddle*/
-      ballSpeedX = 5 + speedBoost;
-      hitCounter = hitCounter + 1;
-      if(ballSpeedY <= 0){
-        ballSpeedY = -3;
-      } else {
-        ballSpeedY = 2;
-      }
-      if (sounds.muted == false){
-      document.getElementById("bounce1").play();
-      }
-    }
-    if (ballX == 30 && ballY >= paddle1Y + paddleHeight/2 && ballY < paddle1Y + paddleHeight+tolerance) { /*bottom paddle*/
-      ballSpeedX = 5 + speedBoost;
-      hitCounter = hitCounter + 1;
-      if(ballSpeedY >= 0){
-        ballSpeedY = 3;
-      } else {
-        ballSpeedY = -2;
+      if (downBTN && ballSpeedY < 3){
+        ballSpeedY += 1;
       }
       if (sounds.muted == false){
       document.getElementById("bounce1").play();
@@ -522,9 +490,11 @@ function keyDownHandler (event) {
 
   const burgerMenu = document.getElementById("burger-menu");
   const hamburger = document.getElementById("hamburger");
+  let burgerMenuShowing = false;
 
   function showMenu(){
-  if (burgerMenu.style.height === "0vh") {
+    burgerMenuShowing = !burgerMenuShowing;
+  if (burgerMenuShowing) {
     burgerMenu.style.height = "100vh";
     burgerMenu.style.opacity = "0.99";
     hamburger.style.position = "fixed";

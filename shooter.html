@@ -153,13 +153,13 @@
   sounds.muted = true;
 
   function soundControl() {
-    if (sounds.muted){
-      !sounds.muted;
+    sounds.muted = !sounds.muted;
+    if (!sounds.muted){
       document.getElementById("sound-button").innerHTML="&#128266;";
     } else {
-      sounds.muted = true;
       document.getElementById("sound-button").innerHTML="&#128263;";
     }
+    console.log(sounds.muted);
   }
 
   window.onload = function () {
@@ -213,11 +213,6 @@
     canvasContext.font = "24px retro";
     canvasContext.fillStyle = "white";
     canvasContext.fillText(highScore, 25+canvas.width/2, 60);
-
-    if(score>highScore){
-      highScore = score;
-      isHighscore = true;
-    }
   }
 
 
@@ -494,6 +489,11 @@
       }
     }
 
+    if(score>highScore){
+      highScore = score;
+      isHighscore = true;
+    }
+
     if (snakeLives == 0){
       
       startNextRound();
@@ -607,18 +607,20 @@
   
   const burgerMenu = document.getElementById("burger-menu");
   const hamburger = document.getElementById("hamburger");
+  let burgerMenuShowing = false;
 
   function showMenu(){
-  if (burgerMenu.style.height === "0vh") {
-    burgerMenu.style.height = "100vh";
-    burgerMenu.style.opacity = "0.99";
-    hamburger.style.position = "fixed";
-  }
-  else {
-    burgerMenu.style.height = "0vh";
-    burgerMenu.style.opacity = "0";
-    hamburger.style.position = "absolute";
-  }
+    burgerMenuShowing = !burgerMenuShowing;
+    if (burgerMenuShowing) {
+      burgerMenu.style.height = "100vh";
+      burgerMenu.style.opacity = "0.99";
+      hamburger.style.position = "fixed";
+    }
+    else {
+      burgerMenu.style.height = "0vh";
+      burgerMenu.style.opacity = "0";
+      hamburger.style.position = "absolute";
+    }
 }
 
 </script>
