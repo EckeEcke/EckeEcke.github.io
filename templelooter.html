@@ -128,23 +128,32 @@
     <img src="images/dungeon-wall.png" id="wall" style="display:none">
     <img src="images/character1.png" id="character1" style="display:none">
     <img src="images/character2.png" id="character2" style="display:none">
+    <img src="images/bat1.png" id="bat1" style="display:none">
+    <img src="images/bat2.png" id="bat2" style="display:none">
+    <img src="images/key.png" id="key" style="display:none">
+    <img src="images/background-lava1.png" id="lava-background1" style="display:none">
+    <img src="images/background-lava2.png" id="lava-background2" style="display:none">
+    <img src="images/bridge.png" id="bridge" style="display:none">
     <audio src="sounds/dungeon-death.wav" id="death"></audio>
     <audio src="sounds/looter-startsound.wav" id="start-sound"></audio>
     <audio src="sounds/looter-gameover.wav" id="gameover-sound"></audio>
     <audio src="sounds/treasure.wav" id="treasure-sound"></audio>
     <audio src="sounds/gate-passed.wav" id="gate-sound"></audio>
     <audio src="sounds/looter-hurt.wav" id="hurt-sound"></audio>
+    <audio src="sounds/looter-victory.wav" id="victory-sound"></audio>
 
     <script>
         const canvas = document.getElementById("game-canvas");
         const ctx = canvas.getContext("2d");
         let aPressed, sPressed, wPressed, dPressed, spacePressed = false;
 
+        let player = {x:0,y:0,width:0,height:0,characterSprite:"",invincibility:false};
+        let characterSprite1 = document.getElementById("character1");
+        let characterSprite2 = document.getElementById("character2");
 
-        let squareX = 0;
-        let squareY = 0;
-        let squareWidth;
-        let squareHeight;
+        let background1Level3 = document.getElementById("lava-background1");
+        let background2Level3 = document.getElementById("lava-background2");
+        let bridgeImage = document.getElementById("bridge");
         let obstacleX;
         let obstacleY;
         let obstacleY2;
@@ -155,9 +164,7 @@
         let kickback;
         let kickbackY;
 
-        let treasureX;
-        let treasureY;
-        let treasureCollected;
+        let treasure = {x:0,y:0,collectMessage:"LOOT!",messagteState:false,collectState:false};
 
         let passedGate;
         let score;
@@ -180,11 +187,46 @@
 
         let backgroundFilter = "none";
 
-        let displayLootMessage = false;
+
+        let displayKeyMessage = false;
 
         let gameover = false;
 
+        let bat;
 
+        let bat1 = {x:700,y:100, distanceX: 0, distanceY: 0, speedX:0.5,speedY:0.5}; 
+
+        let bat2 = {x:700,y:400,distanceX: -30, distanceY: 10,speedX:0.5,speedY: 0.8};
+
+        let bat3 = {x:500, y:100,distanceX:30,distanceY:10,speedX:0.8,speedY:0.5};
+
+        let randomBat = {x:200, y:200, multiplierX:1,multiplierY:1};
+
+        let randomBat2 = {x:300, y:50, multiplierX:-1,multiplierY:1};
+        
+        let batSprite;
+
+        let batAnimation;
+
+        let randomNumber;
+
+        let round = 1;
+
+        let treasureCooldown = false;
+
+        let keyAppears;
+
+        let backgroundLevel3 = document.getElementById("background-lava1");
+
+        let backgroundLavaOne = false;
+
+
+        let key = {x:0,y:0,collectMessage:"KEY!",messageState:false,collectState:false};
+        let keys = 0;
+        let keysRequired = 5;
+
+        let bridge1 = {x:84,y:100,width:100,height:50};
+        let bridge2= {x:192,y:700,width:100,height:50};
 
         const deathsound = document.getElementById("death");
         const startsound = document.getElementById("start-sound");
@@ -192,6 +234,7 @@
         const treasuresound = document.getElementById("treasure-sound");
         const gatesound = document.getElementById("gate-sound");
         const hurtsound = document.getElementById("hurt-sound");
+        const victorysound = document.getElementById("victory-sound");
 
 
 
@@ -213,10 +256,13 @@
             document.addEventListener("keydown", keyDownHandler, false);
             document.addEventListener("keyup", keyUpHandler, false);
             characterAnimation = setInterval(animateCharacter, 200);
+            batAnimation = setInterval(animateBat,160);
+            backgroundAnimation = setInterval(toggleBackground,500);
+            makeKeyAppear = setInterval(keyStatusToggle,5000);
             document.addEventListener("keydown", event => {
                 if (event.keyCode === 32 && !spacePressed) {
                     spacePressed = true;
-                    console.log(spacePressed + "spacepressed");
+                    initialize();
                     ctx.fillStyle = "black";
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                     ctx.fillStyle = "white";
@@ -231,33 +277,87 @@
         function startGame() {
             spacePressed = true;
             initialize();
-            gameInterval = setInterval(callAll, 1000 / gameSpeed);
+            gameInterval = setInterval(callAllRound1, 1000 / gameSpeed);
+            randomInterval = setInterval(randomGenerator, 500);
         }
 
+        function keyStatusToggle(){
+            keyAppears = !keyAppears;
+            key.collectState = false;
+            key.x = 20 + Math.floor(Math.random() * 200);
+            key.y = 20 + Math.floor(Math.random() * 300);
+        }
+
+        function drawKey(){
+            if (!key.collectState && keyAppears) {
+                ctx.webkitImageSmoothingEnabled = false;
+                ctx.mozImageSmoothingEnabled = false;
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(document.getElementById("key"), key.x, key.y, 40, 24);
+            }
+        }
+
+        function collectKey(){
+            if (player.x < key.x + 40 && player.x + player.width > key.x && player.y < key.y + 25 && player.y + player.height > key.y && !key.collectState) {
+                treasuresound.pause();
+                treasuresound.currentTime = 0;
+                treasuresound.play();
+                keys += 1;
+                key.collectState = true;
+                displayKeyMessage = true;
+            }
+        }
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
         function initialize() {
+    
+            keys = 0;
+            keysRequired = 5;
             spacePressed = true;
-            squareX = 0;
-            squareY = canvas.height / 2;
+            player.x = 0;
+            player.y = canvas.height / 2;
             obstacleX = canvas.width + 200;
             obstacleY = 0;
             obstacleHeight = 25 * Math.floor(Math.random() * 10);
             isCollision = false;
             isCollisionY = false;
-            treasureX = 10 + Math.floor(Math.random() * 200);
-            treasureY = 50;
-            treasureCollected = false;
+            treasure.x = 10 + Math.floor(Math.random() * 200);
+            treasure.y = 50;
+            treasure.collectState = false;
             passedGate = false;
             score = 0;
             gameSpeed = 120;
             gatesPassed = 0;
             lives = 3;
             character = true;
-            characterSprite = document.getElementById("character2");
+            player.characterSprite = characterSprite2;
             gameover = false;
+            bat = false;
+            bat1 = {x:700,y:100, distanceX: 0, distanceY: 0, speedX:0.5,speedY:0.5}; 
+
+            bat2 = {x:700,y:400,distanceX: -30, distanceY: 10,speedX:0.5,speedY: 0.8};
+
+            bat3 = {x:500, y:100,distanceX:30,distanceY:10,speedX:0.8,speedY:0.5};
+
+            randomBat = {x:200, y:200, multiplierX:1,multiplierY:1};
+
+            randomBat2 = {x:300, y:50, multiplierX:-1,multiplierY:1};
         }
 
 
-        function callAll() {
+        function callAllRound1() {
 
             ctx.shadowColor = "black";
             ctx.shadowBlur = 5;
@@ -277,7 +377,102 @@
             ctx.textAlign = "start";
             drawTreasure();
             collectTreasure();
+            drawKey();
             drawObstacle();
+            drawSquare();
+            moveSquare();
+           
+            collectKey();
+            
+            drawBat(bat1);
+
+
+            moveBat(bat1);
+
+
+            
+            
+
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.fillText("Score: " + score, 0, 24);
+            ctx.fillText("🗝x"+ keys,190,24);
+            keyMessage();
+            lootMessage();
+            drawLives();
+            endGame();
+            nextRound();
+
+        }
+
+        function callAllRound2(){
+
+            ctx.shadowColor = "black";
+            ctx.shadowBlur = 5;
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = -5;
+
+
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.mozImageSmoothingEnabled = false;
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(document.getElementById("background"), 0, 0, canvas.width, canvas.height);
+
+            countPoints();
+            ctx.fillStyle = "white";
+            ctx.font = "20px pixelFont";
+            ctx.textAlign = "start";
+            drawTreasure();
+            collectTreasure();
+            drawSquare();
+            moveSquare();
+            drawKey();
+            collectKey();
+            drawBat(bat1);
+            drawBat(bat2);
+            drawBat(bat3);
+            drawBat(randomBat);
+            drawBat(randomBat2);
+            moveBat(bat1);
+            moveBat(bat2);
+            moveBat(bat3);
+            moveByRandom(randomBat);
+            moveByRandom(randomBat2);
+
+            
+            
+
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.fillText("Score: " + score, 0, 24);
+            ctx.fillText("🗝x"+ keys,190,24);
+            lootMessage();
+            keyMessage();
+            drawLives();
+            endGame();
+            nextRound();
+
+        }
+
+        function callAllRound3(){
+            ctx.shadowColor = "black";
+            ctx.shadowBlur = 5;
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = -5;
+
+
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.mozImageSmoothingEnabled = false;
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(backgroundLevel3, 0, 0, canvas.width, canvas.height);
+
+            countPoints();
+            ctx.fillStyle = "white";
+            ctx.font = "20px pixelFont";
+            ctx.textAlign = "start";
+            drawBridges();
             drawSquare();
             moveSquare();
 
@@ -286,47 +481,129 @@
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
             ctx.fillText("Score: " + score, 0, 24);
-            lootMessage();
+            ctx.fillText("🗝x"+ keys,190,24);
+           
             drawLives();
             endGame();
+            nextRound();
+            bridgeCollision(bridge1);
+            bridgeCollision(bridge2);
+            lavaCollision();
+            winGame();
+            carriedByBridge = false
+            
 
         }
+        
+        
 
         function drawSquare() {
-            squareHeight = canvas.height / 10;
-            squareWidth = canvas.width / 10;
+            player.height = canvas.height / 10;
+            player.width = canvas.width / 10;
             let squareColor = "red";
-            ctx.drawImage(characterSprite, squareX, squareY);
+            ctx.drawImage(player.characterSprite, player.x, player.y);
+            
 
         }
 
+        function drawBat(bat){
+            ctx.drawImage(batSprite,bat.x,bat.y,50,30);
+        }
+
+        function moveBat(bat){
+            if(bat.x < player.x  + bat.distanceX){
+                bat.x += bat.speedX;
+            }
+
+            if(bat.x > player.x + bat.distanceX){
+                bat.x -= bat.speedX;
+            }
+
+            if(bat.y < player.y + bat.distanceY){
+                bat.y += bat.speedY;
+            }
+            if(bat.y>player.y + bat.distanceY){
+                bat.y -= bat.speedY;
+            }
+            batCollision(bat);
+        }
+
+        function batCollision(bat){
+            if(player.x + 15 < bat.x + 35 && player.x + player.width > bat.x + 15 && player.y +10 <= bat.y + 20 && player.y + player.height>= bat.y && !invincibility){
+                hurtsound.pause();
+                hurtsound.currentTime = 0;
+                hurtsound.play();
+                lives -= 1;
+                invincibility = true;
+                setTimeout(function () { invincibility = false }, 700);
+            }        
+        }
+
+        function randomGenerator(){
+            randomNumber = Math.random();
+        }
+
+        function moveByRandom(bat){
+            batCollision(bat);
+            if(randomNumber < 0.4){
+                bat.x += 1*bat.multiplierX;
+                bat.y += 1*bat.multiplierY;
+            } else if(randomNumber >= 0.4 && randomNumber < 0.6){
+                bat.x += 0.8*bat.multiplierX;
+                bat.y -= 1*bat.multiplierY;
+            } else if(randomNumber >= 0.6 && randomNumber < 0.8){
+                bat.x -= 1*bat.multiplierX;
+                bat.y -= 0.8*bat.multiplierY;
+            } else if(randomNumber >= 0.8){
+                bat.x -= 1*bat.multiplierX;
+                bat.Y +=1*bat.multiplierY;
+            }
+            if(bat.x > canvas.width-30){
+                bat.x = canvas.width-30;
+            }
+
+            if(bat.x < 0){
+                bat.x = 0;
+            }
+
+            if(bat.y > canvas.height-30){
+                bat.y = canvas.height-30;
+            }
+
+            if(bat.y < 0){
+                bat.y = 0;
+            }
+            
+        }
+
+
         function moveSquare() {
-            if (aPressed && squareX > 0) {
-                if (squareX > obstacleX + obstacleWidth && squareX < obstacleX + obstacleWidth) {
-                    squareX == obstacleX + obstacleWidth;
+            if (aPressed && player.x > 0) {
+                if (player.x > obstacleX + obstacleWidth && player.x < obstacleX + obstacleWidth) {
+                    player.x == obstacleX + obstacleWidth;
                 } else {
-                    squareX -= 2;
+                    player.x -= 2;
                 }
 
             }
-            if (dPressed && squareX < 9 * canvas.width / 10 && !isCollision) {
-                squareX += 2;
+            if (dPressed && player.x < 9 * canvas.width / 10 && !isCollision) {
+                player.x += 2;
             }
-            if (wPressed && squareY > 0) {
-                squareY -= 2;
+            if (wPressed && player.y > 0) {
+                player.y -= 2;
             }
-            if (sPressed && squareY < 9 * canvas.height / 10) {
-                squareY += 2;
+            if (sPressed && player.y < 9 * canvas.height / 10) {
+                player.y += 2;
             }
             if (isCollision && kickback < 0) {
-                squareX += kickback;
+                player.x += kickback;
                 kickback -= 1;
                 if (kickback == -12) {
                     isCollision = false;
                 }
             }
             if (isCollision && kickback > 0) {
-                squareX += kickback;
+                player.x += kickback;
                 kickback += 1;
                 if (kickback == 12) {
                     isCollision = false;
@@ -334,7 +611,7 @@
 
             }
             if (isCollisionY && kickbackY > 0) {
-                squareY += kickbackY;
+                player.y += kickbackY;
                 kickbackY += 1;
                 if (kickbackY == 6) {
                     isCollisionY = false;
@@ -342,7 +619,7 @@
                 }
             }
             if (isCollisionY && kickbackY < 0) {
-                squareY += kickbackY;
+                player.y += kickbackY;
                 kickbackY -= 1;
                 console.log(kickbackY)
                 if (kickbackY == -6) {
@@ -387,17 +664,28 @@
 
         function animateCharacter() {
             character = !character;
-            characterSprite = (character == true) ? document.getElementById("character2") : characterSprite = document.getElementById("character1");
+            player.characterSprite = (character == true) ? characterSprite2 : player.characterSprite = characterSprite1;
+            
 
+        }
+
+        function animateBat(){
+            bat = !bat;
+            batSprite = (bat == true) ? document.getElementById("bat1") : document.getElementById("bat2"); 
+        }
+
+        function toggleBackground(){
+            backgroundLavaOne = !backgroundLavaOne;
+            backgroundLevel3 = (backgroundLavaOne == true) ? background1Level3 : background2Level3;
         }
 
         function drawTreasure() {
 
-            if (!treasureCollected) {
+            if (!treasure.collectState) {
                 ctx.webkitImageSmoothingEnabled = false;
                 ctx.mozImageSmoothingEnabled = false;
                 ctx.imageSmoothingEnabled = false;
-                ctx.drawImage(document.getElementById("treasure"), treasureX, treasureY, 40, 40);
+                ctx.drawImage(document.getElementById("treasure"), treasure.x, treasure.y, 40, 40);
             }
 
         }
@@ -414,17 +702,18 @@
                 obstacleX = canvas.width + 50;
                 obstacleHeight = 25 * Math.floor(Math.random() * 10);
                 passedGate = false;
-                treasureX = 20 + Math.floor(Math.random() * 200);
-                treasureY = 20 + Math.floor(Math.random() * 350);
-                treasureCollected = false;
+                treasure.x = 20 + Math.floor(Math.random() * 200);
+                treasure.y = 20 + Math.floor(Math.random() * 350);
+                treasure.collectState = false;
             }
 
         }
 
+        
 
 
         function collision() {
-            if (obstacleX < squareX + squareWidth && obstacleX > squareX + squareWidth - 4 && squareY < obstacleY + obstacleHeight - 10) {
+            if (obstacleX < player.x + player.width && obstacleX > player.x + player.width - 4 && player.y < obstacleY + obstacleHeight - 10) {
                 hurtsound.pause();
                 hurtsound.currentTime = 0;
                 hurtsound.play();
@@ -439,7 +728,7 @@
                 }
 
             }
-            if (obstacleX < squareX + squareWidth && obstacleX >= squareX + squareWidth - 4 && obstacleY2 < squareY + squareHeight) {
+            if (obstacleX < player.x + player.width && obstacleX >= player.x + player.width - 4 && obstacleY2 < player.y + player.height) {
                 hurtsound.pause();
                 hurtsound.currentTime = 0;
                 hurtsound.play();
@@ -455,32 +744,40 @@
 
             }
 
+           
 
-
-            if (squareX < obstacleX + obstacleWidth && squareX + squareWidth > obstacleX && squareY <= obstacleY + obstacleHeight && squareY >= obstacleY + obstacleHeight - 2) {
+            if (player.x < obstacleX + obstacleWidth && player.x + player.width > obstacleX && player.y <= obstacleY + obstacleHeight && player.y >= obstacleY + obstacleHeight - 2) {
                 isCollisionY = true;
                 kickbackY = 4;
             }
-            if (squareX < obstacleX + obstacleWidth && squareX + squareWidth > obstacleX && squareY < obstacleY2 + 2 && squareY + squareHeight > obstacleY2) {
+            if (player.x < obstacleX + obstacleWidth && player.x + player.width > obstacleX && player.y < obstacleY2 + 2 && player.y + player.height > obstacleY2) {
                 isCollisionY = true;
                 kickbackY = -4;
             }
             if (passedGate) {
-                if (squareX < obstacleX + obstacleWidth) {
-                    squareX = obstacleX + obstacleWidth;
+                if (player.x < obstacleX + obstacleWidth) {
+                    player.x = obstacleX + obstacleWidth;
                 }
             }
         }
 
         function collectTreasure() {
-            if (squareX < treasureX + 40 && squareX + squareWidth > treasureX && squareY < treasureY + 40 && squareY + squareHeight > treasureY && !treasureCollected) {
+            if (player.x < treasure.x + 40 && player.x + player.width > treasure.x && player.y < treasure.y + 40 && player.y + player.height > treasure.y && !treasure.collectState) {
                 treasuresound.pause();
                 treasuresound.currentTime = 0;
                 treasuresound.play();
-                treasureCollected = true;
+                treasure.collectState = true;
                 score += 20;
-                console.log("treasure");
-                displayLootMessage = true;
+                treasure.messageState = true;
+                if(round==2 && treasure.collectState && !treasureCooldown){
+                    treasureCooldown = true;
+                    setTimeout(function(){
+                        treasure.x = 20 + Math.floor(Math.random() * 200);
+                        treasure.y = 20 + Math.floor(Math.random() * 350);
+                        treasure.collectState = false;
+                        treasureCooldown = false;
+                    },500);
+                }
             }
         }
 
@@ -509,16 +806,28 @@
 
 
         function endGame() {
-            if (squareX + squareWidth < -30 || lives === 0) {
+            if (player.x + player.width < -30 || lives === 0) {
                 
                 lives = 0;
                 gameSpeed = 10;
                 deathsound.play();
                 clearInterval(gameInterval);
-                gameInterval = setInterval(callAll, 1000 / gameSpeed);
+                console.log(round);
+                if(round==1){
+                    gameInterval = setInterval(callAllRound1, 1000 / gameSpeed);
+                }
+                if(round==2){
+                    gameInterval = setInterval(callAllRound2, 1000 / gameSpeed);
+                }
+                if(round==3){
+                    gameInterval = setInterval(callAllRound3, 1000 / gameSpeed);
+                }
+                
                 if(!gameover){
+                    
                     gameover = true;
                     setTimeout(function () {
+                    round = 1;
                     spacePressed = false;
                     clearInterval(gameInterval);
                     gameoversound.play();
@@ -538,30 +847,177 @@
 
         }
 
+        function nextRound(){
+            if(keys == keysRequired){
+                console.log("next");
+                round += 1;
+                clearInterval(gameInterval);
+                initialize();
+                startsound.play();
+                setTimeout(()=>{
+                    ctx.fillStyle = "black";
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = "white";
+                    ctx.font = "30px pixelFont";
+                    ctx.textAlign = "center";
+                    ctx.fillText("Next round!", canvas.width / 2, canvas.height / 2 - 50);
+                },1000);
+                if(round==2){
+                    setTimeout(()=>gameInterval = setInterval(callAllRound2,1000/gameSpeed),2000);
+                }
+                if(round==3){
+                    setTimeout(()=>gameInterval = setInterval(callAllRound3,1000/gameSpeed),2000);
+                }
+                
+                
+
+            }
+        }
+
 
         
 
         function countPoints() {
-            if (squareX > obstacleX + 10 && !passedGate) {
+            if (player.x > obstacleX + 10 && !passedGate) {
                 gatesPassed += 1;
                 gatesound.play();
                 passedGate = true;
             }
             if (gatesPassed == 5) {
                 gatesPassed = 0;
-                gameSpeed = 1.2 * gameSpeed;
+                gameSpeed = 1.1 * gameSpeed;
                 clearInterval(gameInterval);
-                gameInterval = setInterval(callAll, 1000 / gameSpeed);
+                gameInterval = setInterval(callAllRound1, 1000 / gameSpeed);
                 console.log(gameSpeed);
             }
         }
 
         function lootMessage() {
-            if (displayLootMessage) {
-                ctx.fillText("LOOT!", treasureX, treasureY + 20);
-                setTimeout(() => displayLootMessage = false, 500);
+            if (treasure.messageState) {
+
+                ctx.fillText("LOOT!", treasure.x, treasure.y + 20);
+                setTimeout(() => treasure.messageState = false, 500);
             }
         }
+
+        function keyMessage(){
+            if(displayKeyMessage){
+
+                ctx.fillText("KEYS!",key.x,key.y);
+                setTimeout(() => displayKeyMessage = false, 500);
+            }
+        }
+
+
+
+        function drawBridges(){
+            
+            
+            ctx.drawImage(bridgeImage,bridge1.x,bridge1.y,bridge1.width,bridge1.height);
+            ctx.drawImage(bridgeImage,bridge2.x,bridge2.y,bridge2.width,bridge2.height);
+            if(bridge1.y < 700){
+                bridge1.y +=1;
+            } else{
+                bridge1.y = -100;
+            }
+            if(bridge2.y > -50){
+                bridge2.y -= 1.2;
+            } else(bridge2.y) = 700;
+        }
+
+        function lavaCollision(){
+            
+            if(player.x > 60 && !carriedByBridge && player.x < 260){
+                lives = 0;
+            }
+            console.log(carriedByBridge);
+        }
+
+        let carriedByBridge = false;
+
+        function bridgeCollision(bridge){
+            
+            if (bridge.x < player.x + player.width && bridge.x + bridge.width> player.x && player.y < bridge.y + bridge.height - 10 && bridge.y < player.y + player.height) {
+                carriedByBridge = true;
+            }
+    }
+
+        let jumpUp = true;
+        let characterJump = 0;
+
+        function winAnimation(){
+            animateCharacter();
+            player.y += characterJump;
+            if(jumpUp){
+                if(characterJump == 4){
+                    jumpUp = false;
+                }
+                characterJump += 1;
+                
+            }
+            if(!jumpUp){
+                characterJump -= 1;
+                if(characterJump == -4){
+                    jumpUp = true;
+                }
+            }
+            if(player.y>200){
+                player.y = 200;
+            }
+            }
+            
+        let gameWon = false;
+        
+        function winGame(){
+            if(player.x > 280 && player.y > 140 && player.y <200 && !gameWon){
+                victorysound.play();
+                gameWon = true;
+                score += 1000;
+                clearInterval(gameInterval);
+                gameInterval = setInterval(()=>{
+                    ctx.shadowColor = "black";
+                ctx.shadowBlur = 5;
+                ctx.shadowOffsetX = 5;
+                ctx.shadowOffsetY = -5;
+
+
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.mozImageSmoothingEnabled = false;
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(backgroundLevel3, 0, 0, canvas.width, canvas.height);
+
+            countPoints();
+            ctx.fillStyle = "white";
+            ctx.font = "20px pixelFont";
+            ctx.textAlign = "start";
+            drawBridges();
+            drawSquare();
+            winAnimation();
+
+
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.fillText("Score: " + score, 0, 24);
+            ctx.fillText("🗝x"+ keys,190,24);
+           
+            drawLives();
+                },1000/60);
+                setTimeout(()=>{
+                    clearInterval(gameInterval);
+                    ctx.fillStyle ="black";
+                    ctx.fillRect(0,0,canvas.width,canvas.height);
+                    ctx.fillStyle="white";
+                    ctx.textAlign = "center";
+                    ctx.font = "30px pixelFont";
+                    ctx.fillText("You win!",canvas.width/2,canvas.height/2);
+                },2000)
+                
+            }
+        }
+
+
+
 
         const burgerMenu = document.getElementById("burger-menu");
         let burgerMenuShowing = false;
