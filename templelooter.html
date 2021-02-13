@@ -79,6 +79,15 @@
             background-color: white;
             height: 2px;
         }
+
+        #sound-control {
+            font-size: 2em;
+            height: 80px;
+            width: 80px;
+            position: fixed;
+            right: 0;
+            bottom: 0;
+        }
     </style>
 </head>
 
@@ -141,11 +150,16 @@
     <audio src="sounds/gate-passed.wav" id="gate-sound"></audio>
     <audio src="sounds/looter-hurt.wav" id="hurt-sound"></audio>
     <audio src="sounds/looter-victory.wav" id="victory-sound"></audio>
+    <audio src="sounds/key-sound.wav" id="key-sound"></audio>
+
+    <button id="sound-control" onclick="soundControl()">&#128263;</button>
 
     <script>
         const canvas = document.getElementById("game-canvas");
         const ctx = canvas.getContext("2d");
         let aPressed, sPressed, wPressed, dPressed, spacePressed = false;
+
+        let soundMuted = true;
 
         let player = {x:0,y:0,width:0,height:0,characterSprite:"",invincibility:false};
         let characterSprite1 = document.getElementById("character1");
@@ -154,17 +168,15 @@
         let background1Level3 = document.getElementById("lava-background1");
         let background2Level3 = document.getElementById("lava-background2");
         let bridgeImage = document.getElementById("bridge");
-        let obstacleX;
-        let obstacleY;
-        let obstacleY2;
-        const obstacleWidth = 30;
-        let obstacleHeight;
+
         let isCollision;
         let isCollisionY;
         let kickback;
         let kickbackY;
 
         let treasure = {x:0,y:0,collectMessage:"LOOT!",messagteState:false,collectState:false};
+
+        let obstacle = {x:canvas.width + 200,y:0,y2:0,width:30,height:0}
 
         let passedGate;
         let score;
@@ -228,14 +240,15 @@
         let bridge1 = {x:84,y:100,width:100,height:50};
         let bridge2= {x:192,y:700,width:100,height:50};
 
-        const deathsound = document.getElementById("death");
-        const startsound = document.getElementById("start-sound");
-        const gameoversound = document.getElementById("gameover-sound");
-        const treasuresound = document.getElementById("treasure-sound");
-        const gatesound = document.getElementById("gate-sound");
-        const hurtsound = document.getElementById("hurt-sound");
-        const victorysound = document.getElementById("victory-sound");
 
+        const deathsound = {src: document.getElementById("death"),playOnce:true};
+        const startsound = {src: document.getElementById("start-sound"),playOnce:true};
+        const gameoversound = {src: document.getElementById("gameover-sound"), playOnce: true};
+        const treasuresound = {src: document.getElementById("treasure-sound"), playOnce: false};
+        const keysound = {src: document.getElementById("key-sound"), playOnce: false};
+        const gatesound = {src: document.getElementById("gate-sound"), playOnce: false};
+        const hurtsound = {src: document.getElementById("hurt-sound"), playOnce: true};
+        const victorysound = {src: document.getElementById("victory-sound"), playOnce: true};
 
 
 
@@ -268,13 +281,24 @@
                     ctx.fillStyle = "white";
                     ctx.fillText("Get ready", canvas.width / 2, canvas.height / 2);
                     setTimeout(startGame, 1500);
-                    startsound.play();
+                    playSound(startsound);
 
                 }
             });
         }
 
+        function soundControl(){
+            soundMuted = !soundMuted;
+            console.log(soundMuted);
+            if (!soundMuted){
+            document.getElementById("sound-control").innerHTML="&#128266;";
+            } else {
+            document.getElementById("sound-control").innerHTML="&#128263;";
+            }
+        }
+
         function startGame() {
+            score = 0;
             spacePressed = true;
             initialize();
             gameInterval = setInterval(callAllRound1, 1000 / gameSpeed);
@@ -285,7 +309,7 @@
             keyAppears = !keyAppears;
             key.collectState = false;
             key.x = 20 + Math.floor(Math.random() * 200);
-            key.y = 20 + Math.floor(Math.random() * 300);
+            key.y = 50 + Math.floor(Math.random() * 300);
         }
 
         function drawKey(){
@@ -299,9 +323,7 @@
 
         function collectKey(){
             if (player.x < key.x + 40 && player.x + player.width > key.x && player.y < key.y + 25 && player.y + player.height > key.y && !key.collectState) {
-                treasuresound.pause();
-                treasuresound.currentTime = 0;
-                treasuresound.play();
+                playSound(keysound);
                 keys += 1;
                 key.collectState = true;
                 displayKeyMessage = true;
@@ -311,7 +333,17 @@
     
 
 
+        function playSound(sound){
+            if(!sound.playOnce){
+                sound.src.pause();
+                sound.src.currentTime = 0;
+            }
+            
+            if(!soundMuted){
+                sound.src.play();
+            }
 
+        }
 
 
 
@@ -328,16 +360,15 @@
             spacePressed = true;
             player.x = 0;
             player.y = canvas.height / 2;
-            obstacleX = canvas.width + 200;
-            obstacleY = 0;
-            obstacleHeight = 25 * Math.floor(Math.random() * 10);
+            obstacle.x = canvas.width + 200;
+            obstacle.y = 0;
+            obstacle.height = 25 * Math.floor(Math.random() * 10);
             isCollision = false;
             isCollisionY = false;
             treasure.x = 10 + Math.floor(Math.random() * 200);
             treasure.y = 50;
             treasure.collectState = false;
             passedGate = false;
-            score = 0;
             gameSpeed = 120;
             gatesPassed = 0;
             lives = 3;
@@ -530,9 +561,7 @@
 
         function batCollision(bat){
             if(player.x + 15 < bat.x + 35 && player.x + player.width > bat.x + 15 && player.y +10 <= bat.y + 20 && player.y + player.height>= bat.y && !invincibility){
-                hurtsound.pause();
-                hurtsound.currentTime = 0;
-                hurtsound.play();
+                playSound(hurtsound);
                 lives -= 1;
                 invincibility = true;
                 setTimeout(function () { invincibility = false }, 700);
@@ -579,8 +608,8 @@
 
         function moveSquare() {
             if (aPressed && player.x > 0) {
-                if (player.x > obstacleX + obstacleWidth && player.x < obstacleX + obstacleWidth) {
-                    player.x == obstacleX + obstacleWidth;
+                if (player.x > obstacle.x + obstacle.width && player.x < obstacle.x + obstacle.width) {
+                    player.x == obstacle.x + obstacle.width;
                 } else {
                     player.x -= 2;
                 }
@@ -691,16 +720,16 @@
         }
         function drawObstacle() {
 
-            obstacleY2 = obstacleHeight + 60;
+            obstacle.y2 = obstacle.height + 60;
             ctx.webkitImageSmoothingEnabled = false;
             ctx.mozImageSmoothingEnabled = false;
             ctx.imageSmoothingEnabled = false;
-            ctx.drawImage(document.getElementById("wall"), obstacleX, 0, obstacleWidth, obstacleHeight);
-            ctx.drawImage(document.getElementById("wall"), obstacleX, obstacleY2, obstacleWidth, canvas.height);
-            obstacleX -= 1;
-            if (obstacleX < -30) {
-                obstacleX = canvas.width + 50;
-                obstacleHeight = 25 * Math.floor(Math.random() * 10);
+            ctx.drawImage(document.getElementById("wall"), obstacle.x, 0, obstacle.width, obstacle.height);
+            ctx.drawImage(document.getElementById("wall"), obstacle.x, obstacle.y2, obstacle.width, canvas.height);
+            obstacle.x -= 1;
+            if (obstacle.x < -30) {
+                obstacle.x = canvas.width + 50;
+                obstacle.height = 25 * Math.floor(Math.random() * 10);
                 passedGate = false;
                 treasure.x = 20 + Math.floor(Math.random() * 200);
                 treasure.y = 20 + Math.floor(Math.random() * 350);
@@ -713,10 +742,8 @@
 
 
         function collision() {
-            if (obstacleX < player.x + player.width && obstacleX > player.x + player.width - 4 && player.y < obstacleY + obstacleHeight - 10) {
-                hurtsound.pause();
-                hurtsound.currentTime = 0;
-                hurtsound.play();
+            if (obstacle.x < player.x + player.width && obstacle.x > player.x + player.width - 4 && player.y < obstacle.y + obstacle.height - 10) {
+                playSound(hurtsound);
                 console.log("collision");
                 isCollision = true;
                 kickback = -4;
@@ -728,10 +755,8 @@
                 }
 
             }
-            if (obstacleX < player.x + player.width && obstacleX >= player.x + player.width - 4 && obstacleY2 < player.y + player.height) {
-                hurtsound.pause();
-                hurtsound.currentTime = 0;
-                hurtsound.play();
+            if (obstacle.x < player.x + player.width && obstacle.x >= player.x + player.width - 4 && obstacle.y2 < player.y + player.height) {
+                playSound(hurtsound);
                 console.log("collision");
                 isCollision = true;
                 kickback = -4;
@@ -746,26 +771,24 @@
 
            
 
-            if (player.x < obstacleX + obstacleWidth && player.x + player.width > obstacleX && player.y <= obstacleY + obstacleHeight && player.y >= obstacleY + obstacleHeight - 2) {
+            if (player.x < obstacle.x + obstacle.width && player.x + player.width > obstacle.x && player.y <= obstacle.y + obstacle.height && player.y >= obstacle.y + obstacle.height - 2) {
                 isCollisionY = true;
                 kickbackY = 4;
             }
-            if (player.x < obstacleX + obstacleWidth && player.x + player.width > obstacleX && player.y < obstacleY2 + 2 && player.y + player.height > obstacleY2) {
+            if (player.x < obstacle.x + obstacle.width && player.x + player.width > obstacle.x && player.y < obstacle.y2 + 2 && player.y + player.height > obstacle.y2) {
                 isCollisionY = true;
                 kickbackY = -4;
             }
             if (passedGate) {
-                if (player.x < obstacleX + obstacleWidth) {
-                    player.x = obstacleX + obstacleWidth;
+                if (player.x < obstacle.x + obstacle.width) {
+                    player.x = obstacle.x + obstacle.width;
                 }
             }
         }
 
         function collectTreasure() {
             if (player.x < treasure.x + 40 && player.x + player.width > treasure.x && player.y < treasure.y + 40 && player.y + player.height > treasure.y && !treasure.collectState) {
-                treasuresound.pause();
-                treasuresound.currentTime = 0;
-                treasuresound.play();
+                playSound(treasuresound);
                 treasure.collectState = true;
                 score += 20;
                 treasure.messageState = true;
@@ -810,7 +833,7 @@
                 
                 lives = 0;
                 gameSpeed = 10;
-                deathsound.play();
+                playSound(deathsound);
                 clearInterval(gameInterval);
                 console.log(round);
                 if(round==1){
@@ -830,7 +853,7 @@
                     round = 1;
                     spacePressed = false;
                     clearInterval(gameInterval);
-                    gameoversound.play();
+                    playSound(gameoversound);
                     ctx.fillStyle = "black";
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
                     ctx.fillStyle = "white";
@@ -853,7 +876,7 @@
                 round += 1;
                 clearInterval(gameInterval);
                 initialize();
-                startsound.play();
+                playSound(startsound);
                 setTimeout(()=>{
                     ctx.fillStyle = "black";
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -878,9 +901,9 @@
         
 
         function countPoints() {
-            if (player.x > obstacleX + 10 && !passedGate) {
+            if (player.x > obstacle.x + 10 && !passedGate) {
                 gatesPassed += 1;
-                gatesound.play();
+                playSound(gatesound);
                 passedGate = true;
             }
             if (gatesPassed == 5) {
@@ -970,9 +993,9 @@
         
         function winGame(){
             if(player.x > 280 && player.y > 140 && player.y <200 && !gameWon){
-                victorysound.play();
+                playSound(victorysound);
                 gameWon = true;
-                score += 1000;
+                score += 500;
                 clearInterval(gameInterval);
                 gameInterval = setInterval(()=>{
                     ctx.shadowColor = "black";
@@ -1011,6 +1034,8 @@
                     ctx.textAlign = "center";
                     ctx.font = "30px pixelFont";
                     ctx.fillText("You win!",canvas.width/2,canvas.height/2);
+                    ctx.font = "24px pixelFont";
+                    ctx.fillText("Your score: "+score,canvas.width/2,canvas.height/2+60);
                 },2000)
                 
             }
