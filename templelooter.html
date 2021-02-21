@@ -11,11 +11,8 @@
             src: url("css/joystix.ttf")
         }
 
-        html,
-        body {
-            overscroll-behavior-y: contain;
-        }
 
+        html,
         body {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -23,12 +20,17 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-        }
-
-        body {
+            /*preventing text selecting in mobile view*/
+            overscroll-behavior-y: contain;
+            /*preventing scroll reload in mobile view */
             background-color: black;
             font-family: "pixelFont";
             max-height: 100vh;
+        }
+
+        canvas {
+            display: block;
+            margin: 30px auto
         }
 
         h1 {
@@ -166,7 +168,7 @@
     </div>
 
     <h1>Temple Looter</h1>
-    <canvas id="game-canvas" style="display: block;margin: 30px auto"></canvas>
+    <canvas id="game-canvas"></canvas>
     <img src="images/treasure.png" id="treasure" style="display:none">
     <img src="images/dungeon-background2.png" id="background" style="display:none">
     <img src="images/dungeon-wall.png" id="wall" style="display:none">
