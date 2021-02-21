@@ -98,45 +98,9 @@
             bottom: 0;
         }
 
-        .touch-BTN-Y {
-            position: fixed;
-            background: transparent;
-            color: white;
-            width: 80px;
-            height: 100px;
-            border: 2px solid white;
-        }
-
-        .touch-BTN-X {
-            position: fixed;
-            background: transparent;
-            color: white;
-            width: 80px;
-            height: 200px;
-            border: 2px solid white;
-        }
-
-        #touch-BTN-up {
-            bottom: 110px;
-            left: 100px;
-        }
-
-        #touch-BTN-down {
-            bottom: 10px;
-            left: 100px;
-        }
-
-        #touch-BTN-left {
-            bottom: 10px;
-            left: 20px;
-        }
-
-        #touch-BTN-right {
-            bottom: 10px;
-            left: 180px;
-        }
 
         #touch-BTN-start {
+            position: fixed;
             bottom: 10px;
             left: 300px;
         }
@@ -206,10 +170,6 @@
 
     <button class="touch-BTN" id="sound-control" onclick="soundControl()">&#128263;</button>
 
-    <button class="touch-BTN-Y" id="touch-BTN-up">UP</button>
-    <button class="touch-BTN-Y" id="touch-BTN-down">DOWN</button>
-    <button class="touch-BTN-X" id="touch-BTN-left">LEFT</button>
-    <button class="touch-BTN-X" id="touch-BTN-right">RIGHT</button>
     <button class="touch-BTN" id="touch-BTN-start">START</button>
 
     <script>
@@ -376,6 +336,9 @@
             height: 50
         };
 
+        let touchX;
+        let touchY;
+
         const soundBTN = document.getElementById("sound-control");
         const deathsound = { src: document.getElementById("death"), playOnce: true };
         const startsound = { src: document.getElementById("start-sound"), playOnce: true };
@@ -386,10 +349,7 @@
         const hurtsound = { src: document.getElementById("hurt-sound"), playOnce: true };
         const victorysound = { src: document.getElementById("victory-sound"), playOnce: true };
 
-        const touchBTNforUp = document.getElementById("touch-BTN-up");
-        const touchBTNforDown = document.getElementById("touch-BTN-down");
-        const touchBTNforLeft = document.getElementById("touch-BTN-left");
-        const touchBTNforRight = document.getElementById("touch-BTN-right");
+
         const touchBTNStart = document.getElementById("touch-BTN-start");
 
 
@@ -408,14 +368,8 @@
             ctx.fillText("S = DOWN", canvas.width / 2, 210);
             document.addEventListener("keydown", keyDownHandler, false);
             document.addEventListener("keyup", keyUpHandler, false);
-            touchBTNforUp.addEventListener("touchstart", touchDownHandlerUp, false);
-            touchBTNforUp.addEventListener("touchend", touchUpHandlerUp, false);
-            touchBTNforDown.addEventListener("touchstart", touchDownHandlerDown, false);
-            touchBTNforDown.addEventListener("touchend", touchUpHandlerDown, false);
-            touchBTNforLeft.addEventListener("touchstart", touchDownHandlerLeft, false);
-            touchBTNforLeft.addEventListener("touchend", touchUpHandlerLeft, false);
-            touchBTNforRight.addEventListener("touchstart", touchDownHandlerRight, false);
-            touchBTNforRight.addEventListener("touchend", touchUpHandlerRight, false);
+            canvas.addEventListener("touchstart", changeTouchPosition, false);
+            canvas.addEventListener("touchmove", changeTouchPosition, false);
             touchBTNStart.addEventListener("click", () => {
                 if (!spacePressed) {
                     spacePressed = true;
@@ -498,37 +452,6 @@
 
         }
 
-        function touchDownHandlerUp() {
-            wPressed = true;
-        }
-
-        function touchUpHandlerUp() {
-            wPressed = false;
-        }
-
-        function touchDownHandlerDown() {
-            sPressed = true;
-        }
-
-        function touchUpHandlerDown() {
-            sPressed = false;
-        }
-
-        function touchDownHandlerLeft() {
-            aPressed = true;
-        }
-
-        function touchUpHandlerLeft() {
-            aPressed = false;
-        }
-
-        function touchDownHandlerRight() {
-            dPressed = true;
-        }
-
-        function touchUpHandlerRight() {
-            dPressed = false;
-        }
 
 
         function initialize() {
@@ -626,8 +549,46 @@
             ctx.drawImage(player1.characterSprite, player1.x, player1.y);
         }
 
+        function movePlayerTouch(event){
+            if(touchX -20 < player1.x){
+                player1.x -= 2;
+                if(player1.x < 0){
+                    player1.x = 0;
+                }
+            }
+
+            if(touchX -20 > player1.x){
+                player1.x += 2;
+                if(player1.x > canvas.width){
+                    player1.x = canvas.width - 10;
+                }
+            }
+
+            if(touchY -20 < player1.y){
+                player1.y -= 2;
+                if(player1.y < 0){
+                    player1.y = 0;
+                }
+            }
+
+            if(touchY -20 > player1.y){
+                player1.y += 2;
+                if(player1.y > canvas.height - 20){
+                    player1.y = canvas.height-20;
+                }
+            }
+            
+        }
+
+        function changeTouchPosition(event){
+            touchX = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX;
+            touchY = event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY;
+            console.log(touchX);
+        }
+
 
         function movePlayer() {
+
             if (aPressed && player1.x > 0) {
                 if (player1.x > obstacle.x + obstacle.width && player1.x < obstacle.x + obstacle.width) {
                     player1.x == obstacle.x + obstacle.width;
@@ -723,6 +684,7 @@
         function handlePlayer() {
             drawPlayer();
             movePlayer();
+            movePlayerTouch();
             collision();
         }
 
