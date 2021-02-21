@@ -35,7 +35,7 @@
             font-family: pixelFont;
             text-align: center;
             color: white;
-            margin-top: 5%;
+            margin-top: 80px;
         }
 
         #hamburger {
@@ -46,6 +46,7 @@
             padding: 5px;
             z-index: 3000;
             border-style: none;
+            outline: none;
         }
 
         .line1,
@@ -97,6 +98,8 @@
 
         #sound-control {
             background-color: transparent;
+            border: 0;
+            outline: none;
             font-size: 2em;
             height: 80px;
             width: 80px;
@@ -163,7 +166,7 @@
     </div>
 
     <h1>Temple Looter</h1>
-    <canvas id="game-canvas" style="display: block;margin: 50px auto"></canvas>
+    <canvas id="game-canvas" style="display: block;margin: 30px auto"></canvas>
     <img src="images/treasure.png" id="treasure" style="display:none">
     <img src="images/dungeon-background2.png" id="background" style="display:none">
     <img src="images/dungeon-wall.png" id="wall" style="display:none">
@@ -188,7 +191,7 @@
     <center>
         <button class="touch-BTN" id="touch-BTN-start">START</button>
     </center>
-    
+
 
     <script>
         const canvas = document.getElementById("game-canvas");
@@ -356,6 +359,7 @@
 
         let touchX;
         let touchY;
+        let touchControls = false;
 
         const soundBTN = document.getElementById("sound-control");
         const deathsound = { src: document.getElementById("death"), playOnce: true };
@@ -468,6 +472,8 @@
             touchBTNStart.disabled = true;
             player1.x = 0;
             player1.y = canvas.height / 2;
+            touchX = player1.x;
+            touchY = player1.y;
             obstacle.x = canvas.width + 200;
             obstacle.y = 0;
             obstacle.height = 25 * Math.floor(Math.random() * 10);
@@ -557,37 +563,42 @@
         }
 
         function movePlayerTouch(event) {
-            if (touchX - 20 < player1.x) {
-                player1.x -= 2;
-                if (player1.x < 0) {
-                    player1.x = 0;
+            if (touchControls) {
+
+                if (touchX - 20 < player1.x) {
+                    player1.x -= 2;
+                    if (player1.x < 0) {
+                        player1.x = 0;
+                    }
+                }
+
+                if (touchX - 20 > player1.x) {
+                    player1.x += 2;
+                    if (player1.x > canvas.width) {
+                        player1.x = canvas.width - 10;
+                    }
+                }
+
+                if (touchY - 20 < player1.y) {
+                    player1.y -= 2;
+                    if (player1.y < 0) {
+                        player1.y = 0;
+                    }
+                }
+
+                if (touchY - 20 > player1.y) {
+                    player1.y += 2;
+                    if (player1.y > canvas.height - 20) {
+                        player1.y = canvas.height - 20;
+                    }
                 }
             }
 
-            if (touchX - 20 > player1.x) {
-                player1.x += 2;
-                if (player1.x > canvas.width) {
-                    player1.x = canvas.width - 10;
-                }
-            }
-
-            if (touchY - 20 < player1.y) {
-                player1.y -= 2;
-                if (player1.y < 0) {
-                    player1.y = 0;
-                }
-            }
-
-            if (touchY - 20 > player1.y) {
-                player1.y += 2;
-                if (player1.y > canvas.height - 20) {
-                    player1.y = canvas.height - 20;
-                }
-            }
 
         }
 
         function changeTouchPosition(event) {
+            touchControls = true;
             touchX = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX;
             touchY = event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY;
             console.log(touchX);
@@ -690,8 +701,8 @@
 
         function handlePlayer() {
             drawPlayer();
-            movePlayer();
             movePlayerTouch();
+            movePlayer();
             collision();
         }
 
