@@ -98,37 +98,46 @@
             bottom: 0;
         }
 
-        .touch-BTN {
+        .touch-BTN-Y {
             position: fixed;
             background: transparent;
             color: white;
             width: 80px;
-            height: 80px;
+            height: 100px;
+            border: 2px solid white;
+        }
+
+        .touch-BTN-X {
+            position: fixed;
+            background: transparent;
+            color: white;
+            width: 80px;
+            height: 200px;
             border: 2px solid white;
         }
 
         #touch-BTN-up {
-            bottom: 105px;
-            left: 110px;
+            bottom: 110px;
+            left: 100px;
         }
 
         #touch-BTN-down {
             bottom: 10px;
-            left: 110px;
+            left: 100px;
         }
 
         #touch-BTN-left {
-            bottom: 60px;
+            bottom: 10px;
             left: 20px;
         }
 
         #touch-BTN-right {
-            bottom: 60px;
-            left: 200px;
+            bottom: 10px;
+            left: 180px;
         }
 
         #touch-BTN-start {
-            bottom: 60px;
+            bottom: 10px;
             left: 300px;
         }
     </style>
@@ -197,10 +206,10 @@
 
     <button class="touch-BTN" id="sound-control" onclick="soundControl()">&#128263;</button>
 
-    <button class="touch-BTN" id="touch-BTN-up">UP</button>
-    <button class="touch-BTN" id="touch-BTN-down">DOWN</button>
-    <button class="touch-BTN" id="touch-BTN-left">LEFT</button>
-    <button class="touch-BTN" id="touch-BTN-right">RIGHT</button>
+    <button class="touch-BTN-Y" id="touch-BTN-up">UP</button>
+    <button class="touch-BTN-Y" id="touch-BTN-down">DOWN</button>
+    <button class="touch-BTN-X" id="touch-BTN-left">LEFT</button>
+    <button class="touch-BTN-X" id="touch-BTN-right">RIGHT</button>
     <button class="touch-BTN" id="touch-BTN-start">START</button>
 
     <script>
