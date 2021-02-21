@@ -163,7 +163,7 @@
     </div>
 
     <h1>Temple Looter</h1>
-    <canvas id="game-canvas" style="display: block;margin: 100px auto"></canvas>
+    <canvas id="game-canvas" style="display: block;margin: 50px auto"></canvas>
     <img src="images/treasure.png" id="treasure" style="display:none">
     <img src="images/dungeon-background2.png" id="background" style="display:none">
     <img src="images/dungeon-wall.png" id="wall" style="display:none">
@@ -391,6 +391,7 @@
             touchBTNStart.addEventListener("click", () => {
                 if (!touchBTNStart.disabled) {
                     touchBTNStart.disabled = true;
+                    touchBTNStart.style.display = "none";
                     initialize();
                     blackBackground();
                     ctx.fillStyle = "white";
@@ -402,18 +403,6 @@
             characterAnimation = setInterval(animateCharacter, 200);
             batAnimation = setInterval(animateBat, 160);
             makeKeyAppear = setInterval(keyStatusToggle, 5000);
-            /*document.addEventListener("keydown", event => {
-                if (event.keyCode === 32 && !spacePressed) {
-                    touchBTNStart.disabled = false;
-                    initialize();
-                    blackBackground();
-                    ctx.fillStyle = "white";
-                    ctx.fillText("Get ready", canvas.width / 2, canvas.height / 2);
-                    setTimeout(startGame, 1500);
-                    playSound(startsound);
-
-                }
-            });*/
         }
 
 
@@ -1072,6 +1061,7 @@
                     setTimeout(function () {
                         round = 1;
                         touchBTNStart.disabled = false;
+                        touchBTNStart.style.display = "block";
                         clearInterval(gameInterval);
                         playSound(gameoversound);
                         blackBackground();
