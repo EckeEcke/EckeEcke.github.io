@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, maximum-scale=1.0">
     <title>Temple Looter</title>
     <!--<link rel="stylesheet" href="css/space-shooter.css">-->
-    <link rel="icon" type="image/png" href="images/character1.png"/>
+    <link rel="icon" type="image/png" href="images/character1.png" />
     <style>
         @font-face {
             font-family: pixelFont;
@@ -88,6 +88,41 @@
             right: 0;
             bottom: 0;
         }
+
+        .touch-BTN {
+            position: fixed;
+            background: transparent;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border: 2px solid white;
+        }
+
+        #touch-BTN-up {
+            bottom: 54px;
+            left: 102px;
+        }
+
+        #touch-BTN-down {
+            bottom: 0;
+            left: 102px;
+        }
+
+        #touch-BTN-left {
+            bottom: 25px;
+            left: 50px;
+        }
+
+        #touch-BTN-right {
+            bottom: 25px;
+            left: 154px;
+        }
+
+        #touch-BTN-start {
+            bottom: 25px;
+            left: 250px;
+        }
+
     </style>
 </head>
 
@@ -152,7 +187,13 @@
     <audio src="sounds/looter-victory.wav" id="victory-sound"></audio>
     <audio src="sounds/key-sound.wav" id="key-sound"></audio>
 
-    <button id="sound-control" onclick="soundControl()">&#128263;</button>
+    <button class="touch-BTN" id="sound-control" onclick="soundControl()">&#128263;</button>
+
+    <button class="touch-BTN" id="touch-BTN-up">UP</button>
+    <button class="touch-BTN" id="touch-BTN-down">DOWN</button>
+    <button class="touch-BTN" id="touch-BTN-left">LEFT</button>
+    <button class="touch-BTN" id="touch-BTN-right">RIGHT</button>
+    <button class="touch-BTN" id="touch-BTN-start">START</button>
 
     <script>
         const canvas = document.getElementById("game-canvas");
@@ -161,22 +202,49 @@
 
         let soundMuted = true;
 
-        let player = {x:0,y:0,width:0,height:0,characterSprite:"",invincibility:false};
-        let characterSprite1 = document.getElementById("character1");
-        let characterSprite2 = document.getElementById("character2");
+        let player1 = {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0,
+            characterSprite: "",
+            invincibility: false
+        };
 
-        let background1Level3 = document.getElementById("lava-background1");
-        let background2Level3 = document.getElementById("lava-background2");
-        let bridgeImage = document.getElementById("bridge");
+        const characterSprite1 = document.getElementById("character1");
+        const characterSprite2 = document.getElementById("character2");
 
-        let isCollision;
-        let isCollisionY;
+        const lavaBackground1 = document.getElementById("lava-background1");
+        const lavaBackground2 = document.getElementById("lava-background2");
+
+        const batSprite1 = document.getElementById("bat1");
+        const batSprite2 = document.getElementById("bat2");
+
+        let backgroundLevel3 = lavaBackground1;
+
+        const bridgeImage = document.getElementById("bridge");
+
+        let isCollision = { x: false, y: false };
         let kickback;
         let kickbackY;
 
-        let treasure = {x:0,y:0,collectMessage:"LOOT!",messagteState:false,collectState:false};
+        let treasure = {
+            x: 0,
+            y: 0,
+            width: 40,
+            height: 40,
+            collectMessage: "LOOT!",
+            messagteState: false,
+            collectState: false
+        };
 
-        let obstacle = {x:canvas.width + 200,y:0,y2:0,width:30,height:0}
+        let obstacle = {
+            x: canvas.width + 200,
+            y: 0,
+            y2: 0,
+            width: 30,
+            height: 0
+        };
 
         let passedGate;
         let score;
@@ -193,32 +261,65 @@
 
         let characterAnimation;
 
-        let invincibility = false;
 
         let gameInterval;
 
-        let backgroundFilter = "none";
-
-
-        let displayKeyMessage = false;
-
         let gameover = false;
 
-        let bat;
+        let bat1 = {
+            x: 700,
+            y: 100,
+            width: 50,
+            height: 30,
+            distanceX: 0,
+            distanceY: 0,
+            speedX: 0.5,
+            speedY: 0.5
+        };
 
-        let bat1 = {x:700,y:100, distanceX: 0, distanceY: 0, speedX:0.5,speedY:0.5}; 
+        let bat2 = {
+            x: 700,
+            y: 400,
+            width: 50,
+            height: 30,
+            distanceX: -30,
+            distanceY: 10,
+            speedX: 0.5,
+            speedY: 0.8
+        };
 
-        let bat2 = {x:700,y:400,distanceX: -30, distanceY: 10,speedX:0.5,speedY: 0.8};
+        let bat3 = {
+            x: 500,
+            y: 100,
+            width: 50,
+            height: 30,
+            distanceX: 30,
+            distanceY: 10,
+            speedX: 0.8,
+            speedY: 0.5
+        };
 
-        let bat3 = {x:500, y:100,distanceX:30,distanceY:10,speedX:0.8,speedY:0.5};
+        let randomBat = {
+            x: 200,
+            y: 200,
+            width: 50,
+            height: 30,
+            multiplierX: 1,
+            multiplierY: 1
+        };
 
-        let randomBat = {x:200, y:200, multiplierX:1,multiplierY:1};
+        let randomBat2 = {
+            x: 300,
+            y: 50,
+            width: 50,
+            height: 30,
+            multiplierX: -1,
+            multiplierY: 1
+        };
 
-        let randomBat2 = {x:300, y:50, multiplierX:-1,multiplierY:1};
-        
         let batSprite;
+        let batState = false;
 
-        let batAnimation;
 
         let randomNumber;
 
@@ -228,35 +329,57 @@
 
         let keyAppears;
 
-        let backgroundLevel3 = document.getElementById("background-lava1");
+
 
         let backgroundLavaOne = false;
 
 
-        let key = {x:0,y:0,collectMessage:"KEY!",messageState:false,collectState:false};
+        let key = {
+            x: 0,
+            y: 0,
+            collectMessage: "KEY!",
+            messageState: false,
+            collectState: false
+        };
+
         let keys = 0;
         let keysRequired = 5;
 
-        let bridge1 = {x:84,y:100,width:100,height:50};
-        let bridge2= {x:192,y:700,width:100,height:50};
+        let bridge1 = {
+            x: 84,
+            y: 100,
+            width: 100,
+            height: 50
+        };
 
+        let bridge2 = {
+            x: 192,
+            y: 700,
+            width: 100,
+            height: 50
+        };
 
-        const deathsound = {src: document.getElementById("death"),playOnce:true};
-        const startsound = {src: document.getElementById("start-sound"),playOnce:true};
-        const gameoversound = {src: document.getElementById("gameover-sound"), playOnce: true};
-        const treasuresound = {src: document.getElementById("treasure-sound"), playOnce: false};
-        const keysound = {src: document.getElementById("key-sound"), playOnce: false};
-        const gatesound = {src: document.getElementById("gate-sound"), playOnce: false};
-        const hurtsound = {src: document.getElementById("hurt-sound"), playOnce: true};
-        const victorysound = {src: document.getElementById("victory-sound"), playOnce: true};
+        const soundBTN = document.getElementById("sound-control");
+        const deathsound = { src: document.getElementById("death"), playOnce: true };
+        const startsound = { src: document.getElementById("start-sound"), playOnce: true };
+        const gameoversound = { src: document.getElementById("gameover-sound"), playOnce: true };
+        const treasuresound = { src: document.getElementById("treasure-sound"), playOnce: false };
+        const keysound = { src: document.getElementById("key-sound"), playOnce: false };
+        const gatesound = { src: document.getElementById("gate-sound"), playOnce: false };
+        const hurtsound = { src: document.getElementById("hurt-sound"), playOnce: true };
+        const victorysound = { src: document.getElementById("victory-sound"), playOnce: true };
 
+        const touchBTNforUp = document.getElementById("touch-BTN-up");
+        const touchBTNforDown = document.getElementById("touch-BTN-down");
+        const touchBTNforLeft = document.getElementById("touch-BTN-left");
+        const touchBTNforRight = document.getElementById("touch-BTN-right");
+        const touchBTNStart = document.getElementById("touch-BTN-start");
 
 
         window.onload = function () {
             canvas.width = 400;
             canvas.height = 400;
-            ctx.fillStyle = "black";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            blackBackground();
             ctx.textAlign = "center";
             ctx.font = "20px pixelFont";
             ctx.fillStyle = "white";
@@ -268,16 +391,33 @@
             ctx.fillText("S = DOWN", canvas.width / 2, 210);
             document.addEventListener("keydown", keyDownHandler, false);
             document.addEventListener("keyup", keyUpHandler, false);
+            touchBTNforUp.addEventListener("touchstart",touchDownHandlerUp,false);
+            touchBTNforUp.addEventListener("touchend",touchUpHandlerUp,false);
+            touchBTNforDown.addEventListener("touchstart",touchDownHandlerDown,false);
+            touchBTNforDown.addEventListener("touchend",touchUpHandlerDown,false);
+            touchBTNforLeft.addEventListener("touchstart",touchDownHandlerLeft,false);
+            touchBTNforLeft.addEventListener("touchend",touchUpHandlerLeft,false);
+            touchBTNforRight.addEventListener("touchstart",touchDownHandlerRight,false);
+            touchBTNforRight.addEventListener("touchend",touchUpHandlerRight,false);
+            touchBTNStart.addEventListener("click", ()=>{
+                if(!spacePressed){
+                    spacePressed = true;
+                    initialize();
+                    blackBackground();
+                    ctx.fillStyle = "white";
+                    ctx.fillText("Get ready", canvas.width / 2, canvas.height / 2);
+                    setTimeout(startGame, 1500);
+                    playSound(startsound);
+                }
+            })
             characterAnimation = setInterval(animateCharacter, 200);
-            batAnimation = setInterval(animateBat,160);
-            backgroundAnimation = setInterval(toggleBackground,500);
-            makeKeyAppear = setInterval(keyStatusToggle,5000);
+            batAnimation = setInterval(animateBat, 160);
+            makeKeyAppear = setInterval(keyStatusToggle, 5000);
             document.addEventListener("keydown", event => {
                 if (event.keyCode === 32 && !spacePressed) {
                     spacePressed = true;
                     initialize();
-                    ctx.fillStyle = "black";
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    blackBackground();
                     ctx.fillStyle = "white";
                     ctx.fillText("Get ready", canvas.width / 2, canvas.height / 2);
                     setTimeout(startGame, 1500);
@@ -287,374 +427,25 @@
             });
         }
 
-        function soundControl(){
+
+
+        function soundControl() {
             soundMuted = !soundMuted;
-            console.log(soundMuted);
-            if (!soundMuted){
-            document.getElementById("sound-control").innerHTML="&#128266;";
+            if (!soundMuted) {
+                soundBTN.innerHTML = "&#128266;";
             } else {
-            document.getElementById("sound-control").innerHTML="&#128263;";
+                soundBTN.innerHTML = "&#128263;";
             }
         }
 
-        function startGame() {
-            score = 0;
-            spacePressed = true;
-            initialize();
-            gameInterval = setInterval(callAllRound1, 1000 / gameSpeed);
-            randomInterval = setInterval(randomGenerator, 500);
-        }
-
-        function keyStatusToggle(){
-            keyAppears = !keyAppears;
-            key.collectState = false;
-            key.x = 20 + Math.floor(Math.random() * 200);
-            key.y = 50 + Math.floor(Math.random() * 300);
-        }
-
-        function drawKey(){
-            if (!key.collectState && keyAppears) {
-                ctx.webkitImageSmoothingEnabled = false;
-                ctx.mozImageSmoothingEnabled = false;
-                ctx.imageSmoothingEnabled = false;
-                ctx.drawImage(document.getElementById("key"), key.x, key.y, 40, 24);
-            }
-        }
-
-        function collectKey(){
-            if (player.x < key.x + 40 && player.x + player.width > key.x && player.y < key.y + 25 && player.y + player.height > key.y && !key.collectState) {
-                playSound(keysound);
-                keys += 1;
-                key.collectState = true;
-                displayKeyMessage = true;
-            }
-        }
-
-    
-
-
-        function playSound(sound){
-            if(!sound.playOnce){
+        function playSound(sound) {
+            if (!sound.playOnce) {
                 sound.src.pause();
                 sound.src.currentTime = 0;
             }
-            
-            if(!soundMuted){
+
+            if (!soundMuted) {
                 sound.src.play();
-            }
-
-        }
-
-
-
-
-
-
-
-
-
-        function initialize() {
-    
-            keys = 0;
-            keysRequired = 5;
-            spacePressed = true;
-            player.x = 0;
-            player.y = canvas.height / 2;
-            obstacle.x = canvas.width + 200;
-            obstacle.y = 0;
-            obstacle.height = 25 * Math.floor(Math.random() * 10);
-            isCollision = false;
-            isCollisionY = false;
-            treasure.x = 10 + Math.floor(Math.random() * 200);
-            treasure.y = 50;
-            treasure.collectState = false;
-            passedGate = false;
-            gameSpeed = 120;
-            gatesPassed = 0;
-            lives = 3;
-            character = true;
-            player.characterSprite = characterSprite2;
-            gameover = false;
-            bat = false;
-            bat1 = {x:700,y:100, distanceX: 0, distanceY: 0, speedX:0.5,speedY:0.5}; 
-
-            bat2 = {x:700,y:400,distanceX: -30, distanceY: 10,speedX:0.5,speedY: 0.8};
-
-            bat3 = {x:500, y:100,distanceX:30,distanceY:10,speedX:0.8,speedY:0.5};
-
-            randomBat = {x:200, y:200, multiplierX:1,multiplierY:1};
-
-            randomBat2 = {x:300, y:50, multiplierX:-1,multiplierY:1};
-        }
-
-
-        function callAllRound1() {
-
-            ctx.shadowColor = "black";
-            ctx.shadowBlur = 5;
-            ctx.shadowOffsetX = 5;
-            ctx.shadowOffsetY = -5;
-
-
-            ctx.webkitImageSmoothingEnabled = false;
-            ctx.mozImageSmoothingEnabled = false;
-            ctx.imageSmoothingEnabled = false;
-            ctx.drawImage(document.getElementById("background"), 0, 0, canvas.width, canvas.height);
-
-            collision();
-            countPoints();
-            ctx.fillStyle = "white";
-            ctx.font = "20px pixelFont";
-            ctx.textAlign = "start";
-            drawTreasure();
-            collectTreasure();
-            drawKey();
-            drawObstacle();
-            drawSquare();
-            moveSquare();
-           
-            collectKey();
-            
-            drawBat(bat1);
-
-
-            moveBat(bat1);
-
-
-            
-            
-
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-            ctx.fillText("Score: " + score, 0, 24);
-            ctx.fillText("🗝x"+ keys,190,24);
-            keyMessage();
-            lootMessage();
-            drawLives();
-            endGame();
-            nextRound();
-
-        }
-
-        function callAllRound2(){
-
-            ctx.shadowColor = "black";
-            ctx.shadowBlur = 5;
-            ctx.shadowOffsetX = 5;
-            ctx.shadowOffsetY = -5;
-
-
-            ctx.webkitImageSmoothingEnabled = false;
-            ctx.mozImageSmoothingEnabled = false;
-            ctx.imageSmoothingEnabled = false;
-            ctx.drawImage(document.getElementById("background"), 0, 0, canvas.width, canvas.height);
-
-            countPoints();
-            ctx.fillStyle = "white";
-            ctx.font = "20px pixelFont";
-            ctx.textAlign = "start";
-            drawTreasure();
-            collectTreasure();
-            drawSquare();
-            moveSquare();
-            drawKey();
-            collectKey();
-            drawBat(bat1);
-            drawBat(bat2);
-            drawBat(bat3);
-            drawBat(randomBat);
-            drawBat(randomBat2);
-            moveBat(bat1);
-            moveBat(bat2);
-            moveBat(bat3);
-            moveByRandom(randomBat);
-            moveByRandom(randomBat2);
-
-            
-            
-
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-            ctx.fillText("Score: " + score, 0, 24);
-            ctx.fillText("🗝x"+ keys,190,24);
-            lootMessage();
-            keyMessage();
-            drawLives();
-            endGame();
-            nextRound();
-
-        }
-
-        function callAllRound3(){
-            ctx.shadowColor = "black";
-            ctx.shadowBlur = 5;
-            ctx.shadowOffsetX = 5;
-            ctx.shadowOffsetY = -5;
-
-
-            ctx.webkitImageSmoothingEnabled = false;
-            ctx.mozImageSmoothingEnabled = false;
-            ctx.imageSmoothingEnabled = false;
-            ctx.drawImage(backgroundLevel3, 0, 0, canvas.width, canvas.height);
-
-            countPoints();
-            ctx.fillStyle = "white";
-            ctx.font = "20px pixelFont";
-            ctx.textAlign = "start";
-            drawBridges();
-            drawSquare();
-            moveSquare();
-
-
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-            ctx.fillText("Score: " + score, 0, 24);
-            ctx.fillText("🗝x"+ keys,190,24);
-           
-            drawLives();
-            endGame();
-            nextRound();
-            bridgeCollision(bridge1);
-            bridgeCollision(bridge2);
-            lavaCollision();
-            winGame();
-            carriedByBridge = false
-            
-
-        }
-        
-        
-
-        function drawSquare() {
-            player.height = canvas.height / 10;
-            player.width = canvas.width / 10;
-            let squareColor = "red";
-            ctx.drawImage(player.characterSprite, player.x, player.y);
-            
-
-        }
-
-        function drawBat(bat){
-            ctx.drawImage(batSprite,bat.x,bat.y,50,30);
-        }
-
-        function moveBat(bat){
-            if(bat.x < player.x  + bat.distanceX){
-                bat.x += bat.speedX;
-            }
-
-            if(bat.x > player.x + bat.distanceX){
-                bat.x -= bat.speedX;
-            }
-
-            if(bat.y < player.y + bat.distanceY){
-                bat.y += bat.speedY;
-            }
-            if(bat.y>player.y + bat.distanceY){
-                bat.y -= bat.speedY;
-            }
-            batCollision(bat);
-        }
-
-        function batCollision(bat){
-            if(player.x + 15 < bat.x + 35 && player.x + player.width > bat.x + 15 && player.y +10 <= bat.y + 20 && player.y + player.height>= bat.y && !invincibility){
-                playSound(hurtsound);
-                lives -= 1;
-                invincibility = true;
-                setTimeout(function () { invincibility = false }, 700);
-            }        
-        }
-
-        function randomGenerator(){
-            randomNumber = Math.random();
-        }
-
-        function moveByRandom(bat){
-            batCollision(bat);
-            if(randomNumber < 0.4){
-                bat.x += 1*bat.multiplierX;
-                bat.y += 1*bat.multiplierY;
-            } else if(randomNumber >= 0.4 && randomNumber < 0.6){
-                bat.x += 0.8*bat.multiplierX;
-                bat.y -= 1*bat.multiplierY;
-            } else if(randomNumber >= 0.6 && randomNumber < 0.8){
-                bat.x -= 1*bat.multiplierX;
-                bat.y -= 0.8*bat.multiplierY;
-            } else if(randomNumber >= 0.8){
-                bat.x -= 1*bat.multiplierX;
-                bat.Y +=1*bat.multiplierY;
-            }
-            if(bat.x > canvas.width-30){
-                bat.x = canvas.width-30;
-            }
-
-            if(bat.x < 0){
-                bat.x = 0;
-            }
-
-            if(bat.y > canvas.height-30){
-                bat.y = canvas.height-30;
-            }
-
-            if(bat.y < 0){
-                bat.y = 0;
-            }
-            
-        }
-
-
-        function moveSquare() {
-            if (aPressed && player.x > 0) {
-                if (player.x > obstacle.x + obstacle.width && player.x < obstacle.x + obstacle.width) {
-                    player.x == obstacle.x + obstacle.width;
-                } else {
-                    player.x -= 2;
-                }
-
-            }
-            if (dPressed && player.x < 9 * canvas.width / 10 && !isCollision) {
-                player.x += 2;
-            }
-            if (wPressed && player.y > 0) {
-                player.y -= 2;
-            }
-            if (sPressed && player.y < 9 * canvas.height / 10) {
-                player.y += 2;
-            }
-            if (isCollision && kickback < 0) {
-                player.x += kickback;
-                kickback -= 1;
-                if (kickback == -12) {
-                    isCollision = false;
-                }
-            }
-            if (isCollision && kickback > 0) {
-                player.x += kickback;
-                kickback += 1;
-                if (kickback == 12) {
-                    isCollision = false;
-                }
-
-            }
-            if (isCollisionY && kickbackY > 0) {
-                player.y += kickbackY;
-                kickbackY += 1;
-                if (kickbackY == 6) {
-                    isCollisionY = false;
-                    kickbackY = 0;
-                }
-            }
-            if (isCollisionY && kickbackY < 0) {
-                player.y += kickbackY;
-                kickbackY -= 1;
-                console.log(kickbackY)
-                if (kickbackY == -6) {
-                    isCollisionY = false;
-                    kickbackY = 0;
-                }
             }
         }
 
@@ -674,7 +465,6 @@
 
         }
 
-
         function keyUpHandler(event) {
             if (event.keyCode === 65) {
                 aPressed = false;
@@ -691,22 +481,273 @@
 
         }
 
+        function touchDownHandlerUp(){
+            wPressed = true;
+        }
+
+        function touchUpHandlerUp(){
+            wPressed = false;
+        }
+
+        function touchDownHandlerDown(){
+            sPressed = true;
+        }
+
+        function touchUpHandlerDown(){
+            sPressed = false;
+        }
+
+        function touchDownHandlerLeft(){
+            aPressed = true;
+        }
+
+        function touchUpHandlerLeft(){
+            aPressed = false;
+        }
+
+        function touchDownHandlerRight(){
+            dPressed = true;
+        }
+
+        function touchUpHandlerRight(){
+            dPressed = false;
+        }
+
+
+        function initialize() {
+
+            keys = 0;
+            keysRequired = 5;
+            spacePressed = true;
+            player1.x = 0;
+            player1.y = canvas.height / 2;
+            obstacle.x = canvas.width + 200;
+            obstacle.y = 0;
+            obstacle.height = 25 * Math.floor(Math.random() * 10);
+            isCollision = { x: false, y: false };
+            treasure.x = 10 + Math.floor(Math.random() * 200);
+            treasure.y = 50;
+            treasure.collectState = false;
+            passedGate = false;
+            gameSpeed = 120;
+            gatesPassed = 0;
+            lives = 3;
+            character = true;
+            player1.characterSprite = characterSprite2;
+            gameover = false;
+            bat = false;
+
+            bat1 = {
+                x: 700,
+                y: 100,
+                width: 50,
+                height: 30,
+                distanceX: 0,
+                distanceY: 0,
+                speedX: 0.5,
+                speedY: 0.5
+            };
+
+            bat2 = {
+                x: 700,
+                y: 400,
+                width: 50,
+                height: 30,
+                distanceX: -30,
+                distanceY: 10,
+                speedX: 0.5,
+                speedY: 0.8
+            };
+
+            bat3 = {
+                x: 500,
+                y: 100,
+                width: 50,
+                height: 30,
+                distanceX: 30,
+                distanceY: 10,
+                speedX: 0.8,
+                speedY: 0.5
+            };
+
+            randomBat = {
+                x: 200,
+                y: 200,
+                width: 50,
+                height: 30,
+                multiplierX: 1,
+                multiplierY: 1
+            };
+
+            randomBat2 = {
+                x: 300,
+                y: 50,
+                width: 50,
+                height: 30,
+                multiplierX: -1,
+                multiplierY: 1
+            };
+        }
+
+        function startGame() {
+            score = 0;
+            spacePressed = true;
+            initialize();
+            gameInterval = setInterval(callAllRound1, 1000 / gameSpeed);
+            randomInterval = setInterval(randomGenerator, 500);
+        }
+
+
+
+
+
+        
+
+        function drawPlayer() {
+            player1.height = canvas.height / 10;
+            player1.width = canvas.width / 10;
+            ctx.drawImage(player1.characterSprite, player1.x, player1.y);
+        }
+
+
+        function movePlayer() {
+            if (aPressed && player1.x > 0) {
+                if (player1.x > obstacle.x + obstacle.width && player1.x < obstacle.x + obstacle.width) {
+                    player1.x == obstacle.x + obstacle.width;
+                } else {
+                    player1.x -= 2;
+                }
+
+            }
+            if (dPressed && player1.x < 9 * canvas.width / 10 && !isCollision.x) {
+                player1.x += 2;
+            }
+            if (wPressed && player1.y > 0) {
+                player1.y -= 2;
+            }
+            if (sPressed && player1.y < 9 * canvas.height / 10) {
+                player1.y += 2;
+            }
+            if (isCollision.x && kickback < 0) {
+                player1.x += kickback;
+                kickback -= 1;
+                if (kickback == -12) {
+                    isCollision.x = false;
+                }
+            }
+            if (isCollision.x && kickback > 0) {
+                player1.x += kickback;
+                kickback += 1;
+                if (kickback == 12) {
+                    isCollision.x = false;
+                }
+
+            }
+            if (isCollision.y && kickbackY > 0) {
+                player1.y += kickbackY;
+                kickbackY += 1;
+                if (kickbackY == 6) {
+                    isCollision.y = false;
+                    kickbackY = 0;
+                }
+            }
+            if (isCollision.y && kickbackY < 0) {
+                player1.y += kickbackY;
+                kickbackY -= 1;
+                if (kickbackY == -6) {
+                    isCollision.y = false;
+                    kickbackY = 0;
+                }
+            }
+        }
+
+
+        function collision() {
+            if (obstacle.x < player1.x + player1.width && obstacle.x > player1.x + player1.width - 4 && player1.y < obstacle.y + obstacle.height - 10) {
+                playSound(hurtsound);
+                isCollision.x = true;
+                kickback = -4;
+                handleInvincibility();
+            }
+            
+            if (obstacle.x < player1.x + player1.width && obstacle.x >= player1.x + player1.width - 4 && obstacle.y2 < player1.y + player1.height) {
+                playSound(hurtsound);
+                isCollision.x = true;
+                kickback = -4;
+                handleInvincibility();
+
+            }
+
+            if (player1.x < obstacle.x + obstacle.width && player1.x + player1.width > obstacle.x && player1.y <= obstacle.y + obstacle.height && player1.y >= obstacle.y + obstacle.height - 2) {
+                isCollision.y = true;
+                kickbackY = 4;
+            }
+            if (player1.x < obstacle.x + obstacle.width && player1.x + player1.width > obstacle.x && player1.y < obstacle.y2 + 2 && player1.y + player1.height > obstacle.y2) {
+                isCollision.y = true;
+                kickbackY = -4;
+            }
+            if (passedGate) {
+                if (player1.x < obstacle.x + obstacle.width) {
+                    player1.x = obstacle.x + obstacle.width;
+                }
+            }
+        }
+
+
+        function handleInvincibility() {
+            if (!player1.invincibility) {
+                lives -= 1;
+                player1.invincibility = true;
+                setTimeout(function () { player1.invincibility = false }, 700);
+            }
+        }
+
+
+        function handlePlayer() {
+            drawPlayer();
+            movePlayer();
+            collision();
+        }
+
+
         function animateCharacter() {
             character = !character;
-            player.characterSprite = (character == true) ? characterSprite2 : player.characterSprite = characterSprite1;
-            
-
+            player1.characterSprite = (character == true) ? characterSprite2 : player1.characterSprite = characterSprite1;
         }
 
-        function animateBat(){
-            bat = !bat;
-            batSprite = (bat == true) ? document.getElementById("bat1") : document.getElementById("bat2"); 
+       
+
+
+        function keyStatusToggle() {
+            keyAppears = !keyAppears;
+            key.collectState = false;
+            key.x = 20 + Math.floor(Math.random() * 300);
+            key.y = 50 + Math.floor(Math.random() * 300);
         }
 
-        function toggleBackground(){
-            backgroundLavaOne = !backgroundLavaOne;
-            backgroundLevel3 = (backgroundLavaOne == true) ? background1Level3 : background2Level3;
+        function drawKey() {
+            if (!key.collectState && keyAppears) {
+                ctx.webkitImageSmoothingEnabled = false;
+                ctx.mozImageSmoothingEnabled = false;
+                ctx.imageSmoothingEnabled = false;
+                ctx.drawImage(document.getElementById("key"), key.x, key.y, 40, 24);
+            }
         }
+
+        function collectKey() {
+            if (player1.x < key.x + 40 && player1.x + player1.width > key.x && player1.y < key.y + 25 && player1.y + player1.height > key.y && !key.collectState) {
+                playSound(keysound);
+                keys += 1;
+                key.collectState = true;
+                key.messageState = true;
+            }
+        }
+
+        function handleKey() {
+            drawKey();
+            collectKey();
+        }
+
 
         function drawTreasure() {
 
@@ -714,10 +755,258 @@
                 ctx.webkitImageSmoothingEnabled = false;
                 ctx.mozImageSmoothingEnabled = false;
                 ctx.imageSmoothingEnabled = false;
-                ctx.drawImage(document.getElementById("treasure"), treasure.x, treasure.y, 40, 40);
+                ctx.drawImage(document.getElementById("treasure"), treasure.x, treasure.y, treasure.width, treasure.height);
+            }
+        }
+
+        function collectTreasure() {
+            if (player1.x < treasure.x + treasure.width && player1.x + player1.width > treasure.x && player1.y < treasure.y + treasure.height && player1.y + player1.height > treasure.y && !treasure.collectState) {
+                playSound(treasuresound);
+                treasure.collectState = true;
+                score += 20;
+                treasure.messageState = true;
+                if (round == 2 && treasure.collectState && !treasureCooldown) {
+                    treasureCooldown = true;
+                    setTimeout(function () {
+                        treasure.x = 20 + Math.floor(Math.random() * 200);
+                        treasure.y = 20 + Math.floor(Math.random() * 350);
+                        treasure.collectState = false;
+                        treasureCooldown = false;
+                    }, 500);
+                }
+            }
+        }
+
+        function handleTreasure() {
+            drawTreasure();
+            collectTreasure();
+        }
+
+
+        function drawBat(bat) {
+            ctx.drawImage(batSprite, bat.x, bat.y, bat.width, bat.height);
+            console.log(batSprite);
+        }
+
+        function moveBat(bat) {
+
+            if (bat.x < player1.x + bat.distanceX) {
+                bat.x += bat.speedX;
+            }
+
+            if (bat.x > player1.x + bat.distanceX) {
+                bat.x -= bat.speedX;
+            }
+
+            if (bat.y < player1.y + bat.distanceY) {
+                bat.y += bat.speedY;
+            }
+
+            if (bat.y > player1.y + bat.distanceY) {
+                bat.y -= bat.speedY;
+            }
+
+            batCollision(bat);
+        }
+
+        function batCollision(bat) {
+            if (player1.x + 15 < bat.x + 35 && player1.x + player1.width > bat.x + 15 && player1.y + 10 <= bat.y + 20 && player1.y + player1.height >= bat.y && !player1.invincibility) {
+                playSound(hurtsound);
+                handleInvincibility();
+            }
+        }
+
+        function handleBat(bat) {
+            drawBat(bat);
+            moveBat(bat);
+            batCollision(bat);
+        }
+
+
+
+        function randomGenerator() {
+            randomNumber = Math.random();
+        }
+
+        function moveByRandom(bat) {
+            batCollision(bat);
+            if (randomNumber < 0.4) {
+                bat.x += 1 * bat.multiplierX;
+                bat.y += 1 * bat.multiplierY;
+            } else if (randomNumber >= 0.4 && randomNumber < 0.6) {
+                bat.x += 0.8 * bat.multiplierX;
+                bat.y -= 1 * bat.multiplierY;
+            } else if (randomNumber >= 0.6 && randomNumber < 0.8) {
+                bat.x -= 1 * bat.multiplierX;
+                bat.y -= 0.8 * bat.multiplierY;
+            } else {
+                bat.x -= 1 * bat.multiplierX;
+                bat.Y += 1 * bat.multiplierY;
+            }
+
+            if (bat.x > canvas.width - 30) {
+                bat.x = canvas.width - 30;
+            }
+
+            if (bat.x < 20) {
+                bat.x = 20;
+            }
+
+            if (bat.y > canvas.height - 30) {
+                bat.y = canvas.height - 30;
+            }
+
+            if (bat.y < 20) {
+                bat.y = 20;
             }
 
         }
+
+        function handleRandomBat(bat) {
+            drawBat(bat);
+            moveByRandom(bat);
+            batCollision(bat);
+        }
+
+
+        function pickupMessage(obj) {
+            if (obj.messageState) {
+
+                ctx.fillText(obj.collectMessage, obj.x, obj.y + 20);
+                setTimeout(() => obj.messageState = false, 500);
+            }
+        }
+
+
+        function callAllRound1() {
+
+            showShadow();
+
+            disableImageSmoothing();
+            ctx.drawImage(document.getElementById("background"), 0, 0, canvas.width, canvas.height);
+            raiseSpeed();
+            ctx.fillStyle = "white";
+            ctx.font = "20px pixelFont";
+            ctx.textAlign = "start";
+            handleTreasure();
+            handleKey();
+            drawObstacle();
+            handlePlayer();
+            handleBat(bat1);
+
+            removeShadow();
+
+            pickupMessage(key);
+            pickupMessage(treasure);
+            scoreBoard();
+
+            endGame();
+            nextRound();
+
+        }
+
+        function callAllRound2() {
+
+            showShadow();
+
+
+            disableImageSmoothing();
+            ctx.drawImage(document.getElementById("background"), 0, 0, canvas.width, canvas.height);
+
+            raiseSpeed();
+            ctx.fillStyle = "white";
+            ctx.font = "20px pixelFont";
+            ctx.textAlign = "start";
+            handleTreasure();
+            handlePlayer();
+            handleKey();
+
+            handleBat(bat1);
+            handleBat(bat2);
+            handleBat(bat3);
+            handleRandomBat(randomBat);
+            handleRandomBat(randomBat2);
+
+            removeShadow();
+
+            pickupMessage(treasure);
+            pickupMessage(key);
+            scoreBoard();
+            endGame();
+            nextRound();
+
+        }
+
+        function callAllRound3() {
+            showShadow();
+
+            disableImageSmoothing();
+            ctx.drawImage(backgroundLevel3, 0, 0, canvas.width, canvas.height);
+            raiseSpeed();
+            ctx.fillStyle = "white";
+            ctx.font = "20px pixelFont";
+            ctx.textAlign = "start";
+            drawBridges();
+            drawPlayer();
+            movePlayer();
+
+            removeShadow();
+
+            scoreBoard();
+            endGame();
+            nextRound();
+            bridgeCollision(bridge1);
+            bridgeCollision(bridge2);
+            lavaCollision();
+            winGame();
+            carriedByBridge = false
+
+
+        }
+
+
+
+        function blackBackground() {
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function showShadow() {
+            ctx.shadowColor = "black";
+            ctx.shadowBlur = 5;
+            ctx.shadowOffsetX = 5;
+            ctx.shadowOffsetY = -5;
+        }
+
+        function removeShadow() {
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+        }
+
+        function scoreBoard() {
+            ctx.fillText("Score: " + score, 0, 24);
+            ctx.fillText("🗝x" + keys, 190, 24);
+            drawLives();
+        }
+
+        function disableImageSmoothing() {
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.mozImageSmoothingEnabled = false;
+            ctx.imageSmoothingEnabled = false;
+        }
+
+        function animateBat() {
+            batState = !batState;
+            batSprite = (batState == true) ? batSprite1 : batSprite2;
+        }
+
+        function toggleBackground() {
+            backgroundLavaOne = !backgroundLavaOne;
+            backgroundLevel3 = (backgroundLavaOne == true) ? lavaBackground1 : lavaBackground2;
+        }
+
+
         function drawObstacle() {
 
             obstacle.y2 = obstacle.height + 60;
@@ -737,73 +1026,6 @@
             }
 
         }
-
-        
-
-
-        function collision() {
-            if (obstacle.x < player.x + player.width && obstacle.x > player.x + player.width - 4 && player.y < obstacle.y + obstacle.height - 10) {
-                playSound(hurtsound);
-                console.log("collision");
-                isCollision = true;
-                kickback = -4;
-                console.log("collision1");
-                if (!invincibility) {
-                    lives -= 1;
-                    invincibility = true;
-                    setTimeout(function () { invincibility = false }, 700);
-                }
-
-            }
-            if (obstacle.x < player.x + player.width && obstacle.x >= player.x + player.width - 4 && obstacle.y2 < player.y + player.height) {
-                playSound(hurtsound);
-                console.log("collision");
-                isCollision = true;
-                kickback = -4;
-                console.log("collision2");
-                if (!invincibility) {
-                    lives -= 1;
-                    invincibility = true;
-                    setTimeout(function () { invincibility = false }, 700);
-                }
-
-            }
-
-           
-
-            if (player.x < obstacle.x + obstacle.width && player.x + player.width > obstacle.x && player.y <= obstacle.y + obstacle.height && player.y >= obstacle.y + obstacle.height - 2) {
-                isCollisionY = true;
-                kickbackY = 4;
-            }
-            if (player.x < obstacle.x + obstacle.width && player.x + player.width > obstacle.x && player.y < obstacle.y2 + 2 && player.y + player.height > obstacle.y2) {
-                isCollisionY = true;
-                kickbackY = -4;
-            }
-            if (passedGate) {
-                if (player.x < obstacle.x + obstacle.width) {
-                    player.x = obstacle.x + obstacle.width;
-                }
-            }
-        }
-
-        function collectTreasure() {
-            if (player.x < treasure.x + 40 && player.x + player.width > treasure.x && player.y < treasure.y + 40 && player.y + player.height > treasure.y && !treasure.collectState) {
-                playSound(treasuresound);
-                treasure.collectState = true;
-                score += 20;
-                treasure.messageState = true;
-                if(round==2 && treasure.collectState && !treasureCooldown){
-                    treasureCooldown = true;
-                    setTimeout(function(){
-                        treasure.x = 20 + Math.floor(Math.random() * 200);
-                        treasure.y = 20 + Math.floor(Math.random() * 350);
-                        treasure.collectState = false;
-                        treasureCooldown = false;
-                    },500);
-                }
-            }
-        }
-
 
         function drawLives() {
             ctx.fillStyle = "red";
@@ -829,215 +1051,192 @@
 
 
         function endGame() {
-            if (player.x + player.width < -30 || lives === 0) {
-                
+            if (player1.x + player1.width < -30 || lives === 0) {
+
                 lives = 0;
                 gameSpeed = 10;
                 playSound(deathsound);
                 clearInterval(gameInterval);
-                console.log(round);
-                if(round==1){
+
+                if (round == 1) {
                     gameInterval = setInterval(callAllRound1, 1000 / gameSpeed);
                 }
-                if(round==2){
+                if (round == 2) {
                     gameInterval = setInterval(callAllRound2, 1000 / gameSpeed);
                 }
-                if(round==3){
+                if (round == 3) {
                     gameInterval = setInterval(callAllRound3, 1000 / gameSpeed);
                 }
-                
-                if(!gameover){
-                    
+
+                if (!gameover) {
+
                     gameover = true;
                     setTimeout(function () {
-                    round = 1;
-                    spacePressed = false;
-                    clearInterval(gameInterval);
-                    playSound(gameoversound);
-                    ctx.fillStyle = "black";
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    ctx.fillStyle = "white";
-                    ctx.font = "30px pixelFont";
-                    ctx.textAlign = "center";
-                    ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 50);
-                    ctx.font = "20px pixelFont";
-                    ctx.fillText("Your score: " + score, canvas.width / 2, canvas.height / 2 + 50);
-                    ctx.fillText("Press space for retry", canvas.width / 2, canvas.height / 2 + 100);
-                }, 1000);
+                        round = 1;
+                        spacePressed = false;
+                        clearInterval(gameInterval);
+                        playSound(gameoversound);
+                        blackBackground();
+                        ctx.fillStyle = "white";
+                        ctx.font = "30px pixelFont";
+                        ctx.textAlign = "center";
+                        ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 50);
+                        ctx.font = "20px pixelFont";
+                        ctx.fillText("Your score: " + score, canvas.width / 2, canvas.height / 2 + 50);
+                        ctx.fillText("Press space for retry", canvas.width / 2, canvas.height / 2 + 100);
+                    }, 1000);
                 }
-               
+
             }
 
         }
 
-        function nextRound(){
-            if(keys == keysRequired){
-                console.log("next");
+        function nextRound() {
+            if (keys == keysRequired) {
                 round += 1;
                 clearInterval(gameInterval);
                 initialize();
                 playSound(startsound);
-                setTimeout(()=>{
-                    ctx.fillStyle = "black";
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                setTimeout(() => {
+                    blackBackground();
                     ctx.fillStyle = "white";
                     ctx.font = "30px pixelFont";
                     ctx.textAlign = "center";
                     ctx.fillText("Next round!", canvas.width / 2, canvas.height / 2 - 50);
-                },1000);
-                if(round==2){
-                    setTimeout(()=>gameInterval = setInterval(callAllRound2,1000/gameSpeed),2000);
+                }, 1000);
+                if (round == 2) {
+                    setTimeout(() => gameInterval = setInterval(callAllRound2, 1000 / gameSpeed), 2000);
                 }
-                if(round==3){
-                    setTimeout(()=>gameInterval = setInterval(callAllRound3,1000/gameSpeed),2000);
+                if (round == 3) {
+                    setTimeout(() => gameInterval = setInterval(callAllRound3, 1000 / gameSpeed), 2000);
+                    backgroundAnimation = setInterval(toggleBackground, 1000);
                 }
-                
-                
+
+
 
             }
         }
 
 
-        
 
-        function countPoints() {
-            if (player.x > obstacle.x + 10 && !passedGate) {
+
+        function raiseSpeed() {
+            if (player1.x > obstacle.x + 10 && !passedGate) {
                 gatesPassed += 1;
                 playSound(gatesound);
                 passedGate = true;
             }
-            if (gatesPassed == 5) {
+            if (gatesPassed == 4) {
                 gatesPassed = 0;
-                gameSpeed = 1.1 * gameSpeed;
+                gameSpeed = 1.2 * gameSpeed;
                 clearInterval(gameInterval);
                 gameInterval = setInterval(callAllRound1, 1000 / gameSpeed);
-                console.log(gameSpeed);
             }
         }
 
-        function lootMessage() {
-            if (treasure.messageState) {
-
-                ctx.fillText("LOOT!", treasure.x, treasure.y + 20);
-                setTimeout(() => treasure.messageState = false, 500);
-            }
-        }
-
-        function keyMessage(){
-            if(displayKeyMessage){
-
-                ctx.fillText("KEYS!",key.x,key.y);
-                setTimeout(() => displayKeyMessage = false, 500);
-            }
-        }
+        function drawBridges() {
 
 
-
-        function drawBridges(){
-            
-            
-            ctx.drawImage(bridgeImage,bridge1.x,bridge1.y,bridge1.width,bridge1.height);
-            ctx.drawImage(bridgeImage,bridge2.x,bridge2.y,bridge2.width,bridge2.height);
-            if(bridge1.y < 700){
-                bridge1.y +=1;
-            } else{
+            ctx.drawImage(bridgeImage, bridge1.x, bridge1.y, bridge1.width, bridge1.height);
+            ctx.drawImage(bridgeImage, bridge2.x, bridge2.y, bridge2.width, bridge2.height);
+            if (bridge1.y < 700) {
+                bridge1.y += 1;
+            } else {
                 bridge1.y = -100;
             }
-            if(bridge2.y > -50){
+            if (bridge2.y > -50) {
                 bridge2.y -= 1.2;
-            } else(bridge2.y) = 700;
+            } else (bridge2.y) = 700;
         }
 
-        function lavaCollision(){
-            
-            if(player.x > 60 && !carriedByBridge && player.x < 260){
+        function lavaCollision() {
+
+            if (player1.x > 60 && !carriedByBridge && player1.x < 260) {
                 lives = 0;
             }
-            console.log(carriedByBridge);
         }
 
         let carriedByBridge = false;
 
-        function bridgeCollision(bridge){
-            
-            if (bridge.x < player.x + player.width && bridge.x + bridge.width> player.x && player.y < bridge.y + bridge.height - 10 && bridge.y < player.y + player.height) {
+        function bridgeCollision(bridge) {
+
+            if (bridge.x < player1.x + player1.width && bridge.x + bridge.width > player1.x && player1.y + player1.height -10 < bridge.y + bridge.height - 10 && bridge.y < player1.y + player1.height) {
                 carriedByBridge = true;
             }
-    }
+        }
 
         let jumpUp = true;
         let characterJump = 0;
 
-        function winAnimation(){
+        function winAnimation() {
             animateCharacter();
-            player.y += characterJump;
-            if(jumpUp){
-                if(characterJump == 4){
+            player1.y += characterJump;
+            if (jumpUp) {
+                if (characterJump == 4) {
                     jumpUp = false;
                 }
                 characterJump += 1;
-                
+
             }
-            if(!jumpUp){
+            if (!jumpUp) {
                 characterJump -= 1;
-                if(characterJump == -4){
+                if (characterJump == -4) {
                     jumpUp = true;
                 }
             }
-            if(player.y>200){
-                player.y = 200;
+            if (player1.y > 200) {
+                player1.y = 200;
             }
-            }
-            
+        }
+
         let gameWon = false;
-        
-        function winGame(){
-            if(player.x > 280 && player.y > 140 && player.y <200 && !gameWon){
+
+        function winGame() {
+            if (player1.x > 280 && player1.y > 140 && player1.y < 200 && !gameWon) {
                 playSound(victorysound);
                 gameWon = true;
                 score += 500;
                 clearInterval(gameInterval);
-                gameInterval = setInterval(()=>{
+                gameInterval = setInterval(() => {
                     ctx.shadowColor = "black";
-                ctx.shadowBlur = 5;
-                ctx.shadowOffsetX = 5;
-                ctx.shadowOffsetY = -5;
+                    ctx.shadowBlur = 5;
+                    ctx.shadowOffsetX = 5;
+                    ctx.shadowOffsetY = -5;
 
 
-            ctx.webkitImageSmoothingEnabled = false;
-            ctx.mozImageSmoothingEnabled = false;
-            ctx.imageSmoothingEnabled = false;
-            ctx.drawImage(backgroundLevel3, 0, 0, canvas.width, canvas.height);
+                    ctx.webkitImageSmoothingEnabled = false;
+                    ctx.mozImageSmoothingEnabled = false;
+                    ctx.imageSmoothingEnabled = false;
+                    ctx.drawImage(backgroundLevel3, 0, 0, canvas.width, canvas.height);
 
-            countPoints();
-            ctx.fillStyle = "white";
-            ctx.font = "20px pixelFont";
-            ctx.textAlign = "start";
-            drawBridges();
-            drawSquare();
-            winAnimation();
+                    raiseSpeed();
+                    ctx.fillStyle = "white";
+                    ctx.font = "20px pixelFont";
+                    ctx.textAlign = "start";
+                    drawBridges();
+                    drawPlayer();
+                    winAnimation();
 
 
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-            ctx.fillText("Score: " + score, 0, 24);
-            ctx.fillText("🗝x"+ keys,190,24);
-           
-            drawLives();
-                },1000/60);
-                setTimeout(()=>{
+                    ctx.shadowBlur = 0;
+                    ctx.shadowOffsetX = 0;
+                    ctx.shadowOffsetY = 0;
+                    ctx.fillText("Score: " + score, 0, 24);
+                    ctx.fillText("🗝x" + keys, 190, 24);
+
+                    drawLives();
+                }, 1000 / 60);
+                setTimeout(() => {
                     clearInterval(gameInterval);
-                    ctx.fillStyle ="black";
-                    ctx.fillRect(0,0,canvas.width,canvas.height);
-                    ctx.fillStyle="white";
+                    blackBackground();
+                    ctx.fillStyle = "white";
                     ctx.textAlign = "center";
                     ctx.font = "30px pixelFont";
-                    ctx.fillText("You win!",canvas.width/2,canvas.height/2);
+                    ctx.fillText("You win!", canvas.width / 2, canvas.height / 2);
                     ctx.font = "24px pixelFont";
-                    ctx.fillText("Your score: "+score,canvas.width/2,canvas.height/2+60);
-                },2000)
-                
+                    ctx.fillText("Your score: " + score, canvas.width / 2, canvas.height / 2 + 60);
+                }, 2000)
+
             }
         }
 
