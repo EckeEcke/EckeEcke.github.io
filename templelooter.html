@@ -11,6 +11,11 @@
             src: url("css/joystix.ttf")
         }
 
+        html,
+        body {
+            overscroll-behavior-y: contain;
+        }
+
         body {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -90,6 +95,7 @@
         }
 
         #sound-control {
+            background-color: transparent;
             font-size: 2em;
             height: 80px;
             width: 80px;
@@ -100,9 +106,18 @@
 
 
         #touch-BTN-start {
-            position: fixed;
-            bottom: 10px;
-            left: 300px;
+            border: 1px solid white;
+            padding: 20px;
+            color: white;
+            font-family: pixelFont;
+            background-color: transparent;
+            transition: 0.3s;
+        }
+
+        #touch-BTN-start:hover {
+            background-color: white;
+            color: black;
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -169,13 +184,15 @@
     <audio src="sounds/key-sound.wav" id="key-sound"></audio>
 
     <button class="touch-BTN" id="sound-control" onclick="soundControl()">&#128263;</button>
-
-    <button class="touch-BTN" id="touch-BTN-start">START</button>
+    <center>
+        <button class="touch-BTN" id="touch-BTN-start">START</button>
+    </center>
+    
 
     <script>
         const canvas = document.getElementById("game-canvas");
         const ctx = canvas.getContext("2d");
-        let aPressed, sPressed, wPressed, dPressed, spacePressed = false;
+        let aPressed, sPressed, wPressed, dPressed = false;
 
         let soundMuted = true;
 
@@ -360,7 +377,7 @@
             ctx.textAlign = "center";
             ctx.font = "20px pixelFont";
             ctx.fillStyle = "white";
-            ctx.fillText("Press space to start", canvas.width / 2, 300);
+            ctx.fillText("Collect 🗝 x 5", canvas.width / 2, 300);
             ctx.fillText("Controls", canvas.width / 2, 70);
             ctx.fillText("W = UP", canvas.width / 2, 120);
             ctx.fillText("A = Left", canvas.width / 2, 150);
@@ -371,8 +388,8 @@
             canvas.addEventListener("touchstart", changeTouchPosition, false);
             canvas.addEventListener("touchmove", changeTouchPosition, false);
             touchBTNStart.addEventListener("click", () => {
-                if (!spacePressed) {
-                    spacePressed = true;
+                if (!touchBTNStart.disabled) {
+                    touchBTNStart.disabled = true;
                     initialize();
                     blackBackground();
                     ctx.fillStyle = "white";
@@ -384,9 +401,9 @@
             characterAnimation = setInterval(animateCharacter, 200);
             batAnimation = setInterval(animateBat, 160);
             makeKeyAppear = setInterval(keyStatusToggle, 5000);
-            document.addEventListener("keydown", event => {
+            /*document.addEventListener("keydown", event => {
                 if (event.keyCode === 32 && !spacePressed) {
-                    spacePressed = true;
+                    touchBTNStart.disabled = false;
                     initialize();
                     blackBackground();
                     ctx.fillStyle = "white";
@@ -395,7 +412,7 @@
                     playSound(startsound);
 
                 }
-            });
+            });*/
         }
 
 
@@ -458,7 +475,7 @@
 
             keys = 0;
             keysRequired = 5;
-            spacePressed = true;
+            touchBTNStart.disabled = true;
             player1.x = 0;
             player1.y = canvas.height / 2;
             obstacle.x = canvas.width + 200;
@@ -531,7 +548,7 @@
 
         function startGame() {
             score = 0;
-            spacePressed = true;
+            touchBTNStart.disabled = true;
             initialize();
             gameInterval = setInterval(callAllRound1, 1000 / gameSpeed);
             randomInterval = setInterval(randomGenerator, 500);
@@ -549,38 +566,38 @@
             ctx.drawImage(player1.characterSprite, player1.x, player1.y);
         }
 
-        function movePlayerTouch(event){
-            if(touchX -20 < player1.x){
+        function movePlayerTouch(event) {
+            if (touchX - 20 < player1.x) {
                 player1.x -= 2;
-                if(player1.x < 0){
+                if (player1.x < 0) {
                     player1.x = 0;
                 }
             }
 
-            if(touchX -20 > player1.x){
+            if (touchX - 20 > player1.x) {
                 player1.x += 2;
-                if(player1.x > canvas.width){
+                if (player1.x > canvas.width) {
                     player1.x = canvas.width - 10;
                 }
             }
 
-            if(touchY -20 < player1.y){
+            if (touchY - 20 < player1.y) {
                 player1.y -= 2;
-                if(player1.y < 0){
+                if (player1.y < 0) {
                     player1.y = 0;
                 }
             }
 
-            if(touchY -20 > player1.y){
+            if (touchY - 20 > player1.y) {
                 player1.y += 2;
-                if(player1.y > canvas.height - 20){
-                    player1.y = canvas.height-20;
+                if (player1.y > canvas.height - 20) {
+                    player1.y = canvas.height - 20;
                 }
             }
-            
+
         }
 
-        function changeTouchPosition(event){
+        function changeTouchPosition(event) {
             touchX = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX;
             touchY = event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY;
             console.log(touchX);
@@ -928,6 +945,7 @@
             drawBridges();
             drawPlayer();
             movePlayer();
+            movePlayerTouch();
 
             removeShadow();
 
@@ -1052,7 +1070,7 @@
                     gameover = true;
                     setTimeout(function () {
                         round = 1;
-                        spacePressed = false;
+                        touchBTNStart.disabled = false;
                         clearInterval(gameInterval);
                         playSound(gameoversound);
                         blackBackground();
@@ -1062,7 +1080,7 @@
                         ctx.fillText("Game Over", canvas.width / 2, canvas.height / 2 - 50);
                         ctx.font = "20px pixelFont";
                         ctx.fillText("Your score: " + score, canvas.width / 2, canvas.height / 2 + 50);
-                        ctx.fillText("Press space for retry", canvas.width / 2, canvas.height / 2 + 100);
+                        ctx.fillText("Hit Start for retry", canvas.width / 2, canvas.height / 2 + 100);
                     }, 1000);
                 }
 
