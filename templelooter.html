@@ -12,6 +12,15 @@
         }
 
         body {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
             background-color: black;
             font-family: "pixelFont";
         }
@@ -122,7 +131,6 @@
             bottom: 25px;
             left: 250px;
         }
-
     </style>
 </head>
 
@@ -391,16 +399,16 @@
             ctx.fillText("S = DOWN", canvas.width / 2, 210);
             document.addEventListener("keydown", keyDownHandler, false);
             document.addEventListener("keyup", keyUpHandler, false);
-            touchBTNforUp.addEventListener("touchstart",touchDownHandlerUp,false);
-            touchBTNforUp.addEventListener("touchend",touchUpHandlerUp,false);
-            touchBTNforDown.addEventListener("touchstart",touchDownHandlerDown,false);
-            touchBTNforDown.addEventListener("touchend",touchUpHandlerDown,false);
-            touchBTNforLeft.addEventListener("touchstart",touchDownHandlerLeft,false);
-            touchBTNforLeft.addEventListener("touchend",touchUpHandlerLeft,false);
-            touchBTNforRight.addEventListener("touchstart",touchDownHandlerRight,false);
-            touchBTNforRight.addEventListener("touchend",touchUpHandlerRight,false);
-            touchBTNStart.addEventListener("click", ()=>{
-                if(!spacePressed){
+            touchBTNforUp.addEventListener("touchstart", touchDownHandlerUp, false);
+            touchBTNforUp.addEventListener("touchend", touchUpHandlerUp, false);
+            touchBTNforDown.addEventListener("touchstart", touchDownHandlerDown, false);
+            touchBTNforDown.addEventListener("touchend", touchUpHandlerDown, false);
+            touchBTNforLeft.addEventListener("touchstart", touchDownHandlerLeft, false);
+            touchBTNforLeft.addEventListener("touchend", touchUpHandlerLeft, false);
+            touchBTNforRight.addEventListener("touchstart", touchDownHandlerRight, false);
+            touchBTNforRight.addEventListener("touchend", touchUpHandlerRight, false);
+            touchBTNStart.addEventListener("click", () => {
+                if (!spacePressed) {
                     spacePressed = true;
                     initialize();
                     blackBackground();
@@ -481,35 +489,35 @@
 
         }
 
-        function touchDownHandlerUp(){
+        function touchDownHandlerUp() {
             wPressed = true;
         }
 
-        function touchUpHandlerUp(){
+        function touchUpHandlerUp() {
             wPressed = false;
         }
 
-        function touchDownHandlerDown(){
+        function touchDownHandlerDown() {
             sPressed = true;
         }
 
-        function touchUpHandlerDown(){
+        function touchUpHandlerDown() {
             sPressed = false;
         }
 
-        function touchDownHandlerLeft(){
+        function touchDownHandlerLeft() {
             aPressed = true;
         }
 
-        function touchUpHandlerLeft(){
+        function touchUpHandlerLeft() {
             aPressed = false;
         }
 
-        function touchDownHandlerRight(){
+        function touchDownHandlerRight() {
             dPressed = true;
         }
 
-        function touchUpHandlerRight(){
+        function touchUpHandlerRight() {
             dPressed = false;
         }
 
@@ -601,7 +609,7 @@
 
 
 
-        
+
 
         function drawPlayer() {
             player1.height = canvas.height / 10;
@@ -669,7 +677,7 @@
                 kickback = -4;
                 handleInvincibility();
             }
-            
+
             if (obstacle.x < player1.x + player1.width && obstacle.x >= player1.x + player1.width - 4 && obstacle.y2 < player1.y + player1.height) {
                 playSound(hurtsound);
                 isCollision.x = true;
@@ -715,7 +723,7 @@
             player1.characterSprite = (character == true) ? characterSprite2 : player1.characterSprite = characterSprite1;
         }
 
-       
+
 
 
         function keyStatusToggle() {
@@ -1160,7 +1168,7 @@
 
         function bridgeCollision(bridge) {
 
-            if (bridge.x < player1.x + player1.width && bridge.x + bridge.width > player1.x && player1.y + player1.height -10 < bridge.y + bridge.height - 10 && bridge.y < player1.y + player1.height) {
+            if (bridge.x < player1.x + player1.width && bridge.x + bridge.width > player1.x && player1.y + player1.height - 10 < bridge.y + bridge.height - 10 && bridge.y < player1.y + player1.height) {
                 carriedByBridge = true;
             }
         }
