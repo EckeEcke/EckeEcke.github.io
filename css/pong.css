@@ -132,11 +132,6 @@ hr {
   text-align: center;
 }
 
-.too-small {
-  display: none;
-  color: white;
-}
-
 
 #sound-button {
   display: block;
@@ -167,30 +162,3 @@ hr {
   width: 80px;
 }
 
-
-
-
-@media (max-width: 1100px) {
-  canvas, .scoreboard, .controls, #sound-button, #description, input {
-    display: none !important;
-  }
-}
-
-@media (max-width: 1100px) {
-  .too-small {
-    padding-top: 10px;
-    display: block;
-  }
-  h2 {
-    padding-top: 60px;
-  }
-
-  #logo {
-    height: 56px;
-  }
-
-  #hamburger {
-    top: 6px;
-    right: 6px;
-  }
-}

@@ -1,19 +1,19 @@
 <html>
+
 <head>
-<meta name="viewport" content="width=device-width, maximum-scale=1.0">
-<title>Javascript Pong 🏓</title>
-<link rel="stylesheet" href="css/pong.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="icon" type="image/png" href="images/favicon.png"/>
+  <meta name="viewport" content="width=device-width, initial-scale=0.3, maximum-scale=0.6">
+  <title>Javascript Pong 🏓</title>
+  <link rel="stylesheet" href="css/pong.css">
+  <link rel="icon" type="image/png" href="images/favicon.png" />
 </head>
 
 <body>
 
   <a href="index.html" style="display: block">
     <img id="logo" src="images/logo-chris.png">
-  </a>  
+  </a>
 
-<button onclick="soundControl()" id="sound-button">&#128263;</button>
+  <button onclick="soundControl()" id="sound-button">&#128263;</button>
 
 
   <audio src="sounds/bounce.wav" id="bounce"></audio>
@@ -24,325 +24,348 @@
 
 
 
-<button id="hamburger" onclick="showMenu()">
-  <div class="line1"></div>
-  <div class="line2"></div>
-  <div class="line3"></div>
-</button>
+  <button id="hamburger" onclick="showMenu()">
+    <div class="line1"></div>
+    <div class="line2"></div>
+    <div class="line3"></div>
+  </button>
 
-<div id="burger-menu">
-  <ul>
-    <li>
-      <a href="index.html">Home</a>
-    </li>
-    <hr class="nav-line">
-    <li>
-      <a href="https://nifty-hopper-c1da01.netlify.app/" target="_blank">React Travel Blog</a>
-    </li>
-    <hr class="nav-line">
-    <li>
-      <a href="shooter.html">JS Space Shooter</a>
-    </li>
-    <hr class="nav-line">
-    <li>
-      <a href="pong.html">JS Pong</a>
-    </li>
-    <hr class="nav-line">
-    <li>
-      <a href="https://adoring-galileo-71fde2.netlify.app/">React Todo App</a>
-    </li>
-  </ul>
-</div>
-
-<div class="black-box">
-
-<div>
-  <br><br>
-  <center>
-    <h2>Pong</h2>
-  </center>
-  <br><br>
-</div>
-
-<canvas id="game-canvas" width="800px" height="600px">
-</canvas>
-<br>
-<article class="controls">
-  Controls P1: "W" and "S"  |  Controls P2: "O" and "L"<br>
-
-  <br><br>
-
-  <center>
-    <button id="start-button" onclick="startGame()">
-      &#127955; Start &#127955;
-      </button>
-  </center>
-  
-  <br><br>
-<div id="game-settings">
-  <input class="option-input" type="color" id="color-picker-p1" value="#ed3d0d"><label>&nbsp Choose color P1</label>
-  <br>
-  <input class="option-input" type="color" id="color-picker-p2" value="#26ed17"><label>&nbsp Choose color P2</label>
-  <br>
-  <input class="option-input" type="range" id="game-speed" min="100" max="200" value="100"><label>&nbsp Set gamespeed &nbsp</label>
-  <br><br>
-  <input class="playmode-input" name="playmode" id="1player-mode" type="radio" checked>
-  <label>1 Player &nbsp</label>
-  <input class="playmode-input" name="playmode" id="2player-mode" type="radio">
-  <label>2 Player</label>
-</div>
+  <div id="burger-menu">
+    <ul>
+      <li>
+        <a href="index.html">Home</a>
+      </li>
+      <hr class="nav-line">
+      <li>
+        <a href="https://nifty-hopper-c1da01.netlify.app/" target="_blank">React Travel Blog</a>
+      </li>
+      <hr class="nav-line">
+      <li>
+        <a href="shooter.html">JS Space Shooter</a>
+      </li>
+      <hr class="nav-line">
+      <li>
+        <a href="pong.html">JS Pong</a>
+      </li>
+      <hr class="nav-line">
+      <li>
+        <a href="https://adoring-galileo-71fde2.netlify.app/">React Todo App</a>
+      </li>
+    </ul>
+  </div>
 
 
+    <div>
+      <br><br>
+      <center>
+        <h2>Pong</h2>
+      </center>
+      <br><br>
+    </div>
+
+    <canvas id="game-canvas" width="800px" height="600px">
+    </canvas>
+    <br>
+    <article class="controls">
+      Controls P1: "W" and "S" | Controls P2: "O" and "L"<br>
+
+      <br><br>
+
+      <center>
+        <button id="start-button" onclick="startGame()">
+          &#127955; Start &#127955;
+        </button>
+      </center>
+
+      <br><br>
+      <div id="game-settings">
+        <input class="option-input" type="color" id="color-picker-p1" value="#ed3d0d"><label>&nbsp Choose color
+          P1</label>
+        <br>
+        <input class="option-input" type="color" id="color-picker-p2" value="#26ed17"><label>&nbsp Choose color
+          P2</label>
+        <br>
+        <input class="option-input" type="range" id="game-speed" min="100" max="200" value="100"><label>&nbsp Set
+          gamespeed &nbsp</label>
+        <br><br>
+        <input class="playmode-input" name="playmode" id="1player-mode" type="radio" checked>
+        <label>1 Player &nbsp</label>
+        <input class="playmode-input" name="playmode" id="2player-mode" type="radio">
+        <label>2 Player</label>
+      </div>
 
 
-</article>
-
-<article id="description">
-  <br><br>
-  To start with Javascript I took a Udemy course on how to build Pong using Javascript. I wrote functions drawing objects into a canvas element and making them move with setInterval. 
-  I coded a collision detection into the game preventing the ball from leaving the canvas, making it bounce from paddles and counting scores. 
-  The score is tracked and displayed in canvas. I implemented sound controls and sounds that play if certain conditions are met. Finally I implemented a basic CPU opponent to play against.
-</article>
-
-<article class="too-small">
-  <br>
-  <br>
-  <br>
-  If you can read this, your screen is to small! You can play my version of Pong on your PC in full screen mode!
-</article>
-</div>
 
 
-<script>
+    </article>
 
-  const canvas = document.getElementById("game-canvas");
-  const startBtn = document.getElementById("start-button");
-  const soundBtn = document.getElementById("sound-button");
-  const descriptionTxt = document.getElementById("description");
-
-  const colorInputP1 = document.getElementById("color-picker-p1");
-  const colorInputP2 = document.getElementById("color-picker-p2");
-  const gameSpeedInput = document.getElementById("game-speed");
-
-  const onePlayerBTN = document.getElementById("1player-mode");
-  const twoPlayerBTN = document.getElementById("2player-mode");
-
-  const soundCheer1 = document.getElementById("cheer1");
-  const soundCheer2 = document.getElementById("cheer2");
-  const soundVictory = document.getElementById("victory");
-  const inputs = document.getElementById("game-settings");
-
-  let colorPaddle1 = "#ed3d0d";
-  let colorPaddle2 = "#26ed17";
-
-  let runGame;
-
-  let canvasContext;
-  let ballX = 400;
-  let ballSpeedX = 5;
-  let ballY = 300;
-  let ballSpeedY = 0;
-  let paddle1Y = 250;
-  const paddle1X = 30;
-  let paddle2Y = 250;
-  const paddle2X = 760;
-  let oPressed = false;
-  let lPressed = false;
-  let wPressed = false;
-  let sPressed = false;
-  let Score1 = 0;
-  let Score2 = 0;
-  const paddleHeight = 100;
-  const tolerance = 20;
-  let speedBoost= 0;
-  let hitCounter = 0;
-  const sounds = document.getElementsByTagName("audio");
-  let gameRuns = false;
-  let gameSpeed = 100;
+    <article id="description">
+      <br><br>
+      To start with Javascript I took a Udemy course on how to build Pong using Javascript. I wrote functions drawing
+      objects into a canvas element and making them move with setInterval.
+      I coded a collision detection into the game preventing the ball from leaving the canvas, making it bounce from
+      paddles and counting scores.
+      The score is tracked and displayed in canvas. I implemented sound controls and sounds that play if certain
+      conditions are met. Finally I implemented a basic CPU opponent to play against.
+    </article>
 
 
-  sounds.muted = true;
 
-  colorInputP1.addEventListener("change", function(){
-    colorPaddle1 = colorInputP1.value;
-  });
+  <script>
 
-  colorInputP2.addEventListener("change", function(){
-    colorPaddle2 = colorInputP2.value;
-  });
+    const canvas = document.getElementById("game-canvas");
+    const startBtn = document.getElementById("start-button");
+    const soundBtn = document.getElementById("sound-button");
+    const descriptionTxt = document.getElementById("description");
 
-  gameSpeedInput.addEventListener("change", function(){
-    gameSpeed = gameSpeedInput.value;
-  })
+    const colorInputP1 = document.getElementById("color-picker-p1");
+    const colorInputP2 = document.getElementById("color-picker-p2");
+    const gameSpeedInput = document.getElementById("game-speed");
 
-  window.onload = function () {
-    document.addEventListener("keydown", keyDownHandler, false);
-    document.addEventListener("keyup", keyUpHandler, false);
-  }
+    const onePlayerBTN = document.getElementById("1player-mode");
+    const twoPlayerBTN = document.getElementById("2player-mode");
 
+    const soundCheer1 = document.getElementById("cheer1");
+    const soundCheer2 = document.getElementById("cheer2");
+    const soundVictory = document.getElementById("victory");
+    const inputs = document.getElementById("game-settings");
 
-  function startGame(){
-    canvas.style.display ="block";
-    canvasContext = canvas.getContext("2d");
-    if(onePlayerBTN.checked){
-      runGame = setInterval(onePlayerMode, 1000/gameSpeed)
-    } else {
-      rungame = setInterval(twoPlayerMode, 1000/gameSpeed)
-    }
-    startBtn.style.display ="none";
-    descriptionTxt.style.display = "none";
-    inputs.style.display = "none";
+    let colorPaddle1 = "#ed3d0d";
+    let colorPaddle2 = "#26ed17";
 
-  }
+    let runGame;
 
-  function drawScore(){
-    canvasContext.font = "48px retro";
-    canvasContext.fillStyle = "white";
-    canvasContext.fillText(Score1, canvas.width/4-20, 60);
-    canvasContext.font = "48px retro";
-    canvasContext.fillStyle = "white";
-    canvasContext.fillText(Score2, 3*canvas.width/4, 60);
-  }
+    let canvasContext;
+    let ballX = 400;
+    let ballSpeedX = 5;
+    let ballY = 300;
+    let ballSpeedY = 0;
+    let paddle1Y = 250;
+    const paddle1X = 30;
+    let paddle2Y = 250;
+    const paddle2X = 760;
+    let oPressed = false;
+    let lPressed = false;
+    let wPressed = false;
+    let sPressed = false;
+    let Score1 = 0;
+    let Score2 = 0;
+    const paddleHeight = 100;
+    const tolerance = 20;
+    let speedBoost = 0;
+    let hitCounter = 0;
+    const sounds = document.getElementsByTagName("audio");
+    let gameRuns = false;
+    let gameSpeed = 100;
 
-  function soundControl() {
-    if (sounds.muted == true){
-      sounds.muted = false;
-      soundBtn.innerHTML="&#128266;";
-    } else {
-      sounds.muted = true;
-      soundBtn.innerHTML="&#128263;";
-    }
-    console.log(sounds);
-  }
-
-  function twoPlayerMode() {
-    drawEverything();
-    moveEverything();
-    collision(paddle2X,paddle2Y, -1);
-    collision(paddle1X,paddle1Y, 1);
-    move1();
-    move2();
-    setScore();
-    raiseSpeed();
-    drawScore();
-  }
-
-  function onePlayerMode(){
-    drawEverything();
-    moveEverything();
-    collision(paddle2X,paddle2Y, -1);
-    collision(paddle1X,paddle1Y, 1, wPressed, sPressed);
-    move1();
-    setScore();
-    raiseSpeed();
-    drawScore();
-    moveAI();
-  }
+    let touchControls = false;
+    let touchY;
 
 
-  function moveEverything() {
-    ballX = ballX + ballSpeedX;
-    ballY = ballY + ballSpeedY;
+    sounds.muted = true;
 
-    if (ballX == canvas.width) {
-      ballSpeedX = -ballSpeedX;
+    colorInputP1.addEventListener("change", function () {
+      colorPaddle1 = colorInputP1.value;
+    });
+
+    colorInputP2.addEventListener("change", function () {
+      colorPaddle2 = colorInputP2.value;
+    });
+
+    gameSpeedInput.addEventListener("change", function () {
+      gameSpeed = gameSpeedInput.value;
+    })
+
+    canvas.addEventListener("touchstart", changeTouchPosition, false);
+    canvas.addEventListener("touchmove", changeTouchPosition, false);
+
+    window.onload = function () {
+      document.addEventListener("keydown", keyDownHandler, false);
+      document.addEventListener("keyup", keyUpHandler, false);
     }
 
-    if (ballX == 0) {
-      ballSpeedX = -ballSpeedX;
-    }
 
-    ballY = ballY + ballSpeedY;
-    if (ballY >= canvas.height) {
-      ballSpeedY = -ballSpeedY;
-      ballY = canvas.height;
-    }
-
-    if (ballY <= 0) {
-      ballSpeedY = -ballSpeedY;
-      ballY = 0;
-    }
-
-  }
-
-
-
-  function move1 (event) {
-    if(wPressed) {
-      paddle1Y = paddle1Y - 10;
-    }
-    if(paddle1Y < 0) {
-      paddle1Y = 0;
-    }
-    if(sPressed) {
-        paddle1Y = paddle1Y + 8;
+    function startGame() {
+      canvas.style.display = "block";
+      canvasContext = canvas.getContext("2d");
+      if (onePlayerBTN.checked) {
+        runGame = setInterval(onePlayerMode, 1000 / gameSpeed)
+      } else {
+        rungame = setInterval(twoPlayerMode, 1000 / gameSpeed)
       }
-      if(paddle1Y > 500) {
+      startBtn.style.display = "none";
+      descriptionTxt.style.display = "none";
+      inputs.style.display = "none";
+
+    }
+
+    function drawScore() {
+      canvasContext.font = "48px retro";
+      canvasContext.fillStyle = "white";
+      canvasContext.fillText(Score1, canvas.width / 4 - 20, 60);
+      canvasContext.font = "48px retro";
+      canvasContext.fillStyle = "white";
+      canvasContext.fillText(Score2, 3 * canvas.width / 4, 60);
+    }
+
+    function soundControl() {
+      if (sounds.muted == true) {
+        sounds.muted = false;
+        soundBtn.innerHTML = "&#128266;";
+      } else {
+        sounds.muted = true;
+        soundBtn.innerHTML = "&#128263;";
+      }
+      console.log(sounds);
+    }
+
+    function twoPlayerMode() {
+      drawEverything();
+      moveEverything();
+      collision(paddle2X, paddle2Y, -1);
+      collision(paddle1X, paddle1Y, 1);
+      move1();
+      move2();
+      setScore();
+      raiseSpeed();
+      drawScore();
+    }
+
+    function onePlayerMode() {
+      drawEverything();
+      moveEverything();
+      collision(paddle2X, paddle2Y, -1);
+      collision(paddle1X, paddle1Y, 1, wPressed, sPressed);
+      move1();
+      move1Touch();
+      setScore();
+      raiseSpeed();
+      drawScore();
+      moveAI();
+    }
+
+
+    function moveEverything() {
+      ballX = ballX + ballSpeedX;
+      ballY = ballY + ballSpeedY;
+
+      if (ballX == canvas.width) {
+        ballSpeedX = -ballSpeedX;
+      }
+
+      if (ballX == 0) {
+        ballSpeedX = -ballSpeedX;
+      }
+
+      ballY = ballY + ballSpeedY;
+      if (ballY >= canvas.height) {
+        ballSpeedY = -ballSpeedY;
+        ballY = canvas.height;
+      }
+
+      if (ballY <= 0) {
+        ballSpeedY = -ballSpeedY;
+        ballY = 0;
+      }
+
+    }
+
+
+
+    function move1(event) {
+      if (wPressed) {
+        paddle1Y -= 10;
+      }
+      if (paddle1Y < 0) {
+        paddle1Y = 0;
+      }
+      if (sPressed) {
+        paddle1Y += 8;
+      }
+      if (paddle1Y > 500) {
         paddle1Y = 500;
       }
-  }
+    }
+
+    function move1Touch() {
+      if (touchControls) {
+        if (touchY > paddle1Y) {
+          paddle1Y += 10;
+        }
+
+        if (touchY < paddle1Y) {
+          paddle1Y -= 10;
+        }
+      }
+    }
+
+    function changeTouchPosition(event) {
+            touchControls = true;
+            touchY = event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY;
+            console.log(touchY);
+        }
 
 
-  function move2 (event) {
-      if(lPressed) {
+    function move2(event) {
+      if (lPressed) {
         paddle2Y = paddle2Y + 8;
       }
-      if(paddle2Y > 500) {
+      if (paddle2Y > 500) {
         paddle2Y = 500;
       }
-      if(oPressed) {
+      if (oPressed) {
         paddle2Y = paddle2Y - 10;
       }
-      if(paddle2Y < 0) {
+      if (paddle2Y < 0) {
         paddle2Y = 0;
       }
 
     }
 
 
-  function moveAI(){
-    if(ballSpeedX>0){
-      moveAItoBall();
-    }
-    if(paddle2Y < 0) {
+    function moveAI() {
+      if (ballSpeedX > 0) {
+        moveAItoBall();
+      }
+      if (paddle2Y < 0) {
         paddle2Y = 0;
         oPressed
       }
-    if(paddle2Y > 500) {
+      if (paddle2Y > 500) {
         paddle2Y = 500;
       }
-  }
-
-  function moveAItoBall(){
-    if(ballY>paddle2Y+50){
-      paddle2Y += 5;
-      lPressed;
     }
 
-    if(ballY<paddle2Y+50){
-      paddle2Y -= 5;
-      oPressed;
+    function moveAItoBall() {
+      if (ballY > paddle2Y + 50) {
+        paddle2Y += 5;
+        lPressed;
+      }
+
+      if (ballY < paddle2Y + 50) {
+        paddle2Y -= 5;
+        oPressed;
+      }
+
+      if (ballY == paddle2Y + 50) {
+        lPressed = false;
+        oPressed = false;
+      }
     }
 
-    if (ballY == paddle2Y+50){
-      lPressed = false;
-      oPressed = false;
-    }
-  }
-
-  function resetGame(){
-      startBtn.style.display ="block";
+    function resetGame() {
+      startBtn.style.display = "block";
       inputs.style.display = "block";
-      canvas.style.display ="none";
+      canvas.style.display = "none";
 
       Score1 = 0;
       Score2 = 0;
       paddle1Y = 250;
       paddle2Y = 250;
       ballSpeedY = 0;
-      }
+    }
 
-  function resetAfterScore(){
+    function resetAfterScore() {
       ballX = 400;
       ballY = 300;
       ballSpeedY = 0;
@@ -350,164 +373,165 @@
     }
 
 
-function keyDownHandler (event) {
-  if(event.keyCode === 87) {
-    wPressed = true;
-  }
-  else if (event.keyCode === 83) {
-    sPressed = true;
-  }
-  else if (event.keyCode === 79) {
-    oPressed = true;
-  }
-  else if (event.keyCode === 76) {
-    lPressed = true;
-  }
-}
+    function keyDownHandler(event) {
+      if (event.keyCode === 87) {
+        wPressed = true;
+      }
+      else if (event.keyCode === 83) {
+        sPressed = true;
+      }
+      else if (event.keyCode === 79) {
+        oPressed = true;
+      }
+      else if (event.keyCode === 76) {
+        lPressed = true;
+      }
+    }
 
-function keyUpHandler (event) {
-    if(event.keyCode === 87) {
-      wPressed = false;
+    function keyUpHandler(event) {
+      if (event.keyCode === 87) {
+        wPressed = false;
+      }
+      else if (event.keyCode === 83) {
+        sPressed = false;
+      }
+      else if (event.keyCode === 79) {
+        oPressed = false;
+      }
+      else if (event.keyCode === 76) {
+        lPressed = false;
+      }
     }
-    else if (event.keyCode === 83) {
-      sPressed = false;
-    }
-    else if (event.keyCode === 79) {
-      oPressed = false;
-    }
-    else if (event.keyCode === 76) {
-      lPressed = false;
-    }
-  }
 
 
-  function drawVictoryMessage(message1, message2){
-    canvasContext.font = "48px retro";
+    function drawVictoryMessage(message1, message2) {
+      canvasContext.font = "48px retro";
       canvasContext.fillStyle = "white";
       canvasContext.fillText(message1, 120, 350);
       canvasContext.font = "48px retro";
       canvasContext.fillStyle = "white";
-      canvasContext.fillText(message2, 130+canvas.width/2, 350);
-  }
-
-  
-
-
-  function setScore () {
-    let scored = false;
-    if (ballX == canvas.width) {
-      Score1 = Score1 +1;
-      if (sounds.muted == false){
-      soundCheer1.play();
-      }
-      scored = true;
+      canvasContext.fillText(message2, 130 + canvas.width / 2, 350);
     }
 
-    if (ballX == 0) {
-      Score2 = Score2 +1;
-      if (sounds.muted == false){
-      soundCheer2.play();
-      }
-      scored = true;
-    }
 
-    if (scored) {
-      resetAfterScore();
-      scored = false;
-    }
 
-    if (Score1 == 7) {
-      if (sounds.muted == false){
-      soundVictory.play();
+
+    function setScore() {
+      let scored = false;
+      if (ballX == canvas.width) {
+        Score1 = Score1 + 1;
+        if (sounds.muted == false) {
+          soundCheer1.play();
+        }
+        scored = true;
       }
 
-      clearInterval(runGame);
-      drawVictoryMessage("Win!", "Lose");
-      setTimeout(resetGame, 5000);
-    }
-
-    if (Score2 == 7) {
-      if (sounds.muted == false){
-      soundVictory.play();
+      if (ballX == 0) {
+        Score2 = Score2 + 1;
+        if (sounds.muted == false) {
+          soundCheer2.play();
+        }
+        scored = true;
       }
 
-      clearInterval(runGame);
-      drawVictoryMessage("Lose", "Win!");
-      setTimeout(resetGame, 5000);
-    }
-  }
-
-
-
-  function collision (paddleX, paddleY, direction, upBTN, downBTN) {
-
-
-    if (ballX == paddleX && ballY >= paddleY - tolerance && ballY < paddleY -1 + paddleHeight + tolerance) { 
-      ballSpeedX = direction * (5 + speedBoost);
-      hitCounter = hitCounter + 1;
-      if (ballSpeedY == 0){
-        ballSpeedY = 2;
+      if (scored) {
+        resetAfterScore();
+        scored = false;
       }
-      if (upBTN && ballSpeedY > -3){
-        ballSpeedY -= 1;
+
+      if (Score1 == 7) {
+        if (sounds.muted == false) {
+          soundVictory.play();
+        }
+
+        clearInterval(runGame);
+        drawVictoryMessage("Win!", "Lose");
+        setTimeout(resetGame, 5000);
       }
-      if (downBTN && ballSpeedY < 3){
-        ballSpeedY += 1;
-      }
-      if (sounds.muted == false){
-      document.getElementById("bounce1").play();
+
+      if (Score2 == 7) {
+        if (sounds.muted == false) {
+          soundVictory.play();
+        }
+
+        clearInterval(runGame);
+        drawVictoryMessage("Lose", "Win!");
+        setTimeout(resetGame, 5000);
       }
     }
 
-  }
 
-  function raiseSpeed () {
-    if (hitCounter >= 20) {
-      speedBoost = 5;
+
+    function collision(paddleX, paddleY, direction, upBTN, downBTN) {
+
+
+      if (ballX == paddleX && ballY >= paddleY - tolerance && ballY < paddleY - 1 + paddleHeight + tolerance) {
+        ballSpeedX = direction * (5 + speedBoost);
+        hitCounter = hitCounter + 1;
+        if (ballSpeedY == 0) {
+          ballSpeedY = 2;
+        }
+        if (upBTN && ballSpeedY > -3) {
+          ballSpeedY -= 1;
+        }
+        if (downBTN && ballSpeedY < 3) {
+          ballSpeedY += 1;
+        }
+        if (sounds.muted == false) {
+          document.getElementById("bounce1").play();
+        }
+      }
+
     }
-    else {
-    speedBoost = 0;
-  }
-  }
 
-  
-  function drawEverything() {
-
-    canvasContext.fillStyle = "black"; /*black background*/
-    canvasContext.fillRect(0,0,canvas.width,canvas.height);
-    canvasContext.fillStyle = "red"; /*middle line*/
-    canvasContext.fillRect(canvas.width/2,0,1,canvas.height);
-    canvasContext.fillStyle = "white"; /*ball*/
-    canvasContext.fillRect(ballX,ballY,10,10);
-    canvasContext.fillStyle = colorPaddle1;/*Paddle1*/
-    canvasContext.fillRect(20,paddle1Y,10,paddleHeight);
-    canvasContext.fillStyle = colorPaddle2; /*Paddle2*/
-    canvasContext.fillRect(770,paddle2Y,10,paddleHeight);
-  }
+    function raiseSpeed() {
+      if (hitCounter >= 20) {
+        speedBoost = 5;
+      }
+      else {
+        speedBoost = 0;
+      }
+    }
 
 
+    function drawEverything() {
+
+      canvasContext.fillStyle = "black"; /*black background*/
+      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+      canvasContext.fillStyle = "red"; /*middle line*/
+      canvasContext.fillRect(canvas.width / 2, 0, 1, canvas.height);
+      canvasContext.fillStyle = "white"; /*ball*/
+      canvasContext.fillRect(ballX, ballY, 10, 10);
+      canvasContext.fillStyle = colorPaddle1;/*Paddle1*/
+      canvasContext.fillRect(20, paddle1Y, 10, paddleHeight);
+      canvasContext.fillStyle = colorPaddle2; /*Paddle2*/
+      canvasContext.fillRect(770, paddle2Y, 10, paddleHeight);
+    }
 
 
-  const burgerMenu = document.getElementById("burger-menu");
-  const hamburger = document.getElementById("hamburger");
-  let burgerMenuShowing = false;
 
-  function showMenu(){
-    burgerMenuShowing = !burgerMenuShowing;
-  if (burgerMenuShowing) {
-    burgerMenu.style.height = "100vh";
-    burgerMenu.style.opacity = "0.99";
-    hamburger.style.position = "fixed";
-  }
-  else {
-    burgerMenu.style.height = "0vh";
-    burgerMenu.style.opacity = "0";
-    hamburger.style.position = "absolute";
-  }
-}
 
-</script>
+    const burgerMenu = document.getElementById("burger-menu");
+    const hamburger = document.getElementById("hamburger");
+    let burgerMenuShowing = false;
+
+    function showMenu() {
+      burgerMenuShowing = !burgerMenuShowing;
+      if (burgerMenuShowing) {
+        burgerMenu.style.height = "100vh";
+        burgerMenu.style.opacity = "0.99";
+        hamburger.style.position = "fixed";
+      }
+      else {
+        burgerMenu.style.height = "0vh";
+        burgerMenu.style.opacity = "0";
+        hamburger.style.position = "absolute";
+      }
+    }
+
+  </script>
 
 
 </body>
+
 </html>
