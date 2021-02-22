@@ -359,8 +359,9 @@
             touchBTNStart.disabled = true;
             player1.x = 0;
             player1.y = canvas.height / 2;
-            touchX = player1.x;
-            touchY = player1.y;
+            touchX = 0;
+            touchY = canvas.height / 2;
+            touchControls = false;
             obstacle.x = canvas.width + 200;
             obstacle.y = 0;
             obstacle.height = 25 * Math.floor(Math.random() * 10);
