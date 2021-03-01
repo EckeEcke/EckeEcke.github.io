@@ -117,14 +117,6 @@ width:400px;
 }
 
 
-
-
-@media (max-width: 1100px) {
-  canvas, #startButton, #sound-button {
-    display: none;
-  }
-}
-
 @media (max-width: 1100px) {
   article {
     padding-top: 10px;
@@ -158,13 +150,3 @@ width:400px;
   }
 }
 
-@media (min-width: 1101px) {
-  article {
-    display: none;
-  }
-
-  h2 {
-    width: 30%;
-  }
-
-}

@@ -1,7 +1,7 @@
 
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=0.7, user-scalable=0">
   <title>Javascript Space Shooter 👾</title>
   <link rel="stylesheet" href="css/space-shooter.css">
   <link rel="icon" type="image/png" href="images/favicon.png"/>
@@ -17,10 +17,7 @@
     <br>
     <br>
     <h2>Space Shooter</h2>
-    <article class="too-small">
-      <br>
-      If you can read this, your screen is to small! You can play this game on your PC in full screen mode!
-    </article>
+
     <br>
     
 
@@ -98,6 +95,9 @@
   let shotFired = false;
   let sPressed = false;
 
+  let touchX;
+  let touchControls = false;
+
   let score = 0;
   let color = 0;
 
@@ -163,6 +163,9 @@
   }
 
   window.onload = function () {
+    canvas.addEventListener("touchstart", changeTouchPosition, false);
+    canvas.addEventListener("touchmove", changeTouchPosition, false);
+    canvas.addEventListener("touchend", function(){touchControls = false});
     document.addEventListener("keydown", keyDownHandler, false);
     document.addEventListener("keyup", keyUpHandler, false);
     document.addEventListener("keydown", event => {if(event.keyCode === 83 && !sPressed){
@@ -220,6 +223,7 @@
   function callAll(){
     drawEverything();
     moveShip();
+    moveShipTouch();
     shoot();
     moveShot();
     hitDetection();
@@ -305,6 +309,29 @@
     }
   }
 
+  function moveShipTouch(){
+    if(touchControls){
+      if(spaceshipX > touchX){
+        spaceshipX -= 5;
+        canonX -= 5;
+      } 
+
+      if(spaceshipX < touchX){
+        spaceshipX += 5;
+        canonX += 5;
+      }
+    }
+  }
+
+  function changeTouchPosition(event) {
+            touchControls = true;
+            touchX = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX;
+            if(!sPressed){
+              sPressed = true;
+              startGame();
+            }
+        }
+
   function keyDownHandler (event) {
     if(event.keyCode === 65) {
       aPressed = true;
@@ -332,6 +359,15 @@
 
   function shoot(){
     if(wPressed && !shotFired){
+      shotFired = true;
+      shotX = canonX-5;
+      shotY = canonY;
+      if (!sounds.muted){
+      document.getElementById("laser").play();
+      }
+    }
+
+    if(touchControls && !shotFired){
       shotFired = true;
       shotX = canonX-5;
       shotY = canonY;
