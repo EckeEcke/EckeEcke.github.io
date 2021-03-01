@@ -16,6 +16,7 @@
   <center>
     <br>
     <br>
+    <br>
     <h2>Space Shooter</h2>
 
     <br>
@@ -25,15 +26,7 @@
 
   <canvas id="game-canvas" width= "400px" height= "600px"></canvas>
 
-  <br><br><br><br>
 
-  <article id="description">
-
-    I wanted to experiment with my learnings from building Pong and created this game 
-    from scratch. Just for fun and getting some practise. To make it more visually appealing 
-    I implemented images to the canvas. There are also sound effects and button to turn sound on or off.
-    
-  </article>
 
   </center>
 
@@ -199,7 +192,6 @@
       intervalSnake = setInterval(moveSnake, gameSpeed);
       intervalBackground = setInterval(moveBackground,1000/30);
     }
-    document.getElementById("description").style.display = "none";
   }
 
   function setScore(){
