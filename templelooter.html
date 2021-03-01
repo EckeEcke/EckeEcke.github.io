@@ -279,6 +279,7 @@
             document.addEventListener("keyup", keyUpHandler, false);
             canvas.addEventListener("touchstart", changeTouchPosition, false);
             canvas.addEventListener("touchmove", changeTouchPosition, false);
+            canvas.addEventListener("touchend", function(){touchControls= false});
             touchBTNStart.addEventListener("click", () => {
                 if (!touchBTNStart.disabled) {
                     touchBTNStart.disabled = true;
