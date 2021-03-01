@@ -320,6 +320,7 @@
             touchX = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX;
             if(!sPressed){
               sPressed = true;
+              score = 0;
               startGame();
             }
         }
