@@ -31,10 +31,7 @@
   </center>
 
 <button onclick="soundControl()" id="sound-button">&#128263;</button>
-<audio src="sounds/laser.wav" id="laser"></audio>
-<audio src="sounds/win-shooter.wav" id="win-shooter"></audio>
 <audio src="sounds/lose-shooter.wav" id="lose-shooter"></audio>
-<audio src="sounds/hit.wav" id="hit"></audio>
 
 <button id="hamburger" onclick="showMenu()">
   <div class="line1"></div>
@@ -83,13 +80,14 @@
 <img id="snake-head1" src="images/snake-head.png" style="display: none; height:0;">
 <img id="background" src="images/space-pixel-background.jpg" style="display:none;height:0;">
 <img id="trumphead" src="images/trumphead.png" style="display: none;height:0;">
+<img id="explosion" src="images/explosion.png" style="display: none;height:0;">
 
 <script>
 
   const canvas = document.getElementById("game-canvas");
   const canvasContext = canvas.getContext("2d");
   let spaceshipX = 150;
-  const spaceshipY = 550;
+  let spaceshipY = 550;
   let canonY = 520;
   let canonX = spaceshipX+50;
   let shotX;
@@ -140,7 +138,7 @@
 
   let gameSpeed = 30;
 
-  let backgroundScrollPosition = 0;
+  let backgroundScrollPosition = -300;
 
   let sounds = document.getElementsByTagName("audio");
 
@@ -157,6 +155,15 @@
 
   sounds.muted = true;
 
+  
+
+  laser = new Audio("./sounds/laser.wav");
+  hitSound = new Audio("./sounds/hit.wav");
+  spaceshipSound = new Audio("./sounds/spaceship-rising.wav");
+  gameJingle = new Audio("./sounds/spaceshooter-jingle.mp3");
+  gameMusic = new Audio("./sounds/spaceshooter-music.mp3");
+  gameMusic.loop = true;
+
   function soundControl() {
     sounds.muted = !sounds.muted;
     if (!sounds.muted){
@@ -164,7 +171,6 @@
     } else {
       document.getElementById("sound-button").innerHTML="&#128263;";
     }
-    console.log(sounds.muted);
   }
 
   window.onload = function () {
@@ -192,14 +198,22 @@
   }
 
   function startGame(){
-    canvasContext.textAlign = "center";
-    canvasContext.fillStyle = "black"; /*black background*/
-    canvasContext.fillRect(0,0,canvas.width,canvas.height);
-    canvasContext.font = "24px retro";
-    canvasContext.fillStyle = "limegreen";
-    canvasContext.fillText("Save Earth!", canvas.width/2, canvas.height/2);
+    playSound(gameJingle);
+    gameJingle.play();
+    spaceshipAnimated = setInterval(spaceshipAnimation,1000/120);
+    playSound(spaceshipSound);
+    spaceshipSound.play();
+    //canvasContext.fillStyle = "black"; /*black background*/
+    //canvasContext.fillRect(0,0,canvas.width,canvas.height);
+    //canvasContext.font = "24px retro";
+    //canvasContext.fillStyle = "limegreen";
+    //canvasContext.fillText("Save Earth!", canvas.width/2, canvas.height/2);
     setTimeout(cooldown, 2000);
+    setTimeout(()=>gameMusic.play().loop,6500);
     function cooldown(){
+      clearInterval(spaceshipAnimated);
+      resetGame();
+      spaceshipY = 550;
       intervalGame = setInterval(callAll, 1000/140);
       intervalSnake = setInterval(moveSnake, gameSpeed);
       intervalBackground = setInterval(moveBackground,1000/30);
@@ -222,6 +236,21 @@
     canvasContext.fillText(highScore, 25+canvas.width/2, 60);
   }
 
+  function musicPlaying(){
+      if(!sounds.muted){
+        gameMusic.volume = 0.9;
+      } else {
+        gameMusic.volume = 0;
+      }
+  }
+
+  function playSound(sound){
+    if(!sounds.muted){
+      sound.volume = 0.9;
+    } else {
+      sound.volume = 0;
+    }
+  }
 
 
   function callAll(){
@@ -232,6 +261,7 @@
     moveShot();
     hitDetection();
     setScore();
+    musicPlaying();
   }
 
   function drawEverything() {
@@ -252,33 +282,65 @@
 
     canvasContext.filter = `hue-rotate(${color}deg)`;
 
+    if(snakeLives == 0.5){
+        canvasContext.drawImage(document.getElementById("explosion"),snakeX,snakeY,50,50);
+      }
+
     if (snakeLives >=1){
       canvasContext.drawImage(snakeHead,snakeX,snakeY,50,50);
     }
+
+    if(snakeLives == 1.5){
+        canvasContext.drawImage(document.getElementById("explosion"),snakeX2,snakeY2,50,50);
+      }
 
     if (snakeLives >= 2){
       canvasContext.drawImage(snakeBody,snakeX2,snakeY2,50,50);
     }
 
+    if(snakeLives == 2.5){
+        canvasContext.drawImage(document.getElementById("explosion"),snakeX3,snakeY3,50,50);
+      }
+
     if (snakeLives >= 3){
       canvasContext.drawImage(snakeBody,snakeX3,snakeY3,50,50);
     }
+
+    if(snakeLives == 3.5){
+        canvasContext.drawImage(document.getElementById("explosion"),snakeX4,snakeY4,50,50);
+      }
 
     if (snakeLives >= 4){
       canvasContext.drawImage(snakeBody,snakeX4,snakeY4,50,50);
     }
 
+    if(snakeLives == 4.5){
+        canvasContext.drawImage(document.getElementById("explosion"),snakeX5,snakeY5,50,50);
+      }
+
     if (snakeLives >= 5){
       canvasContext.drawImage(snakeBody,snakeX5,snakeY5,50,50);
     }
+
+    if(snakeLives == 5.5){
+        canvasContext.drawImage(document.getElementById("explosion"),snakeX6,snakeY6,50,50);
+      }
 
     if (snakeLives >= 6){
       canvasContext.drawImage(snakeBody,snakeX6,snakeY6,50,50);
     }
 
+    if(snakeLives == 6.5){
+        canvasContext.drawImage(document.getElementById("explosion"),snakeX7,snakeY7,50,50);
+      }
+
     if (snakeLives >= 7){
       canvasContext.drawImage(snakeBody,snakeX7,snakeY7,50,50);
     }
+
+    if(snakeLives == 7.5){
+        canvasContext.drawImage(document.getElementById("explosion"),snakeX8,snakeY8,50,50);
+      }
 
     if (snakeLives == 8){
       canvasContext.drawImage(snakeBody,snakeX8,snakeY8,50,50);
@@ -367,20 +429,19 @@
       shotFired = true;
       shotX = canonX-5;
       shotY = canonY;
-      if (!sounds.muted){
-      document.getElementById("laser").play();
+      playSound(laser);
+      laser.play();
       }
-    }
 
     if(touchControls && !shotFired){
       shotFired = true;
       shotX = canonX-5;
       shotY = canonY;
-      if (!sounds.muted){
-      document.getElementById("laser").play();
-      }
+      playSound(laser);
+      laser.play();
+
     }
-    }
+  }
 
 
   function moveShot(){
@@ -520,14 +581,18 @@
     }
 
     if (hit){
-      color += 3;
-      snakeLives -=1;
+      color += 50;
+      shotFired = false;
+      snakeLives -= 0.5;
+      setTimeout(()=>snakeLives-=0.5,100);
       score += 10;
       shotFired = false;
       shotY = 600;
-      if (!sounds.muted){
-      document.getElementById("hit").play();
-      }
+      setTimeout(()=>{color-=50;},50);
+      playSound(hitSound);
+      hitSound.pause();
+      hitSound.currentTime = 0;
+      hitSound.play();
     }
 
     if(score>highScore){
@@ -536,19 +601,20 @@
     }
 
     if (snakeLives == 0){
-      
+      clearInterval(intervalSnake);
       startNextRound();
-      resetGame();
-
     }
 
-    if (snakeY4 >= 450){
+    if (snakeY2 >= 450){
     
       clearInterval(intervalSnake);
       clearInterval(intervalGame);
       clearInterval(intervalBackground);
+      backgroundScrollPosition = -300;
       sPressed = false;
-      
+
+      gameMusic.playbackRate = 0.5;
+      setTimeout(()=>{gameMusic.pause();gameMusic.currentTime=0;gameMusic.playbackRate=1},1000);
 
       if (!sounds.muted){
       document.getElementById("lose-shooter").play();
@@ -567,7 +633,6 @@
 
       isHighscore = false;
       gameSpeed = 30;
-      resetGame();
     }
 
     if(score>=800){
@@ -580,6 +645,9 @@
     clearInterval(intervalSnake);
     clearInterval(intervalGame);
     clearInterval(intervalBackground);
+    spaceshipAnimated = setInterval(spaceshipAnimation,1000/120);
+    playSound(spaceshipSound);
+    spaceshipSound.play();
      
       color += 20;
       gameSpeed -= 2;
@@ -588,16 +656,25 @@
       canvasContext.fillText("Next round!", 100, canvas.height/2);
       setTimeout(cooldown, 2000);
       function cooldown(){
+        resetGame();
+        clearInterval(spaceshipAnimated);
+        spaceshipY = 550;
         intervalGame = setInterval(callAll, 1000/140);
         intervalSnake = setInterval(moveSnake, gameSpeed);
         intervalBackground = setInterval(moveBackground, 1000/30);
       }
-      
+  }
 
-      if (!sounds.muted){
-      document.getElementById("win-shooter").play();
-      
-      }
+  function spaceshipAnimation(){
+    canvasContext.fillStyle = "black";
+    canvasContext.fillRect(0,0,canvas.width,canvas.height);
+    canvasContext.drawImage(document.getElementById("background"),0,backgroundScrollPosition);
+    canvasContext.fillStyle = "limegreen";
+    canvasContext.textAlign = "center";
+      canvasContext.fillText(score == 0 ? "Save earth!" : "Next round!", canvas.width/2, canvas.height/2);
+    canvasContext.drawImage(document.getElementById("spaceship"),spaceshipX,spaceshipY-60,100,130);
+    spaceshipY -= 2.5;
+    backgroundScrollPosition += 1;
   }
 
   function resetGame(){
@@ -606,8 +683,8 @@
       spaceshipX = 150;
       canonY = 520;
       canonX = spaceshipX+50;
-      shotX;
-      shotY;
+      shotX = canonX-5;
+      shotY = canvas.height;
 
       snakeX = 0;
       snakeX2 = 50;
