@@ -602,7 +602,7 @@
       clearInterval(intervalGame);
       clearInterval(intervalBackground);
       backgroundScrollPosition = -300;
-      sPressed = false;
+      setTimeout(()=>sPressed = false,2000);
 
       gameMusic.playbackRate = 0.5;
       setTimeout(()=>{gameMusic.pause();gameMusic.currentTime=0;gameMusic.playbackRate=1},1000);
