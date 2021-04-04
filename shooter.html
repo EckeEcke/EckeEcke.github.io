@@ -1,17 +1,17 @@
-
 <html>
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=0.7, user-scalable=0">
   <title>Javascript Space Shooter 👾</title>
   <link rel="stylesheet" href="css/space-shooter.css">
-  <link rel="icon" type="image/png" href="images/favicon.png"/>
+  <link rel="icon" type="image/png" href="images/favicon.png" />
 </head>
 
 <body>
 
   <a href="index.html" style="display: block">
     <img id="logo" src="images/logo-chris.png">
-  </a>  
+  </a>
 
   <center>
     <br>
@@ -20,661 +20,584 @@
     <h2>Space Shooter</h2>
 
     <br>
-    
 
 
 
-  <canvas id="game-canvas" width= "400px" height= "600px"></canvas>
+
+    <canvas id="game-canvas" width="400px" height="600px"></canvas>
 
 
 
   </center>
 
-<button onclick="soundControl()" id="sound-button">&#128263;</button>
-<audio src="sounds/lose-shooter.wav" id="lose-shooter"></audio>
+  <button onclick="soundControl()" id="sound-button">&#128266;</button>
 
-<button id="hamburger" onclick="showMenu()">
-  <div class="line1"></div>
-  <div class="line2"></div>
-  <div class="line3"></div>
-</button>
+  <button id="hamburger" onclick="showMenu()">
+    <div class="line1"></div>
+    <div class="line2"></div>
+    <div class="line3"></div>
+  </button>
 
-<div id="burger-menu">
-  <ul>
-        <li>
-          <a href="index.html">Home</a>
-        </li>
-        <hr class="nav-line">
-        <li>
-          <a href="https://nifty-hopper-c1da01.netlify.app/" target="_blank">React Travel Blog</a>
-        </li>
-        <hr class="nav-line">
-        <li>
-          <a href="shooter.html">JS Space Shooter</a>
-        </li>
-        <hr class="nav-line">
-        <li>
-          <a href="pong.html">JS Pong</a>
-        </li>
-        <hr class="nav-line">
-        <li>
-          <a href="https://adoring-galileo-71fde2.netlify.app/">React Todo App</a>
-        </li>
-        <hr class="nav-line">
-        <li>
-          <a href="newgame.html">Drawing App</a>
-        </li>
-        <hr class="nav-line">
-        <li>
-          <a href="templelooter.html">Temple Looter</a>
-        </li>
-        <hr class="nav-line">
-            <li>
-                <a href="https://nervous-elion-4e903f.netlify.app/">Vue Meal Planner</a>
-            </li>
-      </ul>
-</div>
+  <div id="burger-menu">
+    <ul>
+      <li>
+        <a href="index.html">Home</a>
+      </li>
+      <hr class="nav-line">
+      <li>
+        <a href="https://nifty-hopper-c1da01.netlify.app/" target="_blank">React Travel Blog</a>
+      </li>
+      <hr class="nav-line">
+      <li>
+        <a href="shooter.html">JS Space Shooter</a>
+      </li>
+      <hr class="nav-line">
+      <li>
+        <a href="pong.html">JS Pong</a>
+      </li>
+      <hr class="nav-line">
+      <li>
+        <a href="https://adoring-galileo-71fde2.netlify.app/">React Todo App</a>
+      </li>
+      <hr class="nav-line">
+      <li>
+        <a href="newgame.html">Drawing App</a>
+      </li>
+      <hr class="nav-line">
+      <li>
+        <a href="templelooter.html">Temple Looter</a>
+      </li>
+      <hr class="nav-line">
+      <li>
+        <a href="https://nervous-elion-4e903f.netlify.app/">Vue Meal Planner</a>
+      </li>
+    </ul>
+  </div>
 
-<script>
+  <script>
 
-  const canvas = document.getElementById("game-canvas");
-  const canvasContext = canvas.getContext("2d");
-  const soundBTN = document.getElementById("sound-button");
-  let spaceshipX = 150;
-  let spaceshipY = 550;
-  let canonY = 520;
-  let canonX = spaceshipX+50;
-  let shotX;
-  let shotY;
-  let aPressed = false;
-  let dPressed = false;
-  let wPressed = false;
-  let shotFired = false;
-  let sPressed = false;
+    const canvas = document.getElementById("game-canvas");
+    const canvasContext = canvas.getContext("2d");
+    const soundBTN = document.getElementById("sound-button");
+    let spaceshipX = 150;
+    let spaceshipY = 550;
+    let canonY = 520;
+    let canonX = spaceshipX + 50;
+    let shotX;
+    let shotY;
+    let aPressed = false;
+    let dPressed = false;
+    let wPressed = false;
+    let shotFired = false;
+    let sPressed = false;
 
-  let touchX;
-  let touchControls = false;
+    let touchX;
+    let touchControls = false;
 
-  let score = 0;
-  let color = 0;
+    let score = 0;
+    let color = 0;
 
-  let snakeX = 0;
-  let snakeX2 = 50;
-  let snakeX3 = 100;
-  let snakeX4 = 150;
-  let snakeX5 = 200;
-  let snakeX6 = 250;
-  let snakeX7 = 300;
-  let snakeX8 = 350;
-
-  let snakeY = 0;
-  let snakeY2 = 0;
-  let snakeY3 = 0;
-  let snakeY4 = 0;
-  let snakeY5 = 0;
-  let snakeY6 = 0;
-  let snakeY7 = 0;
-  let snakeY8 = 0;
-
-  let snakeSpeed = 10;
-  let snakeSpeed2 = 10;
-  let snakeSpeed3 = 10;
-  let snakeSpeed4 = 10;
-  let snakeSpeed5 = 10;
-  let snakeSpeed6 = 10;
-  let snakeSpeed7 = 10;
-  let snakeSpeed8 = 10;
-
-  let snakeLives = 8;
-
-  let gameSpeed = 30;
-
-  let backgroundScrollPosition = -300;
-
-  let sounds = document.getElementsByTagName("audio");
-
-  let intervalGame;
-
-  let intervalSnake;
-
-  let intervalBackground;
-
-  let highScore = 0;
-
-  let isHighscore = false;
-
-
-  sounds.muted = true;
-
-  
-
-  laser = new Audio("./sounds/laser.wav");
-  hitSound = new Audio("./sounds/hit.wav");
-  spaceshipSound = new Audio("./sounds/spaceship-rising.wav");
-  gameMusic = new Audio("./sounds/spaceshooter-music.mp3");
-  gameMusic.loop = true;
-  
-
-  function soundControl() {
-    sounds.muted = !sounds.muted;
-    if (!sounds.muted){
-      soundBTN.innerHTML="&#128266;";
-    } else {
-      soundBTN.innerHTML="&#128263;";
+    let snake = {
+      head: {
+        x: 0,
+        y: 0,
+        speed: 10,
+        lives: 1
+      },
+      body2: {
+        x: 50,
+        y: 0,
+        speed: 10,
+        lives: 2
+      },
+      body3: {
+        x: 100,
+        y: 0,
+        speed: 10,
+        lives: 3
+      },
+      body4: {
+        x: 150,
+        y: 0,
+        speed: 10,
+        lives: 4
+      },
+      body5: {
+        x: 200,
+        y: 0,
+        speed: 10,
+        lives: 5
+      },
+      body6: {
+        x: 250,
+        y: 0,
+        speed: 10,
+        lives: 6
+      },
+      body7: {
+        x: 300,
+        y: 0,
+        speed: 10,
+        lives: 7
+      },
+      body8: {
+        x: 350,
+        y: 0,
+        speed: 10,
+        lives: 8
+      }
     }
-  }
 
-  function loadImages(){
-    snakeHead = new Image();
-    snakeHead.src = "./images/snake-head.png";
-    snakeBody = new Image();
-    snakeBody.src = "./images/snake.png";
-    background = new Image();
-    background.src = "./images/space-pixel-background.jpg";
-    spaceship = new Image();
-    spaceship.src = "./images/spaceship.png";
-    explosion = new Image();
-    explosion.src = "./images/explosion.png";
-  }
+    let hit;
+    let snakeLives = 8;
+    let gameSpeed = 30;
+    let backgroundScrollPosition = -300;
 
-  function playSound(sound){
-    if(!sounds.muted){
-      sound.volume = 0.9;
-    } else {
-      sound.volume = 0;
+    let intervalSnake;
+    let intervalBackground;
+
+    let highScore = 0;
+    let isHighscore = false;
+    let soundsMuted = false;
+
+
+
+    function soundControl() {
+      soundsMuted = !soundsMuted;
+      if (!soundsMuted) {
+        soundBTN.innerHTML = "&#128266;";
+      } else {
+        soundBTN.innerHTML = "&#128263;";
+      }
     }
-  }
 
-  window.onload = function () {
-    loadImages();
-    canvas.addEventListener("touchstart", changeTouchPosition, false);
-    canvas.addEventListener("touchmove", changeTouchPosition, false);
-    canvas.addEventListener("touchend", function(){touchControls = false});
-    document.addEventListener("keydown", keyDownHandler, false);
-    document.addEventListener("keyup", keyUpHandler, false);
-    document.addEventListener("keydown", event => {if(event.keyCode === 83 && !sPressed){
-      score = 0;
-      startGame();
-      sPressed = true;
+    function loadImages() {
+      snakeHead = new Image();
+      snakeHead.src = "./images/snake-head.png";
+      snakeBody = new Image();
+      snakeBody.src = "./images/snake.png";
+      trumphead = new Image();
+      trumphead.src = "./images/trumphead.png";
+      background = new Image();
+      background.src = "./images/space-pixel-background.jpg";
+      spaceship = new Image();
+      spaceship.src = "./images/spaceship.png";
+      explosion = new Image();
+      explosion.src = "./images/explosion.png";
     }
-    });
-    canvasContext.textAlign = "center";
-    canvasContext.fillStyle = "black"; /*black background*/
-    canvasContext.fillRect(0,0,canvas.width,canvas.height);
-    canvasContext.font = "24px retro";
-    canvasContext.fillStyle = "limegreen";
-    canvasContext.fillText("Press S to start", canvas.width/2, canvas.height/3);
-    canvasContext.fillText("Controls", canvas.width/2, canvas.height/2+50);
-    canvasContext.fillText("Left: A", canvas.width/2, canvas.height/2+100);
-    canvasContext.fillText("Right: D", canvas.width/2, canvas.height/2+150);
-    canvasContext.fillText("Shoot: W", canvas.width/2, canvas.height/2+200);
-  }
 
-  function startGame(){
-    
-    spaceshipAnimated = setInterval(spaceshipAnimation,1000/120);
-    playSound(spaceshipSound);
-    spaceshipSound.play();
-    setTimeout(cooldown, 2000);
-    function cooldown(){
-      clearInterval(spaceshipAnimated);
-      gameMusic.play();
+    function loadSounds() {
+      laser = new Audio("./sounds/laser.wav");
+      hitSound = new Audio("./sounds/hit.wav");
+      spaceshipSound = new Audio("./sounds/spaceship-rising.wav");
+      loseSound = new Audio("./sounds/lose-shooter.wav");
+      gameMusic = new Audio("./sounds/spaceshooter-music.mp3");
+      gameMusic.loop = true;
+    }
+
+    function playSound(sound) {
+      if (!soundsMuted) {
+        sound.volume = 0.9;
+      } else {
+        sound.volume = 0;
+      }
+    }
+
+    window.onload = function () {
+      loadImages();
+      loadSounds();
+      canvas.addEventListener("touchstart", changeTouchPosition, false);
+      canvas.addEventListener("touchmove", changeTouchPosition, false);
+      canvas.addEventListener("touchend", function () { touchControls = false });
+      document.addEventListener("keydown", keyDownHandler, false);
+      document.addEventListener("keyup", keyUpHandler, false);
+      document.addEventListener("keydown", event => {
+        if (event.keyCode === 83 && !sPressed) {
+          score = 0;
+          startGame();
+          sPressed = true;
+        }
+      });
+      canvasContext.textAlign = "center";
+      canvasContext.fillStyle = "black"; /*black background*/
+      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+      canvasContext.font = "24px retro";
+      canvasContext.fillStyle = "limegreen";
+      canvasContext.fillText("Press S to start", canvas.width / 2, canvas.height / 3);
+      canvasContext.fillText("Controls", canvas.width / 2, canvas.height / 2 + 50);
+      canvasContext.fillText("Left: A", canvas.width / 2, canvas.height / 2 + 100);
+      canvasContext.fillText("Right: D", canvas.width / 2, canvas.height / 2 + 150);
+      canvasContext.fillText("Shoot: W", canvas.width / 2, canvas.height / 2 + 200);
+    }
+
+    function startGame() {
+
+      spaceshipAnimated = setInterval(spaceshipAnimation, 1000 / 120);
+      playSound(spaceshipSound);
+      spaceshipSound.play();
+      setTimeout(cooldown, 2000);
+      function cooldown() {
+        clearInterval(spaceshipAnimated);
+        gameMusic.play();
+        playSound(gameMusic);
+        resetGame();
+        spaceshipY = 550;
+        intervalGame = setInterval(callAll, 1000 / 140);
+        intervalSnake = setInterval(moveSnake, gameSpeed);
+        intervalBackground = setInterval(moveBackground, 1000 / 30);
+      }
+    }
+
+    function setScore() {
+
+      if (score > highScore) {
+        highScore = score;
+        isHighscore = true;
+      }
+      canvasContext.textAlign = "start";
+      canvasContext.font = "24px retro";
+      canvasContext.fillStyle = "limegreen";
+      canvasContext.fillText("Score", 12, 30);
+      canvasContext.fillText("Hi-Score", 25 + canvas.width / 2, 30);
+      canvasContext.fillStyle = "white";
+      canvasContext.fillText(score, 12, 60);
+      canvasContext.fillText(highScore, 25 + canvas.width / 2, 60);
+    }
+
+
+
+
+    function callAll() {
+      drawEverything();
+      moveShip();
+      moveShipTouch();
+      shoot();
+      hitDetectionSnake();
+      setScore();
       playSound(gameMusic);
-      resetGame();
-      spaceshipY = 550;
-      intervalGame = setInterval(callAll, 1000/140);
-      intervalSnake = setInterval(moveSnake, gameSpeed);
-      intervalBackground = setInterval(moveBackground,1000/30);
+      gameOver();
     }
-  }
 
-  function setScore(){
-    canvasContext.textAlign = "start";
-    canvasContext.font = "24px retro";
-    canvasContext.fillStyle = "limegreen";
-    canvasContext.fillText("Score", 12, 30);
-    canvasContext.fillStyle = "white";
-    canvasContext.fillText(score, 12, 60);
-    canvasContext.fillStyle = "limegreen";
-    canvasContext.fillText("Hi-Score", 25+canvas.width/2, 30);
-    canvasContext.fillStyle = "white";
-    canvasContext.fillText(highScore, 25+canvas.width/2, 60);
-  }
+    function drawEverything() {
 
-  
+      canvasContext.fillStyle = "black"; /*black background*/
+      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+      canvasContext.drawImage(background, 0, backgroundScrollPosition);
+      drawShipAndShot();
+      drawSnake();
+    }
 
-
-  function callAll(){
-    drawEverything();
-    moveShip();
-    moveShipTouch();
-    shoot();
-    moveShot();
-    hitDetection();
-    setScore();
-    playSound(gameMusic);
-  }
-
-  function drawEverything() {
-
-    canvasContext.fillStyle = "black"; /*black background*/
-    canvasContext.fillRect(0,0,canvas.width,canvas.height);
-    canvasContext.drawImage(background,0,backgroundScrollPosition);
-
-    canvasContext.fillStyle = "limegreen"; /*canon*/
-    canvasContext.fillRect(canonX,canonY,0,canonY);
-
-    canvasContext.drawImage(spaceship,spaceshipX,spaceshipY-60,100,130);
-
-    canvasContext.fillstyle = "limegreen"; /*shot*/
-    canvasContext.fillRect(shotX,shotY,10,20);
-
-
-
-    canvasContext.filter = `hue-rotate(${color}deg)`;
-
-    if(snakeLives == 0.5){
-        canvasContext.drawImage(explosion,snakeX,snakeY,50,50);
+    function drawShipAndShot() {
+      canvasContext.fillStyle = "limegreen";
+      canvasContext.drawImage(spaceship, spaceshipX, spaceshipY - 60, 100, 130);
+      canvasContext.fillRect(shotX, shotY, 10, 20);
+      if (shotFired) {
+        shotY -= 5;
       }
-
-    if (snakeLives >=1){
-      canvasContext.drawImage(snakeHead,snakeX,snakeY,50,50);
-    }
-
-    if(snakeLives == 1.5){
-        canvasContext.drawImage(explosion,snakeX2,snakeY2,50,50);
+      if (shotY <= -20) {
+        shotFired = false;
       }
-
-    if (snakeLives >= 2){
-      canvasContext.drawImage(snakeBody,snakeX2,snakeY2,50,50);
     }
 
-    if(snakeLives == 2.5){
-        canvasContext.drawImage(explosion,snakeX3,snakeY3,50,50);
+    function drawSnake() {
+      canvasContext.filter = `hue-rotate(${color}deg)`;
+      drawSnakeElement(1, snake.head.x, snake.head.y, snakeHead);
+      drawSnakeElement(2, snake.body2.x, snake.body2.y, snakeBody);
+      drawSnakeElement(3, snake.body3.x, snake.body3.y, snakeBody);
+      drawSnakeElement(4, snake.body4.x, snake.body4.y, snakeBody);
+      drawSnakeElement(5, snake.body5.x, snake.body5.y, snakeBody);
+      drawSnakeElement(6, snake.body6.x, snake.body6.y, snakeBody);
+      drawSnakeElement(7, snake.body7.x, snake.body7.y, snakeBody);
+      drawSnakeElement(8, snake.body8.x, snake.body8.y, snakeBody);
+      canvasContext.filter = "none";
+    }
+
+    function drawSnakeElement(lives, x, y, element) {
+      if (snakeLives >= lives) {
+        canvasContext.drawImage(score >= 800 ? trumphead : element, x, y, 50, 50);
       }
-
-    if (snakeLives >= 3){
-      canvasContext.drawImage(snakeBody,snakeX3,snakeY3,50,50);
-    }
-
-    if(snakeLives == 3.5){
-        canvasContext.drawImage(explosion,snakeX4,snakeY4,50,50);
+      if (snakeLives == lives - 0.5) {
+        canvasContext.drawImage(explosion, x, y, 50, 50);
       }
-
-    if (snakeLives >= 4){
-      canvasContext.drawImage(snakeBody,snakeX4,snakeY4,50,50);
     }
 
-    if(snakeLives == 4.5){
-        canvasContext.drawImage(explosion,snakeX5,snakeY5,50,50);
-      }
-
-    if (snakeLives >= 5){
-      canvasContext.drawImage(snakeBody,snakeX5,snakeY5,50,50);
+    function moveBackground() {
+      backgroundScrollPosition -= 1;
     }
 
-    if(snakeLives == 5.5){
-        canvasContext.drawImage(explosion,snakeX6,snakeY6,50,50);
-      }
-
-    if (snakeLives >= 6){
-      canvasContext.drawImage(snakeBody,snakeX6,snakeY6,50,50);
-    }
-
-    if(snakeLives == 6.5){
-        canvasContext.drawImage(explosion,snakeX7,snakeY7,50,50);
-      }
-
-    if (snakeLives >= 7){
-      canvasContext.drawImage(snakeBody,snakeX7,snakeY7,50,50);
-    }
-
-    if(snakeLives == 7.5){
-        canvasContext.drawImage(explosion,snakeX8,snakeY8,50,50);
-      }
-
-    if (snakeLives == 8){
-      canvasContext.drawImage(snakeBody,snakeX8,snakeY8,50,50);
-    }
-
-    canvasContext.filter = "none";
-
-  }
-
-  function moveBackground(){
-    backgroundScrollPosition -= 1;
-  }
-
-  function moveShip(){
-    if (aPressed) {
-      spaceshipX -= 5;
-      canonX -= 5;
-    }
-    if (spaceshipX < 0){
-      spaceshipX = 0;
-      canonX = 50;
-    }
-
-    if (dPressed){
-      spaceshipX += 5;
-      canonX += 5;
-    }
-
-    if (spaceshipX>300){
-      spaceshipX = 300;
-      canonX = 350;
-    }
-  }
-
-  function moveShipTouch(){
-    if(touchControls){
-      if(spaceshipX > touchX){
+    function moveShip() {
+      if (aPressed) {
         spaceshipX -= 5;
         canonX -= 5;
-      } 
+      }
+      if (spaceshipX < 0) {
+        spaceshipX = 0;
+        canonX = 50;
+      }
 
-      if(spaceshipX < touchX){
+      if (dPressed) {
         spaceshipX += 5;
         canonX += 5;
       }
-    }
-  }
 
-  function changeTouchPosition(event) {
-            touchControls = true;
-            touchX = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX;
-            if(!sPressed){
-              sPressed = true;
-              score = 0;
-              startGame();
-            }
+      if (spaceshipX > 300) {
+        spaceshipX = 300;
+        canonX = 350;
+      }
+    }
+
+    function moveShipTouch() {
+      if (touchControls) {
+        if (spaceshipX > touchX) {
+          spaceshipX -= 5;
+          canonX -= 5;
         }
 
-  function keyDownHandler (event) {
-    if(event.keyCode === 65) {
-      aPressed = true;
+        if (spaceshipX < touchX) {
+          spaceshipX += 5;
+          canonX += 5;
+        }
+      }
     }
-    else if (event.keyCode === 68) {
-      dPressed = true;
-    }
-    else if (event.keyCode === 87) {
-      wPressed = true;
-    }
-  }
 
-  function keyUpHandler (event) {
-    if(event.keyCode === 65) {
-      aPressed = false;
+    function changeTouchPosition(event) {
+      touchControls = true;
+      touchX = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX;
+      if (!sPressed) {
+        sPressed = true;
+        score = 0;
+        startGame();
+      }
     }
-    else if (event.keyCode === 68) {
-      dPressed = false;
+
+    function keyDownHandler(event) {
+      if (event.keyCode === 65) {
+        aPressed = true;
+      }
+      else if (event.keyCode === 68) {
+        dPressed = true;
+      }
+      else if (event.keyCode === 87) {
+        wPressed = true;
+      }
     }
-    else if (event.keyCode === 87) {
-      wPressed = false;
+
+    function keyUpHandler(event) {
+      if (event.keyCode === 65) {
+        aPressed = false;
+      }
+      else if (event.keyCode === 68) {
+        dPressed = false;
+      }
+      else if (event.keyCode === 87) {
+        wPressed = false;
+      }
     }
-  }
 
 
-  function shoot(){
-    if(wPressed && !shotFired){
-      shotFired = true;
-      shotX = canonX-5;
-      shotY = canonY;
-      playSound(laser);
-      laser.play();
+    function shoot() {
+      if (wPressed && !shotFired) {
+        shotFired = true;
+        shotX = canonX - 5;
+        shotY = canonY;
+        playSound(laser);
+        laser.play();
       }
 
-    if(touchControls && !shotFired){
-      shotFired = true;
-      shotX = canonX-5;
-      shotY = canonY;
-      playSound(laser);
-      laser.play();
+      if (touchControls && !shotFired) {
+        shotFired = true;
+        shotX = canonX - 5;
+        shotY = canonY;
+        playSound(laser);
+        laser.play();
 
-    }
-  }
-
-
-  function moveShot(){
-    if (shotFired){
-      shotY -= 5;
       }
-    if (shotY <= -20){
+    }
+
+    function moveElement(obj) {
+      obj.x -= obj.speed;
+      if (obj.x < -50 || obj.x > 400) {
+        obj.y += 50;
+        obj.speed = obj.speed * (-1);
+      }
+    }
+
+    function moveSnake() {
+      moveElement(snake.head);
+      moveElement(snake.body2);
+      moveElement(snake.body3);
+      moveElement(snake.body4);
+      moveElement(snake.body5);
+      moveElement(snake.body6);
+      moveElement(snake.body7);
+      moveElement(snake.body8);
+    }
+
+    function hitDetection(obj) {
+      if (shotY <= obj.y + 40 && shotY >= obj.y && shotX >= obj.x && shotX <= obj.x + 50 && snakeLives >= obj.lives) {
+        hit = true;
+      }
+    }
+
+    function hitDetectionSnake() {
+
+      hit = false;
+      hitDetection(snake.head);
+      hitDetection(snake.body2);
+      hitDetection(snake.body3);
+      hitDetection(snake.body4);
+      hitDetection(snake.body5);
+      hitDetection(snake.body6);
+      hitDetection(snake.body7);
+      hitDetection(snake.body8);
+
+      if (hit) {
+        color += 50;
         shotFired = false;
-    }
-  }
+        snakeLives -= 0.5;
+        setTimeout(() => snakeLives -= 0.5, 100);
+        score += 10;
+        shotFired = false;
+        shotY = 600;
+        setTimeout(() => { color -= 50; }, 50);
+        playSound(hitSound);
+        hitSound.pause();
+        hitSound.currentTime = 0;
+        hitSound.play();
+      }
 
-  function moveSnake(){
-    snakeX -= snakeSpeed;
-    snakeX2 -= snakeSpeed2;
-    snakeX3 -= snakeSpeed3;
-    snakeX4 -= snakeSpeed4;
-    snakeX5 -= snakeSpeed5;
-    snakeX6 -= snakeSpeed6;
-    snakeX7 -= snakeSpeed7;
-    snakeX8 -= snakeSpeed8;
 
-    if (snakeX < -50){
-      snakeY += 50;
-      snakeSpeed = snakeSpeed*(-1);
-    }
+      if (snakeLives == 0) {
+        clearInterval(intervalSnake);
+        startNextRound();
+      }
 
-    if (snakeX > 400){
-      snakeY += 50;
-      snakeSpeed = snakeSpeed*(-1);
+      
     }
 
-    if (snakeX2 < -50){
-      snakeY2 += 50;
-      snakeSpeed2 = snakeSpeed2*(-1);
+    function gameOver() {
+      if (snake.body2.y >= 450) {
+        
+        clearInterval(intervalSnake);
+        clearInterval(intervalGame);
+        clearInterval(intervalBackground);
+        backgroundScrollPosition = -300;
+        setTimeout(() => sPressed = false, 2000);
+
+        gameMusic.playbackRate = 0.5;
+        setTimeout(() => { gameMusic.pause(); gameMusic.currentTime = 0; gameMusic.playbackRate = 1 }, 1000);
+
+        playSound(loseSound);
+        loseSound.play();
+
+        canvasContext.font = "24px retro";
+        canvasContext.fillStyle = "limegreen";
+        canvasContext.fillText("Press S for retry", 32, canvas.height / 2);
+
+        if (isHighscore) {
+
+          canvasContext.fillText("New Highscore", 72, 200);
+        }
+
+
+        isHighscore = false;
+        gameSpeed = 30;
+      }
     }
 
-    if (snakeX2 > 400){
-      snakeY2 += 50;
-      snakeSpeed2 = snakeSpeed2*(-1);
-    }
-
-    if (snakeX3 < -50){
-      snakeY3 += 50;
-      snakeSpeed3 = snakeSpeed3*(-1);
-    }
-
-    if (snakeX3 > 400){
-      snakeY3 += 50;
-      snakeSpeed3 = snakeSpeed3*(-1);
-    }
-
-    if (snakeX4 < -50){
-      snakeY4 += 50;
-      snakeSpeed4 = snakeSpeed4*(-1);
-    }
-
-    if (snakeX4 > 400){
-      snakeY4 += 50;
-      snakeSpeed4 = snakeSpeed4*(-1);
-    }
-
-    if (snakeX5 < -50){
-      snakeY5 += 50;
-      snakeSpeed5 = snakeSpeed5*(-1);
-    }
-
-    if (snakeX5 > 400){
-      snakeY5 += 50;
-      snakeSpeed5 = snakeSpeed5*(-1);
-    }
-
-    if (snakeX6 < -50){
-      snakeY6 += 50;
-      snakeSpeed6 = snakeSpeed6*(-1);
-    }
-
-    if (snakeX6 > 400){
-      snakeY6 += 50;
-      snakeSpeed6 = snakeSpeed6*(-1);
-    }
-
-    if (snakeX7 < -50){
-      snakeY7 += 50;
-      snakeSpeed7 = snakeSpeed7*(-1);
-    }
-
-    if (snakeX7 > 400){
-      snakeY7 += 50;
-      snakeSpeed7 = snakeSpeed7*(-1);
-    }
-
-    if (snakeX8 < -50){
-      snakeY8 += 50;
-      snakeSpeed8 = snakeSpeed8*(-1);
-    }
-
-    if (snakeX8 > 400){
-      snakeY8 += 50;
-      snakeSpeed8 = snakeSpeed8*(-1);
-    }
-  }
-
-  function hitDetection(){
-
-    let hit = false;
-
-    if (shotY <= snakeY+40 && shotY >= snakeY && shotX >= snakeX && shotX <= snakeX+50 && snakeLives >= 1){
-      hit = true;
-    }
-
-    if (shotY <= snakeY2+40 && shotY >= snakeY2 && shotX <= snakeX2+50 && shotX >= snakeX2 && snakeLives >= 2){
-      hit = true;
-    }
-
-    if (shotY <= snakeY3+40 && shotY >= snakeY3 && shotX <= snakeX3+50 && shotX >= snakeX3 && snakeLives >= 3){
-      hit = true;
-    }
-
-    if (shotY <= snakeY4+40 && shotY >= snakeY4 && shotX <= snakeX4+50 && shotX >= snakeX4 && snakeLives >= 4){
-      hit = true;
-    }
-
-    if (shotY <= snakeY5+40 && shotY >= snakeY5 && shotX <= snakeX5+50 && shotX >= snakeX5 && snakeLives >= 5){
-      hit = true;
-    }
-
-    if (shotY <= snakeY6+40 && shotY >= snakeY6 && shotX <= snakeX6+50 && shotX >= snakeX6 && snakeLives >= 6){
-      hit = true;
-    }
-
-    if (shotY <= snakeY7+40 && shotY >= snakeY7 && shotX <= snakeX7+50 && shotX >= snakeX7 && snakeLives >= 7){
-      hit = true;
-    }
-
-    if (shotY <= snakeY8+40 && shotY >= snakeY8 && shotX <= snakeX8+50 && shotX >= snakeX8 && snakeLives == 8){
-      hit = true;
-    }
-
-    if (hit){
-      color += 50;
-      shotFired = false;
-      snakeLives -= 0.5;
-      setTimeout(()=>snakeLives-=0.5,100);
-      score += 10;
-      shotFired = false;
-      shotY = 600;
-      setTimeout(()=>{color-=50;},50);
-      playSound(hitSound);
-      hitSound.pause();
-      hitSound.currentTime = 0;
-      hitSound.play();
-    }
-
-    if(score>highScore){
-      highScore = score;
-      isHighscore = true;
-    }
-
-    if (snakeLives == 0){
-      clearInterval(intervalSnake);
-      startNextRound();
-    }
-
-    if (snakeY2 >= 450){
-    
+    function startNextRound() {
       clearInterval(intervalSnake);
       clearInterval(intervalGame);
       clearInterval(intervalBackground);
-      backgroundScrollPosition = -300;
-      setTimeout(()=>sPressed = false,2000);
-
-      gameMusic.playbackRate = 0.5;
-      setTimeout(()=>{gameMusic.pause();gameMusic.currentTime=0;gameMusic.playbackRate=1},1000);
-
-      if (!sounds.muted){
-      document.getElementById("lose-shooter").play();
-      }
-
-
-      canvasContext.font = "24px retro";
-      canvasContext.fillStyle = "limegreen";
-      canvasContext.fillText("Press S for retry", 32, canvas.height/2);
-
-      if(isHighscore){
-
-        canvasContext.fillText("New Highscore", 72, 200);
-      }
-      
-
-      isHighscore = false;
-      gameSpeed = 30;
-    }
-
-    if(score>=800){
-      snakeHead.src = "./images/trumphead.png";
-      snakeBody.src = "./images/trumphead.png";
-    }
-  }
-
-  function startNextRound(){
-    clearInterval(intervalSnake);
-    clearInterval(intervalGame);
-    clearInterval(intervalBackground);
-    spaceshipAnimated = setInterval(spaceshipAnimation,1000/120);
-    playSound(spaceshipSound);
-    spaceshipSound.play();
-     
+      spaceshipAnimated = setInterval(spaceshipAnimation, 1000 / 120);
+      playSound(spaceshipSound);
+      spaceshipSound.play();
       color += 20;
       gameSpeed -= 2;
       canvasContext.font = "24px retro";
       canvasContext.fillStyle = "limegreen";
-      canvasContext.fillText("Next round!", 100, canvas.height/2);
+      canvasContext.fillText("Next round!", 100, canvas.height / 2);
       setTimeout(cooldown, 2000);
-      function cooldown(){
+      function cooldown() {
         resetGame();
         clearInterval(spaceshipAnimated);
         spaceshipY = 550;
-        intervalGame = setInterval(callAll, 1000/140);
+        intervalGame = setInterval(callAll, 1000 / 140);
         intervalSnake = setInterval(moveSnake, gameSpeed);
-        intervalBackground = setInterval(moveBackground, 1000/30);
+        intervalBackground = setInterval(moveBackground, 1000 / 30);
       }
-  }
+    }
 
-  function spaceshipAnimation(){
-    canvasContext.fillStyle = "black";
-    canvasContext.fillRect(0,0,canvas.width,canvas.height);
-    canvasContext.drawImage(background,0,backgroundScrollPosition);
-    canvasContext.fillStyle = "limegreen";
-    canvasContext.textAlign = "center";
-      canvasContext.fillText(score == 0 ? "Save earth!" : "Next round!", canvas.width/2, canvas.height/2);
-    canvasContext.drawImage(spaceship,spaceshipX,spaceshipY-60,100,130);
-    spaceshipY -= 2.5;
-    backgroundScrollPosition += 1;
-  }
+    function spaceshipAnimation() {
+      canvasContext.fillStyle = "black";
+      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+      canvasContext.drawImage(background, 0, backgroundScrollPosition);
+      canvasContext.fillStyle = "limegreen";
+      canvasContext.textAlign = "center";
+      canvasContext.fillText(score == 0 ? "Save earth!" : "Next round!", canvas.width / 2, canvas.height / 2);
+      canvasContext.drawImage(spaceship, spaceshipX, spaceshipY - 60, 100, 130);
+      spaceshipY -= 2.5;
+      backgroundScrollPosition += 1;
+    }
 
-  function resetGame(){
+    function resetGame() {
       canvas;
       canvasContext;
+      snake = {
+        head: {
+          x: 0,
+          y: 0,
+          speed: 10,
+          lives: 1
+        },
+        body2: {
+          x: 50,
+          y: 0,
+          speed: 10,
+          lives: 2
+        },
+        body3: {
+          x: 100,
+          y: 0,
+          speed: 10,
+          lives: 3
+        },
+        body4: {
+          x: 150,
+          y: 0,
+          speed: 10,
+          lives: 4
+        },
+        body5: {
+          x: 200,
+          y: 0,
+          speed: 10,
+          lives: 5
+        },
+        body6: {
+          x: 250,
+          y: 0,
+          speed: 10,
+          lives: 6
+        },
+        body7: {
+          x: 300,
+          y: 0,
+          speed: 10,
+          lives: 7
+        },
+        body8: {
+          x: 350,
+          y: 0,
+          speed: 10,
+          lives: 8
+        }
+      };
+      console.log(snake.head.y);
       spaceshipX = 150;
       canonY = 520;
-      canonX = spaceshipX+50;
-      shotX = canonX-5;
+      canonX = spaceshipX + 50;
+      shotX = canonX - 5;
       shotY = canvas.height;
 
       snakeX = 0;
@@ -711,28 +634,29 @@
       shotFired = false;
 
       backgroundScrollPosition = 0;
-  }
-    
-  
-  const burgerMenu = document.getElementById("burger-menu");
-  const hamburger = document.getElementById("hamburger");
-  let burgerMenuShowing = false;
-
-  function showMenu(){
-    burgerMenuShowing = !burgerMenuShowing;
-    if (burgerMenuShowing) {
-      burgerMenu.style.height = "100vh";
-      burgerMenu.style.opacity = "0.99";
-      hamburger.style.position = "fixed";
     }
-    else {
-      burgerMenu.style.height = "0vh";
-      burgerMenu.style.opacity = "0";
-      hamburger.style.position = "absolute";
-    }
-}
 
-</script>
+
+    const burgerMenu = document.getElementById("burger-menu");
+    const hamburger = document.getElementById("hamburger");
+    let burgerMenuShowing = false;
+
+    function showMenu() {
+      burgerMenuShowing = !burgerMenuShowing;
+      if (burgerMenuShowing) {
+        burgerMenu.style.height = "100vh";
+        burgerMenu.style.opacity = "0.99";
+        hamburger.style.position = "fixed";
+      }
+      else {
+        burgerMenu.style.height = "0vh";
+        burgerMenu.style.opacity = "0";
+        hamburger.style.position = "absolute";
+      }
+    }
+
+  </script>
 
 </body>
+
 </html>
