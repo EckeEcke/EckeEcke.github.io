@@ -686,6 +686,7 @@
 
 
       if (snakeRound && snake.body2.y >= 450) {
+        window.navigator.vibrate(1000);
         snakeRound = false;
         clearInterval(intervalSnake);
         clearInterval(intervalGame);
