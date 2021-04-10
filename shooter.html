@@ -508,6 +508,7 @@
       }
 
       if (touchControls && !shotFired) {
+        navigator.vibrate(100);
         shotFired = true;
         shotX = canonX - 5;
         shotY = canonY;
