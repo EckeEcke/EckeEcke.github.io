@@ -489,6 +489,7 @@
 
     function shoot() {
       if (wPressed && !shotFired) {
+        navigator.vibrate(100);
         shotFired = true;
         shotX = canonX - 5;
         shotY = canonY;
