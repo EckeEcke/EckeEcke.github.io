@@ -489,7 +489,6 @@
 
     function shoot() {
       if (wPressed && !shotFired) {
-        navigator.vibrate([100,10,100]);
         shotFired = true;
         shotX = canonX - 5;
         shotY = canonY;
@@ -508,7 +507,7 @@
       }
 
       if (touchControls && !shotFired) {
-        window.navigator.vibrate(10);
+        window.navigator.vibrate(100);
         shotFired = true;
         shotX = canonX - 5;
         shotY = canonY;
@@ -655,14 +654,14 @@
       if (snakeLives == 0) {
         startNextRound();
       }
-
+0
       
     }
 
     function gameOver() {
 
       if (!snakeRound && Math.floor(backgroundScrollPosition/10)+30 <=0){
-        window.navigator.vibrate([100,100,100,100,1000]);
+        window.navigator.vibrate(1000);
         clearInterval(intervalSnake);
         clearInterval(intervalGame);
         clearInterval(intervalBackground);
