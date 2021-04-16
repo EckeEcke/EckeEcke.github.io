@@ -509,6 +509,7 @@
       }
 
       if (touchControls && !shotFired) {
+        window.navigator.vibrate(100);
         shotFired = true;
         shotX = canonX - 5;
         shotY = canonY;
@@ -655,13 +656,15 @@
       if (snakeLives == 0) {
         startNextRound();
       }
-
+0
       
     }
 
     function gameOver() {
 
       if (!snakeRound && Math.floor(backgroundScrollPosition/10)+30 <=0){
+        canvasContext.drawImage(explosion, spaceshipX, spaceshipY, 80, 80);
+        window.navigator.vibrate(1000);
         clearInterval(intervalSnake);
         clearInterval(intervalGame);
         clearInterval(intervalBackground);
@@ -686,6 +689,7 @@
 
 
       if (snakeRound && snake.body2.y >= 450) {
+        window.navigator.vibrate(1000);
         snakeRound = false;
         clearInterval(intervalSnake);
         clearInterval(intervalGame);
