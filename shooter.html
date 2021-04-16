@@ -200,6 +200,7 @@
     let highScore = 0;
     let isHighscore = false;
     let soundsMuted = false;
+    let soundsLoaded = false;
 
     let snakeRound = false;
     let bonusScore = 0;
@@ -244,6 +245,7 @@
       spaceshipSound = new Audio("./sounds/spaceship-rising.wav");
       loseSound = new Audio("./sounds/lose-shooter.wav");
       gameMusic = new Audio("./sounds/spaceshooter-music.mp3");
+      gameMusic.onloadeddata = () => soundsLoaded = true;
       gameMusic.loop = true;
     }
 
@@ -264,7 +266,7 @@
       document.addEventListener("keydown", keyDownHandler, false);
       document.addEventListener("keyup", keyUpHandler, false);
       document.addEventListener("keydown", event => {
-        if (event.keyCode === 83 && !sPressed) {
+        if (event.keyCode === 83 && !sPressed && soundsLoaded) {
           score = 0;
           startGame();
           sPressed = true;
