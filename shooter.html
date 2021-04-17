@@ -275,7 +275,6 @@
       document.addEventListener("keyup", keyUpHandler, false);
       document.addEventListener("keydown", event => {
         if (event.keyCode === 83 && !sPressed && gameLoaded >= 90) {
-          clearInterval(intervalStartscreen);
           score = 0;
           startGame();
           sPressed = true;
@@ -299,7 +298,7 @@
     } 
 
     function startGame() {
-
+      clearInterval(intervalStartscreen);
       spaceshipAnimated = setInterval(spaceshipAnimation, 1000 / 120);
       playSound(spaceshipSound);
       spaceshipSound.play();
