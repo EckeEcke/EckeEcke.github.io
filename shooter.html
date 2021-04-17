@@ -200,7 +200,7 @@
     let highScore = 0;
     let isHighscore = false;
     let soundsMuted = false;
-    let soundsLoaded = false;
+    let gameLoaded = 0;
 
     let snakeRound = false;
     let bonusScore = 0;
@@ -237,15 +237,23 @@
 
     function loadSounds() {
       laser = new Audio("./sounds/laser.wav");
+      laser.onloadeddata = () => gameLoaded += 10;
       laser2 = new Audio("./sounds/laser2.wav");
+      laser2.onloadeddata = () => gameLoaded += 10;
       laser3 = new Audio("./sounds/laser3.wav");
+      laser3.onloadeddata = () => gameLoaded += 10;
       powerup = new Audio("./sounds/shooter-powerup.wav");
+      powerup.onloadeddata = () => gameLoaded += 10;
       alertSound = new Audio("./sounds/alert.wav");
+      alertSound.onloadeddata = () => gameLoaded += 10;
       hitSound = new Audio("./sounds/hit.wav");
+      hitSound.onloadeddata = () => gameLoaded += 10;
       spaceshipSound = new Audio("./sounds/spaceship-rising.wav");
+      spaceshipSound.onloadeddata = () => gameLoaded += 10;
       loseSound = new Audio("./sounds/lose-shooter.wav");
+      loseSound.onloadeddata = () => gameLoaded += 10;
       gameMusic = new Audio("./sounds/spaceshooter-music.mp3");
-      gameMusic.onloadeddata = () => soundsLoaded = true;
+      gameMusic.onloadeddata = () => gameLoaded += 10;
       gameMusic.loop = true;
     }
 
@@ -266,23 +274,29 @@
       document.addEventListener("keydown", keyDownHandler, false);
       document.addEventListener("keyup", keyUpHandler, false);
       document.addEventListener("keydown", event => {
-        if (event.keyCode === 83 && !sPressed && soundsLoaded) {
+        if (event.keyCode === 83 && !sPressed && gameLoaded >= 90) {
+          clearInterval(intervalStartscreen);
           score = 0;
           startGame();
           sPressed = true;
         }
       });
+      intervalStartscreen = setInterval(displayStartscreen, 1000/60);
+      
+    }
+
+    function displayStartscreen(){
       canvasContext.textAlign = "center";
       canvasContext.fillStyle = "black"; /*black background*/
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
       canvasContext.font = "24px retro";
       canvasContext.fillStyle = "limegreen";
-      canvasContext.fillText("Press S to start", canvas.width / 2, canvas.height / 3);
+      canvasContext.fillText(gameLoaded < 90 ? `Loading... ${gameLoaded}%` : "Press S to start", canvas.width / 2, canvas.height / 3);
       canvasContext.fillText("Controls", canvas.width / 2, canvas.height / 2 + 50);
       canvasContext.fillText("Left: A", canvas.width / 2, canvas.height / 2 + 100);
       canvasContext.fillText("Right: D", canvas.width / 2, canvas.height / 2 + 150);
       canvasContext.fillText("Shoot: W", canvas.width / 2, canvas.height / 2 + 200);
-    }
+    } 
 
     function startGame() {
 
@@ -528,7 +542,7 @@
     }
 
     function moveEyeball(obj){
-      obj.y += 2;
+      obj.y += 3;
       if(obj.y>canvas.height){
         obj.y = -50;
       }
