@@ -364,7 +364,8 @@
       fetch('https://highscore-db.herokuapp.com/post', {
           method: "post",
           mode: 'no-cors',
-          body: JSON.stringify({"Player": "Test","Score": 10})
+          //body: JSON.stringify({"Player": "Test","Score": 10})
+          body: data
 
         })
         .then(response => response.json())
