@@ -363,7 +363,6 @@
       const data = {Player: "Test",Score: 10};
       fetch('https://highscore-db.herokuapp.com/post', {
           method: "post",
-          mode: 'no-cors',
           'Accept': 'application/json',
           'Content-Type': 'application/json', 
           body: JSON.stringify(data)
