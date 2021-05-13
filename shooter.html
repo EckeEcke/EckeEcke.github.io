@@ -25,7 +25,7 @@
 
     <div id="canvas-wrapper" style= "width: 400px; height: 600px;position: relative; margin: 0 auto">
       <canvas id="game-canvas" width="400px" height="600px" style="position: absolute; top: 0; left: 0"></canvas>
-      <form id="highscore-form">
+      <form id="highscore-form" autocomplete="off">
         <input type="text" id="name-input" placeholder="Enter Name" maxlength="10" style=" ">
       </form>
     </div>
@@ -648,7 +648,6 @@
         clearInterval(intervalBackground);
         backgroundScrollPosition = -300;
         enemyRequired = 6;
-        setTimeout(() => sPressed = false, 2000);
 
         gameMusic.playbackRate = 0.5;
         setTimeout(() => { gameMusic.pause(); gameMusic.currentTime = 0; gameMusic.playbackRate = 1 }, 1000);
@@ -658,7 +657,9 @@
         canvasContext.textAlign = "center";
         canvasContext.font = "24px retro";
         canvasContext.fillStyle = "limegreen";
-        canvasContext.fillText("Press S for retry", canvas.width/2, canvas.height / 2);
+        canvasContext.textAlign = "center";
+        canvasContext.fillText("Game over", canvas.width/2, canvas.height / 2 - 100);
+        canvasContext.fillText("Score: " + score, canvas.width/2, canvas.height / 2 - 50);
         canvasContext.fillText(isHighscore ? "New Highscore" : "", canvas.width/2, 250);
 
         isHighscore = false;
@@ -752,9 +753,15 @@
 
     document.getElementById("highscore-form").onsubmit = function(event){
       event.preventDefault();
-      const player = document.getElementById("name-input").value;
-      console.log(player)
-      const data = `{Player: "${player}", Score: ${score}`;
+      sPressed = false;
+      document.getElementById("name-input").style.display = "none";
+      intervalStartscreen = setInterval(displayStartscreen, 500);
+      let player = document.getElementById("name-input").value;
+      if(player.length == 0){
+        player = "Player"
+      }
+      document.getElementById("name-input").value = "";
+      const data = {Player: player, Score: score};
       fetch('https://highscore-db.herokuapp.com/post', {
           method: "post",
           headers: {
@@ -782,8 +789,6 @@
         snakeRound = false;
         backgroundScrollPosition = -300;
         enemyRequired = 6;
-        setTimeout(() => sPressed = false, 2000);
-
         gameMusic.playbackRate = 0.5;
         setTimeout(() => { gameMusic.pause(); gameMusic.currentTime = 0; gameMusic.playbackRate = 1 }, 1000);
 
@@ -792,16 +797,18 @@
         canvasContext.fillStyle = "black";
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
         canvasContext.font = "24px retro";
+        canvasContext.textAlign = "center";
         canvasContext.fillStyle = "limegreen";
-        canvasContext.fillText("Press S for retry", 32, canvas.height / 2);
+        canvasContext.fillText("Game over", canvas.width/2, canvas.height / 2 - 100);
+        canvasContext.fillText("Score: " + score, canvas.width/2, canvas.height / 2 - 50);
 
         console.log(score, highscores[7].Score)
 
-        if(score>highscores[7].Score){
+       // if(score>highscores[7].Score){
           console.log("something should happen")
           document.getElementById("name-input").style.display = "block";
           document.getElementById("name-input").focus()
-        }
+       // }
         
         if (isHighscore) {
           canvasContext.fillText("New Highscore", 72, 200);
@@ -820,8 +827,6 @@
         clearInterval(intervalBackground);
         backgroundScrollPosition = -300;
         enemyRequired = 6;
-        setTimeout(() => sPressed = false, 2000);
-
         gameMusic.playbackRate = 0.5;
         setTimeout(() => { gameMusic.pause(); gameMusic.currentTime = 0; gameMusic.playbackRate = 1 }, 1000);
 
@@ -831,13 +836,14 @@
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
         canvasContext.font = "24px retro";
         canvasContext.fillStyle = "limegreen";
-        canvasContext.fillText("Press S for retry", 32, canvas.height / 2);
-        console.log(score, highscores[7].Score)
+        canvasContext.textAlign = "center";
+        canvasContext.fillText("Game over", canvas.width/2, canvas.height / 2 - 100);
+        canvasContext.fillText("Score: " + score, canvas.width/2, canvas.height / 2 - 50);
 
-        if(score>highscores[7].Score){
+       // if(score>highscores[7].Score){
           document.getElementById("name-input").style.display = "block";
           document.getElementById("name-input").focus()
-        }
+        //}
 
         if (isHighscore) {
           canvasContext.fillText("New Highscore", 72, 200);
@@ -987,6 +993,7 @@
 
       enemyshipCount = 0;
       bonusScore = 0;
+      streak = 0;
     }
 
 

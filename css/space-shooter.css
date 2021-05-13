@@ -29,6 +29,8 @@ form {
   position: absolute;
   top: 50%; 
   left: 100px;
+  background-color: black;
+  color: limegreen;
 }
 
 input {
