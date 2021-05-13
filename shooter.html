@@ -197,7 +197,7 @@
     let intervalSnake;
     let intervalBackground;
 
-    let highScore = 0;
+    let highScore;
     let isHighscore = false;
     let soundsMuted = false;
     let gameLoaded = 0;
@@ -209,6 +209,12 @@
     let multiplier;
     let shotcolor;
 
+    let loadingAnimation = ".";
+
+    let highscores = [];
+    let showHighscores = false;
+    let highscoresLoaded = false;
+    let timer = 0;
 
     function soundControl() {
       soundsMuted = !soundsMuted;
@@ -266,6 +272,16 @@
     }
 
     window.onload = function () {
+      if(!highscoresLoaded){
+        fetch('https://highscore-db.herokuapp.com/')
+      .then(response => response.json())
+      .then(data => highscores = data)
+      .then(()=>console.log(highscores[0].Score))
+      .then(()=>highScore = highscores[0].Score)
+      .then(()=>console.log(highScore))
+      .then(highscoresLoaded = true);
+      }
+      
       loadImages();
       loadSounds();
       canvas.addEventListener("touchstart", changeTouchPosition, false);
@@ -280,24 +296,81 @@
           sPressed = true;
         }
       });
-      intervalStartscreen = setInterval(displayStartscreen, 1000/60);
+      intervalStartscreen = setInterval(displayStartscreen, 500);
+      
+    }
+
+    function displayHighscores(){
+ 
+        for(let i; i<10;i++){
+          canvasContext.fillText(highscores[i].Player,20,i*50 + 50);
+          console.log(highscores[i].Player)
+        }
       
     }
 
     function displayStartscreen(){
-      canvasContext.textAlign = "center";
-      canvasContext.fillStyle = "black"; /*black background*/
-      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-      canvasContext.font = "24px retro";
-      canvasContext.fillStyle = "limegreen";
-      canvasContext.fillText(gameLoaded < 90 ? `Loading... ${gameLoaded}%` : "Press S to start", canvas.width / 2, canvas.height / 3);
-      canvasContext.fillText("Controls", canvas.width / 2, canvas.height / 2 + 50);
-      canvasContext.fillText("Left: A", canvas.width / 2, canvas.height / 2 + 100);
-      canvasContext.fillText("Right: D", canvas.width / 2, canvas.height / 2 + 150);
-      canvasContext.fillText("Shoot: W", canvas.width / 2, canvas.height / 2 + 200);
+      timer += 1;
+      console.log(timer, showHighscores)
+      if(timer % 10 == 0 && highscoresLoaded){ 
+        showHighscores = !showHighscores;
+      }
+      if(!showHighscores){
+        canvasContext.textAlign = "center";
+        canvasContext.fillStyle = "black"; /*black background*/
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+        canvasContext.font = "24px retro";
+        canvasContext.fillStyle = "limegreen";
+        canvasContext.fillText(gameLoaded < 90 ? `Loading: ${gameLoaded}%` : "Press S to start", canvas.width / 2, canvas.height / 3);
+        canvasContext.fillText(gameLoaded < 90 ? loadingAnimation : "", canvas.width / 2, canvas.height / 3 + 50);
+        canvasContext.fillText("Controls", canvas.width / 2, canvas.height / 2 + 50);
+        canvasContext.fillText("Left: A", canvas.width / 2, canvas.height / 2 + 100);
+        canvasContext.fillText("Right: D", canvas.width / 2, canvas.height / 2 + 150);
+        canvasContext.fillText("Shoot: W", canvas.width / 2, canvas.height / 2 + 200);
+      
+      if(loadingAnimation == "."){
+        loadingAnimation = ".."
+        return
+      }
+      if(loadingAnimation == ".."){
+        loadingAnimation = "..."
+        return
+      }
+      if(loadingAnimation == "..."){
+        loadingAnimation = "."
+        return
+      }
+      }
+      if(showHighscores){
+        canvasContext.fillStyle = "black"; /*black background*/
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+        canvasContext.font = "24px retro";
+        canvasContext.fillStyle = "limegreen";
+        canvasContext.textAlign = "center";
+        canvasContext.fillText("Highscores",canvas.width/2,70);
+        for(let i = 0; i<8 ;i++){
+          canvasContext.textAlign = "left";
+          canvasContext.fillText(i+1 + " " + highscores[i].Player,20,i*50 + 140);
+          canvasContext.textAlign = "right";
+          canvasContext.fillText(highscores[i].Score,canvas.width-20,i*50 + 140);
+        }
+
+      }
+      
     } 
 
     function startGame() {
+      const data = {Player: "Test",Score: 10};
+      fetch('https://highscore-db.herokuapp.com/post', {
+          method: "post",
+          'Accept': 'application/json',
+          'Content-Type': 'application/json', 
+          body: JSON.stringify(data)
+
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(err => console.log(err)); 
       clearInterval(intervalStartscreen);
       spaceshipAnimated = setInterval(spaceshipAnimation, 1000 / 120);
       playSound(spaceshipSound);
@@ -478,25 +551,25 @@
     }
 
     function keyDownHandler(event) {
-      if (event.keyCode === 65) {
+      if (event.keyCode === 65 || event.keyCode === 37) {
         aPressed = true;
       }
-      else if (event.keyCode === 68) {
+      else if (event.keyCode === 68 || event.keyCode === 39) {
         dPressed = true;
       }
-      else if (event.keyCode === 87) {
+      else if (event.keyCode === 87 || event.keyCode === 38) {
         wPressed = true;
       }
     }
 
     function keyUpHandler(event) {
-      if (event.keyCode === 65) {
+      if (event.keyCode === 65 || event.keyCode === 37) {
         aPressed = false;
       }
-      else if (event.keyCode === 68) {
+      else if (event.keyCode === 68 || event.keyCode === 39) {
         dPressed = false;
       }
-      else if (event.keyCode === 87) {
+      else if (event.keyCode === 87 || event.keyCode === 38) {
         wPressed = false;
       }
     }
@@ -541,11 +614,21 @@
     }
 
     function moveEyeball(obj){
-      obj.y += 3;
+      if(score < 400){
+        obj.y += 2;
+      } else if (score < 800){
+        obj.y += 2.5
+      } else if (score < 1200){
+        obj.y += 3;
+      } else {
+        obj.y += 3.5;
+      }
       if(obj.y>canvas.height){
         obj.y = -50;
       }
     }
+
+
     function moveSnake() {
       moveElement(snake.head);
       moveElement(snake.body2);
@@ -720,6 +803,7 @@
         canvasContext.font = "24px retro";
         canvasContext.fillStyle = "limegreen";
         canvasContext.fillText("Press S for retry", 32, canvas.height / 2);
+        
 
         if (isHighscore) {
 
@@ -772,6 +856,7 @@
     function resetGame() {
       canvas;
       canvasContext;
+      scale = 1;
       snake = {
         head: {
           x: 0,
