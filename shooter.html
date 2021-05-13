@@ -317,6 +317,15 @@
     function displayStartscreen(){
       timer += 1;
       console.log(timer, showHighscores)
+      if(!highscoresLoaded){
+        fetch('https://highscore-db.herokuapp.com/')
+      .then(response => response.json())
+      .then(data => highscores = data)
+      .then(()=>console.log(highscores[0].Score))
+      .then(()=>highScore = highscores[0].Score)
+      .then(()=>console.log(highScore))
+      .then(highscoresLoaded = true);
+      }
       if(timer % 10 == 0 && highscoresLoaded){ 
         showHighscores = !showHighscores;
       }
@@ -756,6 +765,7 @@
       sPressed = false;
       document.getElementById("name-input").style.display = "none";
       intervalStartscreen = setInterval(displayStartscreen, 500);
+      highscoresLoaded = false;
       let player = document.getElementById("name-input").value;
       if(player.length == 0){
         player = "Player"
