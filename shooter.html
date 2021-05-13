@@ -752,7 +752,8 @@
 
     document.getElementById("highscore-form").onsubmit = function(event){
       event.preventDefault();
-      const data = {Player: document.getElementById("name-input").value,Score: score};
+      const player = document.getElementById("name-input").value;
+      const data = {Player: player, Score: score};
       fetch('https://highscore-db.herokuapp.com/post', {
           method: "post",
           headers: {
