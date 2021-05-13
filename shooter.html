@@ -5,12 +5,6 @@
   <title>Javascript Space Shooter 👾</title>
   <link rel="stylesheet" href="css/space-shooter.css">
   <link rel="icon" type="image/png" href="images/favicon.png" />
-  <style>
-    input::placeholder {
-      color: limegreen;
-      font-size: 24px;
-    }
-  </style>
 </head>
 
 <body>
@@ -30,8 +24,10 @@
 
 
     <div id="canvas-wrapper" style= "width: 400px; height: 600px;position: relative; margin: 0 auto">
-      <canvas id="game-canvas" width="400px" height="600px" style="position: absolute"></canvas>
-      <input type="text" placeholder="Enter Name" style="position: absolute; top: 50%; margin: 0 auto; width: 90%; background-color: black; color: limegreen; font-size: 24px ">
+      <canvas id="game-canvas" width="400px" height="600px" style="position: absolute; top: 0; left: 0"></canvas>
+      <form id="highscore-form">
+        <input type="text" id="name-input" placeholder="Enter Name" maxlength="10" style=" ">
+      </form>
     </div>
     
 
@@ -369,21 +365,6 @@
     } 
 
     function startGame() {
-      const data = {Player: "Test",Score: 10};
-      fetch('https://highscore-db.herokuapp.com/post', {
-          method: "post",
-          headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-          //mode: 'no-cors',
-          //body: JSON.stringify({"Player": "Test","Score": 10})
-          body: JSON.stringify(data)
-
-        })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(err => console.log(err)); 
       clearInterval(intervalStartscreen);
       spaceshipAnimated = setInterval(spaceshipAnimation, 1000 / 120);
       playSound(spaceshipSound);
@@ -765,8 +746,27 @@
       if (snakeLives == 0) {
         startNextRound();
       }
-0
+
       
+    }
+
+    document.getElementById("highscore-form").onsubmit = function(event){
+      event.preventDefault();
+      const data = {Player: document.getElementById("name-input").value,Score: score};
+      fetch('https://highscore-db.herokuapp.com/post', {
+          method: "post",
+          headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+          //mode: 'no-cors',
+          //body: JSON.stringify({"Player": "Test","Score": 10})
+          body: JSON.stringify(data)
+
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(err => console.log(err)); 
     }
 
     function gameOver() {
@@ -787,10 +787,23 @@
 
         playSound(loseSound);
         loseSound.play();
-
+        canvasContext.fillStyle = "black";
+      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
         canvasContext.font = "24px retro";
         canvasContext.fillStyle = "limegreen";
         canvasContext.fillText("Press S for retry", 32, canvas.height / 2);
+
+        console.log(score, highscores[7].Score)
+
+        if(score>highscores[7].Score){
+          console.log("something should happen")
+          document.getElementById("name-input").style.display = "block";
+          document.getElementById("name-input").focus()
+        }
+        
+        if (isHighscore) {
+          canvasContext.fillText("New Highscore", 72, 200);
+        }
 
         isHighscore = false;
         gameSpeed = 40;
@@ -812,17 +825,21 @@
 
         playSound(loseSound);
         loseSound.play();
-
+        canvasContext.fillStyle = "black";
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
         canvasContext.font = "24px retro";
         canvasContext.fillStyle = "limegreen";
         canvasContext.fillText("Press S for retry", 32, canvas.height / 2);
-        
+        console.log(score, highscores[7].Score)
 
-        if (isHighscore) {
-
-          canvasContext.fillText("New Highscore", 72, 200);
+        if(score>highscores[7].Score){
+          document.getElementById("name-input").style.display = "block";
+          document.getElementById("name-input").focus()
         }
 
+        if (isHighscore) {
+          canvasContext.fillText("New Highscore", 72, 200);
+        }
 
         isHighscore = false;
         gameSpeed = 40;

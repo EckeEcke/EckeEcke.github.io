@@ -25,6 +25,30 @@ canvas {
   position: relative;
 }
 
+form {
+  position: absolute;
+  top: 50%; 
+  left: 100px;
+}
+
+input {
+  font-family: retro;
+  display: none;  
+  text-align: center; 
+  margin: 0 auto; 
+  width: 200px; 
+  background-color: black; 
+  color: limegreen; 
+  font-size: 24px; 
+  border: 0; 
+  outline: 0
+}
+
+input::placeholder {
+  color: limegreen;
+  font-size: 24px;
+}
+
 #hamburger {
   position: absolute;
   top: 8px;
