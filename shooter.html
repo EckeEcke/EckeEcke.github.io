@@ -279,12 +279,11 @@
     window.onload = function () {
       if(!highscoresLoaded){
         fetch('https://highscore-db.herokuapp.com/')
-      .then(response => response.json())
-      .then(data => highscores = data)
-      .then(()=>console.log(highscores[0].Score))
-      .then(()=>highScore = highscores[0].Score)
-      .then(()=>console.log(highScore))
-      .then(highscoresLoaded = true);
+        .then(response => response.json())
+        .then(data => highscores = data)
+        .then(()=>highScore = highscores[0].Score)
+        .then(highscoresLoaded = true)
+        .then(gameLoaded += 10);
       }
       
       loadImages();
@@ -309,21 +308,17 @@
  
         for(let i; i<10;i++){
           canvasContext.fillText(highscores[i].Player,20,i*50 + 50);
-          console.log(highscores[i].Player)
         }
       
     }
 
     function displayStartscreen(){
       timer += 1;
-      console.log(timer, showHighscores)
       if(!highscoresLoaded){
         fetch('https://highscore-db.herokuapp.com/')
       .then(response => response.json())
       .then(data => highscores = data)
-      .then(()=>console.log(highscores[0].Score))
       .then(()=>highScore = highscores[0].Score)
-      .then(()=>console.log(highScore))
       .then(highscoresLoaded = true);
       }
       if(timer % 10 == 0 && highscoresLoaded){ 
@@ -335,8 +330,8 @@
         canvasContext.fillRect(0, 0, canvas.width, canvas.height);
         canvasContext.font = "24px retro";
         canvasContext.fillStyle = "limegreen";
-        canvasContext.fillText(gameLoaded < 90 ? `Loading: ${gameLoaded}%` : "Press S to start", canvas.width / 2, canvas.height / 3);
-        canvasContext.fillText(gameLoaded < 90 ? loadingAnimation : "", canvas.width / 2, canvas.height / 3 + 50);
+        canvasContext.fillText(gameLoaded < 100 ? `Loading: ${gameLoaded}%` : "Press S to start", canvas.width / 2, canvas.height / 3);
+        canvasContext.fillText(gameLoaded < 100 ? loadingAnimation : "", canvas.width / 2, canvas.height / 3 + 50);
         canvasContext.fillText("Controls", canvas.width / 2, canvas.height / 2 + 50);
         canvasContext.fillText("Left: A", canvas.width / 2, canvas.height / 2 + 100);
         canvasContext.fillText("Right: D", canvas.width / 2, canvas.height / 2 + 150);
@@ -660,7 +655,7 @@
 
         gameMusic.playbackRate = 0.5;
         setTimeout(() => { gameMusic.pause(); gameMusic.currentTime = 0; gameMusic.playbackRate = 1 }, 1000);
-
+        streak = 0;
         playSound(loseSound);
         loseSound.play();
         canvasContext.textAlign = "center";
@@ -801,25 +796,19 @@
         enemyRequired = 6;
         gameMusic.playbackRate = 0.5;
         setTimeout(() => { gameMusic.pause(); gameMusic.currentTime = 0; gameMusic.playbackRate = 1 }, 1000);
-
+        streak = 0;
         playSound(loseSound);
         loseSound.play();
         canvasContext.fillStyle = "black";
-      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
         canvasContext.font = "24px retro";
         canvasContext.textAlign = "center";
         canvasContext.fillStyle = "limegreen";
         canvasContext.fillText("Game over", canvas.width/2, canvas.height / 2 - 100);
         canvasContext.fillText("Score: " + score, canvas.width/2, canvas.height / 2 - 50);
+        document.getElementById("name-input").style.display = "block";
+        document.getElementById("name-input").focus()
 
-        console.log(score, highscores[7].Score)
-
-       // if(score>highscores[7].Score){
-          console.log("something should happen")
-          document.getElementById("name-input").style.display = "block";
-          document.getElementById("name-input").focus()
-       // }
-        
         if (isHighscore) {
           canvasContext.fillText("New Highscore", 72, 200);
         }
@@ -839,7 +828,7 @@
         enemyRequired = 6;
         gameMusic.playbackRate = 0.5;
         setTimeout(() => { gameMusic.pause(); gameMusic.currentTime = 0; gameMusic.playbackRate = 1 }, 1000);
-
+        streak = 0;
         playSound(loseSound);
         loseSound.play();
         canvasContext.fillStyle = "black";
@@ -849,12 +838,8 @@
         canvasContext.textAlign = "center";
         canvasContext.fillText("Game over", canvas.width/2, canvas.height / 2 - 100);
         canvasContext.fillText("Score: " + score, canvas.width/2, canvas.height / 2 - 50);
-
-       // if(score>highscores[7].Score){
-          document.getElementById("name-input").style.display = "block";
-          document.getElementById("name-input").focus()
-        //}
-
+        document.getElementById("name-input").style.display = "block";
+        document.getElementById("name-input").focus()
         if (isHighscore) {
           canvasContext.fillText("New Highscore", 72, 200);
         }
@@ -1003,7 +988,6 @@
 
       enemyshipCount = 0;
       bonusScore = 0;
-      streak = 0;
     }
 
 

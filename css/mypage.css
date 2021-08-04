@@ -233,7 +233,7 @@ h3 {
   opacity: 0.96;
   right: 0px;
   top: 0px;
-  padding: 100px 80px 100px 0px;
+  padding: 100px 40px 100px 0px;
   z-index: -3000;
   height: 0vh;
   border-left: 1px solid black;
@@ -249,6 +249,8 @@ h3 {
 
 #burger-menu li {
   list-style: none;
+  width: 300px;
+  max-width: 60vw;
 }
 
 #burger-menu a:hover {
