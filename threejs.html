@@ -83,7 +83,8 @@
         .range-wrapper {
             display: flex;
             flex-direction: column;
-            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
             justify-content: center;
         }
 
@@ -96,6 +97,8 @@
             flex-direction: row;
             align-items: center;
             gap: 8px;
+            min-width: 100px;
+            max-width: 100px;
         }
 
         button {
@@ -122,6 +125,30 @@
         button.activated {
             box-shadow: inset 1px 1px 10px #333;
             transform: scale(0.8)
+        }
+
+        @media screen and (max-width: 400px){
+            button {
+                min-width: 90px;
+                max-width: 90px;
+            }
+            .radio-wrapper,
+            .range-wrapper {
+                min-width: 90px;
+                max-width: 90px;
+            }
+            .input-wrapper {
+                gap: 0;
+                justify-content: space-between;
+            }
+            .textbox {
+                padding: 8px;
+                min-width: calc(100vw - 16px);
+                max-width: calc(100vw - 16px);
+                justify-content: space-between;
+                gap: 0;
+
+            }
         }
     </style>
 </head>
