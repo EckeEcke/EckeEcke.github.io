@@ -211,7 +211,8 @@
             console.log(cube.geometry.type);
             if (cube.geometry.type == "BoxGeometry") {
                 cube.geometry.dispose();
-                const texture = new THREE.TextureLoader().load( 'images/earth.jpeg' );
+                //const texture = new THREE.TextureLoader().load( 'images/earth.jpeg' );
+                const texture = new THREE.TextureLoader().load( 'images/grass-texture.jpg' );
 
                 // immediately use the texture for material creation
                 cube.material.dispose();
