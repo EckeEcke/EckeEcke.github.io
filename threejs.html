@@ -233,6 +233,7 @@
         function toggleTexture() {
             textureActivated = !textureActivated;
             if (textureActivated) {
+                wireframe = false;
                 document.getElementById("toggle-texture").classList.add("activated");
                 document.getElementById("toggle-wireframe").classList.remove("activated");
                 if (document.getElementById("wood-texture-btn").checked) {
