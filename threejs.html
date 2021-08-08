@@ -86,12 +86,17 @@
             justify-content: center;
         }
 
-        label {
+        .range-wrapper label {
             text-align: center;
         }
+        .radio-wrapper {
+            display: flex; 
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+        }
 
-        #shape-btn, 
-        #toggle-wireframe {
+        button {
             background: orange;
             border: none;
             color: white;
@@ -100,18 +105,16 @@
             border-radius: 8px;
             display: inline-block;
             transition: .3s;
-            min-width: 120px;
-            max-width: 120px;
+            min-width: 100px;
+            max-width: 100px;
         }
 
-        #shape-btn:hover,
-        #toggle-wireframe:hover {
+        button:hover {
             transform: scale(0.9);
             background: darkorange;
         }
 
-        #shape-btn:active,
-        #toggle-wireframe:active {
+        button:active {
             transform: scale(0.8)
         }
     </style>
@@ -129,10 +132,19 @@
                         <label for="scale-input">Change size</label>
                         <input id="scale-input" type="range" min="1" max="5" oninput="changeScale()">
                     </div>
+                        <div class="radio-wrapper">
+                            <input type="radio" id="wood-texture-btn" value="wood" name="texture" checked/>
+                            <label for="wood-texture-btn">Wood texture</label>
+                        </div>
+                        <div class="radio-wrapper">
+                            <input type="radio" id="earth-texture-btn" value="earth" name="texture"/>
+                            <label for="earth-texture-btn">Earth texture</label>
+                        </div>     
                 </div>
                 <div class="input-wrapper">
-                    <button id="shape-btn" onclick="changeShape()">Change shape</button>
+                    <button id="shape-btn" onclick="changeShape()">Shape</button>
                     <button id="toggle-wireframe" onclick="toggleWireframe()">Wireframe</button>
+                    <button id="toggle-texture" onclick="toggleTexture()">Texture</button>
                 </div>
             </div>
         </div>
@@ -146,6 +158,7 @@
         let rotationDirection = 1;
         let zDirection = 1;
         let wireframe = false;
+        let textureActivated = false;
 
         window.addEventListener("resize", function () {
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -204,8 +217,23 @@
                 const newMaterial = new THREE.MeshLambertMaterial({ color: "orange" });
                 cube.material = newMaterial;
             }
-
-
+        }
+        function toggleTexture(){
+            textureActivated = !textureActivated;
+            if(textureActivated){
+                if(document.getElementById("wood-texture-btn").checked){
+                    const texture = new THREE.TextureLoader().load( 'images/wood-texture.jpg' );
+                    cube.material.dispose();
+                    cube.material = new THREE.MeshLambertMaterial( { map: texture } );
+                } else {
+                    const texture = new THREE.TextureLoader().load( 'images/earth.jpeg' );
+                    cube.material.dispose();
+                    cube.material = new THREE.MeshLambertMaterial( { map: texture } );
+                }
+            } else {
+                    cube.material.dispose();
+                    cube.material = new THREE.MeshLambertMaterial();
+            }
         }
         function changeShape() {
             console.log(cube.geometry.type);
