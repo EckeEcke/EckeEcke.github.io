@@ -211,6 +211,10 @@
             console.log(cube.geometry.type);
             if (cube.geometry.type == "BoxGeometry") {
                 cube.geometry.dispose();
+                const texture = new THREE.TextureLoader().load( './images/earth.jpeg' );
+
+                // immediately use the texture for material creation
+                const material = new THREE.MeshBasicMaterial( { map: texture } );
                 cube.geometry = new THREE.SphereGeometry();
             }
             else if (cube.geometry.type == "SphereGeometry") {
