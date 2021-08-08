@@ -15,7 +15,7 @@
         }
 
         body {
-            overflow-x: hidden
+            overflow-x: hidden;
         }
 
         #background {
@@ -24,6 +24,7 @@
             height: 100vh;
             top: 0;
             left: 0;
+            background-image: linear-gradient(to bottom, skyblue, white);
         }
 
         #content-wrapper {
@@ -38,16 +39,18 @@
         }
 
         .textbox {
-            width: 500px;
+            width: 360px;
             max-width: calc(100vw - 64px);
             min-height: 50px;
             background: white;
             padding: 32px;
             opacity: 0.95;
             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-            margin: 0 auto;
             position: fixed;
             bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 8px;
         }
 
         p {
@@ -65,10 +68,15 @@
             text-shadow: 1px 1px 2px black;
         }
 
-        #input-wrapper {
+        .input-wrapper {
             display: flex;
             flex-direction: row;
             gap: 32px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        .input-wrapper:last-child {
+            margin-bottom: 0;
         }
 
         .range-wrapper {
@@ -77,22 +85,34 @@
             width: 100px;
             justify-content: center;
         }
+
         label {
             text-align: center;
         }
-        #shape-btn {
+
+        #shape-btn, 
+        #toggle-wireframe {
             background: orange;
             border: none;
             color: white;
             text-shadow: 1px 1px 2px black;
-            padding: 8px;
+            padding: 16px 8px;
             border-radius: 8px;
             display: inline-block;
+            transition: .3s;
+            min-width: 120px;
+            max-width: 120px;
         }
-        #shape-btn:hover {
+
+        #shape-btn:hover,
+        #toggle-wireframe:hover {
             transform: scale(0.9);
             background: darkorange;
-            transition: .3s;
+        }
+
+        #shape-btn:active,
+        #toggle-wireframe:active {
+            transform: scale(0.8)
         }
     </style>
 </head>
@@ -104,13 +124,16 @@
             <h1>Three JS Demo</h1>
             <div class="textbox">
                 <p>Scroll to manipulte rotation of the cube. Click the cube to change its color.</p>
-                <div id="input-wrapper">
+                <div class="input-wrapper">
                     <div class="range-wrapper">
                         <label for="scale-input">Change size</label>
                         <input id="scale-input" type="range" min="1" max="5" oninput="changeScale()">
                     </div>
+                </div>
+                <div class="input-wrapper">
                     <button id="shape-btn" onclick="changeShape()">Change shape</button>
-                </div> 
+                    <button id="toggle-wireframe" onclick="toggleWireframe()">Wireframe</button>
+                </div>
             </div>
         </div>
     </div>
@@ -122,6 +145,7 @@
         let lastScrollPosition = 0;
         let rotationDirection = 1;
         let zDirection = 1;
+        let wireframe = false;
 
         window.addEventListener("resize", function () {
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -143,54 +167,68 @@
         }
         window.addEventListener('mousemove', onMouseMove, false);
         window.addEventListener('click', getClickedObject);
-        function getClickedObject(){
-            raycaster.setFromCamera( mouse, camera );
-            const intersects = raycaster.intersectObjects( scene.children )[0];
+        function getClickedObject() {
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(scene.children)[0];
             const randomR = Math.random();
             const randomG = Math.random();
             const randomB = Math.random();
-            if(intersects !== undefined){
-                intersects.object.material.color = {r: randomR, g: randomG, b: randomB}
+            if (intersects !== undefined) {
+                intersects.object.material.color = { r: randomR, g: randomG, b: randomB }
             }
         }
         window.requestAnimationFrame(animate);
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
+        const renderer = new THREE.WebGLRenderer( { alpha: true });
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
         function onMouseMove(event) {
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
         }
-        function changeScale(){
+        function changeScale() {
             const scale = document.getElementById("scale-input").value / 5;
             cube.scale.x = scale;
             cube.scale.y = scale;
             cube.scale.z = scale;
         }
+        function toggleWireframe() {
+            wireframe = !wireframe;
+            if (wireframe) {
+                cube.material.dispose();
+                const newMaterial = new THREE.MeshStandardMaterial({ color: "orange", wireframe: true });
+                cube.material = newMaterial;
+            } else {
+                cube.material.dispose();
+                const newMaterial = new THREE.MeshLambertMaterial({ color: "orange" });
+                cube.material = newMaterial;
+            }
+
+
+        }
         function changeShape() {
             console.log(cube.geometry.type);
-            if(cube.geometry.type == "BoxGeometry"){
+            if (cube.geometry.type == "BoxGeometry") {
                 cube.geometry.dispose();
                 cube.geometry = new THREE.SphereGeometry();
             }
-            else if(cube.geometry.type == "SphereGeometry"){
+            else if (cube.geometry.type == "SphereGeometry") {
                 cube.geometry.dispose();
                 cube.geometry = new THREE.CylinderGeometry();
             }
-            else if(cube.geometry.type == "CylinderGeometry"){
+            else if (cube.geometry.type == "CylinderGeometry") {
                 cube.geometry.dispose();
                 cube.geometry = new THREE.TorusGeometry();
-            } else if(cube.geometry.type == "TorusGeometry"){
+            } else if (cube.geometry.type == "TorusGeometry") {
                 cube.geometry.dispose();
                 cube.geometry = new THREE.BoxGeometry();
             }
             console.log(cube.geometry.type);
-            
+
         }
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor("skyblue", 1);
+        //renderer.setClearColor("skyblue", 1);
         document.getElementById("background").appendChild(renderer.domElement);
         scene.add(new THREE.AmbientLight(0x040404));
         const spotLight = new THREE.SpotLight(0xffffff);
