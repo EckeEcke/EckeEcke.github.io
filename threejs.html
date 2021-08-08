@@ -214,7 +214,7 @@
                 //const texture = new THREE.TextureLoader().load( 'images/earth.jpeg' );
                 const texture = new THREE.TextureLoader().load( 'images/wood-texture.jpg' );
                 cube.material.dispose();
-                cube.material = new THREE.MeshBasicMaterial( { map: texture } );
+                cube.material = new THREE.MeshLambertMaterial( { map: texture } );
                 cube.geometry = new THREE.SphereGeometry();
             }
             else if (cube.geometry.type == "SphereGeometry") {
