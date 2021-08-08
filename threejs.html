@@ -217,6 +217,7 @@
         function toggleWireframe() {
             wireframe = !wireframe;
             if (wireframe) {
+                textureActivated = false;
                 document.getElementById("toggle-wireframe").classList.add("activated");
                 document.getElementById("toggle-texture").classList.remove("activated");
                 cube.material.dispose();
@@ -226,7 +227,6 @@
                 cube.material.dispose();
                 const newMaterial = new THREE.MeshLambertMaterial({ color: "orange" });
                 cube.material = newMaterial;
-                textureActivated = false;
                 document.getElementById("toggle-wireframe").classList.remove("activated");
             }
         }
