@@ -119,6 +119,10 @@
         button:active {
             transform: scale(0.8)
         }
+        button.activated {
+            box-shadow: inset 1px 1px 10px #333;
+            transform: scale(0.8)
+        }
     </style>
 </head>
 
@@ -213,6 +217,8 @@
         function toggleWireframe() {
             wireframe = !wireframe;
             if (wireframe) {
+                document.getElementById("toggle-wireframe").classList.add("activated");
+                document.getElementById("toggle-texture").classList.remove("activated");
                 cube.material.dispose();
                 const newMaterial = new THREE.MeshStandardMaterial({ color: "orange", wireframe: true });
                 cube.material = newMaterial;
@@ -221,11 +227,14 @@
                 const newMaterial = new THREE.MeshLambertMaterial({ color: "orange" });
                 cube.material = newMaterial;
                 textureActivated = false;
+                document.getElementById("toggle-wireframe").classList.remove("activated");
             }
         }
         function toggleTexture() {
             textureActivated = !textureActivated;
             if (textureActivated) {
+                document.getElementById("toggle-texture").classList.add("activated");
+                document.getElementById("toggle-wireframe").classList.remove("activated");
                 if (document.getElementById("wood-texture-btn").checked) {
                     const texture = new THREE.TextureLoader().load('images/wood-texture.jpg');
                     cube.material.dispose();
@@ -238,6 +247,7 @@
             } else {
                 cube.material.dispose();
                 cube.material = new THREE.MeshLambertMaterial();
+                document.getElementById("toggle-texture").classList.remove("activated");
             }
         }
         function changeTexture(texture) {
