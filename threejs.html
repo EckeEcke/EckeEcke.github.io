@@ -220,6 +220,7 @@
                 cube.material.dispose();
                 const newMaterial = new THREE.MeshLambertMaterial({ color: "orange" });
                 cube.material = newMaterial;
+                textureActivated = false;
             }
         }
         function toggleTexture() {
