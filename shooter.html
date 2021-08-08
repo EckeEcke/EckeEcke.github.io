@@ -294,7 +294,7 @@
       document.addEventListener("keydown", keyDownHandler, false);
       document.addEventListener("keyup", keyUpHandler, false);
       document.addEventListener("keydown", event => {
-        if (event.keyCode === 83 && !sPressed && gameLoaded >= 90) {
+        if (event.keyCode === 83 && !sPressed && gameLoaded >= 100) {
           score = 0;
           startGame();
           sPressed = true;

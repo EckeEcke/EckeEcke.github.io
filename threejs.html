@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <title>Document</title>
+    <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            overflow-x: hidden
+        }
+
+        #background {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+        }
+
+        #content-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 200vh;
+        }
+
+        #content {
+            width: 100vw;
+        }
+
+        .textbox {
+            width: 500px;
+            max-width: calc(100vw - 64px);
+            min-height: 50px;
+            background: white;
+            padding: 32px;
+            opacity: 0.95;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            margin: 0 auto;
+            position: fixed;
+            bottom: 0;
+        }
+
+        p {
+            margin-top: 0;
+        }
+
+        h1 {
+            position: fixed;
+            top: 32px;
+            left: 0;
+            width: 80vw;
+            text-align: center;
+            transform: translateX(10vw);
+            color: white;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        #input-wrapper {
+            display: flex;
+            flex-direction: row;
+            gap: 32px;
+        }
+
+        .range-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100px;
+            justify-content: center;
+        }
+        label {
+            text-align: center;
+        }
+        #shape-btn {
+            background: orange;
+            border: none;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+            padding: 8px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="background"></div>
+    <div id="content-wrapper">
+        <div id="content">
+            <h1>Three JS Demo</h1>
+            <div class="textbox">
+                <p>Scroll to manipulte rotation of the cube. Click the cube to change its color.</p>
+                <div id="input-wrapper">
+                    <div class="range-wrapper">
+                        <label for="scale-input">Change size</label>
+                        <input id="scale-input" type="range" min="1" max="5" oninput="changeScale()">
+                    </div>
+                    <button id="shape-btn" onclick="changeShape()">Change shape</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="js/three.js"></script>
+    <script>
+        let lastScrollPosition = 0;
+        let rotationDirection = 1;
+        let zDirection = 1;
+
+        window.addEventListener("resize", function () {
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+        })
+        window.addEventListener("scroll", scrollFunction)
+        function scrollFunction() {
+            if (window.scrollY > lastScrollPosition) {
+                cube.rotation.x += 0.01;
+                cube.rotation.y += 0.01;
+                rotationDirection = 1;
+            } else {
+                cube.rotation.x -= 0.01;
+                cube.rotation.y -= 0.01;
+                rotationDirection = -1;
+            }
+            lastScrollPosition = window.scrollY;
+        }
+        window.addEventListener('mousemove', onMouseMove, false);
+        window.addEventListener('click', getClickedObject);
+        function getClickedObject(){
+            raycaster.setFromCamera( mouse, camera );
+            const intersects = raycaster.intersectObjects( scene.children )[0];
+            const randomR = Math.random();
+            const randomG = Math.random();
+            const randomB = Math.random();
+            if(intersects !== undefined){
+                intersects.object.material.color = {r: randomR, g: randomG, b: randomB}
+            }
+        }
+        window.requestAnimationFrame(animate);
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        function onMouseMove(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+        }
+        function changeScale(){
+            const scale = document.getElementById("scale-input").value / 5;
+            cube.scale.x = scale;
+            cube.scale.y = scale;
+            cube.scale.z = scale;
+        }
+        function changeShape() {
+            console.log(cube.geometry.type);
+            if(cube.geometry.type == "BoxGeometry"){
+                cube.geometry.dispose();
+                cube.geometry = new THREE.SphereGeometry();
+            }
+            else if(cube.geometry.type == "SphereGeometry"){
+                cube.geometry.dispose();
+                cube.geometry = new THREE.CylinderGeometry();
+            }
+            else if(cube.geometry.type == "CylinderGeometry"){
+                cube.geometry.dispose();
+                cube.geometry = new THREE.TorusGeometry();
+            } else if(cube.geometry.type == "TorusGeometry"){
+                cube.geometry.dispose();
+                cube.geometry = new THREE.BoxGeometry();
+            }
+            console.log(cube.geometry.type);
+            
+        }
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor("skyblue", 1);
+        document.getElementById("background").appendChild(renderer.domElement);
+        scene.add(new THREE.AmbientLight(0x040404));
+        const spotLight = new THREE.SpotLight(0xffffff);
+        spotLight.position.set(100, 100, 100);
+        spotLight.castShadow = true;
+        spotLight.shadow.mapSize.width = 1024;
+        spotLight.shadow.mapSize.height = 1024;
+
+        spotLight.shadow.camera.near = 500;
+        spotLight.shadow.camera.far = 4000;
+        spotLight.shadow.camera.fov = 30;
+
+        scene.add(spotLight);
+        const geometry = new THREE.BoxGeometry();
+        const material = new THREE.MeshLambertMaterial({ color: "orange" });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+        camera.position.z = 5;
+        function animate() {
+            requestAnimationFrame(animate);
+            cube.rotation.x += 0.005 * rotationDirection;
+            cube.rotation.y += 0.005 * rotationDirection;
+            cube.position.z += 0.01 * zDirection;
+            if (cube.position.z > 3) {
+                zDirection = -1;
+            } else if (cube.position.z < 0) {
+                zDirection = 1;
+            }
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+
+</html>
