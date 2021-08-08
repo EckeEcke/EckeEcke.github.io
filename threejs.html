@@ -89,6 +89,11 @@
             border-radius: 8px;
             display: inline-block;
         }
+        #shape-btn:hover {
+            transform: scale(0.9);
+            background: darkorange;
+            transition: .3s;
+        }
     </style>
 </head>
 
@@ -208,7 +213,7 @@
             requestAnimationFrame(animate);
             cube.rotation.x += 0.005 * rotationDirection;
             cube.rotation.y += 0.005 * rotationDirection;
-            cube.position.z += 0.01 * zDirection;
+            cube.position.z += 0.005 * zDirection;
             if (cube.position.z > 3) {
                 zDirection = -1;
             } else if (cube.position.z < 0) {
