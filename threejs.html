@@ -75,6 +75,7 @@
             justify-content: center;
             margin-bottom: 16px;
         }
+
         .input-wrapper:last-child {
             margin-bottom: 0;
         }
@@ -89,8 +90,9 @@
         .range-wrapper label {
             text-align: center;
         }
+
         .radio-wrapper {
-            display: flex; 
+            display: flex;
             flex-direction: row;
             align-items: center;
             gap: 8px;
@@ -132,14 +134,16 @@
                         <label for="scale-input">Change size</label>
                         <input id="scale-input" type="range" min="1" max="5" oninput="changeScale()">
                     </div>
-                        <div class="radio-wrapper">
-                            <input type="radio" id="wood-texture-btn" value="wood" name="texture" checked/>
-                            <label for="wood-texture-btn">Wood texture</label>
-                        </div>
-                        <div class="radio-wrapper">
-                            <input type="radio" id="earth-texture-btn" value="earth" name="texture"/>
-                            <label for="earth-texture-btn">Earth texture</label>
-                        </div>     
+                    <div class="radio-wrapper">
+                        <input type="radio" id="wood-texture-btn" value="wood" name="texture" checked
+                            onclick="changeTexture('wood')" />
+                        <label for="wood-texture-btn">Wood texture</label>
+                    </div>
+                    <div class="radio-wrapper">
+                        <input type="radio" id="earth-texture-btn" value="earth" name="texture"
+                            onclick="changeTexture('earth')" />
+                        <label for="earth-texture-btn">Earth texture</label>
+                    </div>
                 </div>
                 <div class="input-wrapper">
                     <button id="shape-btn" onclick="changeShape()">Shape</button>
@@ -193,7 +197,7 @@
         window.requestAnimationFrame(animate);
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer( { alpha: true });
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
         function onMouseMove(event) {
@@ -218,21 +222,34 @@
                 cube.material = newMaterial;
             }
         }
-        function toggleTexture(){
+        function toggleTexture() {
             textureActivated = !textureActivated;
-            if(textureActivated){
-                if(document.getElementById("wood-texture-btn").checked){
-                    const texture = new THREE.TextureLoader().load( 'images/wood-texture.jpg' );
+            if (textureActivated) {
+                if (document.getElementById("wood-texture-btn").checked) {
+                    const texture = new THREE.TextureLoader().load('images/wood-texture.jpg');
                     cube.material.dispose();
-                    cube.material = new THREE.MeshLambertMaterial( { map: texture } );
+                    cube.material = new THREE.MeshLambertMaterial({ map: texture });
                 } else {
-                    const texture = new THREE.TextureLoader().load( 'images/earth.jpeg' );
+                    const texture = new THREE.TextureLoader().load('images/earth.jpeg');
                     cube.material.dispose();
-                    cube.material = new THREE.MeshLambertMaterial( { map: texture } );
+                    cube.material = new THREE.MeshLambertMaterial({ map: texture });
                 }
             } else {
+                cube.material.dispose();
+                cube.material = new THREE.MeshLambertMaterial();
+            }
+        }
+        function changeTexture(texture) {
+            if (textureActivated) {
+                if (texture == "wood") {
+                    const texture = new THREE.TextureLoader().load('images/wood-texture.jpg');
                     cube.material.dispose();
-                    cube.material = new THREE.MeshLambertMaterial();
+                    cube.material = new THREE.MeshLambertMaterial({ map: texture });
+                } else if (texture == "earth") {
+                    const texture = new THREE.TextureLoader().load('images/earth.jpeg');
+                    cube.material.dispose();
+                    cube.material = new THREE.MeshLambertMaterial({ map: texture });
+                }
             }
         }
         function changeShape() {
@@ -240,9 +257,9 @@
             if (cube.geometry.type == "BoxGeometry") {
                 cube.geometry.dispose();
                 //const texture = new THREE.TextureLoader().load( 'images/earth.jpeg' );
-                const texture = new THREE.TextureLoader().load( 'images/wood-texture.jpg' );
+                const texture = new THREE.TextureLoader().load('images/wood-texture.jpg');
                 cube.material.dispose();
-                cube.material = new THREE.MeshLambertMaterial( { map: texture } );
+                cube.material = new THREE.MeshLambertMaterial({ map: texture });
                 cube.geometry = new THREE.SphereGeometry();
             }
             else if (cube.geometry.type == "SphereGeometry") {
