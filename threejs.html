@@ -16,6 +16,7 @@
 
         body {
             overflow-x: hidden;
+            overscroll-behaviour-y: contain;
         }
 
         #background {
@@ -128,12 +129,9 @@
         }
 
         @media screen and (max-width: 400px){
-            button {
-                min-width: 90px;
-                max-width: 90px;
-            }
             .radio-wrapper,
-            .range-wrapper {
+            .range-wrapper,
+            button {
                 min-width: 90px;
                 max-width: 90px;
             }
