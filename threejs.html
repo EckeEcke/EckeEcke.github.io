@@ -211,8 +211,8 @@
         camera.position.z = 5;
         function animate() {
             requestAnimationFrame(animate);
-            cube.rotation.x += 0.005 * rotationDirection;
-            cube.rotation.y += 0.005 * rotationDirection;
+            cube.rotation.x += 0.001 * rotationDirection;
+            cube.rotation.y += 0.001 * rotationDirection;
             cube.position.z += 0.005 * zDirection;
             if (cube.position.z > 3) {
                 zDirection = -1;
