@@ -39,28 +39,27 @@
             width: 100vw;
         }
 
-        .textbox {
-            width: 360px;
-            max-width: calc(100vw - 64px);
+        #textbox {
             min-height: 50px;
-            background: white;
-            padding: 32px;
             opacity: 0.95;
             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
             position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 8px;
+            top: 12px;
+            left: 12px;
         }
 
-        p {
-            margin-top: 0;
+        .textbox-inner {
+            position: relative;
+            padding: 32px;
+            width: 200px;
+            background: white;
+            overflow-y: scroll;
+            max-height: calc(100vh - 64px)
         }
 
         h1 {
             position: fixed;
-            top: 32px;
+            top: 64px;
             left: 0;
             width: 80vw;
             text-align: center;
@@ -71,21 +70,17 @@
 
         .input-wrapper {
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             gap: 32px;
             justify-content: center;
             margin-bottom: 16px;
         }
 
-        .input-wrapper:last-child {
-            margin-bottom: 0;
-        }
-
         .range-wrapper {
             display: flex;
             flex-direction: column;
-            min-width: 100px;
-            max-width: 100px;
+            min-width: 200px;
+            max-width: 200px;
             justify-content: center;
         }
 
@@ -98,8 +93,8 @@
             flex-direction: row;
             align-items: center;
             gap: 8px;
-            min-width: 100px;
-            max-width: 100px;
+            min-width: 200px;
+            max-width: 200px;
         }
 
         button {
@@ -111,8 +106,8 @@
             border-radius: 8px;
             display: inline-block;
             transition: .3s;
-            min-width: 100px;
-            max-width: 100px;
+            min-width: 200px;
+            max-width: 200px;
         }
 
         button:hover {
@@ -127,25 +122,52 @@
             box-shadow: inset 1px 1px 10px #333;
             transform: scale(0.8)
         }
-
-        @media screen and (max-width: 400px){
-            .radio-wrapper,
-            .range-wrapper,
-            button {
-                min-width: 90px;
-                max-width: 90px;
+        #accordion-btn {
+                position: fixed;
+                top: 16px;
+                left: 16px;
+                display: none;
+                min-width: 60px;
+                max-width: 60px;
             }
-            .input-wrapper {
-                gap: 0;
-                justify-content: space-between;
-            }
-            .textbox {
-                padding: 8px;
-                min-width: calc(100vw - 16px);
-                max-width: calc(100vw - 16px);
-                justify-content: space-between;
-                gap: 0;
 
+        #close-btn {
+            position: absolute;
+            background: none;
+            color: black;
+            top: 8px;
+            right: 8px;
+            display: none;
+            min-width: 32px;
+            max-width: 32px;
+            padding: 0;
+        }
+
+        hr {
+            width: 100%;
+            height: 0;
+            border: none;
+            border-top: 1px solid lightgrey;
+        }
+
+        p {
+            margin: 0
+        }
+
+        @media screen and (max-width: 1023px){
+            #accordion-btn,
+            #close-btn {
+                display: block;
+            }
+            #textbox {
+                transform: translateY(0px);
+                display: none;
+            }
+        }
+
+        @media screen and (min-width: 1024px){
+            #textbox {
+                display: block!important;
             }
         }
     </style>
@@ -156,37 +178,56 @@
     <div id="content-wrapper">
         <div id="content">
             <h1>Three JS Demo</h1>
-            <div class="textbox">
-                <p>Scroll to manipulte rotation of the cube. Click the cube to change its color.</p>
-                <div class="input-wrapper">
-                    <div class="range-wrapper">
-                        <label for="scale-input">Change size</label>
-                        <input id="scale-input" type="range" min="1" max="5" oninput="changeScale()">
+            <button id="accordion-btn" href="#">Menu</button>
+            <div id="textbox">
+                <div class="textbox-inner">
+                    <button id="close-btn">Close</button>
+                    <div class="input-wrapper">
+                        <p>Scroll: rotate</p>
+                        <p>Click: change color</p>
+                        <hr>
+                        <div class="range-wrapper">
+                            <label for="scale-input">Change size</label>
+                            <input id="scale-input" type="range" min="1" max="5" oninput="changeScale()">
+                        </div>
+                        <hr>
+                        <div class="radio-wrapper">
+                            <input type="radio" id="wood-texture-btn" value="wood" name="texture" checked
+                                onclick="changeTexture('wood')" />
+                            <label for="wood-texture-btn">Wood texture</label>
+                        </div>
+                        <div class="radio-wrapper">
+                            <input type="radio" id="earth-texture-btn" value="earth" name="texture"
+                                onclick="changeTexture('earth')" />
+                            <label for="earth-texture-btn">Earth texture</label>
+                        </div>
+                        <button id="toggle-texture" onclick="toggleTexture()">Texture</button>
+                        <hr>
+                        <button id="shape-btn" onclick="changeShape()">Shape</button>
+                        <button id="toggle-wireframe" onclick="toggleWireframe()">Wireframe</button>
                     </div>
-                    <div class="radio-wrapper">
-                        <input type="radio" id="wood-texture-btn" value="wood" name="texture" checked
-                            onclick="changeTexture('wood')" />
-                        <label for="wood-texture-btn">Wood texture</label>
-                    </div>
-                    <div class="radio-wrapper">
-                        <input type="radio" id="earth-texture-btn" value="earth" name="texture"
-                            onclick="changeTexture('earth')" />
-                        <label for="earth-texture-btn">Earth texture</label>
-                    </div>
-                </div>
-                <div class="input-wrapper">
-                    <button id="shape-btn" onclick="changeShape()">Shape</button>
-                    <button id="toggle-wireframe" onclick="toggleWireframe()">Wireframe</button>
-                    <button id="toggle-texture" onclick="toggleTexture()">Texture</button>
-                </div>
-            </div>
+                </div>      
+            </div>  
         </div>
     </div>
 
 
-
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous">
+    </script>
     <script src="js/three.js"></script>
     <script>
+        $(document).ready(function(){
+	        $("#accordion-btn").click(function(){
+                $("#textbox").slideToggle("fast")
+            })
+            $("#close-btn").click(function(){
+                $("#textbox").slideToggle("fast")
+            })
+
+        })
         let lastScrollPosition = 0;
         let rotationDirection = 1;
         let zDirection = 1;
