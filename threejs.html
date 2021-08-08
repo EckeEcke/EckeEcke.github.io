@@ -214,6 +214,7 @@
                 const texture = new THREE.TextureLoader().load( '.images/earth.jpeg' );
 
                 // immediately use the texture for material creation
+                cube.material.dispose();
                 cube.material = new THREE.MeshBasicMaterial( { map: texture } );
                 cube.geometry = new THREE.SphereGeometry();
             }
