@@ -234,11 +234,11 @@ h3 {
   right: 0px;
   top: 0px;
   padding: 100px 40px 100px 0px;
-  z-index: -3000;
-  height: 0vh;
+  z-index: 2500;
+  height: 100vh;
   border-left: 1px solid black;
   transition: 0.5s;
-  opacity: 0;
+  transform: translateX(100%);
 }
 
 #burger-menu a {
@@ -271,12 +271,12 @@ h3 {
   padding: 10px;
   border-style: none;
   width: 200px;
+  transition: 0.5s;
 }
 
 #homepage-CTA-BTN:hover {
   background-image: linear-gradient(to right, orange, orange, orange, orange, orange);
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  transition: 0.5s;
   transform: scale(1.1);
 }
 

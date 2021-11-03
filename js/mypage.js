@@ -4,15 +4,11 @@ let burgerMenuShowing = false;
 function showMenu(){
   burgerMenuShowing = !burgerMenuShowing;
   if (burgerMenuShowing) {
-    burgerMenu.style.height = "100vh";
-    burgerMenu.style.opacity = "0.99";
-    burgerMenu.style.zIndex = "2500";
+    burgerMenu.style.transform = "translateX(0)";
     hamburger.style.position = "fixed";
   }
   else {
-    burgerMenu.style.height = "0vh";
-    burgerMenu.style.opacity = "0";
-    burgerMenu.style.zIndex = "-3000";
+    burgerMenu.style.transform = "translateX(100%)";
     hamburger.style.position = "absolute";
   }
 }
