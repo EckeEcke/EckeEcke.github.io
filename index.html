@@ -17,11 +17,12 @@
     <img id="logo" src="images/logo-chris.png">
   </a>
 
-  <button id="hamburger" onclick="showMenu()">
+  <button id="hamburger" onclick="toggleBurgermenu()">
     <div class="line1"></div>
     <div class="line2"></div>
     <div class="line3"></div>
   </button>
+    <div id="backdrop" onclick="toggleBurgermenu()"></div>
     <div id="burger-menu" show="false">
       <ul>
         <hr class="nav-line">
@@ -65,25 +66,23 @@
       </div>
       <h1>Christian Eckardt</h1>
       <h2>Frontend Web Developer</h2>
-      <br><br>
-      <button id="homepage-CTA-BTN" onClick="scrollToFooter()">Contact me</button>
+
+      <button id="homepage-CTA-BTN" class="my-5" onClick="scrollToFooter()">Contact me</button>
       
       
-      <br><br>
+
       
     </div>
-    <br><br>
 
   <div id="scroll-arrow-div">
-  <center>
+  <div>
     <p>Find out more</p>
     <button id="scroll-to-tiles-BTN"><img id="scroll-arrow" src="images/scroll-arrow.png" onClick="scrollToTiles()"></button>
-  </center>
+  </div>
   </div>
   
-  <br><br>
 
-  <div id="about-tile">
+  <div id="about-tile" class="my-5">
     <h3 style="text-align: center;">About me:</h3>
     <p>
       I am a Frontend Web Developer based in Hamburg. This website serves as a portfolio to present my works and developing skills to everybody
@@ -93,7 +92,6 @@
   
   </div>
 
-<br><br><br>
 <div class="index-container">
 
 <a href="https://nifty-hopper-c1da01.netlify.app/" style="display: block" target="_blank">
@@ -135,19 +133,16 @@
 
   </div>
 
-  <div style="display: block; margin: 40px auto; text-align: center">
-    <br><br><br>
+  <div style="display: block; margin: 40px auto; text-align: center" class="my-5 py-5">
     <h3 style="color: black;">Social</h2>
     <a href="https://www.linkedin.com/in/christian-eckardt-41527216a/" target="_blank"><img src="images/linkedin.png" class="social-icon"></a>
     <a href="https://www.xing.com/profile/Christian_Eckardt21/cv" target="_blank"><img src="images/xing.png" class="social-icon"></a>
     <a href="https://github.com/EckeEcke" target="_blank"><img src="images/github.png" class="social-icon"></a>
   </div>
 
-<br><br><br>
 
 <footer id="footer">
-  <div id="contact-information-box" style="background-color: black; color: white; width: 100%; text-align: center;">
-    <br><br>
+  <div id="contact-information-box" class="py-5" style="background-color: black; color: white; width: 100%; text-align: center;">
     <h3>Contact</h3>
     <br>
     <div style="text-align: left; display: flex;
@@ -172,7 +167,6 @@
       <h4>Mail</h4>
       <p>eckardt.christian@web.de</p>
       </div>
-      <br><br>
 
     </div>
     

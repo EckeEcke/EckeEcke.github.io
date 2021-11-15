@@ -1,15 +1,22 @@
 const burgerMenu = document.getElementById("burger-menu");
-let burgerMenuShowing = false;
+let showBurgermenu = false;
+let backdrop = document.getElementById("backdrop");
 
-function showMenu(){
-  burgerMenuShowing = !burgerMenuShowing;
-  if (burgerMenuShowing) {
+function toggleBurgermenu(){
+  showBurgermenu = !showBurgermenu;
+  if (showBurgermenu) {
     burgerMenu.style.transform = "translateX(0)";
     hamburger.style.position = "fixed";
+    backdrop.style.display = "block"
+    document.body.style.overflowY = "hidden"
+    document.body.style.height = "100%"
   }
   else {
     burgerMenu.style.transform = "translateX(100%)";
     hamburger.style.position = "absolute";
+    backdrop.style.display = "none"
+    document.body.style.overflowY = "auto"
+    document.body.style.height = "auto"
   }
 }
 

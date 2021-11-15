@@ -230,7 +230,7 @@ h3 {
 
   position: fixed;
   background-color: white;
-  opacity: 0.96;
+  opacity: 0.99;
   right: 0px;
   top: 0px;
   padding: 100px 40px 100px 0px;
@@ -256,6 +256,17 @@ h3 {
 #burger-menu a:hover {
   color: #039BE5;
   transition: 0.5s;
+}
+
+#backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.7);
+  z-index: 2499
 }
 
 .nav-line {
@@ -311,6 +322,15 @@ h3 {
 
 #scroll-arrow-div {
   height: 20vh;
+  position: relative;
+}
+
+#scroll-arrow-div div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  text-align: center;
 }
 
 
@@ -400,7 +420,7 @@ h3 {
   }
 
   #header-image {
-    min-height: 68vh;
+    min-height: 80vh;
     padding-top: 8%;
     position: relative;
     overflow-x: hidden;
