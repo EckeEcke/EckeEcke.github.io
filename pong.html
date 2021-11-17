@@ -13,14 +13,15 @@
     <img id="logo" src="images/logo-chris.png">
   </a>
 
-  <button onclick="soundControl()" id="sound-button">&#128263;</button>
+  <button onclick="soundControl()" id="sound-button">&#128266;</button>
 
 
   <audio src="sounds/bounce.wav" id="bounce"></audio>
   <audio src="sounds/cheer2.wav" id="cheer2"></audio>
-  <audio src="sounds/cheer1.wav" id="cheer1"></audio>
+  <audio src="sounds/cheer.mp3" id="cheer1"></audio>
   <audio src="sounds/bounce1.wav" id="bounce1"></audio>
   <audio src="sounds/victory.wav" id="victory"></audio>
+  <audio src="sounds/bounce-wall.wav" id="bounceWall"></audio>
 
 
 
@@ -109,12 +110,8 @@
 
     <article id="description">
       <br><br>
-      To start with Javascript I took a Udemy course on how to build Pong using Javascript. I wrote functions drawing
-      objects into a canvas element and making them move with setInterval.
-      I coded a collision detection into the game preventing the ball from leaving the canvas, making it bounce from
-      paddles and counting scores.
-      The score is tracked and displayed in canvas. I implemented sound controls and sounds that play if certain
-      conditions are met. Finally I implemented a basic CPU opponent to play against.
+      To start with Javascript I took a Udemy course on how to build Pong using Javascript and HTML Canvas.
+      I implemented a collision detection, sounds and an AI opponent.
     </article>
 
 
@@ -137,6 +134,8 @@
     const soundCheer2 = document.getElementById("cheer2");
     const soundVictory = document.getElementById("victory");
     const inputs = document.getElementById("game-settings");
+    const bounce = document.getElementById("bounce");
+    const bounceWall = document.getElementById("bounceWall");
 
     let colorPaddle1 = "#ed3d0d";
     let colorPaddle2 = "#26ed17";
@@ -144,8 +143,9 @@
     let runGame;
 
     let canvasContext;
-    let ballX = 400;
+    let ballX = 395;
     let ballSpeedX = 5;
+    let ballDirectionX = 1;
     let ballY = 300;
     let ballSpeedY = 0;
     let paddle1Y = 250;
@@ -160,7 +160,6 @@
     let Score2 = 0;
     const paddleHeight = 100;
     const tolerance = 20;
-    let speedBoost = 0;
     let hitCounter = 0;
     const sounds = document.getElementsByTagName("audio");
     let gameRuns = false;
@@ -170,7 +169,7 @@
     let touchY;
 
 
-    sounds.muted = true;
+    sounds.muted = false;
 
     colorInputP1.addEventListener("change", function () {
       colorPaddle1 = colorInputP1.value;
@@ -230,49 +229,45 @@
     function twoPlayerMode() {
       drawEverything();
       moveEverything();
-      collision(paddle2X, paddle2Y, -1);
-      collision(paddle1X, paddle1Y, 1);
+      collision(paddle2X, paddle2Y);
+      collision(paddle1X, paddle1Y);
       move1();
       move2();
       setScore();
-      raiseSpeed();
       drawScore();
     }
 
     function onePlayerMode() {
       drawEverything();
       moveEverything();
-      collision(paddle2X, paddle2Y, -1);
-      collision(paddle1X, paddle1Y, 1, wPressed, sPressed);
+      collision(paddle2X, paddle2Y, oPressed, lPressed);
+      collision(paddle1X, paddle1Y, wPressed, sPressed);
       move1();
       move1Touch();
       setScore();
-      raiseSpeed();
       drawScore();
       moveAI();
     }
 
 
     function moveEverything() {
-      ballX = ballX + ballSpeedX;
+      ballX = ballX + ballSpeedX * ballDirectionX;
       ballY = ballY + ballSpeedY;
 
-      if (ballX == canvas.width) {
-        ballSpeedX = -ballSpeedX;
-      }
-
-      if (ballX == 0) {
-        ballSpeedX = -ballSpeedX;
+      if (ballX == canvas.width || ballX == 0) {
+        ballDirectionX = ballDirectionX * -1;
       }
 
       ballY = ballY + ballSpeedY;
       if (ballY >= canvas.height) {
         ballSpeedY = -ballSpeedY;
+        playSound(bounceWall)
         ballY = canvas.height;
       }
 
       if (ballY <= 0) {
         ballSpeedY = -ballSpeedY;
+        playSound(bounceWall)
         ballY = 0;
       }
 
@@ -374,10 +369,13 @@
     }
 
     function resetAfterScore() {
-      ballX = 400;
+      ballX = 395;
       ballY = 300;
       ballSpeedY = 0;
       hitCounter = 0;
+      let p1Scored = ballDirectionX < 0 ? true : false
+      ballDirectionX = 0
+      setTimeout(() => ballDirectionX = p1Scored ? 1 : -1, 1000)
     }
 
 
@@ -421,6 +419,11 @@
       canvasContext.fillText(message2, 130 + canvas.width / 2, 350);
     }
 
+    function playSound(sound){
+      if (!sounds.muted) {
+        sound.play()
+      }
+    }
 
 
 
@@ -428,17 +431,13 @@
       let scored = false;
       if (ballX == canvas.width) {
         Score1 = Score1 + 1;
-        if (sounds.muted == false) {
-          soundCheer1.play();
-        }
+        playSound(soundCheer1)
         scored = true;
       }
 
       if (ballX == 0) {
         Score2 = Score2 + 1;
-        if (sounds.muted == false) {
-          soundCheer2.play();
-        }
+        playSound(soundCheer2);
         scored = true;
       }
 
@@ -470,11 +469,10 @@
 
 
 
-    function collision(paddleX, paddleY, direction, upBTN, downBTN) {
-
-
+    function collision(paddleX, paddleY, upBTN, downBTN) {
       if (ballX == paddleX && ballY >= paddleY - tolerance && ballY < paddleY - 1 + paddleHeight + tolerance) {
-        ballSpeedX = direction * (5 + speedBoost);
+        ballDirectionX = ballDirectionX * -1;
+        console.log('collision' + ballX)
         hitCounter = hitCounter + 1;
         if (ballSpeedY == 0) {
           ballSpeedY = 2;
@@ -485,20 +483,9 @@
         if (downBTN && ballSpeedY < 3) {
           ballSpeedY += 1;
         }
-        if (sounds.muted == false) {
-          document.getElementById("bounce1").play();
-        }
+        playSound(bounce)
       }
 
-    }
-
-    function raiseSpeed() {
-      if (hitCounter >= 20) {
-        speedBoost = 5;
-      }
-      else {
-        speedBoost = 0;
-      }
     }
 
 

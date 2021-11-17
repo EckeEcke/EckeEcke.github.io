@@ -154,18 +154,19 @@ hr {
   padding: 10px 12px 12px 12px;
 }
 
-#startButton {
+#start-button {
   border-radius: 20px;
-  padding: 10px;
+  padding: 12px;
   font-size: 1.2em;
   border-style: none;
   display: block;
+  transition: .3s;
 }
 
-#startButton:hover {
+#start-button:hover {
   background-color: white;
   color: red;
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .option-input {
