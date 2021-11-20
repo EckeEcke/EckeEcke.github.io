@@ -116,6 +116,76 @@
       }
     }
 
+    let enemyShip1 = {
+      x: 0,
+      y: 60,
+      speed: 2,
+      lives: 1,
+      shotFired: false,
+    }
+
+    let enemyShip2 = {
+      x: 260,
+      y: 120,
+      speed: -2,
+      lives: 1,
+      shotFired: false
+    }
+
+    function moveEnemyShip(obj) {
+      obj.x += obj.speed;
+      if (obj.x <= 0 || obj.x >= canvas.width - 40) {
+        obj.speed = obj.speed * (-1);
+      }
+    }
+
+    function drawEnemyShip(obj) {
+      if (obj.lives > 0) {
+        canvasContext.drawImage(enemyShipImage1, obj.x, obj.y, 40, 40);
+      }
+      if (obj.lives == 0.5) {
+        canvasContext.drawImage(explosion, obj.x, obj.y, 40, 40);
+      }
+    }
+    function drawEnemyShots(obj, target) {
+      console.log(obj, target)
+      if (obj.x + 20 >= target && obj.x <= target + 20  && obj.shotFired == false && obj.lives >= 1) {
+        obj.shotX = obj.x
+        obj.shotX2 = obj.x + 30
+        obj.shotY = obj.y
+        obj.shotFired = true
+        laserEnemy.play()
+      }
+      if (obj.shotFired) {
+        obj.shotY += 2
+        canvasContext.fillStyle = "red";
+        canvasContext.fillRect(obj.shotX, obj.shotY, 10, 20);
+        canvasContext.fillRect(obj.shotX2, obj.shotY, 10, 20);
+      }
+      if (obj.shotY > canvas.height) {
+        obj.shotFired = false
+      }
+      if (spaceshipY < obj.shotY + 30 && spaceshipY + 10 > obj.shotY && spaceshipX +10 < obj.shotX + 30 && spaceshipX + 80 > obj.shotX + 20 && obj.lives >= 1){
+        displayGameoverScreen()
+      }
+    }
+
+    function drawShipEnemies() {
+      drawEnemyShip(enemyShip1);
+      moveEnemyShip(enemyShip1);
+      drawEnemyShots(enemyShip1,spaceshipX)
+      hitDetectionShip(enemyShip1)
+      drawEnemyShip(enemyShip2);
+      moveEnemyShip(enemyShip2);
+      drawEnemyShots(enemyShip2,spaceshipX)
+      hitDetectionShip(enemyShip2)
+      if (enemyShip1.lives <= 0 && enemyShip2.lives <= 0) {
+        enemyShip1.shotFired = false
+        enemyShip2.shotFired = false
+        startNextRound(moveSnake)
+      }
+    }
+
     let hit;
     let snakeLives = 8;
     let gameSpeed = 40;
@@ -129,7 +199,9 @@
     let soundsMuted = false;
     let gameLoaded = 0;
 
+    let shipRound = false
     let snakeRound = false;
+    let asteroidRound = true;
     let bonusScore = 0;
     
     let streak = 0;
@@ -157,6 +229,8 @@
       snakeHead.src = "./images/snake-head.png";
       snakeBody = new Image();
       snakeBody.src = "./images/snake.png";
+      enemyShipImage1 = new Image();
+      enemyShipImage1.src = "./images/enemyship.png";
       trumphead = new Image();
       trumphead.src = "./images/trumphead.png";
       background = new Image();
@@ -169,6 +243,7 @@
     }
 
     function loadSounds() {
+      laserEnemy = new Audio("./sounds/laser-enemy.wav")
       laser = new Audio("./sounds/laser.wav");
       laser.onloadeddata = () => gameLoaded += 10;
       laser2 = new Audio("./sounds/laser2.wav");
@@ -216,9 +291,9 @@
       document.addEventListener("keydown", keyDownHandler, false);
       document.addEventListener("keyup", keyUpHandler, false);
       document.addEventListener("keydown", event => {
-        if (event.keyCode === 83 && !sPressed && gameLoaded >= 100) {
+        if (event.keyCode === 83 && !sPressed && gameLoaded >= 100 && highscoresLoaded) {
           score = 0;
-          startGame();
+          startGame(moveAsteroids);
           sPressed = true;
         }
       });
@@ -290,7 +365,7 @@
       
     } 
 
-    function startGame() {
+    function startGame(round) {
       clearInterval(intervalStartscreen);
       spaceshipAnimated = setInterval(spaceshipAnimation, 1000 / 120);
       playSound(spaceshipSound);
@@ -303,8 +378,9 @@
         resetGame();
         spaceshipY = 580;
         intervalGame = setInterval(callAll, 1000 / 140);
-        intervalSnake = setInterval(snakeRound ? moveSnake : moveShips, 1000/gameSpeed);
-        intervalBackground = setInterval(moveBackground, 1000 / 30);
+        intervalSnake = setInterval(
+          round, 1000/gameSpeed);
+          intervalBackground = setInterval(moveBackground, 1000 / 30);
       }
     }
 
@@ -330,7 +406,8 @@
       moveShip();
       moveShipTouch();
       shoot();
-      snakeRound ? hitDetectionSnake() : hitDetectionShips();
+      if (snakeRound)  hitDetectionSnake()
+      if (asteroidRound) hitDetectionShips();
       setScore();
       playSound(gameMusic);
       gameOver();
@@ -342,7 +419,8 @@
       canvasContext.drawImage(background, 0, backgroundScrollPosition);
       drawShipAndShot();
       if(snakeRound){drawSnake()}
-      else{drawAsteroids()}   
+      else if (asteroidRound){drawAsteroids()}
+      else if (shipRound){drawShipEnemies()}   
     }
 
     function drawAsteroids(){
@@ -351,8 +429,7 @@
       canvasContext.fillText(`${enemyshipCount}/${enemyRequired}`, canvas.width / 2, canvas.height / 2 + 100);
       canvasContext.fillText(`${Math.floor(backgroundScrollPosition/10)+30}`, canvas.width / 2, canvas.height / 2 + 150);
       if(Math.floor(backgroundScrollPosition/10)+30 < 10){
-        playSound(alertSound);
-        alertSound.play();
+        alertSound.play()
       }
       if(!asteroid.hit){
         canvasContext.drawImage(asteroidImage,asteroid.x,asteroid.y,40,40);
@@ -372,7 +449,7 @@
       }
     }
 
-    function moveShips(){
+    function moveAsteroids(){
       
     }
     function drawShipAndShot() {
@@ -422,7 +499,9 @@
     }
 
     function moveBackground() {
-      backgroundScrollPosition-= 0.8;
+      if (shipRound) {
+        if (backgroundScrollPosition > -150) {backgroundScrollPosition-= 0.8}
+      } else backgroundScrollPosition -= 0.8 
     }
 
     function moveShip() {
@@ -466,7 +545,7 @@
       if (!sPressed) {
         sPressed = true;
         score = 0;
-        startGame();
+        startGame(moveAsteroids);
       }
     }
 
@@ -566,30 +645,25 @@
       }
     }
 
+    function hitDetectionShip(obj) {
+      let shipHit
+      if (shotY <= obj.y + 40 && shotY >= obj.y && shotX >= obj.x && shotX <= obj.x + 40 && obj.lives >= 1 && shotFired) {
+        obj.lives -= 0.5
+        hitSound.play()
+        setTimeout(()=> obj.lives -= 0.5, 100)
+        shotFired = false
+        shotY = 600
+        shipHit = true
+        score += 30
+      }
+      if (obj.lives <= 0 && shipHit) {        
+        shipHit = false
+      }
+    }
+
     function hitDetectionSingle(obj){
       if (spaceshipY < obj.y + 30 && spaceshipY + 100 > obj.y && spaceshipX +10 < obj.x + 30 && spaceshipX + 80 > obj.x + 20){
-        snakeRound = false;
-        clearInterval(intervalSnake);
-        clearInterval(intervalGame);
-        clearInterval(intervalBackground);
-        backgroundScrollPosition = -300;
-        enemyRequired = 6;
-
-        gameMusic.playbackRate = 0.5;
-        setTimeout(() => { gameMusic.pause(); gameMusic.currentTime = 0; gameMusic.playbackRate = 1 }, 1000);
-        streak = 0;
-        playSound(loseSound);
-        loseSound.play();
-        canvasContext.textAlign = "center";
-        canvasContext.font = "24px retro";
-        canvasContext.fillStyle = "limegreen";
-        canvasContext.textAlign = "center";
-        canvasContext.fillText("Game over", canvas.width/2, canvas.height / 2 - 100);
-        canvasContext.fillText("Score: " + score, canvas.width/2, canvas.height / 2 - 50);
-        canvasContext.fillText(isHighscore ? "New Highscore" : "", canvas.width/2, 250);
-
-        isHighscore = false;
-        gameSpeed = 40
+        displayGameoverScreen()
       }
       if (shotY <= obj.y + 50 && shotY >= obj.y && shotX >= obj.x-10 && shotX <= obj.x + 50) {
         if(!obj.countBlocker){
@@ -624,7 +698,7 @@
         score += bonusScore;
         enemyshipCount = 0;
         enemyRequired += 2;
-        startNextRound();
+        startNextRound(drawShipEnemies);
       }
     }
 
@@ -671,7 +745,7 @@
 
 
       if (snakeLives == 0) {
-        startNextRound();
+        startNextRound(moveAsteroids);
       }
 
       
@@ -707,72 +781,57 @@
 
     function gameOver() {
 
-      if (!snakeRound && Math.floor(backgroundScrollPosition/10)+30 <=0){
-        canvasContext.drawImage(explosion, spaceshipX, spaceshipY, 80, 80);
-        window.navigator.vibrate(1000);
-        clearInterval(intervalSnake);
-        clearInterval(intervalGame);
-        clearInterval(intervalBackground);
-        snakeRound = false;
-        backgroundScrollPosition = -300;
-        enemyRequired = 6;
-        gameMusic.playbackRate = 0.5;
-        setTimeout(() => { gameMusic.pause(); gameMusic.currentTime = 0; gameMusic.playbackRate = 1 }, 1000);
-        streak = 0;
-        playSound(loseSound);
-        loseSound.play();
-        canvasContext.fillStyle = "black";
-        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-        canvasContext.font = "24px retro";
-        canvasContext.textAlign = "center";
-        canvasContext.fillStyle = "limegreen";
-        canvasContext.fillText("Game over", canvas.width/2, canvas.height / 2 - 100);
-        canvasContext.fillText("Score: " + score, canvas.width/2, canvas.height / 2 - 50);
-        document.getElementById("name-input").style.display = "block";
-        document.getElementById("name-input").focus()
-
-        if (isHighscore) {
-          canvasContext.fillText("New Highscore", 72, 200);
-        }
-
-        isHighscore = false;
-        gameSpeed = 40;
+      if (asteroidRound && Math.floor(backgroundScrollPosition/10)+30 <=0){
+        displayGameoverScreen()
       }
-
-
       if (snakeRound && snake.body2.y >= 450) {
-        window.navigator.vibrate(1000);
-        snakeRound = false;
-        clearInterval(intervalSnake);
-        clearInterval(intervalGame);
-        clearInterval(intervalBackground);
-        backgroundScrollPosition = -300;
-        enemyRequired = 6;
-        gameMusic.playbackRate = 0.5;
-        setTimeout(() => { gameMusic.pause(); gameMusic.currentTime = 0; gameMusic.playbackRate = 1 }, 1000);
-        streak = 0;
-        playSound(loseSound);
-        loseSound.play();
-        canvasContext.fillStyle = "black";
-        canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-        canvasContext.font = "24px retro";
-        canvasContext.fillStyle = "limegreen";
-        canvasContext.textAlign = "center";
-        canvasContext.fillText("Game over", canvas.width/2, canvas.height / 2 - 100);
-        canvasContext.fillText("Score: " + score, canvas.width/2, canvas.height / 2 - 50);
-        document.getElementById("name-input").style.display = "block";
-        document.getElementById("name-input").focus()
-        if (isHighscore) {
-          canvasContext.fillText("New Highscore", 72, 200);
-        }
-
-        isHighscore = false;
-        gameSpeed = 40;
+        displayGameoverScreen()
       }
     }
 
-    function startNextRound() {
-      snakeRound = !snakeRound;
+    function displayGameoverScreen() {
+      window.navigator.vibrate(1000);
+      snakeRound = false;
+      shipRound = false;
+      asteroidRound = true;
+      clearInterval(intervalSnake);
+      clearInterval(intervalGame);
+      clearInterval(intervalBackground);
+      backgroundScrollPosition = -300;
+      enemyRequired = 6;
+      gameMusic.playbackRate = 0.5;
+      setTimeout(() => { gameMusic.pause(); gameMusic.currentTime = 0; gameMusic.playbackRate = 1 }, 1000);
+      streak = 0;
+      playSound(loseSound);
+      loseSound.play();
+      canvasContext.fillStyle = "black";
+      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+      canvasContext.font = "24px retro";
+      canvasContext.fillStyle = "limegreen";
+      canvasContext.textAlign = "center";
+      canvasContext.fillText("Game over", canvas.width/2, canvas.height / 2 - 100);
+      canvasContext.fillText("Score: " + score, canvas.width/2, canvas.height / 2 - 50);
+      document.getElementById("name-input").style.display = "block";
+      document.getElementById("name-input").focus()
+      if (isHighscore) {
+        canvasContext.fillText("New Highscore", 72, 200);
+      }
+      isHighscore = false;
+      gameSpeed = 40;
+    }
+    function startNextRound(round) {
+      console.log(snakeRound, asteroidRound, shipRound)
+      if (snakeRound){
+        snakeRound = false
+        asteroidRound = true
+      } else if (asteroidRound) {
+        asteroidRound = false
+        shipRound = true
+      } else if (shipRound) {
+        shipRound = false
+        snakeRound = true
+      }
+      console.log('snakeround'+snakeRound,'asteroidRound'+asteroidRound, shipRound)
       clearInterval(intervalSnake);
       clearInterval(intervalGame);
       clearInterval(intervalBackground);
@@ -790,7 +849,9 @@
         clearInterval(spaceshipAnimated);
         spaceshipY = 580;
         intervalGame = setInterval(callAll, 1000 / 140);
-        intervalSnake = setInterval(snakeRound ? moveSnake : moveShips, 1000/gameSpeed);
+        console.log(shipRound)
+        intervalSnake = setInterval(
+          round, 1000/gameSpeed);
         intervalBackground = setInterval(moveBackground, 1000 / 30);
       }
     }
@@ -872,6 +933,11 @@
       canonX = spaceshipX + 40;
       shotX = canonX - 5;
       shotY = canvas.height;
+
+      enemyShip1.lives = 2
+      enemyShip2.lives = 2
+      enemyShip1.shotY = enemyShip1.y
+      enemyShip2.shotY = enemyShip2.y
 
       snakeX = 0;
       snakeX2 = 50;
