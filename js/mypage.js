@@ -56,7 +56,6 @@ let marioLeft = -60;
 
 function movingBox(){
   marioBox.style.left = marioLeft + "px";
-  console.log(marioLeft, window.innerWidth)
   if(marioLeft<window.innerWidth){
     marioLeft += 2;
   }

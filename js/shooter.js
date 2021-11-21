@@ -149,7 +149,6 @@ function drawEnemyShip(obj) {
   }
 }
 function drawEnemyShots(obj, target) {
-  console.log(obj, target)
   if (obj.x + 20 >= target && obj.x <= target + 20 && obj.shotFired == false && obj.lives >= 1) {
     obj.shotX = obj.x
     obj.shotX2 = obj.x + 30
@@ -829,7 +828,6 @@ function displayGameoverScreen() {
   playerKilled = true
 }
 function startNextRound(round) {
-  console.log(snakeRound, asteroidRound, shipRound)
   if (snakeRound) {
     snakeRound = false
     asteroidRound = true
@@ -840,7 +838,6 @@ function startNextRound(round) {
     shipRound = false
     snakeRound = true
   }
-  console.log('snakeround' + snakeRound, 'asteroidRound' + asteroidRound, shipRound)
   clearInterval(intervalSnake);
   clearInterval(intervalGame);
   clearInterval(intervalBackground);
@@ -858,7 +855,6 @@ function startNextRound(round) {
     clearInterval(spaceshipAnimated);
     spaceshipY = 580;
     intervalGame = setInterval(callAll, 1000 / 140);
-    console.log(shipRound)
     intervalSnake = setInterval(
       round, 1000 / gameSpeed);
     intervalBackground = setInterval(moveBackground, 1000 / 30);
