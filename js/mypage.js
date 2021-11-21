@@ -52,21 +52,21 @@ document.addEventListener("scroll", function(){
 
 const marioBox = document.getElementById("homepage-running-mario");
 
-let marioLeft = -30;
+let marioLeft = -60;
 
 function movingBox(){
-  marioBox.style.left = marioLeft + "%";
-
-  if(marioLeft<160){
-    marioLeft += 0.25;
+  marioBox.style.left = marioLeft + "px";
+  console.log(marioLeft, window.innerWidth)
+  if(marioLeft<window.innerWidth){
+    marioLeft += 2;
   }
 
-  if(marioLeft>=160){
-    marioLeft = -60;
+  if(marioLeft>=window.innerWidth){
+    marioLeft = -300;
   }
 }
 
-setInterval(movingBox, window.innerWidth/48);
+setInterval(movingBox, 1000/60);
 
 const homepageMario = document.getElementById("homepage-mario");
 
