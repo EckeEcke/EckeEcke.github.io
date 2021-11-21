@@ -320,7 +320,7 @@ h3 {
   height: 60px; 
   width: 50px;
   left: -60px; 
-  bottom: 0px; 
+  bottom: -5px; 
   overflow: hidden;
 }
 
