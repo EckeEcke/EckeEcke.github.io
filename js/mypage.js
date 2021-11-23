@@ -18,6 +18,56 @@ function toggleBurgermenu(){
   }
 }
 
+const items = document.querySelectorAll('.appear');
+
+const active = function(entries){
+    entries.forEach(entry => {
+        if(entry.isIntersecting){
+        entry.target.classList.add('inview'); 
+        }else{
+            entry.target.classList.remove('inview'); 
+        }
+    });
+}
+
+const io = new IntersectionObserver(active);
+ for(let i=0; i < items.length; i++){
+    io.observe(items[i]);
+ }
+
+ const itemsLeft = document.querySelectorAll('.appear-left');
+
+ const activeLeft = function(entries){
+     entries.forEach(entry => {
+         if(entry.isIntersecting){
+         entry.target.classList.add('inview'); 
+         }else{
+             entry.target.classList.remove('inview'); 
+         }
+     });
+ }
+ 
+ const ioLeft = new IntersectionObserver(activeLeft);
+  for(let i=0; i < itemsLeft.length; i++){
+     ioLeft.observe(itemsLeft[i]);
+  }
+
+  const itemsRight = document.querySelectorAll('.appear-right');
+
+ const activeRight = function(entries){
+     entries.forEach(entry => {
+         if(entry.isIntersecting){
+         entry.target.classList.add('inview'); 
+         }else{
+             entry.target.classList.remove('inview'); 
+         }
+     });
+ }
+ 
+ const ioRight = new IntersectionObserver(activeRight);
+  for(let i=0; i < itemsRight.length; i++){
+     ioRight.observe(itemsRight[i]);
+  }
 
 
 const footer = document.getElementById("footer");
