@@ -61,6 +61,9 @@ h3 {
   font-family: "Oswald";
   background-color: black;
   height: 100vh;
+  height: -webkit-fill-available;
+  height: fill-available;
+  height: -moz-available;
   min-height: 360px;
   max-width: 100vw;
 }
@@ -378,7 +381,7 @@ h3 {
 #scroll-arrow-div {
   position: absolute;
   text-align: center;
-  bottom: 12px;
+  bottom: 8px;
 }
 
 
