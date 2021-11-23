@@ -6,14 +6,12 @@ function toggleBurgermenu(){
   showBurgermenu = !showBurgermenu;
   if (showBurgermenu) {
     burgerMenu.style.transform = "translateX(0)";
-    hamburger.style.position = "fixed";
     backdrop.style.display = "block"
     document.body.style.overflowY = "hidden"
     document.body.style.height = "100%"
   }
   else {
     burgerMenu.style.transform = "translateX(100%)";
-    hamburger.style.position = "absolute";
     backdrop.style.display = "none"
     document.body.style.overflowY = "auto"
     document.body.style.height = "auto"
@@ -23,7 +21,7 @@ function toggleBurgermenu(){
 
 
 const footer = document.getElementById("footer");
-const blogTile = document.getElementById("blog-tile");
+const aboutTile = document.getElementById("about-tile");
 const body = document.getElementById("body");
 const scrollTopBTN = document.getElementById("scroll-back-top-BTN");
 
@@ -33,8 +31,8 @@ function scrollToFooter(){
   footer.scrollIntoView({behavior: "smooth"});
 }
 
-function scrollToTiles(){
-  blogTile.scrollIntoView({behavior: "smooth"});
+function scrollToAbout(){
+  aboutTile.scrollIntoView({behavior: "smooth"});
 }
 
 function scrollToTop(){
@@ -61,7 +59,7 @@ function movingBox(){
   }
 
   if(marioLeft>=window.innerWidth){
-    marioLeft = -300;
+    marioLeft = -500;
   }
 }
 
