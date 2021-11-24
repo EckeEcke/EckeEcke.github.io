@@ -459,29 +459,16 @@ h3 {
           transform: translateY(20px);
 }
 
-.appear.inview,
-.appear-left.inview,
-.appear-right.inview {
+.appear.inview {
   opacity: 1;
   -webkit-transform: none;
           transform: none;
 }
 
-.appear-left {
-  -webkit-transition: all 0.8s;
-  transition: all 0.8s;
-  opacity: 0;
-  -webkit-transform: translateX(-40px) scale(0.8);
-          transform: translateX(-40px) scale(0.8);
-}
-.appear-right {
-  -webkit-transition: all 0.8s;
-  transition: all 0.8s;
-  opacity: 0;
+.appear.delayed {
   transition-delay: 0.3s;
-  -webkit-transform: translateX(40px) scale(0.8);
-          transform: translateX(40px) scale(0.8);
 }
+
 
 
 
