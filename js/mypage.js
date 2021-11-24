@@ -35,7 +35,17 @@ const io = new IntersectionObserver(active);
     io.observe(items[i]);
  }
 
-
+const textBox = document.getElementById("desc-box")
+let descTimeout
+function showText(string){
+  textBox.innerHTML = string
+  textBox.classList.remove("empty")
+  clearTimeout(descTimeout)
+  descTimeout = setTimeout(()=>{
+    textBox.innerHTML = ""
+    textBox.classList.add("empty")
+  },2000)
+}
 
 const footer = document.getElementById("footer");
 const aboutTile = document.getElementById("about-tile");

@@ -66,12 +66,14 @@
         <h1>Christian Eckardt</h1>
         <h2>Frontend Developer</h2>
         
-        <div class="logo-container my-5">
-          <i class="uil uil-vuejs" style="fill: orange"></i>
-          <i class="uil uil-react"></i>
-          <i class="uil uil-html5"></i>
-          <i class="uil uil-css3-simple"></i>
-          <i class="uil uil-java-script"></i>
+        <div class="logo-container py-5">
+          <h3 id="desc-box" class="text-white empty"></h3>
+          <i class="uil uil-vuejs" onclick="showText('Vue JS')"></i>
+          <i class="uil uil-react" onclick="showText('React')"></i>
+          <span class="iconify nuxt" data-icon="cib:nuxt-js" onclick="showText('Nuxt')"></span>
+          <i class="uil uil-css3-simple" onclick="showText('CSS3')"></i>
+          <i class="uil uil-java-script" onclick="showText('Vue JS')"></i>
+          <span class="iconify jquery" data-icon="akar-icons:jquery-fill" onclick="showText('jQuery')"></span>
         </div>   
       </div>
       <div id="scroll-arrow-div">
@@ -175,6 +177,7 @@
 
     <audio src="sounds/mario_its_me.wav" id="mario-sound"></audio>
     <script type="text/javascript" src="js/mypage.js"></script>
+    <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
 </body>
 
 </html>

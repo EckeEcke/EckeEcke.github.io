@@ -78,10 +78,6 @@ h3 {
   animation-delay: 1s;
 }
 
-.logo-container {
-  animation-delay: 2s;
-}
-
 #scroll-arrow-div {
   animation-delay: 2s;
 }
@@ -183,12 +179,44 @@ h3 {
 .logo-container {
   margin: 0 auto;  
   width: fit-content;
+  animation-delay: 2s;
+  display: flex;
 }
 
-.uil {
+.uil,
+.iconify {
   color: rgba(255,136,0,0.8);
   font-size: 2rem;
   margin: 0 0.5rem;
+  transition: .3s;
+}
+
+.uil-vuejs:hover {
+  color: limegreen;
+}
+
+.uil-react:hover {
+  color: skyblue;
+}
+
+.uil-html5:hover {
+  color: orangered;
+}
+
+.uil-css3-simple:hover {
+  color: blue;
+}
+
+.uil-java-script:hover {
+  color: yellow;
+}
+
+.iconify.nuxt:hover {
+  color: yellowgreen;
+}
+
+.iconify.jquery:hover {
+  color: steelblue;
 }
 
 
@@ -202,7 +230,19 @@ h3 {
   font-size: 36pt;
 }
 
+#desc-box {
+  opacity: 1;
+  transition: 1s;
+  position: absolute; 
+  bottom: -0.5rem; 
+  width: 100%; 
+  text-align: center;
+  font-size: 2rem
+}
 
+#desc-box.empty {
+  opacity: 0;
+}
 
 
 
@@ -547,7 +587,8 @@ h3 {
 }
 
 @media (min-width: 769px) {
-  .uil {
+  .uil,
+  .iconify {
     font-size: 4rem;
     margin: 0 1.5rem;
   }
