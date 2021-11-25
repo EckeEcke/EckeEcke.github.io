@@ -321,7 +321,7 @@ h3 {
   opacity: 0.99;
   right: 0px;
   top: 0px;
-  padding: 100px 40px 100px 0px;
+  padding: 50px 40px 100px 0px;
   z-index: 2500;
   height: 500px;
   min-height: 100vh;
@@ -587,7 +587,7 @@ h3 {
 }
 
 @media (min-width: 769px) {
-  .uil,
+  :not(.uil-times):not(.uil-bars).uil,
   .iconify {
     font-size: 4rem;
     margin: 0 1.5rem;
