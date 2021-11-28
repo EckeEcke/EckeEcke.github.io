@@ -607,3 +607,9 @@ h3 {
     height: 80px;
   }
 }
+
+@media (max-height: 400px) {
+  #scroll-arrow-div {
+    display: none;
+  }
+}
