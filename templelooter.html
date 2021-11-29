@@ -75,7 +75,7 @@
     <audio src="sounds/looter-victory.wav" id="victory-sound"></audio>
     <audio src="sounds/key-sound.wav" id="key-sound"></audio>
 
-    <button class="touch-BTN" id="sound-control" onclick="soundControl()">&#128263;</button>
+    <button class="touch-BTN" id="sound-control" onclick="soundControl()">&#128266;</button>
     <center>
         <button class="touch-BTN" id="touch-BTN-start">START</button>
     </center>
@@ -86,7 +86,7 @@
         const ctx = canvas.getContext("2d");
         let aPressed, sPressed, wPressed, dPressed = false;
 
-        let soundMuted = true;
+        let soundMuted = false;
 
         let player1 = {
             x: 0,
@@ -844,8 +844,8 @@
             scoreBoard();
             endGame();
             nextRound();
-            bridgeCollision(bridge1,1);
-            bridgeCollision(bridge2,-1.2);
+            bridgeCollision(bridge1,1,100);
+            bridgeCollision(bridge2,-1.2,-100);
             lavaCollision();
             winGame();
             carriedByBridge = false
@@ -1029,13 +1029,15 @@
 
 
             ctx.drawImage(bridgeImage, bridge1.x, bridge1.y, bridge1.width, bridge1.height);
+            ctx.drawImage(bridgeImage, bridge1.x, bridge1.y + 100, bridge1.width, bridge1.height)
             ctx.drawImage(bridgeImage, bridge2.x, bridge2.y, bridge2.width, bridge2.height);
-            if (bridge1.y < 700) {
+            ctx.drawImage(bridgeImage, bridge2.x, bridge2.y - 100, bridge2.width, bridge2.height);
+            if (bridge1.y < canvas.height + 200) {
                 bridge1.y += 1;
             } else {
-                bridge1.y = -100;
+                bridge1.y = -200;
             }
-            if (bridge2.y > -50) {
+            if (bridge2.y > -200) {
                 bridge2.y -= 1.2;
             } else (bridge2.y) = 700;
         }
@@ -1049,14 +1051,19 @@
 
         let carriedByBridge = false;
 
-        function bridgeCollision(bridge, moveY) {
-
+        function bridgeCollision(bridge, moveY, secondBridgeY) {
             if (bridge.x < player1.x + player1.width && bridge.x + bridge.width > player1.x && player1.y + player1.height - 10 < bridge.y + bridge.height - 10 && bridge.y < player1.y + player1.height) {
                 carriedByBridge = true;
             }
+
+            if (bridge.x < player1.x + player1.width && bridge.x + bridge.width > player1.x && player1.y + player1.height - 10 < bridge.y + secondBridgeY + bridge.height - 10 && bridge.y + secondBridgeY < player1.y + player1.height) {
+                carriedByBridge = true;
+            }
+            
             if (bridge.x < player1.x + player1.width / 2 && bridge.x + bridge.width > player1.x + player1.width / 2) {
                 player1.y += moveY
             } 
+
         }
 
         let jumpUp = true;
