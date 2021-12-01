@@ -74,20 +74,28 @@ h1 {
     text-decoration: none;
     color: black;
     font-size: 1.3em;
+    transition: .3s;
 }
 
 #burger-menu li {
     list-style: none;
+    padding: 12px 4px;
+    transition: .3s;
 }
 
-#burger-menu a:hover {
-    color: #039BE5;
-    transition: 0.5s;
+#burger-menu li:hover {
+    background: black;
+}
+
+#burger-menu li:hover a {
+    color: white;
 }
 
 .nav-line {
-    background-color: white;
-    height: 2px;
+    background-color: rgb(0, 0, 0, 0.5);
+    height: 1px;
+    border: none;
+    margin: 0;
 }
 
 #sound-control {
