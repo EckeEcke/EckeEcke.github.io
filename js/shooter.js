@@ -36,7 +36,8 @@ let asteroid = {
   y: -50,
   hit: false,
   image: asteroidImage,
-  countBlocker: false
+  countBlocker: false,
+  speed: 1
 }
 
 let asteroid2 = {
@@ -44,7 +45,8 @@ let asteroid2 = {
   y: -100,
   hit: false,
   image: asteroidImage2,
-  countBlocker: false
+  countBlocker: false,
+  speed: 1.2
 }
 
 let asteroid3 = {
@@ -52,7 +54,8 @@ let asteroid3 = {
   y: -200,
   hit: false,
   image: asteroidImage3,
-  countBlocker: false
+  countBlocker: false,
+  speed: 0.8
 }
 
 let asteroid4 = {
@@ -60,7 +63,8 @@ let asteroid4 = {
   y: -300,
   hit: false,
   image: asteroidImage4,
-  countBlocker: false
+  countBlocker: false,
+  speed: 1.2
 }
 
 let enemyshipCount = 0;
@@ -154,6 +158,7 @@ function drawEnemyShots(obj, target) {
     obj.shotX2 = obj.x + 30
     obj.shotY = obj.y
     obj.shotFired = true
+    playSound(laserEnemy)
     laserEnemy.play()
   }
   if (obj.shotFired) {
@@ -616,13 +621,13 @@ function moveElement(obj) {
 
 function moveAsteroid(obj) {
   if (score < 400) {
-    obj.y += 1.5;
+    obj.y += obj.speed;
   } else if (score < 800) {
-    obj.y += 1.8
+    obj.y += obj.speed + 0.2
   } else if (score < 1200) {
-    obj.y += 2.1;
+    obj.y += obj.speed + 0.6;
   } else {
-    obj.y += 2.4;
+    obj.y += obj.speed + 1;
   }
   if (obj.y > canvas.height) {
     obj.y = -50;
@@ -651,12 +656,13 @@ function hitDetectionShip(obj) {
   let shipHit
   if (shotY <= obj.y + 40 && shotY >= obj.y && shotX >= obj.x && shotX <= obj.x + 50 && obj.lives >= 1 && shotFired) {
     obj.lives -= 0.5
+    playSound(hitSound)
     hitSound.play()
     setTimeout(() => obj.lives -= 0.5, 100)
     shotFired = false
     shotY = 600
     shipHit = true
-    score += 30
+    score += 30 * multiplier
     streak += 1
   }
   if (obj.lives <= 0 && shipHit) {
