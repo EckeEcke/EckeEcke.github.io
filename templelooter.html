@@ -135,6 +135,8 @@
         let passedGate;
         let score;
 
+        let blockMovementLeft = false;
+
         let gameSpeed;
 
         let gatesPassed;
@@ -433,6 +435,11 @@
             };
         }
 
+        function resetPlayerposition(){
+            player1.x = 0;
+            player1.y = canvas.height / 2;
+        }
+
         function startGame() {
             score = 0;
             touchBTNStart.disabled = true;
@@ -554,14 +561,14 @@
                 playSound(hurtsound);
                 isCollision.x = true;
                 kickback = -4;
-                handleInvincibility();
+               // handleInvincibility();
             }
 
             if (obstacle.x < player1.x + player1.width && obstacle.x >= player1.x + player1.width - 4 && obstacle.y2 < player1.y + player1.height) {
                 playSound(hurtsound);
                 isCollision.x = true;
                 kickback = -4;
-                handleInvincibility();
+                // handleInvincibility();
 
             }
 
@@ -677,23 +684,25 @@
         }
 
         function moveBat(bat) {
-
+            let divisor = 1;
+            if(randomNumber > 0.6){
+                divisor = 2
+            }
             if (bat.x < player1.x + bat.distanceX) {
-                bat.x += bat.speedX;
+            bat.x += bat.speedX / divisor;
             }
 
             if (bat.x > player1.x + bat.distanceX) {
-                bat.x -= bat.speedX;
+                bat.x -= bat.speedX / divisor;
             }
 
             if (bat.y < player1.y + bat.distanceY) {
-                bat.y += bat.speedY;
+                bat.y += bat.speedY / divisor;
             }
 
             if (bat.y > player1.y + bat.distanceY) {
-                bat.y -= bat.speedY;
+                bat.y -= bat.speedY / divisor;
             }
-
             batCollision(bat);
         }
 
@@ -1019,7 +1028,7 @@
             }
             if (gatesPassed == 4) {
                 gatesPassed = 0;
-                gameSpeed = 1.2 * gameSpeed;
+                gameSpeed = 1.1 * gameSpeed;
                 clearInterval(gameInterval);
                 gameInterval = setInterval(callAllRound1, 1000 / gameSpeed);
             }
@@ -1043,10 +1052,17 @@
         }
 
         function lavaCollision() {
-
             if (player1.x > 60 && !carriedByBridge && player1.x < 260) {
-                lives = 0;
+                lives -= 1;
+                if (lives >= 1 && !blockMovementLeft){
+                    blockMovementLeft = true
+                    setTimeout(()=>{blockMovementLeft = false}, 500)
+                }
+                playSound(hurtsound);
             }
+            if (blockMovementLeft){
+                    resetPlayerposition()
+                }
         }
 
         let carriedByBridge = false;
