@@ -13,6 +13,11 @@
   src: url(Grunge.otf);
 }
 
+@font-face {
+  font-family: Ubuntu;
+  src: url(Ubuntu-M.ttf);
+}
+
 
 h1 {
   color: white;
@@ -58,7 +63,7 @@ h3 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: "Oswald";
+  font-family: "Ubuntu";
   background-color: black;
   height: 100vh;
   height: -webkit-fill-available;
@@ -72,45 +77,22 @@ h3 {
   opacity: 0;
   animation: show-title-animation 2s ease-out;
   animation-fill-mode: forwards;
+  animation-delay: 0.5s;
 }
 
-.uil,
-.iconify {
-  transform: scale(0) translateY(128px);
-  opacity: 0;
-  animation: scaleToFullsize 1.5s forwards cubic-bezier(0,0.75,0.5,1);
+footer {
+  background: black;
+  color: white;
+  text-align: center; 
 }
 
-.uil-vuejs {
+
+#header-image h2 {
   animation-delay: 1.5s;
 }
 
-.uil-react {
-  animation-delay: 2s;
-}
-
-.nuxt {
-  animation-delay: 2.5s;
-}
-
-.uil-css3-simple {
-  animation-delay: 3s;
-}
-
-.uil-java-script {
-  animation-delay: 3.5s;
-}
-
-.jquery {
-  animation-delay: 4s;
-}
-
-#header-image h2 {
-  animation-delay: 1s;
-}
-
 #scroll-arrow-div {
-  animation-delay: 2s;
+  animation-delay: 3s;
 }
 
 .header-content {
@@ -207,48 +189,6 @@ h3 {
   transition: 1s ease;
 }
 
-.logo-container {
-  margin: 0 auto;  
-  width: fit-content;
-  animation-delay: 2s;
-  display: flex;
-}
-
-.uil,
-.iconify {
-  color: rgba(255,136,0,0.8);
-  font-size: 2rem;
-  margin: 0 0.5rem;
-  transition: .3s;
-}
-
-.uil-vuejs:hover {
-  color: limegreen;
-}
-
-.uil-react:hover {
-  color: skyblue;
-}
-
-.uil-html5:hover {
-  color: orangered;
-}
-
-.uil-css3-simple:hover {
-  color: blue;
-}
-
-.uil-java-script:hover {
-  color: yellow;
-}
-
-.iconify.nuxt:hover {
-  color: yellowgreen;
-}
-
-.iconify.jquery:hover {
-  color: steelblue;
-}
 
 
 .big-heading {
@@ -260,23 +200,6 @@ h3 {
   color: white;
   font-size: 36pt;
 }
-
-#desc-box {
-  opacity: 1;
-  transition: 1s;
-  position: absolute; 
-  bottom: -2rem; 
-  left: 50%;
-  transform: translateX(-50%); 
-  text-align: center;
-  font-size: 2rem
-}
-
-#desc-box.empty {
-  opacity: 0;
-}
-
-
 
 
 .submit-button {
@@ -584,7 +507,6 @@ h3 {
     opacity: 1;
   }
 }
-
 
 
 @media (max-width: 500px) {
