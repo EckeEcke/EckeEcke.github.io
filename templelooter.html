@@ -478,28 +478,28 @@
         function movePlayerTouch(event) {
             if (touchControls) {
 
-                if (touchX - 40 < player1.x) {
+                if (touchX - 50 < player1.x) {
                     player1.x -= 2;
                     if (player1.x < 0) {
                         player1.x = 0;
                     }
                 }
 
-                if (touchX -40 > player1.x) {
+                if (touchX -50 > player1.x) {
                     player1.x += 2;
                     if (player1.x > canvas.width) {
                         player1.x = canvas.width - 10;
                     }
                 }
 
-                if (touchY -40 < player1.y) {
+                if (touchY -50 < player1.y) {
                     player1.y -= 2;
                     if (player1.y < 0) {
                         player1.y = 0;
                     }
                 }
 
-                if (touchY -40 > player1.y) {
+                if (touchY -50 > player1.y) {
                     player1.y += 2;
                     if (player1.y > canvas.height - 20) {
                         player1.y = canvas.height - 20;
