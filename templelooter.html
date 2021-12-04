@@ -511,8 +511,8 @@
 
         function changeTouchPosition(event) {
             touchControls = true;
-            touchX = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX;
-            touchY = event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY;
+            touchX = event.targetTouches ? event.targetTouches[0].pageX - document.getElementById("damage-overlay").offsetLeft : event.offsetX;
+            touchY = event.targetTouches ? event.targetTouches[0].pageY - document.getElementById("damage-overlay").offsetTop : event.offsetY;
             console.log(touchX);
         }
 
