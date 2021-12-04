@@ -147,21 +147,12 @@ h2 {
 }
 
 @media (max-width: 1100px) {
-  article {
-    padding-top: 10px;
-    display: block;
-  }
   h2 {
     width: 60%;
   }
 }
 
 @media (max-width: 600px) {
-  article {
-    font-size: 0.9em;
-    width: 90%;
-    text-align: justify;
-  }
   h2 {
     background: none;
   }
