@@ -118,6 +118,7 @@
         const batSprite1 = document.getElementById("bat1");
         const batSprite2 = document.getElementById("bat2");
 
+        const overlay = document.getElementById("damage-overlay")
         let backgroundLevel3 = lavaBackground1;
 
         const bridgeImage = document.getElementById("bridge");
@@ -294,9 +295,9 @@
             ctx.fillText("use gamepad", canvas.width / 2, 360)
             document.addEventListener("keydown", keyDownHandler, false);
             document.addEventListener("keyup", keyUpHandler, false);
-            canvas.addEventListener("touchstart", changeTouchPosition, false);
-            canvas.addEventListener("touchmove", changeTouchPosition, false);
-            canvas.addEventListener("touchend", function(){touchControls= false});
+            overlay.addEventListener("touchstart", changeTouchPosition, false);
+            overlay.addEventListener("touchmove", changeTouchPosition, false);
+            overlay.addEventListener("touchend", function(){touchControls= false});
             touchBTNStart.addEventListener("click", () => {
                 if (!touchBTNStart.disabled) {
                     touchBTNStart.disabled = true;
@@ -477,28 +478,28 @@
         function movePlayerTouch(event) {
             if (touchControls) {
 
-                if (touchX  < player1.x) {
+                if (touchX - 40 < player1.x) {
                     player1.x -= 2;
                     if (player1.x < 0) {
                         player1.x = 0;
                     }
                 }
 
-                if (touchX > player1.x) {
+                if (touchX -40 > player1.x) {
                     player1.x += 2;
                     if (player1.x > canvas.width) {
                         player1.x = canvas.width - 10;
                     }
                 }
 
-                if (touchY < player1.y) {
+                if (touchY -40 < player1.y) {
                     player1.y -= 2;
                     if (player1.y < 0) {
                         player1.y = 0;
                     }
                 }
 
-                if (touchY > player1.y) {
+                if (touchY -40 > player1.y) {
                     player1.y += 2;
                     if (player1.y > canvas.height - 20) {
                         player1.y = canvas.height - 20;
@@ -511,8 +512,8 @@
 
         function changeTouchPosition(event) {
             touchControls = true;
-            touchX = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX;
-            touchY = event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY;
+            touchX = event.targetTouches ? event.targetTouches[0].pageX - overlay.offsetLeft : event.offsetX;
+            touchY = event.targetTouches ? event.targetTouches[0].pageY - overlay.offsetTop : event.offsetY;
             console.log(touchX);
         }
 
@@ -631,10 +632,10 @@
         function handleInvincibility() {
             if (!player1.invincibility) {
                 lives -= 1;
-                document.getElementById("damage-overlay").style.opacity = 0.3
+                overlay.style.opacity = 0.3
                 player1.invincibility = true;
                 setTimeout(function() {
-                    document.getElementById("damage-overlay").style.opacity = 0
+                    overlay.style.opacity = 0
                  }, 200)
                 setTimeout(function () { 
                     player1.invincibility = false  
@@ -1100,9 +1101,9 @@
         function lavaCollision() {
             if (player1.x > 60 && !carriedByBridge && player1.x < 260) {
                 lives -= 1;
-                document.getElementById("damage-overlay").style.opacity = 0.3
+                overlay.style.opacity = 0.3
                 setTimeout(function() {
-                    document.getElementById("damage-overlay").style.opacity = 0
+                    overlay.style.opacity = 0
                  }, 200)
                 if (lives >= 1 && !blockMovementLeft){
                     blockMovementLeft = true
