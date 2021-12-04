@@ -95,6 +95,10 @@ footer {
   animation-delay: 3s;
 }
 
+.uil {
+  font-size: 2rem;
+}
+
 .header-content {
   width: 100%;
   position: absolute;
@@ -376,7 +380,7 @@ footer {
 #scroll-arrow-div {
   position: absolute;
   text-align: center;
-  bottom: 8px;
+  bottom: 12px;
 }
 
 
