@@ -53,7 +53,11 @@
     </div>
 
     <h1>Temple Looter</h1>
-    <canvas id="game-canvas"></canvas>
+    <div class="canvas-wrapper">
+        <canvas id="game-canvas"></canvas>
+        <div id="damage-overlay"></div>
+    </div>
+    
     
     <img src="images/treasure.png" id="treasure" style="display:none">
     <img src="images/dungeon-background2.png" id="background" style="display:none">
@@ -290,9 +294,9 @@
             ctx.fillText("use gamepad", canvas.width / 2, 360)
             document.addEventListener("keydown", keyDownHandler, false);
             document.addEventListener("keyup", keyUpHandler, false);
-            canvas.addEventListener("touchstart", changeTouchPosition, false);
-            canvas.addEventListener("touchmove", changeTouchPosition, false);
-            canvas.addEventListener("touchend", function(){touchControls= false});
+            document.getElementById("damage-overlay").addEventListener("touchstart", changeTouchPosition, false);
+            document.getElementById("damage-overlay").addEventListener("touchmove", changeTouchPosition, false);
+            document.getElementById("damage-overlay").addEventListener("touchend", function(){touchControls= false});
             touchBTNStart.addEventListener("click", () => {
                 if (!touchBTNStart.disabled) {
                     touchBTNStart.disabled = true;
@@ -627,8 +631,14 @@
         function handleInvincibility() {
             if (!player1.invincibility) {
                 lives -= 1;
+                document.getElementById("damage-overlay").style.opacity = 0.3
                 player1.invincibility = true;
-                setTimeout(function () { player1.invincibility = false }, 700);
+                setTimeout(function() {
+                    document.getElementById("damage-overlay").style.opacity = 0
+                 }, 200)
+                setTimeout(function () { 
+                    player1.invincibility = false  
+                 }, 700);
             }
         }
 
@@ -1090,6 +1100,10 @@
         function lavaCollision() {
             if (player1.x > 60 && !carriedByBridge && player1.x < 260) {
                 lives -= 1;
+                document.getElementById("damage-overlay").style.opacity = 0.3
+                setTimeout(function() {
+                    document.getElementById("damage-overlay").style.opacity = 0
+                 }, 200)
                 if (lives >= 1 && !blockMovementLeft){
                     blockMovementLeft = true
                     setTimeout(()=>{blockMovementLeft = false}, 500)
