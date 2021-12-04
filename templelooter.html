@@ -80,8 +80,16 @@
         <button class="touch-BTN" id="touch-BTN-start">START</button>
     </center>
 
-
     <script>
+
+        window.addEventListener("gamepad1Connected", function(e) {
+        
+        console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+            e.gamepad.index, e.gamepad.id,
+            e.gamepad.buttons.length, e.gamepad.axes.length);
+        })
+
+
         const canvas = document.getElementById("game-canvas");
         const ctx = canvas.getContext("2d");
         let aPressed, sPressed, wPressed, dPressed = false;
@@ -272,12 +280,14 @@
             ctx.textAlign = "center";
             ctx.font = "20px pixelFont";
             ctx.fillStyle = "white";
-            ctx.fillText("Collect 🗝 x 5", canvas.width / 2, 300);
-            ctx.fillText("Controls", canvas.width / 2, 70);
-            ctx.fillText("W = UP", canvas.width / 2, 120);
-            ctx.fillText("A = Left", canvas.width / 2, 150);
-            ctx.fillText("D = Right", canvas.width / 2, 180);
-            ctx.fillText("S = DOWN", canvas.width / 2, 210);
+            ctx.fillText("Collect 🗝 x 5", canvas.width / 2, 50);
+            ctx.fillText("Controls", canvas.width / 2, 120);
+            ctx.fillText("W = UP", canvas.width / 2, 170);
+            ctx.fillText("A = Left", canvas.width / 2, 200);
+            ctx.fillText("D = Right", canvas.width / 2, 230);
+            ctx.fillText("S = DOWN", canvas.width / 2, 260);
+            ctx.fillText("or", canvas.width / 2, 310)
+            ctx.fillText("use gamepad", canvas.width / 2, 360)
             document.addEventListener("keydown", keyDownHandler, false);
             document.addEventListener("keyup", keyUpHandler, false);
             canvas.addEventListener("touchstart", changeTouchPosition, false);
@@ -504,6 +514,10 @@
 
 
         function movePlayer() {
+            let gamepad1Connected = false
+            if (navigator.getGamepads()[0] !== null) {
+                gamepad1Connected = true
+            }
 
             if (aPressed && player1.x > 0) {
                 if (player1.x > obstacle.x + obstacle.width && player1.x < obstacle.x + obstacle.width) {
@@ -513,15 +527,37 @@
                 }
 
             }
+            if (gamepad1Connected && navigator.getGamepads()[0].buttons[14].pressed && player1.x > 0) {
+                if (player1.x > obstacle.x + obstacle.width && player1.x < obstacle.x + obstacle.width) {
+                    player1.x == obstacle.x + obstacle.width;
+                } else {
+                    player1.x -= 2;
+                }
+
+            }
+
             if (dPressed && player1.x < 9 * canvas.width / 10 && !isCollision.x) {
                 player1.x += 2;
             }
+            if (gamepad1Connected && gamepad1Connected && navigator.getGamepads()[0].buttons[15].pressed && player1.x < 9 * canvas.width / 10 && !isCollision.x) {
+                player1.x += 2;
+            }
+
             if (wPressed && player1.y > 0) {
                 player1.y -= 2;
             }
+            if (gamepad1Connected && navigator.getGamepads()[0].buttons[12].pressed && player1.y > 0) {
+                player1.y -= 2;
+            }
+
             if (sPressed && player1.y < 9 * canvas.height / 10) {
                 player1.y += 2;
             }
+
+            if (gamepad1Connected && navigator.getGamepads()[0].buttons[13].pressed && player1.y < 9 * canvas.height / 10) {
+                player1.y += 2;
+            }
+
             if (isCollision.x && kickback < 0) {
                 player1.x += kickback;
                 kickback -= 1;

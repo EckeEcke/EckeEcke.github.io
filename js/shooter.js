@@ -305,6 +305,12 @@ window.onload = function () {
     }
   });
   intervalStartscreen = setInterval(displayStartscreen, 500);
+  listenForStart = setInterval(()=>{
+    let gamepadConnected = navigator.getGamepads()[0] !== null
+    if (gamepadConnected && !sPressed && navigator.getGamepads()[0].buttons[9].pressed){
+      startGame(moveAsteroids)
+      sPressed = true
+    }}, 1000/30)
 
 }
 
@@ -512,7 +518,8 @@ function moveBackground() {
 }
 
 function moveShip() {
-  if (aPressed) {
+  let gamepadConnected = navigator.getGamepads()[0] !== null
+  if (aPressed || (gamepadConnected && navigator.getGamepads()[0].buttons[14].pressed )) {
     spaceshipX -= 4;
     canonX -= 4;
   }
@@ -521,7 +528,7 @@ function moveShip() {
     canonX = 20;
   }
 
-  if (dPressed) {
+  if (dPressed || (gamepadConnected && navigator.getGamepads()[0].buttons[15].pressed )) {
     spaceshipX += 4;
     canonX += 4;
   }
@@ -582,7 +589,8 @@ function keyUpHandler(event) {
 
 
 function shoot() {
-  if (wPressed && !shotFired) {
+  let gamepadConnected = navigator.getGamepads()[0] !== null
+  if ((wPressed && !shotFired) || (gamepadConnected && navigator.getGamepads()[0].buttons[0].pressed && !shotFired)) {
     shotFired = true;
     shotX = canonX - 5;
     shotY = canonY;
@@ -825,7 +833,7 @@ function displayGameoverScreen() {
       document.getElementById("name-input").style.display = "block";
       document.getElementById("name-input").focus()
       if (isHighscore) {
-        canvasContext.fillText("New Highscore", 72, 200);
+        canvasContext.fillText("New Highscore", 72, 100);
       }
       isHighscore = false;
       gameSpeed = 40;
