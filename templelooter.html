@@ -294,9 +294,9 @@
             ctx.fillText("use gamepad", canvas.width / 2, 360)
             document.addEventListener("keydown", keyDownHandler, false);
             document.addEventListener("keyup", keyUpHandler, false);
-            document.getElementById("damage-overlay").addEventListener("touchstart", changeTouchPosition, false);
-            document.getElementById("damage-overlay").addEventListener("touchmove", changeTouchPosition, false);
-            document.getElementById("damage-overlay").addEventListener("touchend", function(){touchControls= false});
+            canvas.addEventListener("touchstart", changeTouchPosition, false);
+            canvas.addEventListener("touchmove", changeTouchPosition, false);
+            canvas.addEventListener("touchend", function(){touchControls= false});
             touchBTNStart.addEventListener("click", () => {
                 if (!touchBTNStart.disabled) {
                     touchBTNStart.disabled = true;
@@ -511,8 +511,8 @@
 
         function changeTouchPosition(event) {
             touchControls = true;
-            touchX = event.targetTouches ? event.targetTouches[0].pageX - document.getElementById("damage-overlay").offsetLeft : event.offsetX;
-            touchY = event.targetTouches ? event.targetTouches[0].pageY - document.getElementById("damage-overlay").offsetTop : event.offsetY;
+            touchX = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX;
+            touchY = event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY;
             console.log(touchX);
         }
 
