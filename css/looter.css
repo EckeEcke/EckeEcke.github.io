@@ -22,7 +22,6 @@ body {
 
 canvas {
     display: block;
-    margin: 30px auto;
 }
 
 .canvas-wrapper {
