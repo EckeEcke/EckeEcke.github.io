@@ -41,8 +41,12 @@ nav {
 
 canvas {
   display: none;
-  margin: 0px auto 0px auto;
-  border: 2px solid white;
+  margin: 0px auto ;
+  border: 5px solid white;
+}
+
+input[type="radio"] {
+  transform: scale(1.5);
 }
 
 
@@ -58,16 +62,18 @@ article {
   text-align: justify;
   font-size: 1.2em;
   padding: 0 30px;
+  max-width: 700px;
+  margin: 10px auto;
 }
 
-#description {
-  width: 70%;
-  margin: 10px auto;
+#game-settings {
+  margin: 3rem auto;
 }
 
 h2 {
   color: white;
-  margin: 0px auto;
+  text-align: center;
+  margin-top: 3rem;
 }
 
 
@@ -161,6 +167,7 @@ hr {
   border-style: none;
   display: block;
   transition: .3s;
+  margin: 3rem auto;
 }
 
 #start-button:hover {

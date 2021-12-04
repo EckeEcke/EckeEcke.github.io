@@ -9,10 +9,6 @@
 
 <body>
 
-  <a href="index" style="display: block">
-    <img id="logo" src="images/logo-chris.png">
-  </a>
-
   <button onclick="soundControl()" id="sound-button">&#128266;</button>
 
 
@@ -63,39 +59,23 @@
     </ul>
   </div>
 
-
-    <div>
-      <br><br>
-      <center>
-        <h2>Pong</h2>
-      </center>
-      <br><br>
-    </div>
+    <h2>Pong</h2>
 
     <canvas id="game-canvas" width="800px" height="600px">
     </canvas>
     <br>
     <article class="controls">
-      Controls P1: "W" and "S" | Controls P2: "O" and "L"<br>
+      Controls P1: WASD | Controls P2: ARROWKEYS<br>
 
-      <br><br>
-
-      <center>
-        <button id="start-button" onclick="startGame()">
-          &#127955; Start &#127955;
-        </button>
-      </center>
-
-      <br><br>
       <div id="game-settings">
-        <input class="option-input" type="color" id="color-picker-p1" value="#ed3d0d"><label>&nbsp Choose color
-          P1</label>
+        <input class="option-input" type="color" id="color-picker-p1" value="#ed3d0d">
+        <label>&nbsp Choose color P1</label>
         <br>
-        <input class="option-input" type="color" id="color-picker-p2" value="#26ed17"><label>&nbsp Choose color
-          P2</label>
+        <input class="option-input" type="color" id="color-picker-p2" value="#26ed17">
+        <label>&nbsp Choose color P2</label>
         <br>
-        <input class="option-input" type="range" id="game-speed" min="100" max="200" value="100"><label>&nbsp Set
-          gamespeed &nbsp</label>
+        <input class="option-input" type="range" id="game-speed" min="100" max="200" value="100">
+        <label>&nbsp Set gamespeed &nbsp</label>
         <br><br>
         <input class="playmode-input" name="playmode" id="1player-mode" type="radio" checked>
         <label>1 Player &nbsp</label>
@@ -103,15 +83,15 @@
         <label>2 Player</label>
       </div>
 
-
-
+      <button id="start-button" onclick="startGame()">
+        &#127955; Start &#127955;
+      </button>
 
     </article>
 
     <article id="description">
-      <br><br>
       To start with Javascript I took a Udemy course on how to build Pong using Javascript and HTML Canvas.
-      I implemented a collision detection, sounds and an AI opponent.
+      I implemented a collision detection, sounds, an AI opponent and gamepad support via gamepad API.
     </article>
 
 
