@@ -110,9 +110,11 @@ input::placeholder {
 
 article {
   color: white;
-  text-align: center;
+  text-align: justify;
   font-size: 1.2em;
-  width: 60%;
+  width: 400px;
+  position: absolute;
+  left: calc(100% + 3rem);
 }
 
 h2 {
@@ -169,5 +171,11 @@ h2 {
   #hamburger {
     top: 6px;
     right: 6px;
+  }
+}
+
+@media (max-width: 1199px) {
+  article {
+    display: none;
   }
 }

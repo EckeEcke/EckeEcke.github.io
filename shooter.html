@@ -12,11 +12,19 @@
   <div style="padding: 48px 0;">
     <h2 style="margin: 32px auto; text-align: center">Space Shooter</h2>
     <br>
-    <div id="canvas-wrapper" style= "width: 400px; height: 600px;position: relative; margin: 0 auto">
+    <div id="canvas-wrapper" style= "width: 400px; height: 600px;position: relative; margin: 0 auto;">
       <canvas id="game-canvas" width="400px" height="600px" style="position: absolute; top: 0; left: 0"></canvas>
       <form id="highscore-form" autocomplete="off">
         <input type="text" id="name-input" placeholder="Enter Name" maxlength="10">
       </form>
+      <article id="about">
+        <p>
+          I built this game using HTML Canvas and Vanilla JavaScript for the frontend. In the backend I run my own Node JS application linked to my SQL database, both running on Heroku. Via Node I post and receive highscores from my database. I implemented gamepad support via gamepad API.
+        </p>
+        <p>
+          Hit multiple enemies in a row without missing a shot to get a score multiplier. 10 hits in a row doubles the points you earn. 20 hits give you a triple bonus. The game consists of three looping levels with increasing speed.
+        </p>
+      </article>
     </div>
   </div>
 
