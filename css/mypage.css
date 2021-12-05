@@ -232,23 +232,6 @@ address {
   padding: 10px;
 }
 
-.submit-button:hover {
-  box-shadow: 1px -2px black;
-  transition: 500ms;
-  background-color: rgba(255, 255, 255, 0.705);
-}
-
-#logo {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  height: 54px;
-  filter: invert(1);
-  z-index: 1;
-}
-
-
-
 #hamburger {
   position: absolute;
   top: 8px;
@@ -346,22 +329,6 @@ address {
   margin: 0;
 }
 
-#homepage-CTA-BTN {
-  background-color: #e57003;
-  display: block;
-  margin: 0 auto;
-  color: white;
-  padding: 10px;
-  border-style: none;
-  width: 200px;
-  transition: 0.5s;
-}
-
-#homepage-CTA-BTN:hover {
-  background-image: linear-gradient(to right, orange, orange, orange, orange, orange);
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  transform: scale(1.1);
-}
 
 #homepage-running-mario {
   position: fixed;
@@ -434,31 +401,6 @@ address {
 
 
 
-#clock {
-  background-color: black;
-  color: rgb(34, 252, 40);
-  font-size: 3em;
-  width: 100%;
-  font-family: digital;
-  text-align: center;
-  padding: 17px 0 10px 0;
-}
-
-#clock-description {
-  width: 320px;
-  background-color: black;
-  color: white;
-  padding: 0 10px;
-}
-
-#js-clock {
-  width: 320px;
-  height: 360px;
-  background-color: black;
-  margin: 10px;
-}
-
-
 .description-text {
   color: white;
   font-size: 1em;
@@ -487,11 +429,16 @@ address {
 :not(.uil-times):not(.uil-bars).uil,
   .iconify,
   .xing-icon {
-    font-size: 3rem;
+    font-size: 4rem;
     margin: 1.5rem 1.5rem;
+    justify-self: center;
   }
 
-
+  article div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+  }
 
 
 @keyframes arrow-animation {
@@ -564,6 +511,7 @@ address {
   .info-content-tile svg {
     font-size: 4rem;
     margin: 1.5rem 1rem;
+    justify-self: center;
   }
 
 
@@ -588,12 +536,22 @@ address {
 
 }
 
+@media (min-width: 577px) {
+  article div {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (min-width: 769px) {
   :not(.uil-times):not(.uil-bars).uil,
   .iconify,
   .xing-icon {
     font-size: 4rem;
     margin: 1.5rem 1.5rem;
+  }
+
+  article div {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
