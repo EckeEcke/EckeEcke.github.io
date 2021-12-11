@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
     <title>Document</title>
     <style>
         * {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Kanit', sans-serif;
         }
 
         body {
@@ -40,12 +40,12 @@
         }
 
         #textbox {
-            min-height: 50px;
-            opacity: 0.95;
+            height: 100vh;
             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
             position: fixed;
-            top: 12px;
-            left: 12px;
+            top: 0;
+            left: 0;
+            overflow: hidden;
         }
 
         .textbox-inner {
@@ -53,8 +53,8 @@
             padding: 32px;
             width: 200px;
             background: white;
-            overflow-y: scroll;
-            max-height: calc(100vh - 64px)
+            overflow-y: hidden;
+            height: 100%;
         }
 
         h1 {
@@ -73,7 +73,11 @@
             flex-direction: column;
             gap: 32px;
             justify-content: center;
-            margin-bottom: 16px;
+            margin: 16px 0;
+        }
+
+        .input-wrapper button {
+            background: #0000FF;
         }
 
         .range-wrapper {
@@ -98,7 +102,6 @@
         }
 
         button {
-            background: orange;
             border: none;
             color: white;
             text-shadow: 1px 1px 2px black;
@@ -106,13 +109,12 @@
             border-radius: 8px;
             display: inline-block;
             transition: .3s;
-            min-width: 200px;
-            max-width: 200px;
+            font-size: 1rem;
         }
 
         button:hover {
             transform: scale(0.9);
-            background: darkorange;
+            background: #0000FF;
         }
 
         button:active {
@@ -127,8 +129,11 @@
                 top: 16px;
                 left: 16px;
                 display: none;
-                min-width: 60px;
-                max-width: 60px;
+                background: none;
+                padding: 0;
+                font-size: 2rem;
+                height: auto;
+                width: auto;
             }
 
         #close-btn {
@@ -141,6 +146,7 @@
             min-width: 32px;
             max-width: 32px;
             padding: 0;
+            font-size: 2rem;
         }
 
         hr {
@@ -178,14 +184,14 @@
     <div id="content-wrapper">
         <div id="content">
             <h1>Three JS Demo</h1>
-            <button id="accordion-btn" href="#">Menu</button>
+            <article>Scroll or click the object</article>
+            <button id="accordion-btn" href="#">
+                <span class="iconify" data-icon="ant-design:menu-outlined" style="color: white;"></span>
+            </button>
             <div id="textbox">
                 <div class="textbox-inner">
-                    <button id="close-btn">Close</button>
+                    <button id="close-btn"><span class="iconify" data-icon="eva:close-circle-fill"></span></button>
                     <div class="input-wrapper">
-                        <p>Scroll: rotate</p>
-                        <p>Click: change color</p>
-                        <hr>
                         <div class="range-wrapper">
                             <label for="scale-input">Change size</label>
                             <input id="scale-input" type="range" min="1" max="5" oninput="changeScale()">
@@ -384,6 +390,7 @@
         }
         animate();
     </script>
+    <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
 </body>
 
 </html>
