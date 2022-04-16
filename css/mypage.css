@@ -279,7 +279,7 @@ address {
   opacity: 0.99;
   right: -100%;
   top: 0px;
-  padding: 50px 40px 100px 0px;
+  padding: 50px 40px 0px 0px;
   z-index: 2500;
   height: 500px;
   min-height: 100vh;
@@ -287,10 +287,15 @@ address {
   transition: 0.5s;
 }
 
+#burger-menu ul {
+  overflow-y: auto;
+  height: 100%;
+}
+
 #burger-menu a {
   text-decoration: none;
   color: black;
-  font-size: 0.9em;
+  font-size: 1rem;
   transition: 0.5s;
 }
 
@@ -298,17 +303,12 @@ address {
   list-style: none;
   width: 300px;
   max-width: 60vw;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
   transition: 0.5s;
 }
 
-#burger-menu li:hover {
-  background: linear-gradient(to right bottom, #e57003, #e57009);
-  transform: translateX(-10px)
-}
-
 #burger-menu li:hover a {
-  color: white;
+  font-weight: 900;
 }
 
 #backdrop {
