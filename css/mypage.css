@@ -279,10 +279,11 @@ address {
   opacity: 0.99;
   right: -100%;
   top: 0px;
-  padding: 50px 0 100px;
+  padding: 50px 0 0;
   z-index: 2500;
   height: 500px;
   min-height: 100vh;
+  min-width: 300px;
   border-left: 1px solid black;
   transition: 0.5s;
 }
@@ -290,6 +291,10 @@ address {
 #burger-menu ul {
   overflow-y: auto;
   height: 100%;
+}
+
+#burger-menu li:last-of-type {
+  margin-bottom: 50px!important;
 }
 
 #burger-menu a {
