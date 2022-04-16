@@ -5,13 +5,13 @@ let backdrop = document.getElementById("backdrop");
 function toggleBurgermenu(){
   showBurgermenu = !showBurgermenu;
   if (showBurgermenu) {
-    burgerMenu.style.transform = "translateX(0)";
+    burgerMenu.style.right = "0px";
     backdrop.style.display = "block"
     document.body.style.overflowY = "hidden"
     document.body.style.height = "100%"
   }
   else {
-    burgerMenu.style.transform = "translateX(100%)";
+    burgerMenu.style.right = "-100%";
     backdrop.style.display = "none"
     document.body.style.overflowY = "auto"
     document.body.style.height = "auto"

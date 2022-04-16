@@ -277,7 +277,7 @@ address {
   position: fixed;
   background-color: white;
   opacity: 0.99;
-  right: 0px;
+  right: -100%;
   top: 0px;
   padding: 50px 40px 100px 0px;
   z-index: 2500;
@@ -285,7 +285,6 @@ address {
   min-height: 100vh;
   border-left: 1px solid black;
   transition: 0.5s;
-  transform: translateX(100%);
 }
 
 #burger-menu a {
