@@ -37,7 +37,7 @@ const io = new IntersectionObserver(active);
 
 
 const footer = document.getElementById("footer");
-const aboutTile = document.getElementById("about-tile");
+const mainContent = document.getElementById("main-content");
 const body = document.getElementById("body");
 const scrollTopBTN = document.getElementById("scroll-back-top-BTN");
 
@@ -45,8 +45,8 @@ function scrollToFooter(){
   footer.scrollIntoView({behavior: "smooth"});
 }
 
-function scrollToAbout(){
-  aboutTile.scrollIntoView({behavior: "smooth"});
+function scrollToMainContent(){
+  mainContent.scrollIntoView({behavior: "smooth"});
 }
 
 function scrollToTop(){
