@@ -618,6 +618,10 @@ address {
   width: 100%;
 }
 
+.demo-section article {
+  margin: 1rem 0;
+}
+
 @media (min-width: 1024px){
   .demo-section,
   .icons-section {
@@ -666,10 +670,19 @@ address {
 }
 
 .btn-primary {
-  background-color: orange!important;
+  background: linear-gradient(-45deg, orange, darkorange);
   border-color: darkorange!important;
   text-transform: uppercase;
   font-weight:bold;
+  padding: 1rem;
+  letter-spacing: 0.1rem;
+  font-family: Ubuntu;
+}
+
+@media (max-width:576px){
+  .btn-primary {
+    width: 100%;
+  }
 }
 
 .btn-primary:hover,
