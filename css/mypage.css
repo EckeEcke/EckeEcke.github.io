@@ -117,7 +117,7 @@ address {
   text-align: center;
   color: white;
   max-width: 600px;
-  text-shadow: 2px 2px rgba(0, 0, 0, 0.4);
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.4);
 }
 
 .header-content-wrapper {
@@ -326,6 +326,8 @@ address {
   color: black;
   font-size: 1rem;
   transition: 0.5s;
+  font-weight: 300;
+  opacity: 0.9;
 }
 
 #burger-menu li {
@@ -338,6 +340,7 @@ address {
 
 #burger-menu li:hover a {
   font-weight: 900;
+  color: darkorange;
 }
 
 #backdrop {
@@ -381,7 +384,7 @@ address {
 
 #scroll-arrow {
   width: 32px;
-  filter: drop-shadow(2px 2px rgb(0 0 0 / 0.4));
+  filter: drop-shadow(1px 1px rgb(0 0 0 / 0.4));
 }
 
 #scroll-arrow:hover {
