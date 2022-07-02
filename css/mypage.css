@@ -591,7 +591,10 @@ address {
 
 @media (min-width: 1024px) {
   h1 {
-    font-size: 52pt;
+    font-size: 6rem;
+  }
+  .header-content p {
+    font-size: 1.2rem;
   }
 
   h2 {
