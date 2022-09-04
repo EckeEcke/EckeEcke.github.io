@@ -114,11 +114,13 @@ address {
 
 
 .header-content * {
-  text-align: center;
+  text-align: justify;
   color: white;
-  max-width: 600px;
+  max-width: 590px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.4);
 }
+
+
 
 .header-content-wrapper {
   display: flex;
@@ -131,7 +133,10 @@ address {
   .header-content-wrapper {
     flex-direction: row;
     max-width: 992px;
-  } 
+  }
+  .header-content p {
+    padding: 0 8px;
+  }
 }
 
 @media (min-width: 1200px){
@@ -307,7 +312,7 @@ address {
   z-index: 2500;
   height: 500px;
   min-height: 100vh;
-  min-width: 300px;
+  min-width: 310px;
   border-left: 1px solid black;
   transition: 0.5s;
 }
@@ -315,6 +320,7 @@ address {
 #burger-menu ul {
   overflow-y: auto;
   height: 100%;
+  padding-left: 20px;
 }
 
 #burger-menu li:last-of-type {
@@ -591,10 +597,11 @@ address {
 
 @media (min-width: 1024px) {
   h1 {
-    font-size: 6rem;
+    font-size: 100px;
   }
   .header-content p {
     font-size: 1.2rem;
+    line-height: 2rem;
   }
 
   h2 {
