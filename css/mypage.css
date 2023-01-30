@@ -378,7 +378,7 @@ address {
   position: fixed;
   height: 60px;
   width: 50px;
-  left: -60px;
+  transform: translateX(-60px);
   bottom: -5px;
   overflow: hidden;
   z-index: 5;

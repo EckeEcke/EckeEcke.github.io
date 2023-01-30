@@ -67,7 +67,7 @@ const marioBox = document.getElementById("homepage-running-mario");
 let marioLeft = -60;
 
 function movingBox(){
-  marioBox.style.left = marioLeft + "px";
+  marioBox.style.transform = `translateX(${marioLeft}px)`;
   if(marioLeft<window.innerWidth){
     marioLeft += 2;
   }
@@ -86,7 +86,7 @@ let sheetMovement = 50;
 
 function animateMario(){
   spritesheetPosition += sheetMovement;
-  homepageMario.style.right = -spritesheetPosition + "px";
+  homepageMario.style.transform = `translateX(${-spritesheetPosition}px)`;
 
   if(spritesheetPosition == 100){
     sheetMovement = -50;
