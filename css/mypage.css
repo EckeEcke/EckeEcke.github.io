@@ -84,6 +84,38 @@ h3 {
   animation-delay: 0.5s;
 }
 
+#header-shape-1, #header-shape-2, #header-shape-3 {
+  opacity: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: transparent;
+  width: 0;
+  height: 0;
+  border-right: 100vw solid rgba(255,255,255,0.1);
+  border-top: 20vh solid transparent;
+}
+
+#header-shape-1 {
+  animation: 10s ease-in infinite shapes;
+}
+
+#header-shape-2 {
+  border-top: 30vh solid transparent;
+  border-bottom: 100vh solid transparent;
+  animation: 12s ease-in infinite shapes;
+  animation-delay: 2s; 
+}
+
+#header-shape-3 {
+  border-top: 60vh solid transparent;
+  border-bottom: 80vh solid transparent;
+  border-right: 0;
+  border-left: 160vw solid rgba(255,255,255,0.1);
+  animation: 10s ease-in infinite shapes;
+  animation-delay: 3s; 
+}
+
 footer {
   background: black;
   color: white;
@@ -728,4 +760,13 @@ hr {
   100% {
       background-position: 0% 50%;
   }
+}
+
+@keyframes shapes {
+  0% {opacity: 0;}
+  30% {opacity: 0;}
+  50% {opacity: 0.4;}
+  60% {opacity: 0.4;}
+  80% {opacity: 0;}
+  100% {opacity: 0;}
 }
