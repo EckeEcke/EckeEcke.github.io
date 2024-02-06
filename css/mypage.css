@@ -685,7 +685,7 @@ address {
     flex-direction: row;
     gap: 6rem;
   }
-  .demo-section:nth-child(odd){
+  .demo-section:nth-child(even){
     flex-direction: row-reverse;
   }
   .demo-section div,
