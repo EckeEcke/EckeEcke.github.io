@@ -521,24 +521,16 @@ address {
 
 
 @keyframes arrow-animation {
-  0% {
+  0%, 32% {
     transform: translateY(0)
   }
 
-  8% {
+  8%, 24% {
     transform: translateY(10px)
   }
 
   16% {
     transform: translateY(20px)
-  }
-
-  24% {
-    transform: translateY(10px)
-  }
-
-  32% {
-    transform: translateY(0)
   }
 }
 
