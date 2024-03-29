@@ -329,7 +329,8 @@ function displayStartscreen() {
       .then(response => response.json())
       .then(data => highscores = data)
       .then(() => highScore = highscores[0].Score)
-      .then(highscoresLoaded = true);
+      .then(highscoresLoaded = true)
+      .catch(() => {})
   }
   if (timer % 10 == 0 && highscoresLoaded) {
     showHighscores = !showHighscores;
@@ -379,7 +380,6 @@ function displayStartscreen() {
 }
 
 function startGame(round) {
-  document.getElementById("about").style.display = "none"
   clearInterval(intervalStartscreen);
   spaceshipAnimated = setInterval(spaceshipAnimation, 1000 / 120);
   playSound(spaceshipSound);
