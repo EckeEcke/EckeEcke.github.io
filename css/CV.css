@@ -51,13 +51,6 @@ footer li {
   list-style: none;
 }
 
-.social-icon {
-  height: 3em;
-  width: auto;
-  filter: invert(1);
-  padding: 10px;
-}
-
 .cv-col {
   background-color: white;
   padding: 38px;

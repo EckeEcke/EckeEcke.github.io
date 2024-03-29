@@ -177,28 +177,6 @@ address {
   }
 }
 
-
-.profile-pic {
-  display: block;
-  width: 80%;
-  height: auto;
-  margin: 0 auto;
-  border-bottom-left-radius: 3rem;
-  border-top-right-radius: 3rem;
-}
-
-.social-icon {
-  height: 3.2em;
-  width: auto;
-  margin: 20px;
-}
-
-.social-icon:hover {
-  filter: invert(0.2);
-  transform: scale(1.1);
-  transition: 0.5s;
-}
-
 .index-icon {
   filter: invert(1);
   width: 80%;
@@ -741,6 +719,14 @@ address {
 
 hr {
   opacity: 0;
+}
+
+.social-icon {
+  transition: all 0.3s;
+}
+
+.social-icon:hover {
+  transform: scale(1.1);
 }
 
 @keyframes gradient {
