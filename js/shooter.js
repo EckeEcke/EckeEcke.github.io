@@ -217,7 +217,50 @@ let shotcolor;
 
 let loadingAnimation = ".";
 
-let highscores = [];
+let highscores = [
+{
+  Player: "Champion",
+  score: 1000,
+},
+{
+  Player: "Chris",
+  score: 900,
+},
+{
+  Player: "Legend",
+  score: 800,
+},
+{
+  Player: "Gamer",
+  score: 700,
+},
+{
+  Player: "Peter",
+  score: 600,
+},
+{
+  Player: "Han Solo",
+  score: 500,
+},
+{
+  Player: "Kirk",
+  score: 400,
+},
+{
+  Player: "Lorem Ipsum",
+  score: 300,
+},
+{
+  Player: "Foo",
+  score: 200,
+},
+{
+  Player: "Noob",
+  score: 100,
+}
+
+
+];
 let showHighscores = false;
 let highscoresLoaded = false;
 let timer = 0;
@@ -288,7 +331,6 @@ window.onload = function () {
       .then(() => highScore = highscores[0].score)
       .then(highscoresLoaded = true)
       .then(gameLoaded += 10)
-      .then(console.log(highscores))
   }
 
   loadImages();
