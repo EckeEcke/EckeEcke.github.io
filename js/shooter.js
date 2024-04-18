@@ -282,7 +282,7 @@ function playSound(sound) {
 
 window.onload = function () {
   if (!highscoresLoaded) {
-    fetch('https://highscore-db.herokuapp.com/')
+    fetch('https://backend-spaceshooter.onrender.com/')
       .then(response => response.json())
       .then(data => highscores = data)
       .then(() => highScore = highscores[0].Score)
@@ -325,7 +325,7 @@ function displayHighscores() {
 function displayStartscreen() {
   timer += 1;
   if (!highscoresLoaded) {
-    fetch('https://highscore-db.herokuapp.com/')
+    fetch('https://backend-spaceshooter.onrender.com/')
       .then(response => response.json())
       .then(data => highscores = data)
       .then(() => highScore = highscores[0].Score)
@@ -783,7 +783,7 @@ document.getElementById("highscore-form").onsubmit = function (event) {
   }
   document.getElementById("name-input").value = "";
   const data = { Player: player, Score: score };
-  fetch('https://highscore-db.herokuapp.com/post', {
+  fetch('https://backend-spaceshooter.onrender.com/post', {
     method: "post",
     headers: {
       'Content-Type': 'application/json',
