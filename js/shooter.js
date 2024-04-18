@@ -201,7 +201,7 @@ let backgroundScrollPosition = -300;
 let intervalSnake;
 let intervalBackground;
 
-let highScore;
+let highScore = 1000;
 let isHighscore = false;
 let soundsMuted = false;
 let gameLoaded = 0;
