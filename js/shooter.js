@@ -447,7 +447,6 @@ function setScore() {
     isHighscore = true;
   }
   multiplier = Math.floor(streak / 10) + 1 <= 3 ? Math.floor(streak / 10) + 1 : 3;
-  console.log(multiplier)
   canvasContext.textAlign = "start";
   canvasContext.font = "24px retro";
   canvasContext.fillStyle = "limegreen";
@@ -510,7 +509,6 @@ function moveAsteroids() {
   }
 }
 function drawShipAndShot() {
-  console.log(streak)
   if (multiplier <= 1) {
     canvasContext.fillStyle = "limegreen";
   }
@@ -837,7 +835,6 @@ document.getElementById("highscore-form").onsubmit = function (event) {
 
   })
     .then(response => response.json())
-    .then(data => console.log(data))
     .catch(err => console.log(err));
 }
 
