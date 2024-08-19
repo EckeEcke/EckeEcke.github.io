@@ -612,6 +612,10 @@ address {
   width: 100%;
 }
 
+.demo-section img {
+  border-radius: 0.5rem;
+}
+
 .demo-section article {
   margin: 1rem 0;
   text-wrap: balance;
@@ -664,6 +668,7 @@ address {
 .btn-primary {
   background: linear-gradient(-45deg, orange, darkorange);
   border-color: darkorange!important;
+  border-radius: 2rem;
   text-transform: uppercase;
   font-weight:bold;
   padding: 0.75rem;
