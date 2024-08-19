@@ -77,7 +77,7 @@ h3 {
   animation: gradient 15s ease infinite;
 }
 
-#header-image h1, #header-image h2, #scroll-arrow-div {
+#header-image h1, #scroll-arrow-div {
   opacity: 0;
   animation: show-title-animation 2s ease-out;
   animation-fill-mode: forwards;
