@@ -368,7 +368,7 @@ address {
   right: -100px;
   height: 60px;
   width: 150px;
-  background-color: none;
+  background-color: transparent;
   cursor: pointer;
   -webkit-user-drag: none;
   user-select: none;
