@@ -328,7 +328,7 @@ window.onload = function () {
     fetch('https://backend-spaceshooter.onrender.com/')
       .then(response => response.json())
       .then(data => highscores = data)
-      .then(() => highScore = highscores[0].score)
+      .then(() => highScore = highscores[0].Score)
       .then(highscoresLoaded = true)
       .then(gameLoaded += 10)
   }
@@ -370,7 +370,7 @@ function displayStartscreen() {
     fetch('https://backend-spaceshooter.onrender.com/')
       .then(response => response.json())
       .then(data => highscores = data)
-      .then(() => highScore = highscores[0].score)
+      .then(() => highScore = highscores[0].Score)
       .then(highscoresLoaded = true)
       .catch(() => {})
   }
@@ -414,7 +414,7 @@ function displayStartscreen() {
       canvasContext.textAlign = "left";
       canvasContext.fillText(i + 1 + " " + highscores[i].Player, 20, i * 50 + 140);
       canvasContext.textAlign = "right";
-      canvasContext.fillText(highscores[i].score, canvas.width - 20, i * 50 + 140);
+      canvasContext.fillText(highscores[i].Score, canvas.width - 20, i * 50 + 140);
     }
 
   }
