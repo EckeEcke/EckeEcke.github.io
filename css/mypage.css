@@ -59,6 +59,31 @@ h3 {
   font-size: 2.5em;
 }
 
+#language-switch {
+  position: absolute;
+  top: 11px;
+  right: 80px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 24px;
+  color: white;
+}
+
+#language-switch .divider-pipe {
+  border: 1px solid white;
+  height: 24px;
+}
+
+#language-switch .language-selector {
+  cursor: pointer;
+}
+
+#language-switch .language-selector.inactive {
+  opacity: 0.6;
+}
+
 #header-image {
   display: flex;
   flex-direction: column;
