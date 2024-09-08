@@ -286,6 +286,7 @@ address {
   border-style: none;
   background: none;
   z-index: 1;
+  transition: all 0.3s;
 }
 
 #close-button {
@@ -294,6 +295,11 @@ address {
   right: 8px;
   padding: 5px;
   border-style: none;
+  transition: all 0.3s;
+}
+
+#close-button:hover {
+  transform: scale(1.05);
 }
 
 #close-button .uil {
@@ -306,6 +312,10 @@ address {
 
 #hamburger:focus {
   outline: none;
+}
+
+#hamburger:hover {
+  transform: scale(1.05);
 }
 
 .line1, .line2, .line3 {
