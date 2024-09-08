@@ -106,7 +106,7 @@ function itsMeMario(){
 }
 
 function updateContent(langData) {
-  document.querySelectorAll('[data-i18n]').forEach(element => {
+  document.querySelectorAll('[data-localization]').forEach(element => {
       const key = element.getAttribute('data-localization')
       element.textContent = langData[key]
   })
