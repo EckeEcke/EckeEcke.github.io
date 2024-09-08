@@ -108,8 +108,9 @@ function itsMeMario(){
 function updateContent(langData) {
   document.querySelectorAll('[data-localization]').forEach(element => {
       const key = element.getAttribute('data-localization')
+      console.log(element, element.textContent)
       element.textContent = langData[key]
-      console.log(langData[key], key)
+      console.log(key, langData)
   })
 }
 
@@ -132,5 +133,5 @@ async function changeLanguage(lang) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  changeLanguage('de')
+  changeLanguage('en')
 })
