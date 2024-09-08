@@ -1,10 +1,8 @@
-
 const canvas = document.getElementById("game-canvas")
 const canvasContext = canvas.getContext("2d")
 const soundBTN = document.getElementById("sound-button")
 const nameInput = document.getElementById("name-input")
 canvasContext.font = '24px retro'
-
 
 const imageSources = {
   playerShip: './images/spaceship.png',
@@ -155,7 +153,7 @@ function drawEnemyShip(obj) {
   }
 }
 function drawEnemyShots(obj, target) {
-  if (obj.x + 20 >= target && obj.x <= target + 20 && obj.shotFired == false && obj.lives >= 1) {
+  if (obj.x + 20 >= target && obj.x <= target + 20 && obj.shotFired === false && obj.lives >= 1) {
     obj.shotX = obj.x
     obj.shotX2 = obj.x + 30
     obj.shotY = obj.y
