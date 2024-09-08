@@ -75,21 +75,21 @@ h1 {
 #burger-menu {
 
     position: fixed;
-    background-color: white;
+    background-color: black;
     opacity: 0.96;
     right: 0px;
     top: 0px;
     padding: 100px 80px 100px 0px;
     z-index: -3000;
     height: 0vh;
-    border-left: 1px solid black;
+    border-left: 1px solid white;
     transition: 0.5s;
     opacity: 0;
 }
 
 #burger-menu a {
     text-decoration: none;
-    color: black;
+    color: white;
     font-size: 1.3em;
     transition: .3s;
 }
@@ -105,7 +105,7 @@ h1 {
 }
 
 #burger-menu li:hover a {
-    color: white;
+    color: red;
 }
 
 .nav-line {
