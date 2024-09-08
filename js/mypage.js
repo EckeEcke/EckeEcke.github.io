@@ -108,9 +108,7 @@ function itsMeMario(){
 function updateContent(langData) {
   document.querySelectorAll('[data-localization]').forEach(element => {
       const key = element.getAttribute('data-localization')
-      console.log(element, element.textContent)
       element.textContent = langData[key]
-      console.log(key, langData)
   })
 }
 
@@ -120,7 +118,6 @@ async function fetchLanguageData(lang) {
 }
 
 async function changeLanguage(lang) {
-  console.log("language switched to ", lang)
   const langData = await fetchLanguageData(lang)
   const selectors = Array.from(document.getElementsByClassName('language-selector'))
   selectors.forEach(selector => {

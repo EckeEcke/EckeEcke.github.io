@@ -107,6 +107,7 @@ h3 {
   animation: show-title-animation 2s ease-out;
   animation-fill-mode: forwards;
   animation-delay: 0.5s;
+  text-align: left;
 }
 
 footer {
@@ -143,6 +144,12 @@ address {
   color: white;
   max-width: 590px;
   text-shadow: 1px 1px rgba(0, 0, 0, 0.4);
+}
+
+@media (min-width: 1024px) {
+  .header-content * {
+    max-width: 750px;
+  }
 }
 
 
