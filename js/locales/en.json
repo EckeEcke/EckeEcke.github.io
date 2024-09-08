@@ -1,0 +1,26 @@
+{
+    "intro": {
+        "headline": "Hi! I'm Chris.",
+        "text": "I am a Frontend Web Developer based in Hamburg. Frontend is my passion. I love coding dynamic stuff that is nice to look at and fun to use. This website serves as a portfolio to present my works and developing skills to everybody who is interested in working with me or just curious. Feel free to check out applications, animations, games and other stuff I built."
+    },
+    "triggerscore": {
+        "description": "On this movie rating portal movies users can rate old movies based on how much these trigger viewers today. I designed and built the page myself including a Node JS server connected to a MySQL database for saving and receiving user ratings. Movie data I receive via TMDB api. Used technologies: Nuxt 3, Tailwind, Node JS, MongoDB.",
+        "cta": "Go to Triggerscore"
+    },
+    "vue-mealplanner": {
+        "description": "This application offers a meal and grocery planner. In the Vue Mealplanner users can add their own receipes and manage a list of grocery items. Ingredients can be added to the grocery list right from the recipe. Data is saved in local storage. The mealplanner is also provied as PWA. I recently migrated the project from Vue 2 with Javascript to Vue 3 using Typescript. Used technologies: Vue 3, Bootstrap, HTML, CSS, Typescript.",
+        "cta": "Go to Vue Mealplanner"
+    },
+    "bav-hub": {
+        "description": "For a freelance job I created the landingpage for bav:hub including a custom carousel and custom slider component. The design for the page was provided in Figma. Used technologies: Nuxt, Tailwind, HTML, Javascript.",
+        "cta": "Go to bav:hub"
+    },
+    "school-fight": {
+        "description": "This game offers turn based battles with different characters and ten levels, including two mini games and a boss fight. The game is mobile friendly and currently playable on itch.io. Used technologies: HTML, CSS, jQuery, Javascript, HTML Canvas.",
+        "cta": "Play School Fight"
+    },
+    "clicky-clicky": {
+        "description": "To try out Websocket I created this small online multiplayer game. If you want to test it, gather a second player or simply open the game in two tabs. 😉 Click the button as fast as you can to win the race. Used technologies: Vue3, NodeJS, Websocket",
+        "cta": "Play Clicky Clicky Run Run"
+    }
+}

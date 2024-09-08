@@ -104,3 +104,22 @@ function itsMeMario(){
   document.getElementById("mario-sound").volume = 0.2;
   document.getElementById("mario-sound").play();
 }
+
+function updateContent(langData) {
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+      const key = element.getAttribute('data-localization')
+      element.textContent = langData[key]
+  })
+}
+
+async function fetchLanguageData(lang) {
+  const response = await fetch(`./locales/${lang}.json`)
+  return response.json()
+}
+
+async function changeLanguage(lang) {
+  const langData = await fetchLanguageData(lang)
+  updateContent(langData)
+}
+
+changeLanguage('de')
