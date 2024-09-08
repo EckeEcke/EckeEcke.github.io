@@ -113,7 +113,7 @@ function updateContent(langData) {
 }
 
 async function fetchLanguageData(lang) {
-  const response = await fetch(`./locales/${lang}.json`)
+  const response = await fetch(`https://eckeecke.github.io/locales/${lang}.json`)
   return response.json()
 }
 
