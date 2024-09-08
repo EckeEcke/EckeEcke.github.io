@@ -119,6 +119,13 @@ async function fetchLanguageData(lang) {
 
 async function changeLanguage(lang) {
   const langData = await fetchLanguageData(lang)
+  const selectors = Array.from(document.getElementsByClassName('language-selector'))
+  selectors.forEach(selector => {
+    selector.classList.remove('inactive')
+    if (selector.dataset.value !== lang) {
+      selector.classList.add('inactive')
+    }
+  })
   updateContent(langData)
 }
 
