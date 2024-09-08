@@ -147,19 +147,21 @@ h2 {
   width: 400px;
 }
 
-#sound-button {
-  display: block;
+#volume-control {
+  display: flex;
+  gap: 8px;
   position: fixed;
-  bottom: 0;
-  right: 0;
-  font-size: 3em;
-  background-color: rgb(0, 0, 0, 0.7);
-  border-style: none;
-  padding: 2px 4px 4px 4px;
+  right: 32px;
+  bottom: 32px;
+  width: 248px;
+  color: white;
 }
 
-#description {
-  display: block;
+.volume-item {
+  width: 22px;
+  min-width: 22px;
+  max-width: 22px;
+  text-align: center;
 }
 
 @media (max-width: 1100px) {

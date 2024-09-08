@@ -158,8 +158,8 @@ function drawEnemyShots(obj, target) {
     obj.shotX2 = obj.x + 30
     obj.shotY = obj.y
     obj.shotFired = true
-    playSound(laserEnemy)
-    laserEnemy.play()
+
+    sounds.laserEnemy.play()
   }
   if (obj.shotFired) {
     obj.shotY += 2
@@ -204,7 +204,6 @@ let intervalBackground
 
 let highScore = 'LOAD...'
 let isHighscore = false
-let soundsMuted = false
 let gameLoaded = 0
 
 const levels = {
@@ -231,10 +230,6 @@ let displayedScreen = 'controls'
 let highscoresLoaded = false
 let timer = 0
 
-function soundControl() {
-  soundsMuted = !soundsMuted
-  soundBTN.innerHTML = soundsMuted ? "&#128263;" : "&#128266;"
-}
 
 function loadImages() {
   images.snakeHead = new Image()
@@ -254,30 +249,26 @@ function loadImages() {
 }
 
 function loadSounds() {
-  laserEnemy = new Audio(soundSources.laserEnemy)
-  laser = new Audio(soundSources.laser)
-  laser.onloadeddata = () => gameLoaded += 10
-  laser2 = new Audio(soundSources.laser2)
-  laser2.onloadeddata = () => gameLoaded += 10
-  laser3 = new Audio(soundSources.laser3)
-  laser3.onloadeddata = () => gameLoaded += 10
-  powerup = new Audio(soundSources.powerup)
-  powerup.onloadeddata = () => gameLoaded += 10
-  alertSound = new Audio(soundSources.alertSound)
-  alertSound.onloadeddata = () => gameLoaded += 10
-  hitSound = new Audio(soundSources.hitSound)
-  hitSound.onloadeddata = () => gameLoaded += 10
-  spaceshipSound = new Audio(soundSources.spaceshipSound)
-  spaceshipSound.onloadeddata = () => gameLoaded += 10
-  loseSound = new Audio(soundSources.loseSound)
-  loseSound.onloadeddata = () => gameLoaded += 10
-  gameMusic = new Audio(soundSources.gameMusic)
-  gameMusic.onloadeddata = () => gameLoaded += 10
-  gameMusic.loop = true
-}
-
-function playSound(sound) {
-  sound.volume = soundsMuted ? 0 : 0.9
+  sounds.laserEnemy = new Audio(soundSources.laserEnemy)
+  sounds.laser = new Audio(soundSources.laser)
+  sounds.laser.onloadeddata = () => gameLoaded += 10
+  sounds.laser2 = new Audio(soundSources.laser2)
+  sounds.laser2.onloadeddata = () => gameLoaded += 10
+  sounds.laser3 = new Audio(soundSources.laser3)
+  sounds.laser3.onloadeddata = () => gameLoaded += 10
+  sounds.powerup = new Audio(soundSources.powerup)
+  sounds.powerup.onloadeddata = () => gameLoaded += 10
+  sounds.alertSound = new Audio(soundSources.alertSound)
+  sounds.alertSound.onloadeddata = () => gameLoaded += 10
+  sounds.hitSound = new Audio(soundSources.hitSound)
+  sounds.hitSound.onloadeddata = () => gameLoaded += 10
+  sounds.spaceshipSound = new Audio(soundSources.spaceshipSound)
+  sounds.spaceshipSound.onloadeddata = () => gameLoaded += 10
+  sounds.loseSound = new Audio(soundSources.loseSound)
+  sounds.loseSound.onloadeddata = () => gameLoaded += 10
+  sounds.gameMusic = new Audio(soundSources.gameMusic)
+  sounds.gameMusic.onloadeddata = () => gameLoaded += 10
+  sounds.gameMusic.loop = true
 }
 
 window.onload = () => {
@@ -414,13 +405,11 @@ function displayStartscreen() {
 function startGame(round) {
   clearInterval(intervalStartscreen)
   spaceshipAnimated = setInterval(spaceshipAnimation, 1000 / 120)
-  playSound(spaceshipSound)
-  spaceshipSound.play()
+  sounds.spaceshipSound.play()
   setTimeout(cooldown, 2000)
   function cooldown() {
     clearInterval(spaceshipAnimated)
-    gameMusic.play()
-    playSound(gameMusic)
+    sounds.gameMusic.play()
     resetGame()
     spaceshipY = 580
     intervalGame = setInterval(callAll, 1000 / 140)
@@ -454,7 +443,6 @@ function callAll() {
   if (currentLevel === levels.snake) hitDetectionSnake()
   if (currentLevel === levels.asteroids) hitDetectionShips()
   setScore()
-  playSound(gameMusic)
   gameOver()
 }
 
@@ -474,7 +462,7 @@ function drawAsteroids() {
   canvasContext.fillText(`${enemyshipCount}/${enemyRequired}`, canvas.width / 2, canvas.height / 2 + 100)
   /* canvasContext.fillText(`${Math.floor(backgroundScrollPosition / 10) + 30}`, canvas.width / 2, canvas.height / 2 + 150)
   if (Math.floor(backgroundScrollPosition / 10) + 30 < 10) {
-    alertSound.play()
+    sounds.alertSound.play()
   }
   */
   moveAsteroids()
@@ -613,18 +601,15 @@ function shoot() {
     shotY = canonY
     switch (multiplier) {
       case 2: {
-        playSound(laser2)
-        laser2.play()
+        sounds.laser2.play()
         break
       }
       case 3: {
-        playSound(laser3)
-        laser3.play()
+        sounds.laser3.play()
         break
       }
       default: {
-        playSound(laser)
-        laser.play()
+        sounds.laser.play()
       }
     }
   }
@@ -634,8 +619,7 @@ function shoot() {
     shotFired = true
     shotX = canonX - 5
     shotY = canonY
-    playSound(laser)
-    laser.play()
+    sounds.laser.play()
 
   }
 }
@@ -679,8 +663,7 @@ function hitDetectionShip(obj) {
 
   if (shotY <= obj.y + 40 && shotY >= obj.y && shotX >= obj.x && shotX <= obj.x + 50 && obj.lives >= 1 && shotFired) {
     obj.lives -= 0.5
-    playSound(hitSound)
-    hitSound.play()
+    sounds.hitSound.play()
     setTimeout(() => obj.lives -= 0.5, 100)
     shotFired = false
     shotY = 600
@@ -700,17 +683,15 @@ function hitDetectionSingle(obj) {
   }
   if (shotY <= obj.y + 50 && shotY >= obj.y && shotX >= obj.x - 10 && shotX <= obj.x + 50) {
     if (!obj.countBlocker) {
-      playSound(hitSound)
-      hitSound.pause()
-      hitSound.currentTime = 0
-      hitSound.play()
+      sounds.hitSound.pause()
+      sounds.hitSound.currentTime = 0
+      sounds.hitSound.play()
       enemyshipCount += 1
       score += 5 * multiplier
       streak += 1
 
       if (streak % 10 == 0) {
-        playSound(powerup)
-        powerup.play()
+        sounds.powerup.play()
       }
     }
     obj.countBlocker = true
@@ -756,16 +737,14 @@ function hitDetectionSnake() {
     streak += 1
 
     if (streak % 10 == 0) {
-      playSound(powerup)
-      powerup.play()
+      sounds.powerup.play()
     }
     shotFired = false
     shotY = 600
     setTimeout(() => { color -= 50 }, 50)
-    playSound(hitSound)
-    hitSound.pause()
-    hitSound.currentTime = 0
-    hitSound.play()
+    sounds.hitSound.pause()
+    sounds.hitSound.currentTime = 0
+    sounds.hitSound.play()
   }
 
 
@@ -816,15 +795,14 @@ function displayGameoverScreen() {
     clearInterval(intervalBackground)
     backgroundScrollPosition = -300
     enemyRequired = 6
-    gameMusic.playbackRate = 0.5
+    sounds.gameMusic.playbackRate = 0.5
     setTimeout(() => { 
-      gameMusic.pause() 
-      gameMusic.currentTime = 0 
-      gameMusic.playbackRate = 1 
+      sounds.gameMusic.pause() 
+      sounds.gameMusic.currentTime = 0 
+      sounds.gameMusic.playbackRate = 1 
     }, 1000)
     streak = 0
-    playSound(loseSound)
-    loseSound.play()
+    sounds.loseSound.play()
     setTimeout(() => {
       canvasContext.fillStyle = "black"
       canvasContext.fillRect(0, 0, canvas.width, canvas.height)
@@ -860,8 +838,7 @@ function startNextRound(round) {
   clearInterval(intervalGame)
   clearInterval(intervalBackground)
   spaceshipAnimated = setInterval(spaceshipAnimation, 1000 / 120)
-  playSound(spaceshipSound)
-  spaceshipSound.play()
+  sounds.spaceshipSound.play()
   color += 20
   gameSpeed += 3
   canvasContext.fillStyle = "limegreen"
@@ -1023,5 +1000,19 @@ function showMenu() {
     burgerMenu.style.height = "0vh"
     burgerMenu.style.opacity = "0"
     hamburger.style.position = "absolute"
+  }
+}
+
+let volume = 1
+function setVolume(value) {
+  volume = value === 0 ? 0 : value * 2 / 10
+  const volumeElements = Array.from(document.getElementsByClassName('volume-item'))
+  volumeElements.forEach(element => {
+          element.innerHTML = element.dataset.value > value ? '&#9645;' : '&#11036;'
+  })
+  for (let key in sounds) {
+    if (sounds[key] instanceof Audio) {
+      sounds[key].volume = volume
+    }
   }
 }

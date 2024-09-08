@@ -20,7 +20,15 @@
     </div>
   </div>
 
-  <button onclick="soundControl()" id="sound-button">&#128266;</button>
+  <div id="volume-control">
+        <div>VOLUME</div>
+        <span onclick="setVolume(0)"> | </span>
+        <span onclick="setVolume(1)" data-value="1" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(2)" data-value="2" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(3)" data-value="3" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(4)" data-value="4" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(5)" data-value="5" class="volume-item">&#11036;</span>
+    </div>
 
   <button id="hamburger" onclick="showMenu()">
     <div class="line1"></div>
