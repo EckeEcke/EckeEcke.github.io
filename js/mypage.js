@@ -129,4 +129,6 @@ async function changeLanguage(lang) {
   updateContent(langData)
 }
 
-changeLanguage('de')
+document.addEventListener('DOMContentLoaded', () => {
+  changeLanguage('de')
+})
