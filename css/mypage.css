@@ -79,10 +79,16 @@ h3 {
 #language-switch .language-selector {
   cursor: pointer;
   user-select: none;
+  transition: all 0.3s ease;
 }
 
 #language-switch .language-selector.inactive {
   opacity: 0.6;
+}
+
+#language-switch .language-selector:hover {
+  opacity: 1;
+  font-weight: bold;
 }
 
 #header-image {
