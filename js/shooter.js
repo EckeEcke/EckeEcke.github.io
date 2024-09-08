@@ -226,48 +226,7 @@ let shotcolor
 
 let loadingAnimation = "."
 
-let highscores = [
-  {
-    Player: "Champion",
-    score: 1000,
-  },
-  {
-    Player: "Chris",
-    score: 900,
-  },
-  {
-    Player: "Legend",
-    score: 800,
-  },
-  {
-    Player: "Gamer",
-    score: 700,
-  },
-  {
-    Player: "Peter",
-    score: 600,
-  },
-  {
-    Player: "Han Solo",
-    score: 500,
-  },
-  {
-    Player: "Kirk",
-    score: 400,
-  },
-  {
-    Player: "Lorem Ipsum",
-    score: 300,
-  },
-  {
-    Player: "Foo",
-    score: 200,
-  },
-  {
-    Player: "Noob",
-    score: 100,
-  }
-]
+let highscores
 let displayedScreen = 'controls'
 let highscoresLoaded = false
 let timer = 0
@@ -355,6 +314,10 @@ window.onload = () => {
 }
 
 function displayHighscores() {
+  if (!highscores) {
+    canvasContext.fillText('Loading Highscores...', 20, i * 50 + 50)
+    return
+  }
   for (let i; i < 10; i++) {
     canvasContext.fillText(highscores[i].Player, 20, i * 50 + 50)
   }
@@ -413,7 +376,11 @@ function displayStartscreen() {
     canvasContext.fillStyle = "limegreen"
     canvasContext.textAlign = "center"
     canvasContext.fillText("Highscores", canvas.width / 2, 70)
-    for (let i = 0; i < 8; i++) {
+    if (!highscores || highscores.length <= 1) {
+      canvasContext.textAlign = "left"
+      canvasContext.fillText('Loading...', 20, 50 + 140)
+    } 
+    else for (let i = 0; i < 8; i++) {
       canvasContext.textAlign = "left"
       canvasContext.fillText(i + 1 + " " + highscores[i].Player, 20, i * 50 + 140)
       canvasContext.textAlign = "right"
@@ -442,7 +409,6 @@ function displayStartscreen() {
     canvasContext.fillText("30 PTS", canvas.width - 20, 460)
     canvasContext.fillText("10 PTS", canvas.width - 20, 540)
   }
-
 }
 
 function startGame(round) {
@@ -506,10 +472,11 @@ function drawAsteroids() {
   canvasContext.textAlign = "center"
   canvasContext.fillStyle = "white"
   canvasContext.fillText(`${enemyshipCount}/${enemyRequired}`, canvas.width / 2, canvas.height / 2 + 100)
-  canvasContext.fillText(`${Math.floor(backgroundScrollPosition / 10) + 30}`, canvas.width / 2, canvas.height / 2 + 150)
+  /* canvasContext.fillText(`${Math.floor(backgroundScrollPosition / 10) + 30}`, canvas.width / 2, canvas.height / 2 + 150)
   if (Math.floor(backgroundScrollPosition / 10) + 30 < 10) {
     alertSound.play()
   }
+  */
   moveAsteroids()
 }
 
@@ -523,8 +490,8 @@ function moveAsteroids() {
 function drawShipAndShot() {
   let fillColor
   switch (multiplier) {
-    case multiplier === 2: fillColor = 'red'
-    case multiplier === 3: fillColor = 'blue'
+    case 2: fillColor = 'red'; break
+    case 3: fillColor = 'blue'; break
     default: fillColor = 'limegreen'
   }
 
@@ -562,8 +529,8 @@ function drawSnakeElement(lives, x, y, element) {
 }
 
 function moveBackground() {
-  if (levels.ships) {
-    backgroundScrollPosition -= 0.8
+  if (levels.ships && backgroundScrollPosition < 140) {
+    backgroundScrollPosition += 0.8
   }
 }
 
@@ -645,13 +612,15 @@ function shoot() {
     shotX = canonX - 5
     shotY = canonY
     switch (multiplier) {
-      case multiplier === 2: {
+      case 2: {
         playSound(laser2)
         laser2.play()
+        break
       }
-      case multiplier === 3: {
+      case 3: {
         playSound(laser3)
         laser3.play()
+        break
       }
       default: {
         playSound(laser)
@@ -707,6 +676,7 @@ function hitDetection(obj) {
 
 function hitDetectionShip(obj) {
   let shipHit
+
   if (shotY <= obj.y + 40 && shotY >= obj.y && shotX >= obj.x && shotX <= obj.x + 50 && obj.lives >= 1 && shotFired) {
     obj.lives -= 0.5
     playSound(hitSound)
@@ -718,6 +688,7 @@ function hitDetectionShip(obj) {
     score += 30 * multiplier
     streak += 1
   }
+
   if (obj.lives <= 0 && shipHit) {
     shipHit = false
   }
@@ -736,6 +707,7 @@ function hitDetectionSingle(obj) {
       enemyshipCount += 1
       score += 5 * multiplier
       streak += 1
+
       if (streak % 10 == 0) {
         playSound(powerup)
         powerup.play()
@@ -756,7 +728,7 @@ function hitDetectionSingle(obj) {
 
   }
   if (enemyshipCount == enemyRequired) {
-    bonusScore = (Math.floor(backgroundScrollPosition / 10) + 30) * multiplier
+    bonusScore = (Math.floor((140 - backgroundScrollPosition) / 4)) * multiplier
     score += bonusScore
     enemyshipCount = 0
     enemyRequired += 2
@@ -782,6 +754,7 @@ function hitDetectionSnake() {
     setTimeout(() => snakeLives -= 0.5, 100)
     score += 10 * multiplier
     streak += 1
+
     if (streak % 10 == 0) {
       playSound(powerup)
       powerup.play()
@@ -915,7 +888,7 @@ function spaceshipAnimation() {
   canvasContext.fillText(bonusScore > 0 ? `Bonus Score: ${bonusScore}` : "", canvas.width / 2, canvas.height / 2 + 50)
   canvasContext.drawImage(spaceship, spaceshipX, spaceshipY - 60, 80, 100)
   spaceshipY -= 2.5
-  backgroundScrollPosition += 1.2
+  if (backgroundScrollPosition < 80) backgroundScrollPosition += 1.2
 }
 
 function resetGame() {
@@ -1028,7 +1001,7 @@ function resetGame() {
   wPressed = false
   shotFired = false
 
-  backgroundScrollPosition = 0
+  backgroundScrollPosition = -220
 
   enemyshipCount = 0
   bonusScore = 0
