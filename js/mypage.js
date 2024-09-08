@@ -109,16 +109,19 @@ function updateContent(langData) {
   document.querySelectorAll('[data-localization]').forEach(element => {
       const key = element.getAttribute('data-localization')
       element.textContent = langData[key]
+      console.log(langData[key])
   })
 }
 
 async function fetchLanguageData(lang) {
   const response = await fetch(`https://eckeecke.github.io/locales/${lang}.json`)
+  console.log(response.json())
   return response.json()
 }
 
 async function changeLanguage(lang) {
   const langData = await fetchLanguageData(lang)
+  console.log(langData)
   updateContent(langData)
 }
 
