@@ -1,23 +1,7 @@
 @font-face {
-  font-family: myFont;
-  src: url(myFont.ttf);
-}
-
-@font-face {
-  font-family: digital;
-  src: url(Bitwise.ttf);
-}
-
-@font-face {
-  font-family: grunge;
-  src: url(Grunge.otf);
-}
-
-@font-face {
   font-family: Ubuntu;
-  src: url(Ubuntu-M.ttf);
+  src: url('../assets/fonts/Ubuntu-M.ttf');
 }
-
 
 h1 {
   color: white;
