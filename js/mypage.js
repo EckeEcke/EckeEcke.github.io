@@ -1,73 +1,55 @@
-const burgerMenu = document.getElementById("burger-menu");
-let showBurgermenu = false;
-let backdrop = document.getElementById("backdrop");
+const burgerMenu = document.getElementById("burger-menu")
+let showBurgermenu = false
+const backdrop = document.getElementById("backdrop")
 
-function toggleBurgermenu(){
-  showBurgermenu = !showBurgermenu;
+const toggleBurgermenu = () => {
+  showBurgermenu = !showBurgermenu
   if (showBurgermenu) {
-    burgerMenu.style.right = "0px";
+    burgerMenu.style.right = "0px"
     backdrop.style.display = "block"
     document.body.style.overflowY = "hidden"
     document.body.style.height = "100%"
+    return
   }
-  else {
-    burgerMenu.style.right = "-100%";
-    backdrop.style.display = "none"
-    document.body.style.overflowY = "auto"
-    document.body.style.height = "auto"
-  }
+  burgerMenu.style.right = "-100%"
+  backdrop.style.display = "none"
+  document.body.style.overflowY = "auto"
+  document.body.style.height = "auto"
 }
 
 const items = document.querySelectorAll('.appear');
 
 const active = function(entries){
-    entries.forEach(entry => {
-        if(entry.isIntersecting){
-        entry.target.classList.add('inview'); 
-        }else{
-            entry.target.classList.remove('inview'); 
-        }
-    });
+    entries.forEach(entry => 
+      entry.isIntersecting 
+        ? entry.target.classList.add('inview') 
+        : entry.target.classList.remove('inview')
+    )
 }
 
-const io = new IntersectionObserver(active);
- for(let i=0; i < items.length; i++){
-    io.observe(items[i]);
- }
+const io = new IntersectionObserver(active)
 
-
-const footer = document.getElementById("footer");
-const mainContent = document.getElementById("main-content");
-const body = document.getElementById("body");
-const scrollTopBTN = document.getElementById("scroll-back-top-BTN");
-
-function scrollToFooter(){
-  footer.scrollIntoView({behavior: "smooth"});
+for(let i=0; i < items.length; i++){
+  io.observe(items[i])
 }
 
-function scrollToMainContent(){
-  mainContent.scrollIntoView({behavior: "smooth"});
-}
+const mainContent = document.getElementById("main-content")
+const body = document.getElementById("body")
+const scrollTopBTN = document.getElementById("scroll-back-top-BTN")
 
-function scrollToTop(){
-  body.scrollIntoView({behavior: "smooth"});
-}
+const scrollToMainContent = () => mainContent.scrollIntoView({behavior: "smooth"})
 
-document.addEventListener("scroll", function(){
-  if(scrollY>400){
-    scrollTopBTN.style.display = "block";
-  } else {
-    scrollTopBTN.style.display = "none";
-  }
-})
+const scrollToTop = () => body.scrollIntoView({behavior: "smooth"})
 
+document.addEventListener("scroll", () => scrollTopBTN.style.display = scrollY > 400 ? 'block' : 'none')
 
 const marioBox = document.getElementById("homepage-running-mario");
 
 let marioLeft = -60;
 
-function movingBox(){
-  marioBox.style.transform = `translateX(${marioLeft}px)`;
+const movingBox = () => {
+  marioBox.style.transform = `translateX(${marioLeft}px)`
+
   if(marioLeft<window.innerWidth){
     marioLeft += 2;
   }
@@ -77,58 +59,60 @@ function movingBox(){
   }
 }
 
-setInterval(movingBox, 1000/60);
+setInterval(movingBox, 1000/60)
 
-const homepageMario = document.getElementById("homepage-mario");
+const homepageMario = document.getElementById("homepage-mario")
 
-let spritesheetPosition = 0;
-let sheetMovement = 50;
+let spritesheetPosition = 0
+let sheetMovement = 50
 
-function animateMario(){
-  spritesheetPosition += sheetMovement;
-  homepageMario.style.transform = `translateX(${-spritesheetPosition}px)`;
+const animateMario = () => {
+  spritesheetPosition += sheetMovement
+  homepageMario.style.transform = `translateX(${-spritesheetPosition}px)`
 
-  if(spritesheetPosition == 100){
-    sheetMovement = -50;
+  if(spritesheetPosition === 100){
+    sheetMovement = -50
   }
 
-  if(spritesheetPosition == 0){
-    sheetMovement = 50;
+  if(spritesheetPosition === 0){
+    sheetMovement = 50
   }
 }
 
-setInterval(animateMario, 102);
+setInterval(animateMario, 102)
 
 
-function itsMeMario(){
-  document.getElementById("mario-sound").volume = 0.2;
-  document.getElementById("mario-sound").play();
+const itsMeMario = () => {
+  document.getElementById("mario-sound").volume = 0.2
+  document.getElementById("mario-sound").play()
 }
 
-function updateContent(langData) {
+const updateContent = (langData) =>
   document.querySelectorAll('[data-localization]').forEach(element => {
       const key = element.getAttribute('data-localization')
       element.textContent = langData[key]
   })
-}
 
-async function fetchLanguageData(lang) {
+const fetchLanguageData = async (lang) => {
   const response = await fetch(`https://eckeecke.github.io/locales/${lang}.json`)
   return response.json()
 }
 
-async function changeLanguage(lang) {
+const changeLanguage = async (lang) => {
+  localStorage.setItem('lang', lang)
   const langData = await fetchLanguageData(lang)
   const selectors = Array.from(document.getElementsByClassName('language-selector'))
   selectors.forEach(selector => {
     selector.classList.remove('inactive')
-    if (selector.dataset.value !== lang) {
-      selector.classList.add('inactive')
-    }
+    if (selector.dataset.value !== lang) selector.classList.add('inactive')
   })
   updateContent(langData)
 }
 
+const validLangs = ['de', 'en']
+const isValidLang = lang => validLangs.includes(lang)
+
 document.addEventListener('DOMContentLoaded', () => {
-  changeLanguage('en')
+  const lang = localStorage.getItem('lang')
+  if (lang && isValidLang(lang)) changeLanguage(lang)
 })
