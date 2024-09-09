@@ -1,70 +1,72 @@
-window.addEventListener("keydown", function(e) {
+window.addEventListener("keydown", (e) => {
   if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-      e.preventDefault();
+      e.preventDefault()
   }
-}, false);
+}, false)
 
-window.addEventListener("gamepad1Connected", function(e) {
+window.addEventListener("gamepad1Connected", (e) => {
   
   console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
     e.gamepad.index, e.gamepad.id,
-    e.gamepad.buttons.length, e.gamepad.axes.length);
-});
+    e.gamepad.buttons.length, e.gamepad.axes.length)
+})
 
-window.addEventListener("gamepad2Connected", function(e) {
+window.addEventListener("gamepad2Connected", (e) => {
   gamepad2Connected = true
 
   console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
   e.gamepad.index, e.gamepad.id,
-  e.gamepad.buttons.length, e.gamepad.axes.length);
-});
+  e.gamepad.buttons.length, e.gamepad.axes.length)
+})
   
 
 
 
-const canvas = document.getElementById("game-canvas");
-const startBtn = document.getElementById("start-button");
-const soundBtn = document.getElementById("sound-button");
-const descriptionTxt = document.getElementById("description");
+const canvas = document.getElementById("game-canvas")
+const startBtn = document.getElementById("start-button")
+const soundBtn = document.getElementById("sound-button")
+const descriptionTxt = document.getElementById("description")
 
-const colorInputP1 = document.getElementById("color-picker-p1");
-const colorInputP2 = document.getElementById("color-picker-p2");
-const gameSpeedInput = document.getElementById("game-speed");
+const colorInputP1 = document.getElementById("color-picker-p1")
+const colorInputP2 = document.getElementById("color-picker-p2")
+const gameSpeedInput = document.getElementById("game-speed")
 
-const onePlayerBTN = document.getElementById("1player-mode");
-const twoPlayerBTN = document.getElementById("2player-mode");
+const onePlayerBTN = document.getElementById("1player-mode")
+const twoPlayerBTN = document.getElementById("2player-mode")
 
-const soundCheer1 = document.getElementById("cheer1");
-const soundCheer2 = document.getElementById("cheer2");
-const soundVictory = document.getElementById("victory");
-const inputs = document.getElementById("game-settings");
-const bounce = document.getElementById("bounce");
-const bounceWall = document.getElementById("bounceWall");
+const soundCheer1 = document.getElementById("cheer1")
+const soundCheer2 = document.getElementById("cheer2")
+const soundVictory = document.getElementById("victory")
+const inputs = document.getElementById("game-settings")
+const bounce = document.getElementById("bounce")
+const bounceWall = document.getElementById("bounceWall")
 
-let colorPaddle1 = "#ed3d0d";
-let colorPaddle2 = "#26ed17";
+let colorPaddle1 = "#ed3d0d"
+let colorPaddle2 = "#26ed17"
 
-let runGame;
+const font = "48px retro"
+
+let runGame
 
 let gamepad2Connected = false
 
-let canvasContext;
-let ballX = 395;
-let ballSpeedX = 5;
-let ballDirectionX = 1;
-let ballY = 300;
-let ballSpeedY = 0;
-let paddle1Y = 250;
-let paddle1X = 30;
-let paddle2Y = 250;
-let paddle2X = 760;
-let upPressed = false;
-let downPressed = false;
+let canvasContext
+let ballX = 395
+let ballSpeedX = 5
+let ballDirectionX = 1
+let ballY = 300
+let ballSpeedY = 0
+let paddle1Y = 250
+let paddle1X = 30
+let paddle2Y = 250
+let paddle2X = 760
+let upPressed = false
+let downPressed = false
 let leftPressed = false
 let rightPressed = false
-let wPressed = false;
-let sPressed = false;
-let dPressed = false;
+let wPressed = false
+let sPressed = false
+let dPressed = false
 let aPressed = false
 
 let padUpPressed = false
@@ -76,38 +78,38 @@ let gameStarted = false
 
 let collisionP1 = false
 let collisionP2 = false
-let Score1 = 0;
-let Score2 = 0;
-const paddleHeight = 100;
-const tolerance = 20;
-const sounds = document.getElementsByTagName("audio");
-let gameRuns = false;
-let gameSpeed = 100;
+let Score1 = 0
+let Score2 = 0
+const paddleHeight = 100
+const tolerance = 20
+const sounds = document.getElementsByTagName("audio")
+let gameRuns = false
+let gameSpeed = 100
 
-let touchControls = false;
-let touchY;
+let touchControls = false
+let touchY
 
 
-sounds.muted = false;
+sounds.muted = false
 
-colorInputP1.addEventListener("change", function () {
-  colorPaddle1 = colorInputP1.value;
-});
-
-colorInputP2.addEventListener("change", function () {
-  colorPaddle2 = colorInputP2.value;
-});
-
-gameSpeedInput.addEventListener("change", function () {
-  gameSpeed = gameSpeedInput.value;
+colorInputP1.addEventListener("change", () => {
+  colorPaddle1 = colorInputP1.value
 })
 
-canvas.addEventListener("touchstart", changeTouchPosition, false);
-canvas.addEventListener("touchmove", changeTouchPosition, false);
+colorInputP2.addEventListener("change", () => {
+  colorPaddle2 = colorInputP2.value
+})
+
+gameSpeedInput.addEventListener("change", () => {
+  gameSpeed = gameSpeedInput.value
+})
+
+canvas.addEventListener("touchstart", changeTouchPosition, false)
+canvas.addEventListener("touchmove", changeTouchPosition, false)
 
 window.onload = function () {
-  document.addEventListener("keydown", keyDownHandler, false);
-  document.addEventListener("keyup", keyUpHandler, false);
+  document.addEventListener("keydown", keyDownHandler, false)
+  document.addEventListener("keyup", keyUpHandler, false)
   if(navigator.getGamepads()[0] !== null){
     console.log("gamepad connected")
   }
@@ -118,109 +120,104 @@ window.onload = function () {
 
 function startGame() {
   gameStarted = true
-  canvas.style.display = "block";
-  canvasContext = canvas.getContext("2d");
-  if (onePlayerBTN.checked) {
-    runGame = setInterval(onePlayerMode, 1000 / gameSpeed)
-  } else {
-    runGame = setInterval(twoPlayerMode, 1000 / gameSpeed)
-  }
-  startBtn.style.display = "none";
-  descriptionTxt.style.display = "none";
-  inputs.style.display = "none";
-
+  canvas.style.display = "block"
+  canvasContext = canvas.getContext("2d")
+    runGame = onePlayerBTN.checked 
+      ? setInterval(onePlayerMode, 1000 / gameSpeed) 
+      : setInterval(twoPlayerMode, 1000 / gameSpeed)
+  startBtn.style.display = "none"
+  descriptionTxt.style.display = "none"
+  inputs.style.display = "none"
 }
 
-function drawScore() {
-  canvasContext.font = "48px retro";
-  canvasContext.fillStyle = "white";
-  canvasContext.fillText(Score1, canvas.width / 4 - 20, 60);
-  canvasContext.font = "48px retro";
-  canvasContext.fillStyle = "white";
-  canvasContext.fillText(Score2, 3 * canvas.width / 4, 60);
+const drawScore = () => {
+  canvasContext.font = font
+  canvasContext.fillStyle = "white"
+  canvasContext.fillText(Score1, canvas.width / 4 - 20, 60)
+  canvasContext.fillText(Score2, 3 * canvas.width / 4, 60)
 }
 
-function soundControl() {
+const soundControl = () => {
   if (sounds.muted == true) {
-    sounds.muted = false;
-    soundBtn.innerHTML = "&#128266;";
+    sounds.muted = false
+    soundBtn.innerHTML = "&#128266;"
   } else {
     sounds.muted = true;
-    soundBtn.innerHTML = "&#128263;";
+    soundBtn.innerHTML = "&#128263;"
   }
 }
 
 function twoPlayerMode() {
-  drawEverything();
-  moveEverything();
-  collision(paddle2X, paddle2Y, upPressed, downPressed, collisionP2, 1);
-  collision(paddle1X, paddle1Y, wPressed, sPressed, collisionP1, 0);
-  move1();
-  move2();
-  setScore();
-  drawScore();
+  drawEverything()
+  moveEverything()
+  collision(paddle2X, paddle2Y, upPressed, downPressed, collisionP2, 1)
+  collision(paddle1X, paddle1Y, wPressed, sPressed, collisionP1, 0)
+  move1()
+  move2()
+  setScore()
+  drawScore()
 }
 
-function onePlayerMode() {
-  drawEverything();
-  moveEverything();
-  collision(paddle2X, paddle2Y, upPressed, downPressed, collisionP2, 1);
-  collision(paddle1X, paddle1Y, wPressed, sPressed, collisionP1, 0);
-  move1();
-  move1Touch();
-  setScore();
-  drawScore();
-  moveAI();
+function onePlayerMode () {
+  drawEverything()
+  moveEverything()
+  collision(paddle2X, paddle2Y, upPressed, downPressed, collisionP2, 1)
+  collision(paddle1X, paddle1Y, wPressed, sPressed, collisionP1, 0)
+  move1()
+  move1Touch()
+  setScore()
+  drawScore()
+  moveAI()
 }
 
 
-function moveEverything() {
-  ballX = ballX + ballSpeedX * ballDirectionX;
-  ballY = ballY + ballSpeedY;
+const moveEverything = () => {
+  ballX = ballX + ballSpeedX * ballDirectionX
+  ballY = ballY + ballSpeedY
 
   if (ballX >= canvas.width || ballX <= 0) {
-    ballDirectionX = ballDirectionX * -1;
+    ballDirectionX = ballDirectionX * -1
   }
 
-  ballY = ballY + ballSpeedY;
-  if (ballY >= canvas.height) {
-    ballSpeedY = -ballSpeedY;
+  ballY = ballY + ballSpeedY
+  
+  const ballHitsBottom = ballY >= canvas.height
+  const ballHitsTop = ballY <= 0
+
+  if (ballHitsBottom || ballHitsTop) {
+    ballSpeedY = -ballSpeedY
     playSound(bounceWall)
-    ballY = canvas.height;
   }
 
-  if (ballY <= 0) {
-    ballSpeedY = -ballSpeedY;
-    playSound(bounceWall)
-    ballY = 0;
-  }
+  if (ballHitsBottom) ballY = canvas.height
 
+  if (ballHitsTop) ballY = 0
 }
 
 
 
-function move1(event) {
+const move1 = (event) => {
   let gamepad1Connected = false
   if (navigator.getGamepads()[0] !== null) {
     gamepad1Connected = true
   }
   if (wPressed) {
-    paddle1Y -= 8;
+    paddle1Y -= 8
   }
   if (gamepad1Connected && navigator.getGamepads()[0].buttons[12].pressed) {
     paddle1Y -= 8
   }
   if (paddle1Y < 0) {
-    paddle1Y = 0;
+    paddle1Y = 0
   }
   if (sPressed) {
-    paddle1Y += 6;
+    paddle1Y += 6
   }
   if (gamepad1Connected && navigator.getGamepads()[0].buttons[13].pressed) {
     paddle1Y += 6
   }
   if (paddle1Y > 500) {
-    paddle1Y = 500;
+    paddle1Y = 500
   }
   if (dPressed && paddle1X < canvas.width /2.5) {
     paddle1X += 5
@@ -236,30 +233,30 @@ function move1(event) {
   }
 }
 
-function move1Touch() {
+const move1Touch = () => {
   if (touchControls) {
     if (touchY > paddle1Y) {
-      paddle1Y += 10;
+      paddle1Y += 10
     }
 
     if (touchY < paddle1Y) {
-      paddle1Y -= 10;
+      paddle1Y -= 10
     }
   }
 }
 
-function move1Gamepad() {
+const move1Gamepad = () => {
   if (padUpPressed) {
-    paddle1Y -= 8;
+    paddle1Y -= 8
   }
   if (paddle1Y < 0) {
-    paddle1Y = 0;
+    paddle1Y = 0
   }
   if (padDownPressed) {
-    paddle1Y += 6;
+    paddle1Y += 6
   }
   if (paddle1Y > 500) {
-    paddle1Y = 500;
+    paddle1Y = 500
   }
   if (padRightPressed && paddle1X < canvas.width /2.5) {
     paddle1X += 5
@@ -270,24 +267,23 @@ function move1Gamepad() {
 }
 
 function changeTouchPosition(event) {
-        touchControls = true;
-        touchY = event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY;
-        console.log(touchY);
-    }
+  touchControls = true
+  touchY = event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY
+}
 
 
-function move2(event) {
+const move2 = (event) => {
   if (downPressed) {
     paddle2Y = paddle2Y + 8;
   }
   if (paddle2Y > 500) {
-    paddle2Y = 500;
+    paddle2Y = 500
   }
   if (upPressed) {
     paddle2Y = paddle2Y - 6;
   }
   if (paddle2Y < 0) {
-    paddle2Y = 0;
+    paddle2Y = 0
   }
   if (rightPressed && paddle2X < canvas.width - 20) {
     paddle2X += 5
@@ -299,40 +295,40 @@ function move2(event) {
 }
 
 
-function moveAI() {
+const moveAI = () => {
   if (ballSpeedX > 0) {
-    moveAItoBall();
+    moveAItoBall()
   }
   if (paddle2Y < 0) {
-    paddle2Y = 0;
+    paddle2Y = 0
   }
   if (paddle2Y > 500) {
-    paddle2Y = 500;
+    paddle2Y = 500
   }
 }
 
-function moveAItoBall() {
+const moveAItoBall = () => {
   downPressed = false
   upPressed = false
   if (ballY > paddle2Y + 50) {
-    paddle2Y += 4;
-    downPressed;
+    paddle2Y += 4
+    downPressed
   }
 
   if (ballY < paddle2Y + 50) {
-    paddle2Y -= 4;
-    upPressed;
+    paddle2Y -= 4
+    upPressed
   }
 }
 
-function resetAfterScore() {
-  ballX = 395;
-  ballY = 300;
+const resetAfterScore = () => {
+  ballX = 395
+  ballY = 300
   paddle1Y = 250
   paddle1X = 30
   paddle2Y = 250
   paddle2X = 760
-  ballSpeedY = 0;
+  ballSpeedY = 0
   let p1Scored = ballDirectionX < 0
   ballDirectionX = 0
   setTimeout(() => {
@@ -342,117 +338,130 @@ function resetAfterScore() {
 }
 
 
-function keyDownHandler(event) {
-  if (event.keyCode === 87) {
-    wPressed = true;
-  }
-  else if (event.keyCode === 65) {
-    aPressed = true
-  }
-  else if (event.keyCode === 68) {
-    dPressed = true
-  }
-  else if (event.keyCode === 83) {
-    sPressed = true;
-  }
-  else if (event.keyCode === 38) {
-    upPressed = true;
-  }
-  else if (event.keyCode === 40) {
-    downPressed = true;
-  }
-  else if (event.keyCode === 37) {
-    leftPressed = true;
-  }
-  else if (event.keyCode === 39) {
-    rightPressed = true;
-  }
-}
-
-function keyUpHandler(event) {
-  if (event.keyCode === 87) {
-    wPressed = false;
-  }
-  else if (event.keyCode === 65) {
-    aPressed = false
-  }
-  else if (event.keyCode === 68) {
-    dPressed = false
-  }
-  else if (event.keyCode === 83) {
-    sPressed = false;
-  }
-  else if (event.keyCode === 38) {
-    upPressed = false;
-  }
-  else if (event.keyCode === 40) {
-    downPressed = false;
-  }
-  else if (event.keyCode === 37) {
-    leftPressed = false;
-  }
-  else if (event.keyCode === 39) {
-    rightPressed = false;
+const keyDownHandler = (event) => {
+  switch (event.keyCode) {
+    case 87: {
+      wPressed = true
+      break
+    }
+    case 65: {
+      aPressed = true
+      break
+    }
+    case 68: {
+      dPressed = true
+      break
+    }
+    case 83: {
+      sPressed = true
+      break
+    }
+    case 38: {
+      upPressed = true
+      break
+    }
+    case 40: {
+      downPressed = true
+      break
+    }
+    case 37: {
+      leftPressed = true
+      break
+    }
+    case 39: {
+      rightPressed = true
+    }
   }
 }
 
-
-function drawVictoryMessage(message1, message2) {
-  canvasContext.font = "48px retro";
-  canvasContext.fillStyle = "white";
-  canvasContext.fillText(message1, 120, 350);
-  canvasContext.font = "48px retro";
-  canvasContext.fillStyle = "white";
-  canvasContext.fillText(message2, 130 + canvas.width / 2, 350);
-}
-
-function playSound(sound){
-  if (!sounds.muted) {
-    sound.play()
+const keyUpHandler = (event) => {
+  switch (event.keyCode) {
+    case 87: {
+      wPressed = false
+      break
+    }
+    case 65: {
+      aPressed = false
+      break
+    }
+    case 68: {
+      dPressed = false
+      break
+    }
+    case 83: {
+      sPressed = false
+      break
+    }
+    case 38: {
+      upPressed = false
+      break
+    }
+    case 40: {
+      downPressed = false
+      break
+    }
+    case 37: {
+      leftPressed = false
+      break
+    }
+    case 39: {
+      rightPressed = false
+    }
   }
 }
 
 
+const drawVictoryMessage = (message1, message2) => {
+  canvasContext.font = font
+  canvasContext.fillStyle = "white"
+  canvasContext.fillText(message1, 120, 350)
+  canvasContext.fillText(message2, 130 + canvas.width / 2, 350)
+}
 
-function setScore() {
-  let scored = false;
+const playSound = (sound) => {
+  if (!sounds.muted) sound.play()
+}
+
+const setScore = () => {
+  let scored = false
   if (ballX >= canvas.width) {
-    Score1 = Score1 + 1;
+    Score1 = Score1 + 1
     playSound(soundCheer1)
-    scored = true;
+    scored = true
   }
 
   if (ballX <= 0) {
-    Score2 = Score2 + 1;
-    playSound(soundCheer2);
-    scored = true;
+    Score2 = Score2 + 1
+    playSound(soundCheer2)
+    scored = true
   }
 
-  if (Score1 >= 7) {
-    if (sounds.muted == false) {
-      soundVictory.play();
-    }
+  const p1Wins = Score1 >= 7
+  const p2Wins = Score2 >= 7
 
-    clearInterval(runGame);
-    drawVictoryMessage("Win!", "Lose");
-    setTimeout(() => window.location.reload(), 5000);
-  } else if (Score2 >= 7) {
-    if (sounds.muted == false) {
-      soundVictory.play();
-    }
-
+  if (p1Wins || p2Wins) {
+    playSound(soundVictory)
     clearInterval(runGame)
-    drawVictoryMessage("Lose", "Win!");
-    setTimeout(() => window.location.reload(), 5000);
-  } else if (scored && Score1 < 7 && Score2 < 7) {
-    resetAfterScore();
-    scored = false;
+    setTimeout(() => window.location.reload(), 5000)
+  }
+
+  if (p1Wins) {
+    drawVictoryMessage("Win!", "Lose")
+    return
+  }
+
+  if (p2Wins) {
+    drawVictoryMessage("Lose", "Win!")
+    return
+  }
+
+  if (scored) {
+    resetAfterScore()
+    scored = false
   }
 }
 
-
-
-function collision(paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadIndex) {
+const collision = (paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadIndex) => {
   let gamepadConnected = navigator.getGamepads()[gamepadIndex] !== null
   if (ballX > paddleX - 5  && ballX < paddleX + 15 && ballY >= paddleY - tolerance && ballY < paddleY - 1 + paddleHeight + tolerance && !collisionDetected) {
     if (ballX > canvas.width / 2){
@@ -477,16 +486,16 @@ function collision(paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadI
       ballSpeedX = leftPressed ? 10 : 5
     }
     if (ballSpeedY == 0) {
-      ballSpeedY = 2;
+      ballSpeedY = 2
     }
     if (downBTN && ballSpeedY < 0) {
-      ballSpeedY -= 1;
+      ballSpeedY -= 1
     }
     if (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[13].pressed && ballSpeedY < 0){
       ballSpeedY -= 1
     }
     if (upBTN && ballSpeedY > 0) {
-      ballSpeedY += 1;
+      ballSpeedY += 1
     }
     if (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[12].pressed && ballSpeedY > 0){
       ballSpeedY += 1
@@ -497,37 +506,33 @@ function collision(paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadI
 }
 
 
-function drawEverything() {
-
+const drawEverything = () => {
   canvasContext.fillStyle = "black"; /*black background*/
-  canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+  canvasContext.fillRect(0, 0, canvas.width, canvas.height)
   canvasContext.fillStyle = "red"; /*middle line*/
-  canvasContext.fillRect(canvas.width / 2, 0, 1, canvas.height);
+  canvasContext.fillRect(canvas.width / 2, 0, 1, canvas.height)
   canvasContext.fillStyle = "white"; /*ball*/
-  canvasContext.fillRect(ballX, ballY, 10, 10);
+  canvasContext.fillRect(ballX, ballY, 10, 10)
   canvasContext.fillStyle = colorPaddle1;/*Paddle1*/
-  canvasContext.fillRect(paddle1X, paddle1Y, 10, paddleHeight);
+  canvasContext.fillRect(paddle1X, paddle1Y, 10, paddleHeight)
   canvasContext.fillStyle = colorPaddle2; /*Paddle2*/
-  canvasContext.fillRect(paddle2X, paddle2Y, 10, paddleHeight);
+  canvasContext.fillRect(paddle2X, paddle2Y, 10, paddleHeight)
 }
 
+const burgerMenu = document.getElementById("burger-menu")
+const hamburger = document.getElementById("hamburger")
+let burgerMenuShowing = false
 
-
-
-const burgerMenu = document.getElementById("burger-menu");
-const hamburger = document.getElementById("hamburger");
-let burgerMenuShowing = false;
-
-function showMenu() {
-  burgerMenuShowing = !burgerMenuShowing;
+const showMenu = () => {
+  burgerMenuShowing = !burgerMenuShowing
   if (burgerMenuShowing) {
-    burgerMenu.style.height = "100vh";
-    burgerMenu.style.opacity = "0.99";
-    hamburger.style.position = "fixed";
+    burgerMenu.style.height = "100vh"
+    burgerMenu.style.opacity = "0.99"
+    hamburger.style.position = "fixed"
+    return
   }
-  else {
-    burgerMenu.style.height = "0vh";
-    burgerMenu.style.opacity = "0";
-    hamburger.style.position = "absolute";
-  }
+
+  burgerMenu.style.height = "0vh"
+  burgerMenu.style.opacity = "0"
+  hamburger.style.position = "absolute"
 }
