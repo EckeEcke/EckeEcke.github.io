@@ -180,3 +180,19 @@ hr {
   width: 80px;
 }
 
+#volume-control {
+  display: flex;
+  gap: 8px;
+  position: fixed;
+  right: 32px;
+  bottom: 32px;
+  width: 248px;
+  color: white;
+}
+
+.volume-item {
+  width: 22px;
+  min-width: 22px;
+  max-width: 22px;
+  text-align: center;
+}

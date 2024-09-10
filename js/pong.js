@@ -89,9 +89,6 @@ let gameSpeed = 100
 let touchControls = false
 let touchY
 
-
-sounds.muted = false
-
 colorInputP1.addEventListener("change", () => {
   colorPaddle1 = colorInputP1.value
 })
@@ -135,16 +132,6 @@ const drawScore = () => {
   canvasContext.fillStyle = "white"
   canvasContext.fillText(Score1, canvas.width / 4 - 20, 60)
   canvasContext.fillText(Score2, 3 * canvas.width / 4, 60)
-}
-
-const soundControl = () => {
-  if (sounds.muted == true) {
-    sounds.muted = false
-    soundBtn.innerHTML = "&#128266;"
-  } else {
-    sounds.muted = true;
-    soundBtn.innerHTML = "&#128263;"
-  }
 }
 
 function twoPlayerMode() {
@@ -419,7 +406,7 @@ const drawVictoryMessage = (message1, message2) => {
 }
 
 const playSound = (sound) => {
-  if (!sounds.muted) sound.play()
+  sound.play()
 }
 
 const setScore = () => {
@@ -517,6 +504,17 @@ const drawEverything = () => {
   canvasContext.fillRect(paddle1X, paddle1Y, 10, paddleHeight)
   canvasContext.fillStyle = colorPaddle2; /*Paddle2*/
   canvasContext.fillRect(paddle2X, paddle2Y, 10, paddleHeight)
+}
+
+let volume = 1
+function setVolume(value) {
+  volume = value === 0 ? 0 : value * 2 / 10
+  const volumeElements = Array.from(document.getElementsByClassName('volume-item'))
+  volumeElements.forEach(element => {
+          element.innerHTML = element.dataset.value > value ? '&#9645;' : '&#11036;'
+  })
+  const audio = document.querySelectorAll('audio')
+  audio.forEach(sound => sound.volume = volume)
 }
 
 const burgerMenu = document.getElementById("burger-menu")

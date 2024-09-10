@@ -410,8 +410,11 @@ address {
   -webkit-transition: all 0.8s;
   transition: all 0.8s;
   opacity: 0;
+}
+
+.appear:not(.static) {
   -webkit-transform: translateY(20px);
-          transform: translateY(20px);
+  transform: translateY(20px);
 }
 
 .appear.inview {
