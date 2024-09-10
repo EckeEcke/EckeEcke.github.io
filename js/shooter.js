@@ -5,14 +5,14 @@ const nameInput = document.getElementById("name-input")
 canvasContext.font = '24px retro'
 
 const imageSources = {
-  playerShip: './images/spaceship.png',
-  snakeHead: './images/snake-head.png',
-  snakeBody: './images/snake.png',
-  enemyShip: './images/enemyship.png',
-  asteroid: './images/asteroid.png',
-  explosion: './images/explosion.png',
-  trumpHead: './images/trumphead.png',
-  background: './images/space-pixel-background.jpg'
+  playerShip: './images/shooter/spaceship.png',
+  snakeHead: './images/shooter/snake-head.png',
+  snakeBody: './images/shooter/snake.png',
+  enemyShip: './images/shooter/enemyship.png',
+  asteroid: './images/shooter/asteroid.png',
+  explosion: './images/shooter/explosion.png',
+  trumpHead: './images/shooter/trumphead.png',
+  background: './images/shooter/space-pixel-background.jpg'
 }
 
 const images = {
@@ -27,16 +27,16 @@ const images = {
 }
 
 const soundSources = {
-  laserEnemy: './sounds/laser-enemy.wav',
-  laser: './sounds/laser.wav',
-  laser2: './sounds/laser2.wav',
-  laser3: './sounds/laser3.wav',
-  powerup: './sounds/shooter-powerup.wav',
-  alertSound: './sounds/alert.wav',
-  hitSound: './sounds/hit.wav',
-  spaceshipSound: './sounds/spaceship-rising.wav',
-  loseSound: './sounds/lose-shooter.wav',
-  gameMusic: './sounds/spaceshooter-music.mp3',
+  laserEnemy: './sounds/shooter/laser-enemy.wav',
+  laser: './sounds/shooter/laser.wav',
+  laser2: './sounds/shooter/laser2.wav',
+  laser3: './sounds/shooter/laser3.wav',
+  powerup: './sounds/shooter/shooter-powerup.wav',
+  alertSound: './sounds/shooter/alert.wav',
+  hitSound: './sounds/shooter/hit.wav',
+  spaceshipSound: './sounds/shooter/spaceship-rising.wav',
+  loseSound: './sounds/shooter/lose-shooter.wav',
+  gameMusic: './sounds/shooter/spaceshooter-music.mp3',
 }
 
 const sounds = {
@@ -813,7 +813,7 @@ function displayGameoverScreen() {
       nameInput.style.display = "block"
       nameInput.focus()
       if (isHighscore) {
-        canvasContext.fillText("New Highscore", 72, 100)
+        canvasContext.fillText("New Highscore", canvas.width / 2, 100)
       }
       isHighscore = false
       gameSpeed = 40

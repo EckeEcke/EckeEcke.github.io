@@ -164,6 +164,7 @@ const keysound = { src: document.getElementById("key-sound"), playOnce: false }
 const gatesound = { src: document.getElementById("gate-sound"), playOnce: false }
 const hurtsound = { src: document.getElementById("hurt-sound"), playOnce: true }
 const victorysound = { src: document.getElementById("victory-sound"), playOnce: true }
+const batSound = { src: document.getElementById("bat-sound"), playOnce: true }
 
 
 const touchBTNStart = document.getElementById("touch-BTN-start")
@@ -612,6 +613,7 @@ function moveBat(bat) {
 function batCollision(bat) {
     if (player1.x + 15 < bat.x + 35 && player1.x + player1.width > bat.x + 15 && player1.y + 10 <= bat.y + 20 && player1.y + player1.height >= bat.y && !player1.invincibility) {
         playSound(hurtsound)
+        playSound(batSound)
         handleInvincibility()
     }
 }
