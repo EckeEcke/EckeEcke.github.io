@@ -10,15 +10,6 @@ h1 {
   text-shadow: 4px 4px rgba(0, 0, 0, 0.4);
 }
 
-.row {
-  margin: 0 !important;
-}
-
-.card {
-  margin: 0;
-  padding: 0;
-}
-
 header {
   position: relative;
   width: 100%;
@@ -41,6 +32,18 @@ h2 {
 
 h3 {
   font-size: 2.5em;
+}
+
+.blue-font {
+  color: #143a5d;
+}
+
+.coral-font {
+  color: #f73163;
+}
+
+.screenshot-box-shadow {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 #language-switch {
@@ -201,56 +204,10 @@ address {
   margin: 10px auto;
 }
 
-
-.index-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 100vw;
-  padding-top: 30px;
-  margin: 0 auto;
-}
-
 .icons-wrapper {
   width: 100%;
   transition: 0.3s;
 }
-
-.index-content-tile h2 {
-  opacity: 0;
-}
-
-.index-content-tile:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0);
-  transition: background 1s ease;
-}
-
-.index-content-tile:hover:after {
-  background: rgba(0, 0, 0, 0.4);
-}
-
-.index-content-tile:hover h2 {
-  opacity: 1;
-  transition: 1s ease;
-}
-
-
-.big-heading {
-  color: white;
-  font-size: 48pt;
-}
-
-.big-subheading {
-  color: white;
-  font-size: 36pt;
-}
-
 
 .submit-button {
   min-width: 100px;
@@ -302,16 +259,6 @@ address {
   transform: scale(1.05);
 }
 
-.line1, .line2, .line3 {
-  width: 40px;
-  height: 6px;
-  margin: 8px;
-  background-color: white;
-  border-radius: 20px;
-}
-
-
-
 #burger-menu {
   font-family: Ubuntu;
   position: fixed;
@@ -358,7 +305,7 @@ address {
   list-style: none;
   width: 300px;
   max-width: 60vw;
-  padding: 1.5rem 1rem;
+  padding: 1rem;
   transition: 0.5s;
 }
 
@@ -410,8 +357,6 @@ address {
   -ms-user-select: none;
 }
 
-
-
 #scroll-arrow {
   width: 32px;
   filter: drop-shadow(1px 1px rgb(0 0 0 / 0.4));
@@ -459,15 +404,6 @@ address {
   animation: arrow-animation 5s infinite linear;
   padding: 8px;
   border-radius: 8px;
-}
-
-
-
-.description-text {
-  color: white;
-  font-size: 1em;
-  padding: 8px;
-  text-align: justify;
 }
 
 .appear {
@@ -540,11 +476,6 @@ address {
 
 
 @media (max-width: 575px) {
-
-  .index-container {
-    width: 100%;
-    margin: 0;
-  }
 
   #hamburger {
     top: 8px;

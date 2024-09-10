@@ -5,7 +5,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/mypage.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-  
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
   <link rel="icon" type="image/png" href="images/favicon.png"/>
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
@@ -34,29 +33,25 @@
         <hr class="nav-line">
         <li>
           <a href="https://triggerscore.netlify.app/" target="_blank">
-            <span class="iconify" data-icon="emojione:movie-camera"></span>
-            <span>Triggerscore</span>
+            Triggerscore
           </a>
         </li>
         <hr class="nav-line">
         <li>
           <a href="https://vue3-mealplanner.netlify.app/" target="_blank">
-            <span class="iconify" data-icon="emojione:pot-of-food"></span>
-            <span>Vue Meal Planner</span>
+            Vue Meal Planner
           </a>
         </li>
         <hr class="nav-line">
         <li>
           <a href="https://bav-hub.de/" target="_blank">
-            <span class="iconify" data-icon="noto:man-office-worker"></span>
-            <span>bav:hub</span>
+            bav:hub
           </a>
         </li>
         <hr class="nav-line">
         <li>
           <a href="https://react-travelblog.netlify.app/" target="_blank">
-            <span class="iconify" data-icon="emojione:airplane"></span>
-            <span>React Travel Blog</span>
+            React Travel Blog
           </a>
         </li>
         <hr class="nav-line mb-5">
@@ -64,43 +59,39 @@
         <hr class="nav-line">
         <li>
           <a href="https://eckeecke.itch.io/school-fight">
-            <span class="iconify" data-icon="fxemoji:school"></span>
-            <span>School Fight</span>
+            School Fight
           </a>
         </li>
         <hr class="nav-line">
         <li>
           <a href="https://clicky-clicky-run-run.netlify.app/">
-            <span class="iconify" data-icon="emojione:person-running-light-skin-tone"></span>
-            <span>Clicky Clicky Run Run</span>
+            Clicky Clicky Run Run
           </a>
         </li>
         <hr class="nav-line">
         <li>
           <a href="shooter">
-            <span class="iconify" data-icon="fxemoji:rocket"></span>
-            <span>JS Space Shooter</span>
+            JS Space Shooter
           </a>
         </li>
         <hr class="nav-line">
         <li>
           <a href="pong">
-            <span class="iconify" data-icon="emojione:ping-pong"></span>
-            <span>JS Pong</span>
+            JS Pong
           </a>
         </li>
         <hr class="nav-line">
         <li>
           <a href="templelooter">
-            <span class="iconify" data-icon="emojione:cowboy-hat-face"></span>
-            <span>Temple Looter</span>
+            Temple Looter
           </a>
         </li>
       </ul>      
     </div>
 
-
-    <button id="scroll-back-top-BTN"><img id="scroll-arrow-up" src="images/scroll-arrow.png" onClick="scrollToTop()"></button>
+    <button id="scroll-back-top-BTN">
+      <img id="scroll-arrow-up" src="images/scroll-arrow.png" onClick="scrollToTop()">
+    </button>
 
     <div id="homepage-running-mario">
       <div class="position-relative">
@@ -124,73 +115,129 @@
           
 
       <div id="scroll-arrow-div" onClick="scrollToMainContent()">
-        <button id="scroll-to-tiles-BTN"><i class="uil uil-angle-down text-white" id="scroll-arrow"></i></button>
+        <button id="scroll-to-tiles-BTN">
+          <i class="uil uil-angle-down text-white" id="scroll-arrow"></i>
+        </button>
       </div>
     </header>
 
 
     <section class="demo-section appear pt-5" id="main-content">
       <div>
-        <img alt="screenshot triggerscore" style="max-width: 100%;box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" src="images/screenshot-triggerscore.png">
+        <img 
+          alt="screenshot triggerscore" 
+          class="mw-100 screenshot-box-shadow"
+          src="images/screenshot-triggerscore.png"
+        >
       </div>
       <div>
         <h3>Triggerscore</h3>
         <article data-localization="triggerscore_description">
           On this movie rating portal movies users can rate old movies based on how much these trigger viewers today. I designed and built the page myself including a Node JS server connected to a MySQL database for saving and receiving user ratings. Movie data I receive via TMDB api. Used technologies: Nuxt 3, Tailwind, Node JS, MySQL.
         </article>
-        <a href="https://triggerscore.netlify.app/" data-localization="triggerscore_cta" class="btn btn-primary my-3" target="_blank">go to Triggerscore</a>
+        <a 
+          href="https://triggerscore.netlify.app/" 
+          data-localization="triggerscore_cta" 
+          class="btn btn-primary my-3" 
+          target="_blank"
+        >
+          go to Triggerscore
+        </a>
       </div>
     </section>
 
     <section class="demo-section appear">
       <div>
-        <img alt="screenshot mealplanner" style="max-width: 100%;box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" src="images/screenshot-mealplanner-vue3.png">
+        <img 
+          alt="screenshot mealplanner" 
+          class="mw-100 screenshot-box-shadow"
+          src="images/screenshot-mealplanner-vue3.png"
+        >
       </div>
       <div>
         <h3>Vue Mealplanner</h3>
         <article data-localization="vue-mealplanner_description">
           This application offers a meal and grocery planner. In the Vue Mealplanner users can add their own receipes and manage a list of grocery items. Ingredients can be added to the grocery list right from the recipe. Data is saved in local storage. The mealplanner is also provied as PWA. I recently migrated the project from Vue 2 with Javascript to Vue 3 using Typescript. Used technologies: Vue 3, Bootstrap, HTML, CSS, Typescript.
         </article>
-        <a href="https://vue3-mealplanner.netlify.app/" data-localization="vue-mealplanner_cta" class="btn btn-primary my-3" target="_blank">go to Vue Mealplanner</a>
+        <a 
+          href="https://vue3-mealplanner.netlify.app/" 
+          data-localization="vue-mealplanner_cta" 
+          class="btn btn-primary my-3" 
+          target="_blank"
+        >
+          go to Vue Mealplanner
+        </a>
       </div>
     </section>
 
     <section class="demo-section appear">
       <div>
-        <img alt="screenshot bavhub" style="max-width: 100%;box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" src="images/screenshot-bavhub.png">
+        <img 
+          alt="screenshot bavhub" 
+          class="mw-100 screenshot-box-shadow"
+          src="images/screenshot-bavhub.png"
+        >
       </div>
       <div>
         <h3>bav:hub</h3>
         <article data-localization="bav-hub_description">
           For a freelance job I created the landingpage for bav:hub including a custom carousel and custom slider component. The design for the page was provided in Figma. Used technologies: Nuxt, Tailwind, HTML, Javascript.
         </article>
-        <a href="https://bav-hub.de/" data-localization="bav-hub_cta" class="btn btn-primary my-3" target="_blank">go to bav:hub</a>
+        <a 
+          href="https://bav-hub.de/" 
+          data-localization="bav-hub_cta" 
+          class="btn btn-primary my-3" 
+          target="_blank"
+        >
+          go to bav:hub
+        </a>
       </div>
     </section>
 
     <section class="demo-section appear">
       <div>
-        <img alt="screenshot school fight" style="max-width: 100%; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" src="images/screenshot-schoolfight.png">
+        <img 
+          alt="screenshot school fight" 
+          class="mw-100 screenshot-box-shadow"
+          src="images/screenshot-schoolfight.png"
+        >
       </div>
       <div>
         <h3>School Fight</h3>
         <article data-localization="school-fight_description">
           This game offers turn based battles with different characters and ten levels, including two mini games and a boss fight. The game is mobile friendly and currently playable on itch.io. Used technologies: HTML, CSS, jQuery, Javascript, HTML Canvas.
         </article>
-        <a href="https://eckeecke.itch.io/school-fight" data-localization="school-fight_cta" class="btn btn-primary my-3" target="_blank">play School Fight</a>
+        <a 
+          href="https://eckeecke.itch.io/school-fight" 
+          data-localization="school-fight_cta" 
+          class="btn btn-primary my-3" 
+          target="_blank"
+        >
+          play School Fight
+        </a>
       </div>
     </section>
 
     <section class="demo-section appear">
       <div>
-        <img alt="screenshot clicky" style="max-width: 100%; box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;" src="images/screenshot-clicky.png">
+        <img 
+          alt="screenshot clicky"
+          class="mw-100 screenshot-box-shadow"
+          src="images/screenshot-clicky.png"
+        >
       </div>
       <div>
         <h3>Clicky Clicky Run Run</h3>
         <article data-localization="clicky-clicky_description">
           To try out Websocket I created this small online multiplayer game. If you want to test it, gather a second player or simply open the game in two tabs. 😉 Click the button as fast as you can to win the race. Used technologies: Vue3, NodeJS, Websocket
         </article>
-        <a href="https://clicky-clicky-run-run.netlify.app/" data-localization="clicky-clicky_cta" class="btn btn-primary my-3" target="_blank">play Clicky Clicky Run Run</a>
+        <a 
+          href="https://clicky-clicky-run-run.netlify.app/" 
+          data-localization="clicky-clicky_cta" 
+          class="btn btn-primary my-3" target="_blank"
+        >
+          play Clicky Clicky Run Run
+        </a>
       </div>
     </section>
 
@@ -203,10 +250,10 @@
             <span class="iconify" data-icon="logos:vue"></span>
             <span class="iconify" data-icon="logos:nuxt-icon"></span>
             <span class="iconify" data-icon="cib:git"></span>
-            <span class="iconify" data-icon="vscode-icons:file-type-html" style="color: #143a5d;"></span>
+            <span class="iconify blue-font" data-icon="vscode-icons:file-type-html"></span>
             <span class="iconify" data-icon="vscode-icons:file-type-css"></span>
             <span class="iconify" data-icon="logos:tailwindcss-icon"></span>
-            <span class="iconify" data-icon="vscode-icons:file-type-scss2" style="color: #143a5d;"></span>
+            <span class="iconify blue-font" data-icon="vscode-icons:file-type-scss2"></span>
             <span class="iconify" data-icon="logos:vitest"></span>
             <span class="iconify" data-icon="logos:playwright"></span>
             <span class="iconify" data-icon="logos:jest"></span>
@@ -218,12 +265,24 @@
       <article class="mx-0 py-0 appear icons-wrapper appear px-3 text-center appear">
         <h3 class="text-black w-100 mb-5">Social</h3>
         <div class="">
-          <a href="https://www.linkedin.com/in/christian-eckardt-41527216a/" target="_blank"><span class="iconify social-icon" data-icon="logos:linkedin-icon" style="color: #143a5d;"></span></a>
-          <a href="https://www.xing.com/profile/Christian_Eckardt21/cv" target="_blank"><svg class="xing-icon social-icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="426.896 102.499 170.207 200"><path d="M442.394 142c-1.736 0-3.197.61-3.934 1.803-.76 1.231-.645 2.818.166 4.424l19.503 33.761c.033.064.033.105 0 .164l-30.648 54.084c-.799 1.592-.76 3.191 0 4.425.736 1.187 2.033 1.966 3.771 1.966h28.844c4.312 0 6.393-2.91 7.867-5.57 0 0 29.973-53.01 31.14-55.068-.118-.19-19.83-34.58-19.83-34.58-1.439-2.557-3.606-5.41-8.03-5.41h-28.849z" fill="#005a5f"/><path d="M563.574 102.501c-4.309 0-6.176 2.714-7.723 5.494 0 0-62.14 110.2-64.188 113.818.105.196 40.984 75.191 40.984 75.191 1.432 2.558 3.641 5.494 8.06 5.494h28.81c1.738 0 3.096-.654 3.828-1.843.77-1.23.748-2.857-.059-4.458l-40.664-74.295a.167.167 0 0 1 0-.189l63.863-112.92c.803-1.594.82-3.22.061-4.452-.736-1.188-2.098-1.843-3.836-1.843h-29.139v.002h.003z" fill="#d4d600"/></svg></a>
-          <a href="https://github.com/EckeEcke" target="_blank"><span class="iconify social-icon" data-icon="akar-icons:github-fill" style="color: black;"></span></a>
-          <a href="https://eckeecke.itch.io/" target="_blank"><span class="iconify social-icon" data-icon="cib:itch-io" style="color: #f73163;"></span></a>
-          <a href="https://codepen.io/EckeEcke" target="_blank"><span class="iconify social-icon" data-icon="ant-design:codepen-circle-filled" style="color:black"></span></a>
-          <a href="https://www.npmjs.com/~eckeecke" target="_blank"><span class="iconify social-icon" data-icon="teenyicons:npm-outline" style="color:black"></span></a>
+          <a href="https://www.linkedin.com/in/christian-eckardt-41527216a/" target="_blank">
+            <span class="iconify social-icon" data-icon="logos:linkedin-icon" class="blue-font"></span>
+          </a>
+          <a href="https://www.xing.com/profile/Christian_Eckardt21/cv" target="_blank">
+            <img class="social-icon h-100" src="images/xing.svg" alt="xing icon"/>
+          </a>
+          <a href="https://github.com/EckeEcke" target="_blank">
+            <span class="iconify social-icon text-dark" data-icon="akar-icons:github-fill" class></span>
+          </a>
+          <a href="https://eckeecke.itch.io/" target="_blank">
+            <span class="iconify social-icon coral-font" data-icon="cib:itch-io"></span>
+          </a>
+          <a href="https://codepen.io/EckeEcke" target="_blank">
+            <span class="iconify social-icon text-dark" data-icon="ant-design:codepen-circle-filled"></span>
+          </a>
+          <a href="https://www.npmjs.com/~eckeecke" target="_blank">
+            <span class="iconify social-icon text-dark" data-icon="teenyicons:npm-outline"></span>
+          </a>
         </div>
       </article>
     </section>
