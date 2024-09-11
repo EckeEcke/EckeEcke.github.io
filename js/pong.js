@@ -113,8 +113,6 @@ window.onload = function () {
   console.log(navigator.getGamepads()[0])
 }
 
-
-
 function startGame() {
   gameStarted = true
   canvas.style.display = "block"
@@ -157,16 +155,13 @@ function onePlayerMode () {
   moveAI()
 }
 
-
 const moveEverything = () => {
   ballX = ballX + ballSpeedX * ballDirectionX
-  ballY = ballY + ballSpeedY
+  ballY = ballY + ballSpeedY * 2
 
   if (ballX >= canvas.width || ballX <= 0) {
     ballDirectionX = ballDirectionX * -1
   }
-
-  ballY = ballY + ballSpeedY
   
   const ballHitsBottom = ballY >= canvas.height
   const ballHitsTop = ballY <= 0
@@ -181,26 +176,22 @@ const moveEverything = () => {
   if (ballHitsTop) ballY = 0
 }
 
-
-
 const move1 = (event) => {
-  let gamepad1Connected = false
-  if (navigator.getGamepads()[0] !== null) {
-    gamepad1Connected = true
+  let gamepad1Connected = navigator.getGamepads()[0] !== null
+
+  if (gamepad1Connected) {
+    move1Gamepad()
+    return
   }
+
   if (wPressed) {
     paddle1Y -= 8
   }
-  if (gamepad1Connected && navigator.getGamepads()[0].buttons[12].pressed) {
-    paddle1Y -= 8
-  }
+  
   if (paddle1Y < 0) {
     paddle1Y = 0
   }
   if (sPressed) {
-    paddle1Y += 6
-  }
-  if (gamepad1Connected && navigator.getGamepads()[0].buttons[13].pressed) {
     paddle1Y += 6
   }
   if (paddle1Y > 500) {
@@ -209,13 +200,7 @@ const move1 = (event) => {
   if (dPressed && paddle1X < canvas.width /2.5) {
     paddle1X += 5
   }
-  if (gamepad1Connected && navigator.getGamepads()[0].buttons[15].pressed && paddle1X < canvas.width /2.5) {
-    paddle1X += 5
-  }
   if (aPressed && paddle1X > 20) {
-    paddle1X -= 5
-  }
-  if (gamepad1Connected && navigator.getGamepads()[0].buttons[14].pressed && paddle1X > 20) {
     paddle1X -= 5
   }
 }
@@ -258,7 +243,6 @@ function changeTouchPosition(event) {
   touchY = event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY
 }
 
-
 const move2 = (event) => {
   if (downPressed) {
     paddle2Y = paddle2Y + 8;
@@ -280,7 +264,6 @@ const move2 = (event) => {
   }
 
 }
-
 
 const moveAI = () => {
   if (ballSpeedX > 0) {
@@ -323,7 +306,6 @@ const resetAfterScore = () => {
     ballSpeedX = 5
   }, 1000)
 }
-
 
 const keyDownHandler = (event) => {
   switch (event.keyCode) {
@@ -397,8 +379,9 @@ const keyUpHandler = (event) => {
   }
 }
 
-
-const drawVictoryMessage = (message1, message2) => {
+const drawVictoryMessage = (p1Wins) => {
+  const message1 = p1Wins ? "Win" : "Lose"
+  const message2 = p1Wins ? "Lose" : "Win"
   canvasContext.font = font
   canvasContext.fillStyle = "white"
   canvasContext.fillText(message1, 120, 350)
@@ -430,15 +413,7 @@ const setScore = () => {
     playSound(soundVictory)
     clearInterval(runGame)
     setTimeout(() => window.location.reload(), 5000)
-  }
-
-  if (p1Wins) {
-    drawVictoryMessage("Win!", "Lose")
-    return
-  }
-
-  if (p2Wins) {
-    drawVictoryMessage("Lose", "Win!")
+    drawVictoryMessage(p1Wins)
     return
   }
 
@@ -449,49 +424,43 @@ const setScore = () => {
 }
 
 const collision = (paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadIndex) => {
-  let gamepadConnected = navigator.getGamepads()[gamepadIndex] !== null
-  if (ballX > paddleX - 5  && ballX < paddleX + 15 && ballY >= paddleY - tolerance && ballY < paddleY - 1 + paddleHeight + tolerance && !collisionDetected) {
-    if (ballX > canvas.width / 2){
-      collisionP2 = true
-      collisionP1 = false
-    } else {
-      collisionP1 = true
-      collisionP2 = false
-      
-    }
-    ballDirectionX = -ballDirectionX;
+  const gamepadConnected = navigator.getGamepads()[gamepadIndex] !== null
+  const isPressedDown = downBTN || (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[13].pressed)
+  const isPressedUp = upBTN || (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[12].pressed)
+  const isPressedRight = dPressed || (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[15].pressed)
+  const withinXRange = ballX > paddleX - 5 && ballX < paddleX + 15
+  const withinYRange = ballY >= paddleY - tolerance && ballY < paddleY - 1 + paddleHeight + tolerance
+
+  if (withinXRange && withinYRange && !collisionDetected) {
+    const isRightSide = ballX > canvas.width / 2
+    collisionP1 = !isRightSide
+    collisionP2 = isRightSide
+    ballDirectionX = -ballDirectionX
+
     if (collisionP1) {
-      ballX += dPressed ? 5 : 0
-      ballSpeedX = dPressed ? 10 : 5
-      if (gamepadConnected) {
-        ballX += navigator.getGamepads()[gamepadIndex].buttons[15].pressed ? 5 : 0
-        ballSpeedX = navigator.getGamepads()[gamepadIndex].buttons[15].pressed ? 10 : 5
-      }
+      ballX += isPressedRight ? 5 : 0
+      ballSpeedX = isPressedRight ? 10 : 5
     }
+
     if (collisionP2) {
       ballX -= leftPressed ? 5 : 0
       ballSpeedX = leftPressed ? 10 : 5
     }
-    if (ballSpeedY == 0) {
+
+    if (ballSpeedY === 0) {
       ballSpeedY = 2
     }
-    if (downBTN && ballSpeedY < 0) {
+
+    if (isPressedDown && ballSpeedY < 0) {
       ballSpeedY -= 1
     }
-    if (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[13].pressed && ballSpeedY < 0){
-      ballSpeedY -= 1
-    }
-    if (upBTN && ballSpeedY > 0) {
-      ballSpeedY += 1
-    }
-    if (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[12].pressed && ballSpeedY > 0){
+
+    if (isPressedUp && ballSpeedY > 0) {
       ballSpeedY += 1
     }
     playSound(bounce)
   }
-
 }
-
 
 const drawEverything = () => {
   canvasContext.fillStyle = "black"; /*black background*/
