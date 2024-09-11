@@ -390,17 +390,15 @@ const playSound = (sound) => {
 }
 
 const setScore = () => {
-  let scored = false
+  const scored = ballX >= canvas.width || ballX <= 0
   if (ballX >= canvas.width) {
     Score1 = Score1 + 1
     playSound(soundCheer1)
-    scored = true
   }
 
   if (ballX <= 0) {
     Score2 = Score2 + 1
     playSound(soundCheer2)
-    scored = true
   }
 
   const p1Wins = Score1 >= 7
@@ -416,7 +414,6 @@ const setScore = () => {
 
   if (scored) {
     resetAfterScore()
-    scored = false
   }
 }
 
