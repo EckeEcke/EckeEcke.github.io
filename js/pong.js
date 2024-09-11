@@ -19,9 +19,6 @@ window.addEventListener("gamepad2Connected", (e) => {
   e.gamepad.buttons.length, e.gamepad.axes.length)
 })
   
-
-
-
 const canvas = document.getElementById("game-canvas")
 const startBtn = document.getElementById("start-button")
 const soundBtn = document.getElementById("sound-button")
