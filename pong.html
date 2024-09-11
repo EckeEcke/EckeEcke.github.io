@@ -8,26 +8,13 @@
 </head>
 
 <body>
-
-  <div id="volume-control">
-    <div>VOLUME</div>
-    <span onclick="setVolume(0)"> | </span>
-    <span onclick="setVolume(1)" data-value="1" class="volume-item">&#11036;</span>
-    <span onclick="setVolume(2)" data-value="2" class="volume-item">&#11036;</span>
-    <span onclick="setVolume(3)" data-value="3" class="volume-item">&#11036;</span>
-    <span onclick="setVolume(4)" data-value="4" class="volume-item">&#11036;</span>
-    <span onclick="setVolume(5)" data-value="5" class="volume-item">&#11036;</span>
-  </div>
-
-
+  
   <audio src="sounds/pong/bounce.wav" id="bounce"></audio>
   <audio src="sounds/pong/cheer2.wav" id="cheer2"></audio>
   <audio src="sounds/pong/cheer.mp3" id="cheer1"></audio>
   <audio src="sounds/pong/bounce1.wav" id="bounce1"></audio>
   <audio src="sounds/pong/victory.wav" id="victory"></audio>
   <audio src="sounds/pong/bounce-wall.wav" id="bounceWall"></audio>
-
-
 
   <button id="hamburger" onclick="showMenu()">
     <div class="line1"></div>
@@ -71,15 +58,14 @@
     </ul>
   </div>
 
-    <h2>Pong</h2>
+    <h1>Pong</h1>
 
     <canvas id="game-canvas" width="800px" height="600px">
     </canvas>
     <br>
     <article class="controls">
-      Controls P1: WASD | Controls P2: ARROWKEYS<br>
-
       <div id="game-settings">
+        Controls P1: WASD | Controls P2: ARROWKEYS<br><br>
         <input class="option-input" type="color" id="color-picker-p1" value="#ed3d0d">
         <label>&nbsp Choose color P1</label>
         <br>
@@ -105,8 +91,21 @@
       To start with Javascript I took a Udemy course on how to build Pong using Javascript and HTML Canvas.
       I implemented a collision detection, sounds, an AI opponent and gamepad support via gamepad API.
     </article>
+    <div class="wrapper">
+      <div id="volume-control">
+        <div>VOLUME</div>
+        <span onclick="setVolume(0)"> | </span>
+        <span onclick="setVolume(1)" data-value="1" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(2)" data-value="2" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(3)" data-value="3" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(4)" data-value="4" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(5)" data-value="5" class="volume-item">&#11036;</span>
+      </div>
+    </div>
 
-
+    <a href="https://github.com/EckeEcke/EckeEcke.github.io/blob/master/js/pong.js" target="_blank">
+      <img id="github-link" src="images/github-pixelated.png" />
+    </a>
 
   <script src="./js/pong.js"></script>
 

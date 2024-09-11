@@ -150,9 +150,7 @@ h2 {
 #volume-control {
   display: flex;
   gap: 8px;
-  position: fixed;
-  right: 32px;
-  bottom: 32px;
+  margin: 32px auto;
   width: 248px;
   color: white;
 }
@@ -162,6 +160,16 @@ h2 {
   min-width: 22px;
   max-width: 22px;
   text-align: center;
+}
+
+#github-link {
+  background: transparent;
+  border-radius: 8px;
+  height: 48px;
+  position: fixed;
+  right: 8px;
+  bottom: 8px;
+  padding: 8px;
 }
 
 @media (max-width: 1100px) {
