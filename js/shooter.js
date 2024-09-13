@@ -680,6 +680,7 @@ function hitDetectionShip(obj) {
 function hitDetectionSingle(obj) {
   if (spaceshipY < obj.y + 30 && spaceshipY + 100 > obj.y && spaceshipX + 10 < obj.x + 30 && spaceshipX + 80 > obj.x + 20) {
     displayGameoverScreen()
+    return
   }
   if (shotY <= obj.y + 50 && shotY >= obj.y && shotX >= obj.x - 10 && shotX <= obj.x + 50) {
     if (!obj.countBlocker) {
@@ -748,7 +749,7 @@ function hitDetectionSnake() {
   }
 
 
-  if (snakeLives == 0) {
+  if (snakeLives === 0) {
     startNextRound(moveAsteroids)
   }
 }

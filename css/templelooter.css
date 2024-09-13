@@ -133,9 +133,7 @@ h1 {
 #volume-control {
     display: flex;
     gap: 8px;
-    position: fixed;
-    right: 32px;
-    bottom: 32px;
+    margin: 32px auto;
     width: 248px;
     color: white;
 }

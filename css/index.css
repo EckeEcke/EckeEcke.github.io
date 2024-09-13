@@ -34,6 +34,10 @@ h3 {
   font-size: 2.5em;
 }
 
+h5 {
+  border-bottom: 4px solid black;
+}
+
 .blue-font {
   color: #143a5d;
 }
@@ -278,7 +282,8 @@ address {
 #burger-menu ul {
   overflow-y: auto;
   height: 100%;
-  padding-left: 20px;
+  padding: 0 24px 0 20px;
+  text-transform: uppercase;
 }
 
 #burger-menu li:last-of-type {
