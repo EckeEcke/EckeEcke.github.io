@@ -433,20 +433,43 @@ address {
 }
 
 :not(.uil-times):not(.uil-bars).uil,
-  .iconify,
-  .xing-icon {
-    font-size: 3rem;
-    justify-self: center;
-  }
+.iconify,
+.xing-icon {
+  font-size: 3rem;
+  justify-self: center;
+}
 
-  article div {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    justify-items:center;
-    grid-gap: 2rem;
-    
-    grid-row-gap: 4rem;
-  }
+article div {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items:center;
+  grid-gap: 2rem;
+  
+  grid-row-gap: 4rem;
+}
+
+.techstack-icon {
+  position: relative;
+  display: inline-block;
+  transition: all 0.3s; 
+}
+
+.techstack-icon::before {
+  display: block;
+  position: absolute;
+  top: 130%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: 1;
+  content: attr(data-tooltip);
+  transition: all 0.3s;
+  opacity: 0;
+  font-weight: bolder;
+}
+
+.techstack-icon:hover::before {
+  opacity: 1;
+}
 
 
 @keyframes arrow-animation {
@@ -513,12 +536,6 @@ address {
   a button {
     font-size: 0.6em;
   }
-
-  address,
-  .profile-pic {
-    width: 200px;
-  }
-
 }
 
 @media (min-width: 577px) {
@@ -676,7 +693,8 @@ hr {
   transition: all 0.3s;
 }
 
-.social-icon:hover {
+.social-icon:hover,
+.techstack-icon:hover {
   transform: scale(1.1);
 }
 
