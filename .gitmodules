@@ -1,0 +1,3 @@
+[submodule "schoolfight"]
+	path = schoolfight
+	url = https://github.com/EckeEcke/schoolfight
