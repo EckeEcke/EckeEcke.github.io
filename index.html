@@ -14,9 +14,9 @@
 <body id="body">
     <header>
       <div id="language-switch" class="appear static">
-        <span class="language-selector" data-value="en" onclick="changeLanguage('en')">EN</span>
+        <button class="language-selector" data-value="en" tabindex="0" onclick="changeLanguage('en')">EN</button>
         <span class="divider-pipe"></span>
-        <span class="language-selector inactive" data-value="de" onclick="changeLanguage('de')">DE</span>
+        <button class="language-selector inactive" data-value="de" tabindex="0" onclick="changeLanguage('de')">DE</button>
       </div>
       <button id="hamburger"  aria-label="Open menu button" onclick="toggleBurgermenu()">
         <i class="uil uil-bars text-white m-0"></i>
@@ -28,7 +28,7 @@
       <button id="close-button" class="bg-transparent" aria-label="close menu button" onclick="toggleBurgermenu()">
         <i class="uil uil-times text-dark m-0"></i>
       </button>
-      <ul>
+      <ul id="burger-menu-content">
         <li class="pl-0">
           <h3 class="p-3 font-weight-bold">SPAs</h3>
           <hr class="nav-line">

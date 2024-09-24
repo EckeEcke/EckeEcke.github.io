@@ -53,7 +53,7 @@ h3 {
   display: flex;
   align-items: center;
   gap: 16px;
-  font-size: 23px;
+  font-size: 22px;
   color: white;
 }
 
@@ -66,6 +66,10 @@ h3 {
   cursor: pointer;
   user-select: none;
   transition: all 0.3s ease;
+  color: white;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 #language-switch .language-selector.inactive {

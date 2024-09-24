@@ -9,6 +9,7 @@ const toggleBurgermenu = () => {
     backdrop.style.display = "block"
     document.body.style.overflowY = "hidden"
     document.body.style.height = "100%"
+    document.getElementById("burger-menu-content").scrollTop = 0
     return
   }
   burgerMenu.style.right = "-100%"
@@ -16,6 +17,14 @@ const toggleBurgermenu = () => {
   document.body.style.overflowY = "auto"
   document.body.style.height = "auto"
 }
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+      if (showBurgermenu) {
+          toggleBurgermenu()
+      }
+  }
+})
 
 const items = document.querySelectorAll('.appear');
 
