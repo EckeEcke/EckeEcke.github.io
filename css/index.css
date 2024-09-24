@@ -535,7 +535,7 @@ article div {
 
 @media (min-width: 577px) {
   article div {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     grid-gap: 2rem;
   }
 }
@@ -548,7 +548,7 @@ article div {
   }
 
   article div {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     grid-gap: 2rem;
     
     grid-row-gap: 4rem;
