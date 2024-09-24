@@ -1,6 +1,6 @@
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, maximum-scale=5.0">
   <title>Frontend Developer Christian Eckardt</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/index.css">
@@ -29,58 +29,62 @@
         <i class="uil uil-times text-dark m-0"></i>
       </button>
       <ul>
-        <h5 class="p-3 font-weight-bold">SPAs</h5>
-        <hr class="nav-line">
+        <li class="pl-0">
+          <h3 class="p-3 font-weight-bold">SPAs</h3>
+          <hr class="nav-line">
+        </li>
         <li>
           <a href="https://triggerscore.netlify.app/" target="_blank">
             Triggerscore
           </a>
+          <hr class="nav-line">
         </li>
-        <hr class="nav-line">
         <li>
           <a href="https://vue3-mealplanner.netlify.app/" target="_blank">
             Vue Meal Planner
           </a>
+          <hr class="nav-line">
         </li>
-        <hr class="nav-line">
         <li>
           <a href="https://bav-hub.de/" target="_blank">
             bav:hub
           </a>
+          <hr class="nav-line">
         </li>
-        <hr class="nav-line">
         <li>
           <a href="https://react-travelblog.netlify.app/" target="_blank">
             React Travel Blog
           </a>
+          <hr class="nav-line mb-5">
         </li>
-        <hr class="nav-line mb-5">
-        <h5 class="p-3 font-weight-bold">JS Games</h5>
-        <hr class="nav-line">
+        <li class="pl-0">
+          <h3 class="p-3 font-weight-bold">JS Games</h3>
+          <hr class="nav-line">
+        </li>
         <li>
           <a href="https://eckeecke.itch.io/school-fight">
             School Fight
           </a>
+          <hr class="nav-line">
         </li>
-        <hr class="nav-line">
         <li>
           <a href="https://clicky-clicky-run-run.netlify.app/">
             Clicky Clicky Run Run
           </a>
+          <hr class="nav-line">
         </li>
-        <hr class="nav-line">
         <li>
           <a href="shooter">
             JS Space Shooter
           </a>
+          <hr class="nav-line">
         </li>
-        <hr class="nav-line">
         <li>
           <a href="pong">
             JS Pong
           </a>
+          <hr class="nav-line">
         </li>
-        <hr class="nav-line">
         <li>
           <a href="templelooter">
             Temple Looter
@@ -90,12 +94,12 @@
     </div>
 
     <button id="scroll-back-top-BTN">
-      <img id="scroll-arrow-up" src="images/scroll-arrow.png" onClick="scrollToTop()">
+      <img id="scroll-arrow-up" alt="scroll down arrow" src="images/scroll-arrow.png" onClick="scrollToTop()">
     </button>
 
     <div id="homepage-running-mario">
       <div class="position-relative">
-        <img id="homepage-mario" src="images/mariosprites-walking.png" onclick="itsMeMario()">
+        <img id="homepage-mario" alt="sprite of running Super Mario" src="images/mariosprites-walking.png" onclick="itsMeMario()">
       </div>
     </div>
     
@@ -131,7 +135,7 @@
         >
       </div>
       <div>
-        <h3>Triggerscore</h3>
+        <h2>Triggerscore</h2>
         <article data-localization="triggerscore_description">
           On this movie rating portal movies users can rate old movies based on how much these trigger viewers today. I designed and built the page myself including a Node JS server connected to a MySQL database for saving and receiving user ratings. Movie data I receive via TMDB api. Used technologies: Nuxt 3, Tailwind, Node JS, MySQL.
         </article>
@@ -155,7 +159,7 @@
         >
       </div>
       <div>
-        <h3>Vue Mealplanner</h3>
+        <h2>Vue Mealplanner</h2>
         <article data-localization="vue-mealplanner_description">
           This application offers a meal and grocery planner. In the Vue Mealplanner users can add their own receipes and manage a list of grocery items. Ingredients can be added to the grocery list right from the recipe. Data is saved in local storage. The mealplanner is also provied as PWA. I recently migrated the project from Vue 2 with Javascript to Vue 3 using Typescript. Used technologies: Vue 3, Bootstrap, HTML, CSS, Typescript.
         </article>
@@ -179,7 +183,7 @@
         >
       </div>
       <div>
-        <h3>bav:hub</h3>
+        <h2>bav:hub</h2>
         <article data-localization="bav-hub_description">
           For a freelance job I created the landingpage for bav:hub including a custom carousel and custom slider component. The design for the page was provided in Figma. Used technologies: Nuxt, Tailwind, HTML, Javascript.
         </article>
@@ -203,7 +207,7 @@
         >
       </div>
       <div>
-        <h3>School Fight</h3>
+        <h2>School Fight</h2>
         <article data-localization="school-fight_description">
           This game offers turn based battles with different characters and ten levels, including two mini games and a boss fight. The game is mobile friendly and currently playable on itch.io. Used technologies: HTML, CSS, jQuery, Javascript, HTML Canvas.
         </article>
@@ -227,7 +231,7 @@
         >
       </div>
       <div>
-        <h3>Clicky Clicky Run Run</h3>
+        <h2>Clicky Clicky Run Run</h2>
         <article data-localization="clicky-clicky_description">
           To try out Websocket I created this small online multiplayer game. If you want to test it, gather a second player or simply open the game in two tabs. 😉 Click the button as fast as you can to win the race. Used technologies: Vue3, NodeJS, Websocket
         </article>
@@ -243,7 +247,7 @@
 
     <section class="icons-section appear">
       <article class="py-0 mx-0 icons-wrapper appear px-3 text-center">
-          <h3 class="w-100 mb-5">Tech Stack</h3>
+          <h2 class="w-100 mb-5">Tech Stack</h2>
           <div>
             <div class="techstack-icon" data-tooltip='Javascript'>
               <span class="iconify" data-icon="logos:javascript"></span>
@@ -287,7 +291,7 @@
       <hr class="divider w-100 d-xl-none">
 
       <article class="mx-0 py-0 appear icons-wrapper appear px-3 text-center appear">
-        <h3 class="text-black w-100 mb-5">Social</h3>
+        <h2 class="text-black w-100 mb-5">Social</h2>
         <div class="">
           <a href="https://www.linkedin.com/in/christian-eckardt-41527216a/" target="_blank">
             <span class="iconify social-icon" data-icon="logos:linkedin-icon" class="blue-font"></span>

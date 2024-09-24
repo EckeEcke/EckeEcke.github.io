@@ -25,16 +25,11 @@ body, html {
 }
 
 h2 {
-  text-align: center;
-  color: white;
   font-size: 2em;
 }
 
 h3 {
-  font-size: 2.5em;
-}
-
-h5 {
+  font-size: 1.5em;
   border-bottom: 4px solid rgb(33, 37, 41);
 }
 
@@ -273,7 +268,7 @@ address {
   top: 0px;
   padding: 50px 0 0;
   z-index: 2500;
-  height: 500px;
+  height: 100px;
   min-height: 100vh;
   min-width: 310px;
   transition: 0.5s;
@@ -570,7 +565,7 @@ article div {
   }
 
   h2 {
-    font-size: 42pt;
+    font-size: 2.5em;
   }
 
   #logo {

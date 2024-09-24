@@ -62,13 +62,18 @@ const changeLanguage = async (lang) => {
     selector.classList.remove('inactive')
     if (selector.dataset.value !== lang) selector.classList.add('inactive')
   })
+  document.documentElement.lang = lang
   updateContent(langData)
 }
 
 const validLangs = ['de', 'en']
 const isValidLang = lang => validLangs.includes(lang)
 
-document.addEventListener('DOMContentLoaded', () => {
+const getValidatedLangFromStorage = () => {
   const lang = localStorage.getItem('lang')
-  if (lang && isValidLang(lang)) changeLanguage(lang)
+  return lang && isValidLang(lang) ? lang : 'en'
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  changeLanguage(getValidatedLangFromStorage())
 })
