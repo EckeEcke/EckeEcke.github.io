@@ -37,7 +37,16 @@ document.addEventListener('keydown', function(event) {
   }
 })
 
-const items = document.querySelectorAll('.appear');
+function setVhProperty() {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`)
+}
+
+setVhProperty()
+
+window.addEventListener('resize', setVhProperty)
+
+const items = document.querySelectorAll('.appear')
 
 const active = function(entries){
     entries.forEach(entry => 
