@@ -4,6 +4,7 @@ const backdrop = document.getElementById("backdrop")
 
 const toggleBurgermenu = () => {
   const links = document.querySelectorAll("#burger-menu a")
+  const closeBtn = document.getElementById("close-button")
   showBurgermenu = !showBurgermenu
   if (showBurgermenu) {
     burgerMenu.style.right = "0px"
@@ -12,9 +13,11 @@ const toggleBurgermenu = () => {
     document.body.style.height = "100%"
     document.getElementById("burger-menu-content").scrollTop = 0
     links.forEach(link => link.setAttribute("tabindex", "0"))
+    closeBtn.setAttribute("tabindex", "0")
     return
   }
   links.forEach(link => link.setAttribute("tabindex", "-1"))
+  closeBtn.setAttribute("tabindex", "-1")
   burgerMenu.style.right = "-100%"
   backdrop.style.display = "none"
   document.body.style.overflowY = "auto"

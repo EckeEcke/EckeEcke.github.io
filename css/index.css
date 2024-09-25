@@ -251,10 +251,6 @@ address {
   display: none;
 }
 
-#hamburger:focus {
-  outline: none;
-}
-
 #hamburger:hover {
   transform: scale(1.05);
 }
@@ -379,11 +375,6 @@ address {
   background: none;
   border-style: none;
   animation: arrow-animation 5s infinite linear;
-  outline: none;
-}
-
-#scroll-to-tiles-BTN:focus {
-  outline: none;
 }
 
 #scroll-back-top-BTN {
