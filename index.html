@@ -14,17 +14,6 @@
 
 </head>
 <body id="body">
-    <header>
-      <div id="language-switch" class="appear static">
-        <button class="language-selector" data-value="en" tabindex="0" onclick="changeLanguage('en')">EN</button>
-        <span class="divider-pipe"></span>
-        <button class="language-selector inactive" data-value="de" tabindex="0" onclick="changeLanguage('de')">DE</button>
-      </div>
-      <button id="hamburger"  aria-label="Open menu button" onclick="toggleBurgermenu()">
-        <i class="uil uil-bars text-white m-0"></i>
-      </button>
-    </header>
-  
     <div id="backdrop" onclick="toggleBurgermenu()"></div>
     <div id="burger-menu" show="false">
       <button id="close-button" class="bg-transparent" aria-label="close menu button" tabindex="-1" onclick="toggleBurgermenu()">
@@ -94,6 +83,16 @@
         </li>
       </ul>      
     </div>
+    <header>
+      <div id="language-switch" class="appear static">
+        <button class="language-selector" data-value="en" tabindex="0" onclick="changeLanguage('en')">EN</button>
+        <span class="divider-pipe"></span>
+        <button class="language-selector inactive" data-value="de" tabindex="0" onclick="changeLanguage('de')">DE</button>
+      </div>
+      <button id="hamburger"  aria-label="Open menu button" onclick="toggleBurgermenu()">
+        <i class="uil uil-bars text-white m-0"></i>
+      </button>
+    </header>
 
     <div id="homepage-running-mario">
       <div class="position-relative">

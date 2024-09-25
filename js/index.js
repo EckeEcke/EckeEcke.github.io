@@ -11,7 +11,7 @@ const toggleBurgermenu = () => {
     burgerMenu.style.right = "0px"
     backdrop.style.display = "block"
     document.body.style.overflowY = "hidden"
-    document.body.style.height = "100%"
+    document.body.style.height = "100vh"
     document.getElementById("burger-menu-content").scrollTop = 0
     tabbableElements.forEach(element => {
       if (burgerMenu.contains(element)) element.setAttribute("tabindex", "0") 
