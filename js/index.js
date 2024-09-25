@@ -5,6 +5,7 @@ const backdrop = document.getElementById("backdrop")
 const toggleBurgermenu = () => {
   const links = document.querySelectorAll("#burger-menu a")
   const closeBtn = document.getElementById("close-button")
+  const tabbableElements = document.querySelectorAll("a, button")
   showBurgermenu = !showBurgermenu
   if (showBurgermenu) {
     burgerMenu.style.right = "0px"
@@ -12,12 +13,16 @@ const toggleBurgermenu = () => {
     document.body.style.overflowY = "hidden"
     document.body.style.height = "100%"
     document.getElementById("burger-menu-content").scrollTop = 0
-    links.forEach(link => link.setAttribute("tabindex", "0"))
-    closeBtn.setAttribute("tabindex", "0")
+    tabbableElements.forEach(element => {
+      if (burgerMenu.contains(element)) element.setAttribute("tabindex", "0") 
+        else element.setAttribute("tabindex", "-1")
+    })
     return
   }
-  links.forEach(link => link.setAttribute("tabindex", "-1"))
-  closeBtn.setAttribute("tabindex", "-1")
+  tabbableElements.forEach(element => {
+    if (burgerMenu.contains(element)) element.setAttribute("tabindex", "-1") 
+      else element.setAttribute("tabindex", "0")
+  })
   burgerMenu.style.right = "-100%"
   backdrop.style.display = "none"
   document.body.style.overflowY = "auto"
