@@ -38,6 +38,7 @@ document.addEventListener('keydown', function(event) {
 })
 
 function setVhProperty() {
+  if (window.scrollY > 0) return
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`)
 }
