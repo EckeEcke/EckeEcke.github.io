@@ -234,13 +234,16 @@ address {
 
 #hamburger {
   position: absolute;
-  top: 0;
+  top: 4px;
   right: 16px;
   padding: 0 4px;
-  border-style: none;
+  height: 40px;
+  border: none;
   background: none;
   z-index: 1;
   transition: all 0.3s;
+  display: flex;
+  align-items: center;
 }
 
 #close-button {
