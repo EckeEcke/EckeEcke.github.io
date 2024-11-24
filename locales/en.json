@@ -7,7 +7,7 @@
     "vue-mealplanner_cta": "Go to Vue Mealplanner",
     "bav-hub_description": "For a freelance job I created the landingpage for bav:hub including a custom carousel and custom slider component. The design for the page was provided in Figma. Used technologies: Nuxt, Tailwind, HTML, Javascript.",
     "bav-hub_cta": "Go to bav:hub",
-    "school-fight_description": "This game offers turn based battles with different characters and ten levels, including two mini games and a boss fight. The game is mobile friendly and currently playable on itch.io. Used technologies: HTML, CSS, jQuery, Javascript, HTML Canvas.",
+    "school-fight_description": "This game offers turn based battles with different characters and ten levels, including two mini games and a boss fight. Additionally the game includes six trophies and three hidden characters to unlock. The game is mobile friendly and currently playable on itch.io. Used technologies: HTML, CSS, Javascript, HTML Canvas.",
     "school-fight_cta": "Play School Fight",
     "clicky-clicky_description": "To try out Websocket I created this small online multiplayer game. If you want to test it, gather a second player or simply open the game in two tabs. 😉 Click the button as fast as you can to win the race. Used technologies: Vue3, NodeJS, Websocket",
     "clicky-clicky_cta": "Play Clicky Clicky Run Run"
