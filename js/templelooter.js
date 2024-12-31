@@ -293,7 +293,6 @@ function initialize() {
     player1.characterSprite = characterSprite2
     gameover = false
     gameWon = false
-    bat = false
 
     bat1 = {
         x: 700,
