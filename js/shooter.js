@@ -273,7 +273,7 @@ function loadSounds() {
 
 window.onload = () => {
   if (!highscoresLoaded) {
-    fetch('https://backend-spaceshooter.onrender.com/')
+    fetch('https://shooter-backend-vercel.vercel.app/api/getHighscores')
       .then(response => response.json())
       .then(data => highscores = data)
       .then(() => highScore = highscores[0].Score)
@@ -318,7 +318,7 @@ function displayHighscores() {
 function displayStartscreen() {
   timer += 1
   if (!highscoresLoaded) {
-    fetch('https://backend-spaceshooter.onrender.com/')
+    fetch('https://shooter-backend-vercel.vercel.app/api/getHighscores')
       .then(response => response.json())
       .then(data => highscores = data)
       .then(() => highScore = highscores[0].Score)
@@ -766,7 +766,7 @@ document.getElementById("highscore-form").onsubmit = function (event) {
   }
   nameInput.value = ""
   const data = { Player: player, Score: score }
-  fetch('https://backend-spaceshooter.onrender.com/post', {
+  fetch('https://shooter-backend-vercel.vercel.app/api/postHighscores', {
     method: "post",
     headers: {
       'Content-Type': 'application/json',
