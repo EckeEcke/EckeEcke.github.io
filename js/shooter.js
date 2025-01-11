@@ -766,7 +766,7 @@ document.getElementById("highscore-form").onsubmit = function (event) {
   }
   nameInput.value = ""
   const data = { Player: player, Score: score }
-  fetch('https://shooter-backend-vercel.vercel.app/api/postHighscores', {
+  fetch('https://shooter-backend-vercel.vercel.app/api/postHighscore', {
     method: "post",
     headers: {
       'Content-Type': 'application/json',
