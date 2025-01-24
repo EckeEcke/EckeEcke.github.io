@@ -10,5 +10,7 @@
     "school-fight_description": "Dieses Game bietet rundenbasierte Kämpfe mit verschiedenen Charakteren und zehn Levels, inklusive zwei Minigames und einem Bosskampf. Außerdem gibt es sechs Trophäen und drei versteckte Charaktere zum Freischalten. Das Game ist mobile friendly und aktuell spielbar auf itch.io. Verwendete Technologien: HTML, CSS, Javascript, HTML Canvas.",
     "school-fight_cta": "School Fight spielen",
     "clicky-clicky_description": "Um die Basics von Websocket zu lernen, habe ich dieses simple Online Multiplayer Game entwickelt. Um es zu testen, treibe gerne einen zweiten Spieler auf oder öffne einfach das Game in zwei Tabs. 😉 Klicke den Button so schnell du kannst, um das Rennen zu gewinnen. Verwendete Technologien: Vue3, NodeJS, Websocket",
-    "clicky-clicky_cta": "Clicky Clicky Run Run spielen"
+    "clicky-clicky_cta": "Clicky Clicky Run Run spielen",
+    "retroclub_description": "Retroclub ist eine private Freizeitveranstaltung für Spiele-Enthusiasten, bei der Spiele zu einem bestimmten Thema gespielt werden. Die Motivation ist, gemeinsam neue und einzigartige Spiele zu entdecken und einfach eine großartige Zeit zu haben. Diese Bewertungsseite ist für die Teilnehmer:innen des Retroclubs gedacht, um die Spiele zu bewerten, die wir gespielt haben. Verwendete Technologien: React, serverless Functions gehostet über Vercel, MongoDB.",
+    "retroclub_cta": "Zu Retroclub"
 }
