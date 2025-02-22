@@ -290,7 +290,7 @@ address {
 #burger-menu ul {
   overflow-y: auto;
   height: 100%;
-  padding: 0 24px 0 20px;
+  padding: 0 24px;
   text-transform: uppercase;
 }
 
@@ -318,7 +318,7 @@ address {
   list-style: none;
   width: 300px;
   max-width: 60vw;
-  padding: 1rem;
+  padding: 1rem 0;
   transition: 0.5s;
 }
 
