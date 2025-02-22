@@ -79,11 +79,17 @@ asteroidImage3 = new Image()
 asteroidImage3.src = imageSources.asteroid
 asteroidImage4 = new Image()
 asteroidImage4.src = imageSources.asteroid
+asteroidImage5 = new Image()
+asteroidImage5.src = imageSources.asteroid
+asteroidImage6 = new Image()
+asteroidImage6.src = imageSources.asteroid
 
 const asteroids = [
   {
     x: 100,
     y: -50,
+    width: 30,
+    height: 30,
     hit: false,
     image: asteroidImage,
     countBlocker: false,
@@ -92,6 +98,8 @@ const asteroids = [
   {
     x: 200,
     y: -100,
+    width: 40,
+    height: 40,
     hit: false,
     image: asteroidImage2,
     countBlocker: false,
@@ -100,6 +108,8 @@ const asteroids = [
   {
     x: 300,
     y: -200,
+    width: 60,
+    height: 60,
     hit: false,
     image: asteroidImage3,
     countBlocker: false,
@@ -108,16 +118,38 @@ const asteroids = [
   {
     x: 150,
     y: -300,
+    width: 80,
+    height: 80,
     hit: false,
     image: asteroidImage4,
     countBlocker: false,
     speed: 1.2
+  },
+  {
+    x: 250,
+    y: -350,
+    width: 80,
+    height: 80,
+    hit: false,
+    image: asteroidImage5,
+    countBlocker: false,
+    speed: 1.4
+  },
+  {
+    x: 50,
+    y: -150,
+    width: 30,
+    height: 30,
+    hit: false,
+    image: asteroidImage6,
+    countBlocker: false,
+    speed: 1.8
   }
 ]
 
 
 let enemyshipCount = 0
-let enemyRequired = 6
+let enemyRequired = 8
 
 let snake
 
@@ -471,7 +503,7 @@ function drawAsteroids() {
 function moveAsteroids() {
   asteroids.forEach(roid => {
     if(roid.hit) return
-    canvasContext.drawImage(roid.image, roid.x, roid.y, 40, 40)
+    canvasContext.drawImage(roid.image, roid.x, roid.y, roid.width, roid.height)
     moveAsteroid(roid)
   })
 }
@@ -647,6 +679,12 @@ function moveAsteroid(obj) {
   }
 }
 
+function resetAsteroids() {
+  asteroids.forEach(roid => {
+    if (roid.y > 0) roid.y = -50
+  })
+}
+
 
 function moveSnake() {
   snake.forEach(element => moveElement(element))
@@ -678,11 +716,11 @@ function hitDetectionShip(obj) {
 }
 
 function hitDetectionSingle(obj) {
-  if (spaceshipY < obj.y + 30 && spaceshipY + 100 > obj.y && spaceshipX + 10 < obj.x + 30 && spaceshipX + 80 > obj.x + 20) {
+  if (spaceshipY < obj.y + obj.height && spaceshipY + 100 > obj.y && spaceshipX + 10 < obj.x + obj.width && spaceshipX + 80 > obj.x + obj.width) {
     displayGameoverScreen()
     return
   }
-  if (shotY <= obj.y + 50 && shotY >= obj.y && shotX >= obj.x - 10 && shotX <= obj.x + 50) {
+  if (shotY <= obj.y + obj.height && shotY >= obj.y && shotX >= obj.x - 10 && shotX <= obj.x + obj.width) {
     if (!obj.countBlocker) {
       sounds.hitSound.pause()
       sounds.hitSound.currentTime = 0
@@ -756,15 +794,10 @@ function hitDetectionSnake() {
 
 document.getElementById("highscore-form").onsubmit = function (event) {
   event.preventDefault()
-  sPressed = false
-  nameInput.style.display = "none"
-  intervalStartscreen = setInterval(displayStartscreen, 500)
-  highscoresLoaded = false
   let player = nameInput.value
   if (player.length == 0) {
     player = "Player"
   }
-  nameInput.value = ""
   const data = { Player: player, Score: score }
   fetch('https://shooter-backend-vercel.vercel.app/api/postHighscore', {
     method: "post",
@@ -776,6 +809,11 @@ document.getElementById("highscore-form").onsubmit = function (event) {
   })
     .then(response => response.json())
     .catch(err => console.log(err))
+  nameInput.value = ""
+  sPressed = false
+  nameInput.style.display = "none"
+  intervalStartscreen = setInterval(displayStartscreen, 500)
+  highscoresLoaded = false
 }
 
 function gameOver() {
@@ -824,7 +862,8 @@ function displayGameoverScreen() {
 }
 function startNextRound(round) {
   switch (currentLevel) {
-    case levels.snake: 
+    case levels.snake:
+      resetAsteroids() 
       currentLevel = levels.asteroids
       break
     case levels.ships: 
@@ -993,12 +1032,12 @@ let burgerMenuShowing = false
 function showMenu() {
   burgerMenuShowing = !burgerMenuShowing
   if (burgerMenuShowing) {
-    burgerMenu.style.height = "100vh"
+    burgerMenu.style.right = "0"
     burgerMenu.style.opacity = "0.99"
     hamburger.style.position = "fixed"
   }
   else {
-    burgerMenu.style.height = "0vh"
+    burgerMenu.style.right = "-100%"
     burgerMenu.style.opacity = "0"
     hamburger.style.position = "absolute"
   }
