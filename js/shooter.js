@@ -421,7 +421,7 @@ function displayStartscreen() {
     canvasContext.fillText("GREEN Shot ", 20, 140)
     canvasContext.fillText("RED Shot ", 20, 220)
     canvasContext.fillText("BLUE Shot ", 20, 300)
-    canvasContext.drawImage(asteroidImage, 30, 350, 50, 50)
+    canvasContext.drawImage(asteroidImage, 30, 350, 50, 50) 
     canvasContext.drawImage(enemyShipImage1, 30, 430, 50, 50)
     canvasContext.drawImage(images.snakeHead, 30, 505, 50, 50)
     canvasContext.textAlign = "right"
@@ -492,11 +492,6 @@ function drawAsteroids() {
   canvasContext.textAlign = "center"
   canvasContext.fillStyle = "white"
   canvasContext.fillText(`${enemyshipCount}/${enemyRequired}`, canvas.width / 2, canvas.height / 2 + 100)
-  /* canvasContext.fillText(`${Math.floor(backgroundScrollPosition / 10) + 30}`, canvas.width / 2, canvas.height / 2 + 150)
-  if (Math.floor(backgroundScrollPosition / 10) + 30 < 10) {
-    sounds.alertSound.play()
-  }
-  */
   moveAsteroids()
 }
 
