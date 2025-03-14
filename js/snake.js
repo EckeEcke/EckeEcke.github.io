@@ -22,51 +22,59 @@ let Shape = Isomer.Shape
 let Point = Isomer.Point
 let Color = Isomer.Color
 let colorPalette = {
-    playfieldColor: new Color(51,51,51),
-    snakeColor: new Color(153,153,153),
-    itemColor: new Color(255,204,0)
+    playfieldColor: new Color(51, 51, 51),
+    snakeColor: new Color(153, 153, 153),
+    itemColor: new Color(255, 204, 0),
+    poopColor: new Color(255, 59, 48),
 }
 
 const palette1 = {
     playfieldColor: new Color(50, 98, 115),
     snakeColor: new Color(238, 238, 238),
-    itemColor: new Color(227, 151, 116)
+    itemColor: new Color(227, 151, 116),
+    poopColor: new Color(255, 69, 58),
 }
 
 const palette2 = {
     playfieldColor: new Color(58, 87, 67),
     snakeColor: new Color(252, 236, 82),
-    itemColor: new Color(59, 112, 128)
+    itemColor: new Color(59, 112, 128),
+    poopColor: new Color(255, 59, 48),
 }
 
 const palette3 = {
     playfieldColor: new Color(25, 11, 40),
     snakeColor: new Color(104, 87, 98),
-    itemColor: new Color(229, 83, 129)
+    itemColor: new Color(229, 83, 129),
+    poopColor: new Color(255, 0, 0),
 }
 
 const palette4 = {
     playfieldColor: new Color(57, 57, 58),
     snakeColor: new Color(133, 255, 199),
-    itemColor: new Color(255, 133, 82)
+    itemColor: new Color(255, 133, 82),
+    poopColor: new Color(255, 0, 0),
 }
 
 const palette5 = {
     playfieldColor: new Color(41, 23, 17),
     snakeColor: new Color(141, 220, 164),
-    itemColor: new Color(99, 50, 110)
+    itemColor: new Color(99, 50, 110),
+    poopColor: new Color(255, 59, 48),
 }
 
 const palette6 = {
     playfieldColor: new Color(99, 50, 110),
     snakeColor: new Color(242, 243, 174),
-    itemColor: new Color(255, 82, 27)
+    itemColor: new Color(255, 82, 27),
+    poopColor: new Color(255, 0, 0),
 }
 
 const palette7 = {
-    playfieldColor: new Color(51,51,51),
-    snakeColor: new Color(153,153,153),
-    itemColor: new Color(255,204,0)
+    playfieldColor: new Color(51, 51, 51),
+    snakeColor: new Color(153, 153, 153),
+    itemColor: new Color(255, 204, 0),
+    poopColor: new Color(255, 59, 48),
 }
 
 
@@ -94,6 +102,12 @@ let item = {
     x: 5,
     y: 5,
     type: "item"
+}
+
+let poop = {
+    x: -1,
+    y: -1,
+    type: "poop"
 }
 
 function setCanvasSize(){
@@ -213,10 +227,18 @@ function moveSnakeHead(){
     itemCollision(item)
 }
 
-function replaceItem(){
+function replaceItem() {
     itemCollected = false
-    item.x = generateRandomIntegerInRange(0,7)
-    item.y = generateRandomIntegerInRange(0,7)   
+
+    let newX, newY
+
+    do {
+        newX = generateRandomIntegerInRange(0, 7)
+        newY = generateRandomIntegerInRange(0, 7)
+    } while (newX === item.x && newY === item.y)
+
+    item.x = newX
+    item.y = newY
 }
 
 function generateRandomIntegerInRange(min, max) {
@@ -228,6 +250,8 @@ function itemCollision(){
         score += 1
         scoreBoard.innerHTML = score
         itemCollected = true
+        poop.x = item.x
+        poop.y = item.y
         let clonedMoves = [...snake[snake.length - 1].moves]
         clonedMoves.unshift("")
         snake.push({
@@ -277,11 +301,7 @@ function itemCollision(){
 }
 
 function changeColorPalette(palette){
-    colorPalette = {
-        playfieldColor: palette.playfieldColor,
-        snakeColor: palette.snakeColor,
-        itemColor: palette.itemColor
-    }
+    colorPalette = palette
 }
 
 function collision(element){
@@ -292,6 +312,7 @@ function collision(element){
 function drawSnake(height){
     let snakeClone = [...snake]
     snakeClone.push(item)
+    snakeClone.push(poop)
     snakeClone.sort(function(a,b){
         return b.x - a.x
     })
@@ -308,14 +329,20 @@ function drawSnake(height){
             iso.add(
             Shape.Prism(new Point(0 + element.x,element.y,0), 0.5, 0.5, height),colorPalette.snakeColor
         )
-        } else if (!itemCollected){
+        } else {
+            if(element.type === "poop" && element.x >= 0){
+                iso.add(
+                    Shape.Pyramid(new Point(0 + poop.x,poop.y,0), 0.5, 0.5, 0.5),colorPalette.poopColor
+                )
+            }    
+            else if (element.type === "item" && !itemCollected){
             iso.add(
                 Shape.Prism(new Point(0 + element.x,element.y,0), 0.5, 0.5, 0.5),colorPalette.itemColor
             )
-        }
+        }}
             
-    })
-}
+    }
+)}
 
 let runGame = ()=>{
     drawSnake(0.5)
@@ -357,6 +384,10 @@ function checkGameOver(){
         animateGameOver()
     }
     snake.forEach((element,index)=>{
+        if (index === 0 && collision(poop) && !itemCollected){
+            clearInterval(gameInterval)
+            animateGameOver()
+        }
         if(index > 0){
             if(collision(element)){
                 clearInterval(gameInterval)
