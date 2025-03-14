@@ -943,21 +943,21 @@ function resetGame() {
     image: images.snakeBody
   },
   {
-    x: 180,
+    x: 200,
     y: 0,
     speed: 10,
     lives: 6,
     image: images.snakeBody
   },
   {
-    x: 220,
+    x: 240,
     y: 0,
     speed: 10,
     lives: 7,
     image: images.snakeBody
   },
   {
-    x: 260,
+    x: 280,
     y: 0,
     speed: 10,
     lives: 8,
