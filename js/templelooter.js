@@ -235,34 +235,42 @@ function playSound(sound, volume) {
 }
 
 function keyDownHandler(event) {
-    switch (event.keyCode) {
-        case 65:
+    switch (event.key) {
+        case 'a':
+        case 'ArrowLeft':
             aPressed = true
             break
-        case 68:
+        case 'd':
+        case 'ArrowRight':
             dPressed = true
             break
-        case 87:
+        case 'w':
+        case 'ArrowUp':
             wPressed = true
             break
-        case 83:
+        case 's':
+        case 'ArrowDown':
             sPressed = true
             break
     }
 }
 
 function keyUpHandler(event) {
-    switch (event.keyCode) {
-        case 65:
+    switch (event.key) {
+        case 'a':
+        case 'ArrowLeft':
             aPressed = false
             break
-        case 68:
+        case 'd':
+        case 'ArrowRight':
             dPressed = false
             break
-        case 87:
+        case 'w':
+        case 'ArrowUp':
             wPressed = false
             break
-        case 83:
+        case 's':
+        case 'ArrowDown':
             sPressed = false
             break
     }
@@ -480,9 +488,14 @@ function collision() {
     }
     
     if (player1.x < obstacle.x + obstacle.width && player1.x + player1.width > obstacle.x) {
-        if ((player1.y <= obstacle.y + obstacle.height && player1.y >= obstacle.y + obstacle.height - 2) || (player1.y < obstacle.y2 + 2 && player1.y + player1.height > obstacle.y2)) {
+        if (player1.y <= obstacle.y + obstacle.height && player1.y >= obstacle.y + obstacle.height - 2) {
                 isCollision.y = true
                 kickbackY = 4
+        }
+
+        if (player1.y < obstacle.y2 + 2 && player1.y + player1.height > obstacle.y2) {
+                isCollision.y = true
+                kickbackY = -4
         }
     }
 
@@ -916,7 +929,7 @@ function drawBridges() {
 }
 
 function lavaCollision() {
-    if (player1.x > 60 && !carriedByBridge && player1.x < 260) {
+    if (player1.x > 60 && !carriedByBridge && player1.x < 260 || player1.y > canvas.height + 20 || player1.y < -20) {
         lives -= 1
         overlay.style.opacity = 0.3
         setTimeout(function() {
