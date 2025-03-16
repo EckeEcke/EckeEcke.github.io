@@ -321,7 +321,7 @@ window.onload = () => {
   document.addEventListener("keydown", keyDownHandler, false)
   document.addEventListener("keyup", keyUpHandler, false)
   document.addEventListener("keydown", event => {
-    if (event.keyCode === 83 && !sPressed && gameLoaded >= 100 && highscoresLoaded) {
+    if (event.key === 's' && !sPressed && gameLoaded >= 100 && highscoresLoaded) {
       score = 0
       startGame(moveAsteroids)
       sPressed = true
@@ -596,25 +596,25 @@ function changeTouchPosition(event) {
 }
 
 function keyDownHandler(event) {
-  if (event.keyCode === 65 || event.keyCode === 37) {
+  if (event.key === 'a' || event.key === 'ArrowLeft') {
     aPressed = true
   }
-  else if (event.keyCode === 68 || event.keyCode === 39) {
+  else if (event.key === 'd' || event.key === 'ArrowRight') {
     dPressed = true
   }
-  else if (event.keyCode === 87 || event.keyCode === 38) {
+  else if (event.key === 'w' || event.key === 'ArrowUp') {
     wPressed = true
   }
 }
 
 function keyUpHandler(event) {
-  if (event.keyCode === 65 || event.keyCode === 37) {
+  if (event.key === 'a' || event.key === 'ArrowLeft') {
     aPressed = false
   }
-  else if (event.keyCode === 68 || event.keyCode === 39) {
+  else if (event.key === 'd' || event.key === 'ArrowRight') {
     dPressed = false
   }
-  else if (event.keyCode === 87 || event.keyCode === 38) {
+  else if (event.key === 'w' || event.key === 'ArrowUp') {
     wPressed = false
   }
 }

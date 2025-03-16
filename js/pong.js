@@ -1,6 +1,7 @@
 window.addEventListener("keydown", (e) => {
-  if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
-      e.preventDefault()
+  const keys = [" ", "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"]
+  if (keys.includes(e.key)) {
+    e.preventDefault()
   }
 }, false)
 
@@ -305,72 +306,72 @@ const resetAfterScore = () => {
 }
 
 const keyDownHandler = (event) => {
-  switch (event.keyCode) {
-    case 87: {
+  switch (event.key) {
+    case 'w': {
       wPressed = true
       break
     }
-    case 65: {
+    case 'a': {
       aPressed = true
       break
     }
-    case 68: {
+    case 'd': {
       dPressed = true
       break
     }
-    case 83: {
+    case 's': {
       sPressed = true
       break
     }
-    case 38: {
+    case 'ArrowUp': {
       upPressed = true
       break
     }
-    case 40: {
+    case 'ArrowDown': {
       downPressed = true
       break
     }
-    case 37: {
+    case 'ArrowLeft': {
       leftPressed = true
       break
     }
-    case 39: {
+    case 'ArrowRight': {
       rightPressed = true
     }
   }
 }
 
 const keyUpHandler = (event) => {
-  switch (event.keyCode) {
-    case 87: {
+  switch (event.key) {
+    case 'w': {
       wPressed = false
       break
     }
-    case 65: {
+    case 'a': {
       aPressed = false
       break
     }
-    case 68: {
+    case 'd': {
       dPressed = false
       break
     }
-    case 83: {
+    case 's': {
       sPressed = false
       break
     }
-    case 38: {
+    case 'ArrowUp': {
       upPressed = false
       break
     }
-    case 40: {
+    case 'ArrowDown': {
       downPressed = false
       break
     }
-    case 37: {
+    case 'ArrowLeft': {
       leftPressed = false
       break
     }
-    case 39: {
+    case 'ArrowRight': {
       rightPressed = false
     }
   }

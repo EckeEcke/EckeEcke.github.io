@@ -1,6 +1,12 @@
 document.addEventListener('keydown', keyDownHandler, false)
 document.addEventListener('keyup', keyUpHandler, false)
 document.addEventListener('resize', setCanvasSize, false)
+window.addEventListener("keydown", (e) => {
+    const keys = [" ", "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"]
+    if (keys.includes(e.key)) {
+      e.preventDefault()
+    }
+  }, false)
 const canvas = document.getElementById("game")
 const ctx = canvas.getContext('2d')
 const scoreBoard = document.getElementById("score")
@@ -125,27 +131,27 @@ function showDemo(){
 function keyDownHandler(event) {
     event.preventDefault()
     if(allowDirectionChange){
-        if(event.keyCode == 39) {
+        if(event.key === 'd' || event.key === 'ArrowRight') {  
             rightPressed = true
             if(direction != "up"){
                 direction = "down"
                 allowDirectionChange = false
             }
         }
-        else if(event.keyCode == 37) {
+        else if(event.key === 'a' || event.key === 'ArrowLeft') {
             leftPressed = true
             if(direction !="down")
             direction = "up"
             allowDirectionChange = false
         }
-        if(event.keyCode == 40) {
+        if(event.key === 's' || event.key === 'ArrowDown') {
             downPressed = true
             if(direction != "right"){
                 direction = "left"
                 allowDirectionChange = false
             }
         }
-        else if(event.keyCode == 38) {
+        else if(event.key === 'w' || event.key === 'ArrowUp') {
             upPressed = true
             if(direction != "left"){
                 direction = "right"
@@ -158,17 +164,17 @@ function keyDownHandler(event) {
 
 function keyUpHandler(event) {
     event.preventDefault()
-    if(event.keyCode == 39) {
+    if(event.key == "d" || event.key == "ArrowRight") {
         rightPressed = false
     }
-    else if(event.keyCode == 37) {
+    else if(event.key === "a" || event.key === "ArrowLeft") {
         leftPressed = false
     }
-    if(event.keyCode == 40) {
-    downPressed = false
+    if(event.key === "s" || event.key === "ArrowDown") {
+        downPressed = false
     }
-    else if(event.keyCode == 38) {
-    upPressed = false
+    else if(event.key === "w" || event.key === "ArrowUp") {
+        upPressed = false
     }
 }
 
