@@ -21,19 +21,17 @@ window.addEventListener("gamepad2Connected", (e) => {
 })
   
 const canvas = document.getElementById("game-canvas")
-const startBtn = document.getElementById("start-button")
+const generalButtons = document.getElementById("general-buttons")
+const modal = document.getElementById("modal")
 const descriptionTxt = document.getElementById("description")
 
 const colorInputP1 = document.getElementById("color-picker-p1")
 const colorInputP2 = document.getElementById("color-picker-p2")
 const gameSpeedInput = document.getElementById("game-speed")
 
-const onePlayerBTN = document.getElementById("1player-mode")
-
 const soundCheer1 = document.getElementById("cheer1")
 const soundCheer2 = document.getElementById("cheer2")
 const soundVictory = document.getElementById("victory")
-const inputs = document.getElementById("game-settings")
 const bounce = document.getElementById("bounce")
 const bounceWall = document.getElementById("bounceWall")
 
@@ -107,16 +105,23 @@ window.onload = function () {
   console.log(navigator.getGamepads()[0])
 }
 
-function startGame() {
+function openSettings() {
+  modal.showModal()
+}
+
+function closeSettings() {
+  modal.close()
+}
+
+function startGame(singlePlayer) {
   gameStarted = true
   canvas.style.display = "block"
   canvasContext = canvas.getContext("2d")
-    runGame = onePlayerBTN.checked 
+    runGame = singlePlayer
       ? setInterval(onePlayerMode, 1000 / gameSpeed) 
       : setInterval(twoPlayerMode, 1000 / gameSpeed)
-  startBtn.style.display = "none"
+  generalButtons.style.display = 'none'
   descriptionTxt.style.display = "none"
-  inputs.style.display = "none"
 }
 
 const drawScore = () => {

@@ -11,6 +11,7 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  margin: 0;
   /*preventing text selecting in mobile view*/
   overscroll-behavior-y: contain;
   /*preventing scroll reload in mobile view */
@@ -65,14 +66,10 @@ article {
   margin: 16px auto 32px;
 }
 
-#game-settings {
-  margin: 3rem auto;
-}
-
 h1 {
   color: white;
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 0;
 }
 
 
@@ -147,6 +144,12 @@ hr {
   text-align: center;
 }
 
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+}
 
 #sound-button {
   display: block;
@@ -159,20 +162,54 @@ hr {
   padding: 10px 12px 12px 12px;
 }
 
-#start-button {
+#start-button,
+#start-button-2p {
+  background: orange;
+}
+
+#start-button,
+#start-button-2p,
+#settings-button {
   border-radius: 20px;
   padding: 12px;
   font-size: 1.2em;
   border-style: none;
   display: block;
   transition: .3s;
-  margin: 3rem auto;
+  margin: 2rem auto;
+  min-width: 300px;
 }
 
-#start-button:hover {
+#start-button:hover,
+#start-button-2p:hover,
+#settings-button:hover,
+.dialog-buttons button:hover {
   background-color: white;
   color: red;
   transform: scale(1.1);
+}
+
+dialog h2 {
+  margin: 0 0 32px;
+
+  text-align: center;
+}
+
+dialog {
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: end;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.dialog-buttons button {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 
 .option-input {
@@ -181,6 +218,7 @@ hr {
 
 #volume-control {
   display: flex;
+  align-items: center;
   gap: 8px;
   right: 32px;
   bottom: 32px;
@@ -212,7 +250,6 @@ hr {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
   gap: 16px;
   flex-wrap: wrap;
 }
