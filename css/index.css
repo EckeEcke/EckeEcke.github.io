@@ -3,13 +3,6 @@
   src: url('../assets/fonts/Ubuntu-M.ttf');
 }
 
-h1 {
-  color: white;
-  font-size: 2.4em;
-  text-align: center;
-  text-shadow: 4px 4px rgba(0, 0, 0, 0.4);
-}
-
 header {
   position: relative;
   width: 100%;
@@ -17,7 +10,7 @@ header {
 
 
 body {
-  font-family: "Roboto";
+  font-family: Roboto, serif;
 }
 
 body, html {
@@ -30,6 +23,13 @@ button:focus {
 
 button:focus-visible, a:focus-visible {
   outline: 4px solid blue!important;
+}
+
+h1 {
+  color: white;
+  font-size: 2.4em;
+  text-align: center;
+  text-shadow: 4px 4px rgba(0, 0, 0, 0.4);
 }
 
 h2 {
@@ -50,7 +50,7 @@ h3 {
 }
 
 .screenshot-box-shadow {
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
 }
 
 #language-switch {
@@ -94,7 +94,7 @@ h3 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: "Ubuntu";
+  font-family: "Ubuntu", serif;
   background-color: black;
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
@@ -271,13 +271,13 @@ address {
 }
 
 #burger-menu {
-  font-family: Roboto;
+  font-family: Roboto, serif;
   position: fixed;
   background-color: white;
   box-shadow: -2px -2px 2px 5px white;
   opacity: 0.99;
   right: -100%;
-  top: 0px;
+  top: 0;
   padding: 50px 0 0;
   z-index: 2500;
   height: 100px;
@@ -419,14 +419,12 @@ address {
 }
 
 .appear:not(.static) {
-  -webkit-transform: translateY(20px);
   transform: translateY(20px);
 }
 
 .appear.inview {
   opacity: 1;
-  -webkit-transform: none;
-          transform: none;
+  transform: none;
 }
 
 .appear.delayed {
@@ -700,12 +698,12 @@ hr {
 
 @keyframes gradient {
   0% {
-      background-position: 0% 50%;
+      background-position: 0 50%;
   }
   50% {
       background-position: 100% 50%;
   }
   100% {
-      background-position: 0% 50%;
+      background-position: 0 50%;
   }
 }

@@ -7,10 +7,9 @@ body {
   background-image: url("../images/shooter/space.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  font-family: retro;
+  font-family: retro, serif;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -45,7 +44,7 @@ form {
 }
 
 input {
-  font-family: retro;
+  font-family: retro, serif;
   display: none;  
   text-align: center; 
   margin: 0 auto; 
@@ -89,8 +88,8 @@ p {
   background-color: black;
   opacity: 0;
   right: -100%;
-  top: 0px;
-  padding: 100px 60px 100px 0px;
+  top: 0;
+  padding: 100px 60px 100px 0;
   z-index: 2000;
   overflow-y: auto;
   transition: 0.5s;
@@ -123,7 +122,6 @@ p {
 }
 
 article {
-  color: white;
   text-align: justify;
   font-size: 1.2em;
   width: 400px;
@@ -134,12 +132,12 @@ article {
 }
 
 h2 {
-  font-family: retro;
+  font-family: retro, serif;
   color: white;
 }
 
 #startButton {
-  font-family: retro;
+  font-family: retro, serif;
   background-Color: black;
   color: white;
   font-size: 1.5em;

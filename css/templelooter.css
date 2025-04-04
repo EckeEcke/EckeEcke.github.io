@@ -8,7 +8,6 @@ html,
 body {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
-    -khtml-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
@@ -16,7 +15,7 @@ body {
     overscroll-behavior-y: contain;
     /*preventing scroll reload in mobile view */
     background-color: black;
-    font-family: "pixelFont";
+    font-family: pixelFont, serif;
     max-height: 100vh;
 }
 
@@ -43,7 +42,7 @@ canvas {
 }
 
 h1 {
-    font-family: pixelFont;
+    font-family: pixelFont, serif;
     text-align: center;
     color: white;
     margin-top: 80px;
@@ -76,12 +75,11 @@ h1 {
 
     position: fixed;
     background-color: black;
-    opacity: 0.96;
-    right: 0px;
-    top: 0px;
-    padding: 100px 80px 100px 0px;
+    right: 0;
+    top: 0;
+    padding: 100px 80px 100px 0;
     z-index: -3000;
-    height: 0vh;
+    height: 0;
     border-left: 1px solid white;
     transition: 0.5s;
     opacity: 0;
@@ -115,11 +113,16 @@ h1 {
     margin: 0;
 }
 
+.btn-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
 #touch-BTN-start {
     border: 1px solid white;
     padding: 20px;
     color: white;
-    font-family: pixelFont;
+    font-family: pixelFont, serif;
     background-color: transparent;
     transition: 0.3s;
 }

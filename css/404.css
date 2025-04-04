@@ -1,7 +1,7 @@
 body {
     background: black;
     color: white;
-    font-family: Roboto;
+    font-family: Roboto, serif;
     text-align: center;
     min-height: 100vh;
     display: flex;
@@ -21,14 +21,14 @@ body {
     height: 50px;
     width: 50px;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     left: 50px;
     overflow: hidden;
 }
 
 #jumping-mario {
     position: absolute;
-    left: 0px;
+    left: 0;
     bottom: -3px;
     width: 150px;
 }

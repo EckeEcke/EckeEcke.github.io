@@ -1,4 +1,4 @@
-<html>
+<html lang="EN">
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=0.3, maximum-scale=0.6">
@@ -16,99 +16,98 @@
   <audio src="sounds/pong/victory.wav" id="victory"></audio>
   <audio src="sounds/pong/bounce-wall.wav" id="bounceWall"></audio>
 
-  <button id="hamburger" onclick="showMenu()">
+  <div id="hamburger" onclick="showMenu()">
     <div class="line1"></div>
     <div class="line2"></div>
     <div class="line3"></div>
-  </button>
+  </div>
 
   <div id="burger-menu">
     <ul>
       <li>
-        <a href="index">Home</a>
+        <a href="/index">Home</a>
+        <hr class="nav-line">
       </li>
-      <hr class="nav-line">
       <li>
         <a href="https://react-travelblog.netlify.app/" target="_blank">React Travel Blog</a>
+        <hr class="nav-line">
       </li>
-      <hr class="nav-line">
       <li>
-        <a href="shooter">JS Space Shooter</a>
+        <a href="/shooter">JS Space Shooter</a>
+        <hr class="nav-line">
       </li>
-      <hr class="nav-line">
       <li>
         <a href="https://eckeecke.itch.io/school-fight">School Fight</a>
+        <hr class="nav-line">
       </li>
-      <hr class="nav-line">
       <li>
-        <a href="pong">JS Pong</a>
+        <a href="/pong">JS Pong</a>
+        <hr class="nav-line">
       </li>
-      <hr class="nav-line">
       <li>
         <a href="https://adoring-galileo-71fde2.netlify.app/">React Todo App</a>
+        <hr class="nav-line">
       </li>
-      <hr class="nav-line">
       <li>
-        <a href="templelooter">Temple Looter</a>
+        <a href="/templelooter">Temple Looter</a>
+        <hr class="nav-line">
       </li>
-      <hr class="nav-line">
-            <li>
-                <a href="https://vue-mealplanner.vercel.app/">Vue Meal Planner</a>
-            </li>
+      <li>
+        <a href="https://vue-mealplanner.vercel.app/">Vue Meal Planner</a>
+      </li>
     </ul>
   </div>
 
-    <h1>Pong</h1>
+  <h1>Pong</h1>
 
-    <canvas id="game-canvas" width="800px" height="600px">
-    </canvas>
-    <br>
-    <article class="controls">
-      <div id="game-settings">
-        Controls P1: WASD | Controls P2: ARROWKEYS<br><br>
-        <input class="option-input" type="color" id="color-picker-p1" value="#ed3d0d">
-        <label>&nbsp Choose color P1</label>
-        <br>
-        <input class="option-input" type="color" id="color-picker-p2" value="#26ed17">
-        <label>&nbsp Choose color P2</label>
-        <br>
-        <input class="option-input" type="range" id="game-speed" min="100" max="200" value="100">
-        <label>&nbsp Set gamespeed &nbsp</label>
-        <br><br>
-        <input class="playmode-input" name="playmode" id="1player-mode" type="radio" checked>
-        <label>1 Player &nbsp</label>
-        <input class="playmode-input" name="playmode" id="2player-mode" type="radio">
-        <label>2 Player</label>
-      </div>
+  <canvas id="game-canvas" width="800px" height="600px"></canvas>
 
-      <button id="start-button" onclick="startGame()">
-        &#127955; Start &#127955;
-      </button>
+  <br>
 
-    </article>
-
-    <article id="description">
-      To start with Javascript I took a Udemy course on how to build Pong using Javascript and HTML Canvas.
-      I implemented a collision detection, sounds, an AI opponent and gamepad support via gamepad API.
-    </article>
-    <div class="wrapper">
-      <div id="volume-control">
-        <div>VOLUME</div>
-        <span onclick="setVolume(0)"> | </span>
-        <span onclick="setVolume(1)" data-value="1" class="volume-item">&#11036;</span>
-        <span onclick="setVolume(2)" data-value="2" class="volume-item">&#11036;</span>
-        <span onclick="setVolume(3)" data-value="3" class="volume-item">&#11036;</span>
-        <span onclick="setVolume(4)" data-value="4" class="volume-item">&#11036;</span>
-        <span onclick="setVolume(5)" data-value="5" class="volume-item">&#11036;</span>
-      </div>
+  <article class="controls">
+    <div id="game-settings">
+      Controls P1: WASD | Controls P2: ARROWKEYS<br><br>
+      <input name="color-picker-p1" class="option-input" type="color" id="color-picker-p1" value="#ed3d0d">
+      <label for="color-picker-p1">&nbsp Choose color P1</label>
+      <br>
+      <input name="color-picker-p2" class="option-input" type="color" id="color-picker-p2" value="#26ed17">
+      <label for="color-picker-p2">&nbsp Choose color P2</label>
+      <br>
+      <input name="game-speed" class="option-input" type="range" id="game-speed" min="100" max="200" value="100">
+      <label for="game-speed">&nbsp Set gamespeed &nbsp</label>
+      <br><br>
+      <input class="playmode-input" name="playmode" id="1player-mode" type="radio" checked>
+      <label for="1player-mode">1 Player &nbsp</label>
+      <input class="playmode-input" name="playmode" id="2player-mode" type="radio">
+      <label for="2player-mode">2 Player</label>
     </div>
 
-    <a href="https://github.com/EckeEcke/EckeEcke.github.io/blob/master/js/pong.js" target="_blank">
-      <img id="github-link" src="images/github-pixelated.png" />
-    </a>
+    <button id="start-button" onclick="startGame()">
+      &#127955; Start &#127955;
+    </button>
+  </article>
+
+  <article id="description">
+    To start with Javascript I took a Udemy course on how to build Pong using Javascript and HTML Canvas.
+    I implemented a collision detection, sounds, an AI opponent and gamepad support via gamepad API.
+  </article>
+
+  <div class="wrapper">
+    <div id="volume-control">
+      <div>VOLUME</div>
+      <span onclick="setVolume(0)"> | </span>
+      <span onclick="setVolume(1)" data-value="1" class="volume-item">&#11036;</span>
+      <span onclick="setVolume(2)" data-value="2" class="volume-item">&#11036;</span>
+      <span onclick="setVolume(3)" data-value="3" class="volume-item">&#11036;</span>
+      <span onclick="setVolume(4)" data-value="4" class="volume-item">&#11036;</span>
+      <span onclick="setVolume(5)" data-value="5" class="volume-item">&#11036;</span>
+    </div>
+  </div>
+
+  <a href="https://github.com/EckeEcke/EckeEcke.github.io/blob/master/js/pong.js" target="_blank">
+    <img id="github-link" alt="link to my github" src="images/github-pixelated.png" />
+  </a>
 
   <script src="./js/pong.js"></script>
-
 </body>
-
 </html>

@@ -76,15 +76,7 @@ const palette6 = {
     poopColor: new Color(255, 0, 0),
 }
 
-const palette7 = {
-    playfieldColor: new Color(51, 51, 51),
-    snakeColor: new Color(153, 153, 153),
-    itemColor: new Color(255, 204, 0),
-    poopColor: new Color(255, 59, 48),
-}
-
-
-let snake = [
+let snakeStartPosition = [
     {
         x: 0,
         y: 1.5,
@@ -103,6 +95,8 @@ let snake = [
         demoMoves: ["up","up","right","up","right","right","down","down","down","left","left","left"]
     }
 ]
+
+let snake
 
 let item = {
     x: 5,
@@ -133,27 +127,27 @@ function keyDownHandler(event) {
     if(allowDirectionChange){
         if(event.key === 'd' || event.key === 'ArrowRight') {  
             rightPressed = true
-            if(direction != "up"){
+            if(direction !== "up"){
                 direction = "down"
                 allowDirectionChange = false
             }
         }
         else if(event.key === 'a' || event.key === 'ArrowLeft') {
             leftPressed = true
-            if(direction !="down")
+            if(direction !== "down")
             direction = "up"
             allowDirectionChange = false
         }
         if(event.key === 's' || event.key === 'ArrowDown') {
             downPressed = true
-            if(direction != "right"){
+            if(direction !== "right"){
                 direction = "left"
                 allowDirectionChange = false
             }
         }
         else if(event.key === 'w' || event.key === 'ArrowUp') {
             upPressed = true
-            if(direction != "left"){
+            if(direction !== "left"){
                 direction = "right"
                 allowDirectionChange = false
             }   
@@ -164,7 +158,7 @@ function keyDownHandler(event) {
 
 function keyUpHandler(event) {
     event.preventDefault()
-    if(event.key == "d" || event.key == "ArrowRight") {
+    if(event.key === "d" || event.key === "ArrowRight") {
         rightPressed = false
     }
     else if(event.key === "a" || event.key === "ArrowLeft") {
@@ -181,32 +175,32 @@ function keyUpHandler(event) {
 function moveSnake(demo){
     snake.forEach((element,index) =>{
         if(index > 0 && !demo){
-            if(element.moves[0] == "up"){
+            if(element.moves[0] === "up"){
                 element.y += 0.5
             }
-            if(element.moves[0] == "down"){
+            if(element.moves[0] === "down"){
                 element.y -= 0.5
             }
-            if(element.moves[0] == "left"){
+            if(element.moves[0] === "left"){
                 element.x -= 0.5
             }
-            if(element.moves[0] == "right"){
+            if(element.moves[0] === "right"){
                 element.x += 0.5
             }
             element.moves = element.moves.slice(1)
             element.moves.push(direction)
         }
         if(demo){
-            if(element.demoMoves[0] == "up"){
+            if(element.demoMoves[0] === "up"){
                 element.y += 0.5
             }
-            if(element.demoMoves[0] == "down"){
+            if(element.demoMoves[0] === "down"){
                 element.y -= 0.5
             }
-            if(element.demoMoves[0] == "left"){
+            if(element.demoMoves[0] === "left"){
                 element.x -= 0.5
             }
-            if(element.demoMoves[0] == "right"){
+            if(element.demoMoves[0] === "right"){
                 element.x += 0.5
             }
             element.demoMoves.push(element.demoMoves[0])
@@ -218,16 +212,16 @@ function moveSnake(demo){
 }
 function moveSnakeHead(){
     const snakeHead = snake[0]
-    if(direction == "up"){
+    if(direction === "up"){
         snakeHead.y += 0.5
     }
-    if(direction == "down"){
+    if(direction === "down"){
         snakeHead.y -= 0.5
     }
-    if(direction == "right"){
+    if(direction === "right"){
         snakeHead.x += 0.5
     }
-    if(direction == "left"){
+    if(direction === "left"){
         snakeHead.x -= 0.5
     }
     itemCollision(item)
@@ -268,37 +262,37 @@ function itemCollision(){
         setTimeout(
             replaceItem,1000
         )
-        if(score == 5){
+        if(score === 5){
             gameSpeed -= 50
             level = 2
             changeColorPalette(palette1)
         }
-        if(score == 10){
+        if(score === 10){
             gameSpeed -= 40
             level = 3
             changeColorPalette(palette2)
         }
-        if(score == 15){
+        if(score === 15){
             gameSpeed -= 30
             level = 4
             changeColorPalette(palette3)
         }
-        if(score == 20){
+        if(score === 20){
             gameSpeed -= 20
             level = 5
             changeColorPalette(palette4)
         }
-        if(score == 25){
+        if(score === 25){
             gameSpeed -= 20
             level = 6
             changeColorPalette(palette5)
         }
-        if(score == 30){
+        if(score === 30){
             gameSpeed -= 10
             level = 7
             changeColorPalette(palette6)
         }
-        if(score%5==0){
+        if(score%5 === 0){
             clearInterval(gameInterval)
             gameInterval = setInterval(runGame,gameSpeed)
             document.getElementById("level").innerHTML = level
@@ -338,7 +332,7 @@ function drawSnake(height){
         } else {
             if(element.type === "poop" && element.x >= 0){
                 iso.add(
-                    Shape.Pyramid(new Point(0 + poop.x,poop.y,0), 0.5, 0.5, 0.5),colorPalette.poopColor
+                    Shape.Pyramid(new Point(poop.x,poop.y,0), 0.5, 0.5, 0.5),colorPalette.poopColor
                 )
             }    
             else if (element.type === "item" && !itemCollected){
@@ -360,25 +354,7 @@ let runGame = ()=>{
 
 function startGame(){
     clearInterval(demo)
-    snake = [
-        {
-            x: 0,
-            y: 1.5,
-            demoMoves: ["right","up","right","right","down","down","down","left","left","left","up","up"]
-        },
-        {
-            x: 0,
-            y: 1,
-            moves: ["up"],
-            demoMoves: ["up","right","up","right","right","down","down","down","left","left","left","up"]
-        },
-        {
-            x: 0,
-            y: 0.5,
-            moves: ["up","up"],
-            demoMoves: ["up","up","right","up","right","right","down","down","down","left","left","left"]
-        }
-    ]
+    snake = snakeStartPosition
     gameInterval = setInterval(runGame,gameSpeed)
     messageBox.innerHTML = ""
 }

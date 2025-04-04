@@ -3,8 +3,6 @@ let showBurgermenu = false
 const backdrop = document.getElementById("backdrop")
 
 const toggleBurgermenu = () => {
-  const links = document.querySelectorAll("#burger-menu a")
-  const closeBtn = document.getElementById("close-button")
   const tabbableElements = document.querySelectorAll("a, button")
   showBurgermenu = !showBurgermenu
   if (showBurgermenu) {

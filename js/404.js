@@ -1,6 +1,5 @@
-const jumpButton = document.getElementById("jump-button")
 const jumpingBox = document.getElementById("jumping-box")
-const jumpman = document.getElementById("jumping-mario")
+const jumpMan = document.getElementById("jumping-mario")
 const questionBlock = document.getElementById("question-block")
 const coinSound = document.getElementById("coin")
 
@@ -19,25 +18,25 @@ const makeTheJump = () => {
 
 const jump = () => {
     isJumping = true
-    jumpman.style.left = "-50px"
+    jumpMan.style.left = "-50px"
 
     if (jumpingBoxPosition >= 30) {
-        jumpman.style.left = "-100px"
+        jumpMan.style.left = "-100px"
     }
     
-    if (jumpDirection == 3){
+    if (jumpDirection === 3){
         questionBlock.style.top = "-2px"
         coinSound.play()
     }
 
-    if (jumpDirection == -3){
+    if (jumpDirection === -3){
         questionBlock.style.top = "7px"
     }
 
-    if (jumpingBoxPosition == 0 && jumpDirection < 0){
+    if (jumpingBoxPosition === 0 && jumpDirection < 0){
         clearInterval(jumpAnimation)
         jumpDirection = 12
-        jumpman.style.left = "0px"
+        jumpMan.style.left = "0px"
         isJumping = false
     }
 

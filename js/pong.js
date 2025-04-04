@@ -22,7 +22,6 @@ window.addEventListener("gamepad2Connected", (e) => {
   
 const canvas = document.getElementById("game-canvas")
 const startBtn = document.getElementById("start-button")
-const soundBtn = document.getElementById("sound-button")
 const descriptionTxt = document.getElementById("description")
 
 const colorInputP1 = document.getElementById("color-picker-p1")
@@ -30,7 +29,6 @@ const colorInputP2 = document.getElementById("color-picker-p2")
 const gameSpeedInput = document.getElementById("game-speed")
 
 const onePlayerBTN = document.getElementById("1player-mode")
-const twoPlayerBTN = document.getElementById("2player-mode")
 
 const soundCheer1 = document.getElementById("cheer1")
 const soundCheer2 = document.getElementById("cheer2")
@@ -80,8 +78,6 @@ let Score1 = 0
 let Score2 = 0
 const paddleHeight = 100
 const tolerance = 20
-const sounds = document.getElementsByTagName("audio")
-let gameRuns = false
 let gameSpeed = 100
 
 let touchControls = false
@@ -174,7 +170,7 @@ const moveEverything = () => {
   if (ballHitsTop) ballY = 0
 }
 
-const move1 = (event) => {
+const move1 = () => {
   let gamepad1Connected = navigator.getGamepads()[0] !== null
 
   if (gamepad1Connected) {
@@ -241,7 +237,7 @@ function changeTouchPosition(event) {
   touchY = event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY
 }
 
-const move2 = (event) => {
+const move2 = () => {
   if (downPressed) {
     paddle2Y = paddle2Y + 8;
   }
@@ -280,12 +276,12 @@ const moveAItoBall = () => {
   upPressed = false
   if (ballY > paddle2Y + 50) {
     paddle2Y += 4
-    downPressed
+    downPressed = true
   }
 
   if (ballY < paddle2Y + 50) {
     paddle2Y -= 4
-    upPressed
+    upPressed = true
   }
 }
 
