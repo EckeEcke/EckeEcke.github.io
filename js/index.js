@@ -5,8 +5,8 @@ const backdrop = document.getElementById("backdrop")
 const toggleBurgermenu = () => {
   const tabbableElements = document.querySelectorAll("a, button")
   showBurgermenu = !showBurgermenu
+  burgerMenu.classList.toggle("opened")
   if (showBurgermenu) {
-    burgerMenu.style.right = "0px"
     backdrop.style.display = "block"
     document.body.style.overflowY = "hidden"
     document.body.style.height = "100vh"
@@ -21,7 +21,6 @@ const toggleBurgermenu = () => {
     if (burgerMenu.contains(element)) element.setAttribute("tabindex", "-1") 
       else element.setAttribute("tabindex", "0")
   })
-  burgerMenu.style.right = "-100%"
   backdrop.style.display = "none"
   document.body.style.overflowY = "auto"
   document.body.style.height = "auto"

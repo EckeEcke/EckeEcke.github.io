@@ -6,6 +6,8 @@
 header {
   position: relative;
   width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
 
@@ -55,7 +57,7 @@ h3 {
 
 #language-switch {
   position: absolute;
-  top: 8px;
+  top: 12px;
   right: 80px;
   z-index: 1;
   display: flex;
@@ -233,7 +235,7 @@ address {
 
 #hamburger {
   position: absolute;
-  top: 4px;
+  top: 8px;
   right: 16px;
   padding: 0 4px;
   height: 40px;
@@ -247,7 +249,7 @@ address {
 
 #close-button {
   position: absolute;
-  top: 8px;
+  top: 0;
   right: 8px;
   padding: 5px;
   border-style: none;
@@ -274,28 +276,37 @@ address {
   font-family: Roboto, serif;
   position: fixed;
   background-color: white;
-  box-shadow: -2px -2px 2px 5px white;
-  opacity: 0.99;
-  right: -100%;
-  top: 0;
+  top: -100%;
+  right: 16px;
   padding: 50px 0 0;
   z-index: 2500;
-  height: 100px;
-  min-height: 100vh;
-  min-height: calc(var(--vh, 1vh) * 100);
   min-width: 310px;
-  transition: 0.5s;
+  transition: 1s;
+  border-radius: 8px;
+  opacity: 0;
+}
+
+#burger-menu.opened {
+  top: 16px;
+
+  opacity: 0.99;
+}
+
+@media (min-width: 1400px) {
+  #burger-menu {
+    right: calc(((100vw - 1400px) / 2) + 16px);
+  }
 }
 
 #burger-menu ul {
   overflow-y: auto;
-  height: 100%;
+  max-height: 85vh;
   padding: 0 24px;
   text-transform: uppercase;
 }
 
 #burger-menu li:last-of-type {
-  margin-bottom: 60px!important;
+  margin-bottom: 40px!important;
 }
 
 #burger-menu a {
