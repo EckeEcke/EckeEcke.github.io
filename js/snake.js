@@ -278,12 +278,12 @@ function itemCollision(){
             changeColorPalette(palette3)
         }
         if(score === 20){
-            gameSpeed -= 20
+            gameSpeed -= 15
             level = 5
             changeColorPalette(palette4)
         }
         if(score === 25){
-            gameSpeed -= 20
+            gameSpeed -= 15
             level = 6
             changeColorPalette(palette5)
         }

@@ -280,12 +280,12 @@ const moveAItoBall = () => {
   downPressed = false
   upPressed = false
   if (ballY > paddle2Y + 50) {
-    paddle2Y += 4
+    paddle2Y += 6
     downPressed = true
   }
 
   if (ballY < paddle2Y + 50) {
-    paddle2Y -= 4
+    paddle2Y -= 6
     upPressed = true
   }
 }
