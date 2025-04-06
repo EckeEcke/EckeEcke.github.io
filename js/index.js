@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', () => {
       const target = item.getAttribute('data-target')
       const targetContainer = document.getElementById(target)
-
+      if (!target) return
       level1.classList.add('hidden')
       targetContainer.classList.add('active')
     })
