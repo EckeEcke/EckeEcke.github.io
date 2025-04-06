@@ -676,7 +676,7 @@ hr {
 }
 
 .sidebar h4 {
-  padding: 16px 10px;
+  padding: 16px;
   margin: 0;
   font-size: 16px;
   font-weight: bolder;
@@ -708,7 +708,7 @@ hr {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px;
+  padding: 16px;
   background-color: #444;
   color: #fff;
   border: none;
@@ -731,7 +731,7 @@ hr {
 }
 
 .sidebar li {
-  padding: 10px;
+  padding: 16px;
   border-bottom: 1px solid #444;
 }
 
@@ -741,7 +741,7 @@ hr {
 
 @media (min-height: 750px) {
   .sidebar {
-    height: 410px;
+    height: 500px;
     border-radius: 16px;
     top: 16px;
     right: 16px;
