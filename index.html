@@ -13,81 +13,120 @@
 </head>
 
 <body id="body">
-    <div id="backdrop" onclick="toggleBurgermenu()"></div>
-    <div id="burger-menu" show="false">
-      <button id="close-button" class="bg-transparent" aria-label="close menu button" tabindex="-1" onclick="toggleBurgermenu()">
-        <i class="uil uil-times text-dark m-0"></i>
-      </button>
-      <ul id="burger-menu-content">
-        <li class="pl-0">
-          <h3 class="py-3 font-weight-bold">SPAs</h3>
-          <hr class="nav-line">
-        </li>
-        <li>
-          <a href="https://www.triggerscore.de/" target="_blank" tabindex="-1">
-            Triggerscore
-          </a>
-          <hr class="nav-line">
-        </li>
-        <li>
-          <a href="https://vue-mealplanner.vercel.app/" target="_blank" tabindex="-1">
-            Vue Meal Planner
-          </a>
-          <hr class="nav-line">
-        </li>
-        <li>
-          <a href="https://retroclub.vercel.app" target="_blank" tabindex="-1">
-            Retroclub Game Rating
-          </a>
-          <hr class="nav-line">
-        </li>
-        <li>
-          <a href="https://react-travelblog.netlify.app/" target="_blank" tabindex="-1">
-            React Travel Blog
-          </a>
-          <hr class="nav-line mb-5">
-        </li>
-        <li class="pl-0">
-          <h3 class="py-3 font-weight-bold">JS Games</h3>
-          <hr class="nav-line">
-        </li>
-        <li>
-          <a href="https://eckeecke.itch.io/school-fight" tabindex="-1">
-            School Fight
-          </a>
-          <hr class="nav-line">
-        </li>
-        <li>
-          <a href="https://clicky-clicky-run-run.netlify.app/" tabindex="-1">
-            Clicky Clicky Run Run
-          </a>
-          <hr class="nav-line">
-        </li>
-        <li>
-          <a href="/shooter" tabindex="-1">
-            JS Space Shooter
-          </a>
-          <hr class="nav-line">
-        </li>
-        <li>
-          <a href="/pong" tabindex="-1">
-            JS Pong
-          </a>
-          <hr class="nav-line">
-        </li>
-        <li>
-          <a href="/templelooter" tabindex="-1">
-            Temple Looter
-          </a>
-        </li>
-        <li>
-          <a href="/snake" tabindex="-1">
-            Isomer Snake
-          </a>
-          <hr class="nav-line">
-        </li>
-        <li>
-      </ul>      
+    <div id="backdrop" onclick="toggleSidebar()"></div>
+    <div>
+
+        <div data-show="false" id="sidebar" class="sidebar">
+            <button id="close-button" class="bg-transparent" aria-label="close menu button" tabindex="-1" onclick="toggleSidebar()">
+                <i class="uil uil-times m-0"></i>
+            </button>
+            <div class="level1">
+                <h4>eckeecke</h4>
+                <button class="nav-item" data-target="highlights">Highlights</button>
+                <button class="nav-item" data-target="games">Games</button>
+                <button class="nav-item" data-target="spas">Applications</button>
+                <a class="nav-item" href="https://www.linkedin.com/in/christian-eckardt-41527216a/" target="_blank" aria-label="Linkedin">
+                    <span class="iconify sidebar-icon white-background" data-icon="skill-icons:linkedin"></span>
+                    LinkedIn
+                </a>
+                <a class="nav-item" href="https://github.com/EckeEcke" target="_blank" aria-label="Github">
+                    <span class="iconify sidebar-icon" data-icon="akar-icons:github-fill"></span>
+                    Github
+                </a>
+            </div>
+            <div class="level2" id="highlights">
+                <h4>Highlights</h4>
+                <button class="back-button">
+                    <span class="iconify sidebar-icon" data-icon="weui:back-outlined"></span>
+                    <span data-localization="back">Back</span>
+                </button>
+                <ul>
+                    <li class="nav-item">
+                        <a href="https://www.triggerscore.de/" target="_blank" tabindex="-1">
+                            Triggerscore
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://eckeecke.itch.io/school-fight" tabindex="-1">
+                            School Fight
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://vue-mealplanner.vercel.app/" target="_blank" tabindex="-1">
+                            Vue Meal Planner
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="level2" id="games">
+                <h4>Games</h4>
+                <button class="back-button">
+                    <span class="iconify sidebar-icon" data-icon="weui:back-outlined"></span>
+                    <span data-localization="back">Back</span>
+                </button>
+                <ul>
+                    <li class="nav-item">
+                        <a href="https://eckeecke.itch.io/school-fight" tabindex="-1">
+                            School Fight
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/shooter" tabindex="-1">
+                            JS Space Shooter
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/templelooter" tabindex="-1">
+                            Temple Looter
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://clicky-clicky-run-run.netlify.app/" tabindex="-1">
+                            Clicky Clicky Run Run
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/pong" tabindex="-1">
+                            JS Pong
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/snake" tabindex="-1">
+                            Isomer Snake
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="level2" id="spas">
+                <h4>Applications</h4>
+                <button class="back-button">
+                    <span class="iconify sidebar-icon" data-icon="weui:back-outlined"></span>
+                    <span data-localization="back">Back</span>
+                </button>
+                <ul>
+                    <li class="nav-item">
+                        <a href="https://www.triggerscore.de/" target="_blank" tabindex="-1">
+                            Triggerscore
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://vue-mealplanner.vercel.app/" target="_blank" tabindex="-1">
+                            Vue Meal Planner
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://retroclub.vercel.app" target="_blank" tabindex="-1">
+                            Retroclub Game Rating
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://react-travelblog.netlify.app/" target="_blank" tabindex="-1">
+                            React Travel Blog
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
     <header>
       <div id="language-switch" class="appear static">
@@ -95,7 +134,7 @@
         <span class="divider-pipe"></span>
         <button class="language-selector inactive" data-value="de" tabindex="0" onclick="changeLanguage('de')">DE</button>
       </div>
-      <button id="hamburger"  aria-label="Open menu button" onclick="toggleBurgermenu()">
+      <button id="hamburger"  aria-label="Open menu button" onclick="toggleSidebar()">
         <i class="uil uil-bars text-white m-0"></i>
       </button>
     </header>

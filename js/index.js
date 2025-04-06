@@ -1,39 +1,3 @@
-const burgerMenu = document.getElementById("burger-menu")
-let showBurgermenu = false
-const backdrop = document.getElementById("backdrop")
-
-const toggleBurgermenu = () => {
-  const tabbableElements = document.querySelectorAll("a, button")
-  showBurgermenu = !showBurgermenu
-  burgerMenu.classList.toggle("opened")
-  if (showBurgermenu) {
-    backdrop.style.display = "block"
-    document.body.style.overflowY = "hidden"
-    document.body.style.height = "100vh"
-    document.getElementById("burger-menu-content").scrollTop = 0
-    tabbableElements.forEach(element => {
-      if (burgerMenu.contains(element)) element.setAttribute("tabindex", "0") 
-        else element.setAttribute("tabindex", "-1")
-    })
-    return
-  }
-  tabbableElements.forEach(element => {
-    if (burgerMenu.contains(element)) element.setAttribute("tabindex", "-1") 
-      else element.setAttribute("tabindex", "0")
-  })
-  backdrop.style.display = "none"
-  document.body.style.overflowY = "auto"
-  document.body.style.height = "auto"
-}
-
-document.addEventListener('keydown', function(event) {
-  if (event.key === 'Escape') {
-      if (showBurgermenu) {
-          toggleBurgermenu()
-      }
-  }
-})
-
 function setVhProperty() {
   if (window.scrollY > 0) return
   let vh = window.innerHeight * 0.01;
@@ -103,4 +67,62 @@ const getValidatedLangFromStorage = () => {
 
 document.addEventListener('DOMContentLoaded', () => {
   changeLanguage(getValidatedLangFromStorage())
+})
+
+let showSidebar = false
+const backdrop = document.getElementById("backdrop")
+
+const toggleSidebar = () => {
+  showSidebar = !showSidebar
+  if (showSidebar) {
+    document.getElementById("sidebar").dataset.show = "true"
+    backdrop.style.display = "block"
+    document.body.style.overflowY = "hidden"
+    document.body.style.height = "100vh"
+    return
+  }
+  document.getElementById("sidebar").dataset.show = "false"
+  backdrop.style.display = "none"
+  document.body.style.overflowY = "auto"
+  document.body.style.height = "auto"
+  displayLevel1SidebarContent()
+}
+
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    if (showSidebar) {
+      toggleSidebar()
+    }
+  }
+})
+
+function displayLevel1SidebarContent() {
+  const level1 = document.querySelector('.level1')
+  const level2Containers = document.querySelectorAll('.level2')
+  level1.classList.remove('hidden')
+  level2Containers.forEach(container => {
+    container.classList.remove('active')
+  })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const navItems = document.querySelectorAll('.nav-item')
+  const backButtons = document.querySelectorAll('.back-button')
+  const level1 = document.querySelector('.level1')
+
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const target = item.getAttribute('data-target')
+      const targetContainer = document.getElementById(target)
+
+      level1.classList.add('hidden')
+      targetContainer.classList.add('active')
+    })
+  })
+
+  backButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      displayLevel1SidebarContent()
+    })
+  })
 })
