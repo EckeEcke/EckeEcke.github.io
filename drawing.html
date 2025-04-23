@@ -10,40 +10,29 @@
             <p id="portrait-mode-message">Please use portrait mode to start drawing 🙏🏻</p>
             <canvas id="game-canvas"></canvas>
             <div id="UI">
-                <div>
-                    <input id="color-select" type="color" value="#0A1172">
-                </div>
-                <div>
-                    <select id="line-width">
-                        <option value="2">2pt</option>
-                        <option value="4">4pt</option>
-                        <option selected value="6">6pt</option>
-                        <option value="8">8pt</option>
-                        <option value="10">10pt</option>
-                    </select>
-                </div>
-                <div>
-                    <button id="erase-button">
-                        <img src="images/eraser.svg" id="erase-img" alt="eraser-icon">
-                    </button>
-                </div>
-                <div>
-                    <button id="rainbow-button">
-                        <img src="images/rainbow.svg" id="rainbow-img" alt="rainbow-icon">
-                    </button>
-                </div>
-                <div>
-                    <button id="save-button">
-                        <img src="images/diskette.svg" id="save-img" alt="save-icon">
-                    </button>
-                </div>
-                <div>
-                    <button id="delete-button">
-                        <img src="images/delete.svg" id="delete-img" alt="delete-icon">
-                    </button>
-                </div>
+                <input id="color-select" type="color" value="#FF0000">
+                <select id="line-width">
+                    <option value="2">2pt</option>
+                    <option value="4">4pt</option>
+                    <option selected value="6">6pt</option>
+                    <option value="8">8pt</option>
+                    <option value="10">10pt</option>
+                </select>
+                <button id="erase-button">
+                    <span class="iconify" data-icon="oui:eraser"></span>
+                </button>
+                <button id="rainbow-button">
+                    <span class="iconify" data-icon="fluent-emoji-flat:rainbow"></span>
+                </button>
+                <button id="save-button">
+                    <span class="iconify" data-icon="mi:save"></span>
+                </button>
+                <button id="delete-button">
+                    <span class="iconify" data-icon="mi:delete"></span>
+                </button>
             </div>
         </div>
         <script src="./js/drawing.js"></script>
+        <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
     </body>
 </html>

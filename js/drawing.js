@@ -2,12 +2,10 @@
 
 const colorSelect = document.getElementById("color-select")
 const lineSelect = document.getElementById("line-width")
-const rainbowBTN = document.getElementById("rainbow-button")
-const saveBTN = document.getElementById("save-button")
-const rainbowIMG = document.getElementById("rainbow-img")
-const deleteBTN = document.getElementById("delete-button")
-const eraseBTN = document.getElementById("erase-button")
-const eraseIMG = document.getElementById("erase-img")
+const saveButton = document.getElementById("save-button")
+const rainbowButton = document.getElementById("rainbow-button")
+const deleteButton = document.getElementById("delete-button")
+const eraseButton = document.getElementById("erase-button")
 
 const canvas = document.getElementById("game-canvas")
 const canvasContext = canvas.getContext("2d")
@@ -36,15 +34,15 @@ const initialize = () => {
     canvas.addEventListener('mouseup', stopDrawing)
     canvas.addEventListener('mouseleave', stopDrawing)
     canvas.addEventListener('touchend', stopDrawing)
-    saveBTN.addEventListener('click', saveDrawing)
-    deleteBTN.addEventListener('click',deleteDrawing)
-    rainbowBTN.addEventListener('click',toggleRainbow)
-    eraseBTN.addEventListener('click',toggleErase)
+    saveButton.addEventListener('click', saveDrawing)
+    deleteButton.addEventListener('click',deleteDrawing)
+    rainbowButton.addEventListener('click',toggleRainbow)
+    eraseButton.addEventListener('click',toggleErase)
     colorSelect.addEventListener('click', function(){
         isRainbow = false
         isErasing = false
-        eraseIMG.style.opacity = '0.3'
-        rainbowIMG.style.opacity = '0.3'
+        eraseButton.style.opacity = '0.3'
+        rainbowButton.style.opacity = '0.3'
     })
     loadDrawing()
 }
@@ -52,7 +50,7 @@ const initialize = () => {
 
 window.onload = () => {
     initialize()
-    canvasContext.fillStyle = 'black'
+    canvasContext.fillStyle = '#00838f'
     canvasContext.font = '40px myFont'
     canvasContext.textAlign = 'center'
     canvasContext.fillText('Drawing App', canvas.width/2, canvas.height/2-20)
@@ -124,16 +122,16 @@ const draw = (event) => {
 
 const toggleRainbow = () => {
     isRainbow = !isRainbow
-    rainbowIMG.style.opacity = isRainbow ? '1' : '0.3'
+    rainbowButton.style.opacity = isRainbow ? '1' : '0.3'
     isErasing = false
-    eraseIMG.style.opacity = '0.3'
+    eraseButton.style.opacity = '0.3'
 }
 
 const toggleErase = () => {
     isErasing = !isErasing
-    eraseIMG.style.opacity = isErasing ? '1' : '0.3'
+    eraseButton.style.opacity = isErasing ? '1' : '0.3'
     isRainbow = false
-    rainbowIMG.style.opacity = '0.3'
+    rainbowButton.style.opacity = '0.3'
 }
 
 const drawLine = (x, y) => {

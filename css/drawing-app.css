@@ -4,8 +4,8 @@
     }
 
     * {
-        color:white;
         font-family: myFont, serif;
+        color: #00838f;
     }
 
     body {
@@ -15,12 +15,14 @@
     }
 
     select {
-        color: black;
+        color: #00838f;
         height:28px;
         font-size: 16px;
+        font-weight: bolder;
         text-align: center;
         vertical-align: middle;
         border: 0;
+        transition: 0.3s;
     }
 
     option {
@@ -34,48 +36,21 @@
         border: 0;
     }
 
-    img {
-        width: 30px;
-        height: 30px;
-        vertical-align: middle;
-    }
-
-    #rainbow-img {
-        width: 40px;
-        height: 40px;
+    #rainbow-button,
+    #erase-button {
         opacity: 0.3;
-        transition: 0.3s;
     }
 
-    #save-img {
-        width: 28px;
-        height: 28px;
-        
-    }
-
-    #delete-img {
-        margin-right: 8px;
-    }
-
-    #erase-img {
-        opacity: 0.3;
-        transition: 0.3s;
-    }
-
-
-    input {
+    input[type="color"] {
         vertical-align: middle;
-        margin-left: 8px;
         border-radius: 50%;
-    }
-
-    div div{
-        display: inline-block;
+        transition: 0.3s;
     }
 
     button {
         background-color: transparent;
         border: 0;
+        transition: 0.3s;
     }
 
     #wrapper {
@@ -88,23 +63,38 @@
 
     #UI {
         margin: 16px auto 0;
-        width: 400px; 
+        width: 400px;
+        box-sizing: border-box;
         display: flex; 
         flex-direction: row; 
         justify-content: space-between; 
-        align-items: baseline; 
+        align-items: center;
         background-color: white; 
-        padding: 10px 0;
+        padding: 8px 12px;
         border-radius: 8px;
+        box-shadow: rgba(17, 12, 46, 0.15) 0 48px 100px 0;
     } 
 
     canvas {
         display: block;
         border-radius: 8px;
+        box-shadow: rgba(17, 12, 46, 0.15) 0 48px 100px 0;
     }
 
     #portrait-mode-message {
         display: none;
+    }
+
+    .iconify {
+        color: #00838f;
+        font-size: 32px;
+        transition: 0.3s;
+    }
+
+    .iconify:hover,
+    select:hover,
+    input[type="color"]:hover {
+        transform: scale(1.1);
     }
 
     @media (max-width: 550px){
