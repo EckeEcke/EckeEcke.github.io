@@ -387,7 +387,8 @@ const drawVictoryMessage = (p1Wins) => {
   canvasContext.fillText(message2, 130 + canvas.width / 2, 350)
 }
 
-const playSound = (sound) => {
+const playSound = (sound, pitch) => {
+  sound.playbackRate = pitch ?? 1
   sound.play()
 }
 
@@ -466,7 +467,8 @@ const collision = (paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadI
     if (isPressedUp && ballSpeedY > 0) {
       ballSpeedY += 1
     }
-    playSound(bounce)
+    leftPressed && collisionP2 ? playSound(bounce, 16) : playSound(bounce, 0.5)
+    isPressedRight && collisionP1 ? playSound(bounce, 16) : playSound(bounce, 0.5)
   }
 }
 
