@@ -225,7 +225,7 @@ function setVolume(value) {
     audio.forEach(sound => sound.volume = volume)
 }
 
-function playSound(sound, volume) {
+function playSound(sound) {
     if (!sound.playOnce) {
         sound.src.pause()
         sound.src.currentTime = 0
@@ -373,7 +373,7 @@ function drawPlayer() {
     ctx.drawImage(player1.characterSprite, player1.x, player1.y)
 }
 
-function movePlayerTouch(event) {
+function movePlayerTouch() {
     if (touchControls) {
         if (touchX - 80 < player1.x) {
             player1.x -= 2
@@ -414,7 +414,7 @@ function changeTouchPosition(event) {
 function movePlayerGamepad() {
     if (navigator.getGamepads()[0].buttons[14].pressed && player1.x > 0) {
         if (player1.x > obstacle.x + obstacle.width && player1.x < obstacle.x + obstacle.width) {
-            player1.x == obstacle.x + obstacle.width
+            player1.x === obstacle.x + obstacle.width
         } else {
             player1.x -= 2
         }
@@ -441,8 +441,8 @@ function movePlayer() {
     }
 
     if (aPressed && player1.x > 0) {
-        player1.x > obstacle.x + obstacle.width && player1.x < obstacle.x + obstacle.width 
-            ? player1.x == obstacle.x + obstacle.width
+        player1.x > obstacle.x + obstacle.width && player1.x < obstacle.x + obstacle.width
+            ? player1.x === obstacle.x + obstacle.width
             : player1.x -= 2
     }
     
@@ -530,7 +530,7 @@ function handlePlayer() {
 
 function animateCharacter() {
     character = !character
-    player1.characterSprite = (character == true) ? characterSprite2 : player1.characterSprite = characterSprite1
+    player1.characterSprite = (character === true) ? characterSprite2 : player1.characterSprite = characterSprite1
 }
 
 function keyStatusToggle() {
@@ -578,7 +578,7 @@ function collectTreasure() {
         treasure.collectState = true
         score += 20
         treasure.messageState = true
-        if (round == 2 && treasure.collectState && !treasureCooldown) {
+        if (round === 2 && treasure.collectState && !treasureCooldown) {
             treasureCooldown = true
             setTimeout(function () {
                 treasure.x = 20 + Math.floor(Math.random() * 200)
@@ -790,12 +790,12 @@ function disableImageSmoothing() {
 
 function animateBat() {
     batState = !batState
-    batSprite = (batState == true) ? batSprite1 : batSprite2
+    batSprite = (batState === true) ? batSprite1 : batSprite2
 }
 
 function toggleBackground() {
     backgroundLavaOne = !backgroundLavaOne
-    backgroundLevel3 = (backgroundLavaOne == true) ? lavaBackground1 : lavaBackground2
+    backgroundLevel3 = (backgroundLavaOne === true) ? lavaBackground1 : lavaBackground2
 }
 
 function drawObstacle() {
@@ -911,7 +911,7 @@ function raiseSpeed() {
         playSound(gatesound)
         passedGate = true
     }
-    if (gatesPassed == 4) {
+    if (gatesPassed === 4) {
         gatesPassed = 0
         gameSpeed = 1.1 * gameSpeed
         clearInterval(gameInterval)
@@ -1030,24 +1030,5 @@ function winGame() {
             ctx.font = "24px pixelFont"
             ctx.fillText("Your score: " + score, canvas.width / 2, canvas.height / 2 + 60)
         }, 2000)
-    }
-}
-
-const burgerMenu = document.getElementById("burger-menu")
-let burgerMenuShowing = false
-
-function showMenu() {
-    burgerMenuShowing = !burgerMenuShowing
-    if (burgerMenuShowing) {
-        burgerMenu.style.height = "100vh"
-        burgerMenu.style.opacity = "0.99"
-        burgerMenu.style.zIndex = "2500"
-        hamburger.style.position = "fixed"
-    }
-    else {
-        burgerMenu.style.height = "0vh"
-        burgerMenu.style.opacity = "0"
-        burgerMenu.style.zIndex = "-3000"
-        hamburger.style.position = "absolute"
     }
 }

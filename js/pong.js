@@ -499,28 +499,6 @@ function setVolume(value) {
   audio.forEach(sound => sound.volume = volume)
 }
 
-const burgerMenu = document.getElementById("burger-menu")
-const hamburger = document.getElementById("hamburger")
-let burgerMenuShowing = false
-
-const showMenu = () => {
-  burgerMenuShowing = !burgerMenuShowing
-  if (burgerMenuShowing) {
-    burgerMenu.style.height = "100vh"
-    burgerMenu.style.opacity = "0.99"
-    hamburger.style.position = "fixed"
-    return
-  }
-
-  burgerMenu.style.height = "0vh"
-  burgerMenu.style.opacity = "0"
-  hamburger.style.position = "absolute"
-}
-
-
-
-
-
 const roundedRect = (ctx, x, y, width, height, radius, color) => {
   ctx.beginPath()
   ctx.moveTo(x + radius, y)

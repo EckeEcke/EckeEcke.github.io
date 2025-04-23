@@ -678,7 +678,7 @@ function hitDetection(obj) {
 }
 
 function hitDetectionShip(obj) {
-  let shipHit
+  if (obj.lives <= 0) return
 
   if (shotY <= obj.y + 40 && shotY >= obj.y && shotX >= obj.x && shotX <= obj.x + 50 && obj.lives >= 1 && shotFired) {
     obj.lives -= 0.5
@@ -686,13 +686,8 @@ function hitDetectionShip(obj) {
     setTimeout(() => obj.lives -= 0.5, 100)
     shotFired = false
     shotY = 600
-    shipHit = true
     score += 30 * multiplier
     streak += 1
-  }
-
-  if (obj.lives <= 0 && shipHit) {
-    shipHit = false
   }
 }
 
@@ -973,25 +968,6 @@ function resetGame() {
 
   enemyshipCount = 0
   bonusScore = 0
-}
-
-
-const burgerMenu = document.getElementById("burger-menu")
-const hamburger = document.getElementById("hamburger")
-let burgerMenuShowing = false
-
-function showMenu() {
-  burgerMenuShowing = !burgerMenuShowing
-  if (burgerMenuShowing) {
-    burgerMenu.style.right = "0"
-    burgerMenu.style.opacity = "0.99"
-    hamburger.style.position = "fixed"
-  }
-  else {
-    burgerMenu.style.right = "-100%"
-    burgerMenu.style.opacity = "0"
-    hamburger.style.position = "absolute"
-  }
 }
 
 let volume = 1

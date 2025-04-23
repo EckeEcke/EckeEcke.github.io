@@ -16,97 +16,56 @@
   <audio src="sounds/pong/victory.wav" id="victory"></audio>
   <audio src="sounds/pong/bounce-wall.wav" id="bounceWall"></audio>
 
-  <div id="hamburger" onclick="showMenu()">
-    <div class="line1"></div>
-    <div class="line2"></div>
-    <div class="line3"></div>
-  </div>
+  <div class="content-wrapper crt">
+    <h1>Pong</h1>
 
-  <div id="burger-menu">
-    <ul>
-      <li>
-        <a href="/index">Home</a>
-        <hr class="nav-line">
-      </li>
-      <li>
-        <a href="https://react-travelblog.netlify.app/" target="_blank">React Travel Blog</a>
-        <hr class="nav-line">
-      </li>
-      <li>
-        <a href="/shooter">JS Space Shooter</a>
-        <hr class="nav-line">
-      </li>
-      <li>
-        <a href="https://eckeecke.itch.io/school-fight">School Fight</a>
-        <hr class="nav-line">
-      </li>
-      <li>
-        <a href="/pong">JS Pong</a>
-        <hr class="nav-line">
-      </li>
-      <li>
-        <a href="https://adoring-galileo-71fde2.netlify.app/">React Todo App</a>
-        <hr class="nav-line">
-      </li>
-      <li>
-        <a href="/templelooter">Temple Looter</a>
-        <hr class="nav-line">
-      </li>
-      <li>
-        <a href="https://vue-mealplanner.vercel.app/">Vue Meal Planner</a>
-      </li>
-    </ul>
-  </div>
-<div class="content-wrapper crt">
-  <h1>Pong</h1>
+    <canvas id="game-canvas" width="800px" height="600px"></canvas>
 
-  <canvas id="game-canvas" width="800px" height="600px"></canvas>
+    <br>
 
-  <br>
+    <article id="description">
+      To make my first steps in Javascript I created this simple Pong game using Javascript and HTML Canvas.
+      I implemented a collision detection, sounds, a CPU opponent and gamepad support via gamepad API.
+    </article>
 
-  <article id="description">
-    To make my first steps in Javascript I created this simple Pong game using Javascript and HTML Canvas.
-    I implemented a collision detection, sounds, a CPU opponent and gamepad support via gamepad API.
-  </article>
+    <br>
 
-  <br>
+    <div id="general-buttons">
+      <button id="start-button" onclick="startGame(true)">
+        1P &#127955; vs CPU 🤖
+      </button>
+      <button id="start-button-2p" onclick="startGame(false)">
+        1P &#127955; VS 2P &#127955;
+      </button>
+      <button id="settings-button" onclick="openSettings()">
+        Settings ⚙️
+      </button>
 
-  <div id="general-buttons">
-    <button id="start-button" onclick="startGame(true)">
-      1P &#127955; vs CPU 🤖
-    </button>
-    <button id="start-button-2p" onclick="startGame(false)">
-      1P &#127955; VS 2P &#127955;
-    </button>
-    <button id="settings-button" onclick="openSettings()">
-      Settings ⚙️
-    </button>
-
-    <br><br>
-  </div>
-
-  <article class="controls">
-    Controls P1: WASD | Controls P2: ARROWKEYS
-  </article>
-
-  <div class="wrapper">
-    <div id="volume-control">
-      <div>VOLUME</div>
-      <span onclick="setVolume(0)"> | </span>
-      <span onclick="setVolume(1)" data-value="1" class="volume-item">&#11036;</span>
-      <span onclick="setVolume(2)" data-value="2" class="volume-item">&#11036;</span>
-      <span onclick="setVolume(3)" data-value="3" class="volume-item">&#11036;</span>
-      <span onclick="setVolume(4)" data-value="4" class="volume-item">&#11036;</span>
-      <span onclick="setVolume(5)" data-value="5" class="volume-item">&#11036;</span>
+      <br><br>
     </div>
+
+    <article class="controls">
+      Controls P1: WASD | Controls P2: ARROWKEYS
+    </article>
+
+    <div class="wrapper">
+      <div id="volume-control">
+        <div>VOLUME</div>
+        <span onclick="setVolume(0)"> | </span>
+        <span onclick="setVolume(1)" data-value="1" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(2)" data-value="2" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(3)" data-value="3" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(4)" data-value="4" class="volume-item">&#11036;</span>
+        <span onclick="setVolume(5)" data-value="5" class="volume-item">&#11036;</span>
+      </div>
+    </div>
+
+    <a href="https://github.com/EckeEcke/EckeEcke.github.io/blob/master/js/pong.js" target="_blank">
+      <img id="github-link" alt="link to my github" src="images/github-pixelated.png" />
+    </a>
   </div>
 
-  <a href="https://github.com/EckeEcke/EckeEcke.github.io/blob/master/js/pong.js" target="_blank">
-    <img id="github-link" alt="link to my github" src="images/github-pixelated.png" />
-  </a>
-</div>
-
-<dialog id="modal">
+  <dialog id="modal">
     <h2>SETTINGS</h2>
     <input name="color-picker-p1" class="option-input" type="color" id="color-picker-p1" value="#ed3d0d">
     <label for="color-picker-p1">&nbsp Choose color P1</label>
