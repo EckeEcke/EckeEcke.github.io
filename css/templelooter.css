@@ -70,6 +70,7 @@ h1 {
 
 #volume-control {
     display: flex;
+    align-items: center;
     gap: 8px;
     margin: 32px auto;
     width: 248px;
