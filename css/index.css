@@ -694,6 +694,7 @@ hr {
   cursor: pointer;
   width: 100%;
   text-align: left;
+  transition: 0.3s;
 }
 
 .nav-item a, .nav-item:hover {
