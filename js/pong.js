@@ -436,11 +436,23 @@ const collision = (paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadI
     if (collisionP1) {
       ballX += isPressedRight ? 5 : 0
       ballSpeedX = isPressedRight ? 10 : 5
+      paddle1X -= 6
+      setTimeout(() => paddle1X += 6, 50)
+      setTimeout(() => paddle1X -= 3, 100)
+      setTimeout(() => paddle1X += 3, 150)
+      setTimeout(() => paddle1X -= 1, 200)
+      setTimeout(() => paddle1X += 1, 250)
     }
 
     if (collisionP2) {
       ballX -= leftPressed ? 5 : 0
       ballSpeedX = leftPressed ? 10 : 5
+      paddle2X += 6
+      setTimeout(() => paddle2X -= 6, 50)
+      setTimeout(() => paddle2X += 3, 100)
+      setTimeout(() => paddle2X -= 3, 150)
+      setTimeout(() => paddle2X += 1, 200)
+      setTimeout(() => paddle2X -= 1, 250)
     }
 
     if (ballSpeedY === 0) {
