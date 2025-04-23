@@ -1,312 +1,49 @@
-<html>
-
+<html lang="en">
     <head>
         <meta name="viewport" content="width=device-width, maximum-scale=1.0">
+        <meta charset="UTF-8">
         <title>Drawing App 🖌</title>
         <link rel="stylesheet" href="css/drawing-app.css">
     </head>
-
     <body>
-
-        <button id="hamburger">
-            <div class="line1"></div>
-            <div class="line2"></div>
-            <div class="line3"></div>
-          </button>
-            <div id="burger-menu">
-              <ul>
-                <li>
-                  <a href="index.html">Home</a>
-                </li>
-                <hr class="nav-line">
-                <li>
-                  <a href="https://react-travelblog.netlify.app/" target="_blank">React Travel Blog</a>
-                </li>
-                <hr class="nav-line">
-                <li>
-                  <a href="shooter.html">JS Space Shooter</a>
-                </li>
-                <hr class="nav-line">
-                <li>
-                  <a href="pong.html">JS Pong</a>
-                </li>
-                <hr class="nav-line">
-                <li>
-                  <a href="https://adoring-galileo-71fde2.netlify.app/">React Todo App</a>
-                </li>
-                <hr class="nav-line">
-                <li>
-                  <a href="newgame.html">Drawing App</a>
-                </li>
-                <hr class="nav-line">
-                <li>
-                  <a href="templelooter.html">Temple Looter</a>
-                </li>
-                <hr class="nav-line">
-                <li>
-                    <a href="https://nervous-elion-4e903f.netlify.app/">Vue Meal Planner</a>
-                </li>
-              </ul>
-            </div>
-
-
-        <center>
- 
-            <div id="wrapper">
-                <canvas id="game-canvas"></canvas>
-            </div>
-               
-            
-
+        <div id="wrapper">
+            <p id="portrait-mode-message">Please use portrait mode to start drawing 🙏🏻</p>
+            <canvas id="game-canvas"></canvas>
             <div id="UI">
                 <div>
-                    <input id="color-select" type="color" value="#0A1172"></input>
+                    <input id="color-select" type="color" value="#0A1172">
                 </div>
                 <div>
                     <select id="line-width">
                         <option value="2">2pt</option>
                         <option value="4">4pt</option>
-                        <option value="6">6pt</option>
+                        <option selected value="6">6pt</option>
                         <option value="8">8pt</option>
                         <option value="10">10pt</option>
                     </select>
                 </div>
                 <div>
                     <button id="erase-button">
-                        <img src="images/eraser.svg" id="erase-img">
+                        <img src="images/eraser.svg" id="erase-img" alt="eraser-icon">
                     </button>
                 </div>
                 <div>
                     <button id="rainbow-button">
-                        <img src="images/rainbow.svg" id="rainbow-img">
+                        <img src="images/rainbow.svg" id="rainbow-img" alt="rainbow-icon">
                     </button>
                 </div>
                 <div>
                     <button id="save-button">
-                        <img src="images/diskette.svg" id="save-img">
+                        <img src="images/diskette.svg" id="save-img" alt="save-icon">
                     </button>
                 </div>
                 <div>
                     <button id="delete-button">
-                        <img src="images/delete.svg" id="delete-img">
+                        <img src="images/delete.svg" id="delete-img" alt="delete-icon">
                     </button>
                 </div>
-                
             </div>
-
-        </center>
-        
-        
-        
-
-        
-
-        
-
-        <script>
-
-            let p1X;
-            let p1Y;
-            const colorSelect = document.getElementById("color-select");
-            const lineSelect = document.getElementById("line-width");
-            const rainbowBTN = document.getElementById("rainbow-button");
-            const saveBTN = document.getElementById("save-button");
-            const rainbowIMG = document.getElementById("rainbow-img");
-            const deleteBTN = document.getElementById("delete-button");
-            const eraseBTN = document.getElementById("erase-button");
-            const eraseIMG = document.getElementById("erase-img");
-
-            let isRainbow = false;
-            let isErasing = false;
-            let isDrawing = false;
-            let startedDrawing = false;
-
-            const canvas = document.getElementById("game-canvas");
-            const canvasContext = canvas.getContext("2d");
-
-            function initialize(){
-                setCanvasSize();
-                canvasContext.fillStyle = "white";
-                canvasContext.fillRect(0,0,canvas.width,canvas.height);
-                window.addEventListener("resize", initialize);
-                window.addEventListener("orientationchange", initialize);
-                canvas.addEventListener("mousedown", setDrawing);
-                canvas.addEventListener("mousemove", draw);
-                canvas.addEventListener("touchstart", setDrawing);
-                canvas.addEventListener("touchmove", draw);
-                canvas.addEventListener("mouseup", stopDrawing);
-                canvas.addEventListener("mouseleave", stopDrawing);
-                canvas.addEventListener("touchend", stopDrawing);
-                saveBTN.addEventListener("click", saveDrawing);
-                deleteBTN.addEventListener("click",deleteDrawing);
-                rainbowBTN.addEventListener("click",toggleRainbow);
-                eraseBTN.addEventListener("click",toggleErase);
-                colorSelect.addEventListener("click", function(){
-                    isRainbow = false;
-                    isErasing = false;
-                    eraseIMG.style.opacity = 0.3;
-                    rainbowIMG.style.opacity = 0.3;
-                })
-                loadDrawing();
-                console.log(window.orientation);
-            }
-
-            
-
-            window.onload = function () {
-                initialize();
-                canvasContext.fillStyle = "black";
-                canvasContext.font = "40px myFont";
-                canvasContext.textAlign = "center";
-                canvasContext.fillText("Drawing App", canvas.width/2, canvas.height/2-20);
-                canvasContext.font = "20px myFont";
-                canvasContext.fillText("Tap or click to start", canvas.width/2, canvas.height/2+20);
-                canvasContext.font = "40px Tahoma";
-                canvasContext.fillText("🎨🖌️", canvas.width/2, canvas.height/2+90);
-            };
-
-            function setCanvasSize(){
-                canvas.width = window.innerWidth < 600 ? 0.8*window.innerWidth : 400;
-                canvas.height = window.innerWidth < 600 ? window.innerWidth : 500;
-                if(window.innerWidth < 1025 && window.innerWidth/window.innerHeight >0.7 ){
-                    canvas.width = window.innerWidth*0.8;
-                    canvas.height = window.innerWidth;
-                }
-            }
-
-            function loadDrawing(){
-                if("drawing" in localStorage) {
-                    let drawingURL = localStorage.getItem("drawing");
-                    let image = new Image;
-                    image.src = drawingURL;
-                    image.onload = () => {
-                        canvasContext.drawImage(image,0,0);
-                    }
-                    
-                    console.log("loaded");
-                }
-            }
-
-            function saveDrawing(){
-                console.log("saving");
-                localStorage.setItem("drawing", canvas.toDataURL());
-            }
-
-            function deleteDrawing(){
-                if("drawing" in localStorage){
-                    localStorage.removeItem("drawing");
-                }
-                canvasContext.fillStyle = "white";
-                canvasContext.fillRect(0,0,canvas.width,canvas.height);
-
-            }
-    
-
-            function setDrawing(event){
-                event.preventDefault();
-                if(!startedDrawing){
-                    initialize();
-                }
-                startedDrawing = true;
-
-                isDrawing = true;
-                //let rect = event.target.getBoundingClientRect();
-                p1X = (event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX);
-                p1Y = (event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY);
-            }
-
-            function draw(event){
-                event.preventDefault();
-                if(isDrawing){
-                    //let rect = event.target.getBoundingClientRect();
-                    //let x = (event.targetTouches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
-                    //let y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
-                    //drawLine(canvasContext, p1X, p1Y, x, y);
-                    //p1X = (event.targetTouches ? event.targetTouches[0].pageX - rect.left : event.offsetX);
-                    //p1Y = (event.targetTouches ? event.targetTouches[0].pageY - rect.top : event.offsetY);
-
-                    let x = (event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX);
-                    let y = (event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY);
-                    drawLine(canvasContext, p1X, p1Y, x, y);
-                    p1X = (event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX);
-                    p1Y = (event.targetTouches ? event.targetTouches[0].pageY - canvas.offsetTop : event.offsetY);
-                }
-            }
-
-            function toggleRainbow(){
-                isRainbow = !isRainbow;
-                rainbowIMG.style.opacity = isRainbow ? 1 : 0.3;
-                isErasing = false;
-                eraseIMG.style.opacity = 0.3;
-            }
-
-            function toggleErase(){
-                isErasing = !isErasing;
-                eraseIMG.style.opacity = isErasing ? 1 : 0.3;
-                isRainbow = false;
-                rainbowIMG.style.opacity = 0.3;
-            }
-
-            function drawLine(context, x1, y1, x2, y2) {
-                let color = colorSelect.value;
-
-                if(isRainbow){
-                    color = `hsl(${x1}, 100%, 50%)`;
-                }
-
-                if(isErasing){
-                    color = "white";
-                }
-                event.preventDefault();
-                canvasContext.lineCap = "round";
-                canvasContext.lineJoin = "round";
-                context.beginPath();
-                context.strokeStyle = color;
-                context.lineWidth = lineSelect.value;
-                context.moveTo(x1, y1);
-                context.lineTo(x2, y2);
-                context.stroke();
-                context.closePath();
-            }
-
-            function stopDrawing(){
-                event.preventDefault();
-                if(isDrawing){
-                    isDrawing = !isDrawing;
-                }
-            };
-
-
-
-
-
-
-            const burgerMenu = document.getElementById("burger-menu");
-            const hamburger = document.getElementById("hamburger");
-            hamburger.addEventListener("click", showMenu);
-
-            let burgerMenuShowing = false;
-
-            function showMenu(){
-                burgerMenuShowing = !burgerMenuShowing;
-            if (burgerMenuShowing) {
-                burgerMenu.style.height = "100vh";
-                burgerMenu.style.opacity = "0.99";
-                burgerMenu.style.zIndex = "2500";
-                hamburger.style.position = "fixed";
-                hamburger.style.backgroundColor = "rgb(0,0,0,0.7)";
-            }
-            else {
-                burgerMenu.style.height = "0vh";
-                burgerMenu.style.opacity = "0";
-                burgerMenu.style.zIndex = "-3000";
-                hamburger.style.position = "absolute";
-                hamburger.style.backgroundColor = "transparent";
-            }
-            }
-
-
-        </script>
+        </div>
+        <script src="./js/drawing.js"></script>
     </body>
-
 </html>
