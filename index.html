@@ -2,20 +2,23 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, maximum-scale=5.0">
-    <title>Frontend Developer Christian Eckardt | Hamburg</title>
-    <meta name="description" content="Online-Portfolio mit Web-Applikationen und Games - Nuxt | Vue | Javascript">
+    <title>Frontend Engineer Christian Eckardt | Hamburg</title>
+    <meta name="description" content="Frontend Engineer from Hamburg with 5+ years of experience in eCommerce | Techstack of choice: Nuxt, Vue, Typescript | Check out my hobby projects, games and applications">
+    <meta name="keywords" content="Frontend Engineer, Christian Eckardt, Hamburg Germany, Nuxt, Vue, Typescript, Javascript, Web Developer, games, applications, online portfolio">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oswald">
-    <link rel="icon" type="image/png" href="images/favicon.png"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="images/index/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/index/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/index/favicon-16x16.png">
+    <link rel="manifest" href="images/index/site.webmanifest">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
 </head>
 
 <body id="body" class="bg-slate-900">
     <div id="backdrop" onclick="toggleSidebar()"></div>
     <div>
-
         <div data-show="false" id="sidebar" class="sidebar">
             <button id="close-button" class="bg-transparent" aria-label="close menu button" tabindex="-1" onclick="toggleSidebar()">
                 <i class="uil uil-times m-0"></i>
@@ -139,7 +142,7 @@
         <span class="divider-pipe"></span>
         <button class="language-selector inactive" data-value="de" tabindex="0" onclick="changeLanguage('de')">DE</button>
       </div>
-      <button id="hamburger"  aria-label="Open menu button" onclick="toggleSidebar()">
+      <button id="menu-button"  aria-label="Open menu button" onclick="toggleSidebar()">
         <i class="uil uil-bars m-0"></i>
       </button>
     </header>
@@ -150,14 +153,12 @@
       </div>
     </div>
     
-    <header id="header-image">
-      <div class="header-content-wrapper">
-        <div class="header-content">
-            <h1>
-                Christian Eckardt
-            </h1>
-            <h2>Frontend Engineer</h2>
-            <hr>
+    <div id="intro">
+      <div class="intro-content-wrapper">
+        <div class="intro-content">
+            <h1 class="appear">Christian Eckardt</h1>
+            <h2 class="appear">Frontend Engineer</h2>
+            <hr class="appear">
             <p data-localization="intro_text" class="appear">
                 I am a Frontend Engineer based in Hamburg, Germany with 5+ years of experience in frontend web development and eCommerce. Framework of my choice is Vue/Nuxt. Besides working fulltime as an engineer, I still find some time to code for fun.
                 This website serves as a hub for my hobby projects for everyone who is interested in working with me or just curious.
@@ -171,14 +172,14 @@
           <i class="uil uil-angle-down" id="scroll-arrow"></i>
         </button>
       </div>
-    </header>
+    </div>
 
 
     <section class="demo-section appear pt-5" id="main-content">
       <div>
         <img 
           alt="screenshot triggerscore" 
-          class="mw-100 screenshot-box-shadow"
+          class="screenshot-box-shadow"
           src="images/screenshots/Screenshot-Triggerscore.webp"
         >
       </div>
@@ -202,7 +203,7 @@
       <div>
         <img 
           alt="screenshot mealplanner" 
-          class="mw-100 screenshot-box-shadow"
+          class="screenshot-box-shadow"
           src="images/screenshots/screenshot-mealplanner-vue3.webp"
         >
       </div>
@@ -226,7 +227,7 @@
       <div>
         <img 
           alt="screenshot school fight" 
-          class="mw-100 screenshot-box-shadow"
+          class="screenshot-box-shadow"
           src="images/screenshots/screenshot-schoolfight.webp"
         >
       </div>
@@ -250,7 +251,7 @@
       <div>
         <img 
           alt="screenshot retroclub"
-          class="mw-100 screenshot-box-shadow"
+          class="screenshot-box-shadow"
           src="images/screenshots/screenshot-retroclub.png"
         >
       </div>
@@ -274,7 +275,7 @@
       <div>
         <img 
           alt="screenshot clicky"
-          class="mw-100 screenshot-box-shadow"
+          class="screenshot-box-shadow"
           src="images/screenshots/screenshot-clicky.webp"
         >
       </div>

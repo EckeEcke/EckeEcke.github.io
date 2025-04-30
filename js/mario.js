@@ -1,22 +1,21 @@
-const marioBox = document.getElementById("homepage-running-mario");
+const marioBox = document.getElementById('homepage-running-mario')
+const homepageMario = document.getElementById('homepage-mario')
 
-let marioLeft = -60;
+let marioLeft = -60
 
 const movingBox = () => {
   marioBox.style.transform = `translateX(${marioLeft}px)`
 
-  if(marioLeft<window.innerWidth){
-    marioLeft += 2;
+  if(marioLeft < window.innerWidth){
+    marioLeft += 2
   }
 
-  if(marioLeft>=window.innerWidth){
-    marioLeft = -500;
+  if(marioLeft >= window.innerWidth){
+    marioLeft = -500
   }
 }
 
 setInterval(movingBox, 1000/60)
-
-const homepageMario = document.getElementById("homepage-mario")
 
 let spritesheetPosition = 0
 let sheetMovement = 50

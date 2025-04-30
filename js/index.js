@@ -80,13 +80,13 @@ const toggleSidebar = () => {
     backdrop.style.display = "block"
     document.body.style.overflowY = "hidden"
     document.body.style.height = "100vh"
-    return
+  } else {
+    document.getElementById("sidebar").dataset.show = "false"
+    backdrop.style.display = "none"
+    document.body.style.overflowY = "auto"
+    document.body.style.height = "auto"
+    displayLevel1SidebarContent()
   }
-  document.getElementById("sidebar").dataset.show = "false"
-  backdrop.style.display = "none"
-  document.body.style.overflowY = "auto"
-  document.body.style.height = "auto"
-  displayLevel1SidebarContent()
 }
 
 document.addEventListener('keydown', function(event) {
