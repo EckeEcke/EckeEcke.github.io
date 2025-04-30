@@ -35,6 +35,7 @@ h1 {
 
 h2 {
   font-size: 2em;
+  font-family: "Ubuntu", serif;
 }
 
 h3 {
@@ -685,6 +686,6 @@ article div {
   color: rgba(15, 23, 42, 1);
   padding: 8px 10px;
   border-radius: 8px;
-  font-weight: bolder;
+  font-family: "Ubuntu", serif;
   font-size: 13px;
 }
