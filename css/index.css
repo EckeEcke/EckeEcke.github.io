@@ -673,9 +673,11 @@ article div {
   font-size: 2.5rem;
 }
 
-.used-tech-info {
+.demo-section .used-tech-info {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
 .used-tech-element {
