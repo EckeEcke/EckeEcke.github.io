@@ -28,7 +28,6 @@ button:focus-visible, a:focus-visible {
 
 h1 {
   color: white;
-  font-size: 2.4em;
   text-align: center;
   text-shadow: 4px 4px rgba(0, 0, 0, 0.4);
 }
@@ -62,7 +61,7 @@ h3 {
   align-items: center;
   gap: 16px;
   font-size: 22px;
-  color: white;
+  color: rgb(94, 234, 212);
 }
 
 #language-switch .divider-pipe {
@@ -74,14 +73,14 @@ h3 {
   cursor: pointer;
   user-select: none;
   transition: all 0.3s ease;
-  color: white;
+  color: rgb(94, 234, 212);
   background: transparent;
   border: none;
   padding: 0;
 }
 
 #language-switch .language-selector.inactive {
-  opacity: 0.6;
+  opacity: 0.4;
 }
 
 #language-switch .language-selector:hover {
@@ -99,7 +98,8 @@ h3 {
   height: calc(var(--vh, 1vh) * 100);
   min-height: 360px;
   max-width: 100vw;
-  background: radial-gradient(circle, rgba(10, 3, 1, 1) 0%, rgba(1, 4, 10, 1) 50%, rgba(10, 5, 10, 1) 100%);}
+  background: radial-gradient(circle, rgba(15, 23, 42, 1) 0%, rgba(1, 4, 10, 1) 50%, rgba(10, 5, 10, 1) 100%);
+}
 
 #header-image h1, #scroll-arrow-div {
   opacity: 0;
@@ -107,6 +107,10 @@ h3 {
   animation-fill-mode: forwards;
   animation-delay: 0.5s;
   text-align: left;
+}
+
+hr {
+  border-color: rgb(94, 234, 212);
 }
 
 footer {
@@ -122,6 +126,8 @@ address {
 
 #header-image h2 {
   animation-delay: 1.5s;
+  color: rgb(148, 163, 184);
+  margin: 16px 0;
 }
 
 #scroll-arrow-div {
@@ -149,9 +155,13 @@ address {
   text-shadow: 1px 1px rgba(0, 0, 0, 0.4);
 }
 
+.header-content p {
+  color: rgb(148, 163, 184);
+}
+
 @media (min-width: 1024px) {
   .header-content * {
-    max-width: 750px;
+    max-width: 700px;
   }
 }
 
@@ -166,9 +176,6 @@ address {
   .header-content-wrapper {
     flex-direction: row;
     max-width: 992px;
-  }
-  .header-content p {
-    padding: 0 8px;
   }
 }
 
@@ -238,6 +245,7 @@ address {
   transition: all 0.3s;
   display: flex;
   align-items: center;
+  color: rgb(94, 234, 212);
 }
 
 #close-button {
@@ -248,7 +256,7 @@ address {
   border-style: none;
   transition: all 0.3s;
   z-index: 1;
-  color: #fff;
+  color: rgb(94, 234, 212);
 }
 
 #close-button:hover {
@@ -331,6 +339,7 @@ address {
   background: none;
   border-style: none;
   animation: arrow-animation 5s infinite linear;
+  color: rgb(94, 234, 212);
 }
 
 #scroll-back-top-BTN {
@@ -500,7 +509,7 @@ article div {
 
 @media (min-width: 1024px) {
   h1 {
-    font-size: 100px;
+    font-size: 4rem;
   }
   .header-content p {
     text-wrap: balance;
@@ -514,6 +523,10 @@ article div {
 
   #logo {
     height: 80px;
+  }
+
+  hr {
+    margin: 32px 0;
   }
 }
 
@@ -623,10 +636,6 @@ article div {
   text-shadow: 2px 2px #ff0000;
 }
 
-hr {
-  opacity: 0;
-}
-
 .social-icon {
   transition: all 0.3s;
 }
@@ -639,9 +648,9 @@ hr {
 .sidebar {
   position: fixed;
   right: 0;
-  width: 250px;
+  width: 280px;
   height: 100%;
-  background-color: rgba(25,25,25,0.8);
+  background: radial-gradient(circle, rgba(15, 23, 42, 1) 0%, rgba(1, 4, 10, 1) 50%, rgba(10, 5, 10, 1) 100%);
   color: #fff;
   overflow: hidden;
   z-index: 2500;
@@ -654,6 +663,7 @@ hr {
 }
 
 .sidebar h4 {
+  color: rgb(94, 234, 212);
   padding: 24px;
   margin: 0;
   font-size: 16px;
@@ -688,7 +698,7 @@ hr {
   gap: 8px;
   padding: 24px;
   margin-bottom: 1px;
-  background-color: #444;
+  background-color: transparent;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -702,7 +712,7 @@ hr {
 }
 
 .nav-item:hover, .back-button:hover {
-  background-color: #555;
+  color: rgb(94, 234, 212);
 }
 
 .sidebar ul {
@@ -712,7 +722,6 @@ hr {
 
 .sidebar li {
   padding: 24px;
-  border-bottom: 1px solid #444;
 }
 
 .sidebar-icon {

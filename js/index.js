@@ -34,11 +34,12 @@ const scrollToTop = () => body.scrollIntoView({behavior: "smooth"})
 
 document.addEventListener("scroll", () => scrollTopBTN.style.display = scrollY > 400 ? 'block' : 'none')
 
-const updateContent = (langData) =>
+const updateContent = (langData) => {
   document.querySelectorAll('[data-localization]').forEach(element => {
-      const key = element.getAttribute('data-localization')
-      element.textContent = langData[key]
+    const key = element.getAttribute('data-localization')
+    element.textContent = langData[key]
   })
+}
 
 const fetchLanguageData = async (lang) => {
   const response = await fetch(`https://eckeecke.github.io/locales/${lang}.json`)
