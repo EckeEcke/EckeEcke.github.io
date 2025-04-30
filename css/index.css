@@ -622,7 +622,7 @@ article div {
   color: #fff;
 }
 
-.nav-item:hover, .back-button:hover {
+.nav-item:hover, .back-button:hover, .nav-item a:hover {
   color: rgb(94, 234, 212);
 }
 
