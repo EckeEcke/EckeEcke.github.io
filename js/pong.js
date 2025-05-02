@@ -69,6 +69,7 @@ let padLeftPressed = false
 let padRightPressed = false
 
 let gameStarted = false
+let isSinglePlayer = true
 
 let collisionP1 = false
 let collisionP2 = false
@@ -77,6 +78,7 @@ let Score2 = 0
 const paddleHeight = 100
 const tolerance = 20
 let gameSpeed = 100
+let gameSpeedModifier = 0
 
 let touchControls = false
 let touchY
@@ -90,7 +92,7 @@ colorInputP2.addEventListener("change", () => {
 })
 
 gameSpeedInput.addEventListener("change", () => {
-  gameSpeed = gameSpeedInput.value
+  gameSpeed = parseInt(gameSpeedInput.value)
 })
 
 canvas.addEventListener("touchstart", changeTouchPosition, false)
@@ -114,12 +116,13 @@ function closeSettings() {
 }
 
 function startGame(singlePlayer) {
+  isSinglePlayer = singlePlayer
   gameStarted = true
   canvas.style.display = "block"
   canvasContext = canvas.getContext("2d")
-    runGame = singlePlayer
-      ? setInterval(onePlayerMode, 1000 / gameSpeed) 
-      : setInterval(twoPlayerMode, 1000 / gameSpeed)
+  runGame = singlePlayer
+    ? setInterval(onePlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
+    : setInterval(twoPlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
   generalButtons.style.display = 'none'
   descriptionTxt.style.display = "none"
 }
@@ -395,11 +398,21 @@ const playSound = (sound, pitch) => {
 const setScore = () => {
   const scored = ballX >= canvas.width || ballX <= 0
   if (ballX >= canvas.width) {
+    clearInterval(runGame)
+    gameSpeedModifier = 0
+    runGame = isSinglePlayer
+        ? setInterval(onePlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
+        : setInterval(twoPlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
     Score1 = Score1 + 1
     playSound(soundCheer1)
   }
 
   if (ballX <= 0) {
+    clearInterval(runGame)
+    gameSpeedModifier = 0
+    runGame = isSinglePlayer
+        ? setInterval(onePlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
+        : setInterval(twoPlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
     Score2 = Score2 + 1
     playSound(soundCheer2)
   }
@@ -434,26 +447,24 @@ const collision = (paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadI
     collisionP2 = isRightSide
     ballDirectionX = -ballDirectionX
 
+    if (collisionP1 || collisionP2) {
+      gameSpeedModifier += 1
+      clearInterval(runGame)
+      runGame = isSinglePlayer
+          ? setInterval(onePlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
+          : setInterval(twoPlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
+    }
+
     if (collisionP1) {
       ballX += isPressedRight ? 5 : 0
       ballSpeedX = isPressedRight ? 10 : 5
-      paddle1X -= 6
-      setTimeout(() => paddle1X += 6, 50)
-      setTimeout(() => paddle1X -= 3, 100)
-      setTimeout(() => paddle1X += 3, 150)
-      setTimeout(() => paddle1X -= 1, 200)
-      setTimeout(() => paddle1X += 1, 250)
+      animateCollisionP1()
     }
 
     if (collisionP2) {
       ballX -= leftPressed ? 5 : 0
       ballSpeedX = leftPressed ? 10 : 5
-      paddle2X += 6
-      setTimeout(() => paddle2X -= 6, 50)
-      setTimeout(() => paddle2X += 3, 100)
-      setTimeout(() => paddle2X -= 3, 150)
-      setTimeout(() => paddle2X += 1, 200)
-      setTimeout(() => paddle2X -= 1, 250)
+      animateCollisionP2()
     }
 
     if (ballSpeedY === 0) {
@@ -472,24 +483,37 @@ const collision = (paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadI
   }
 }
 
+const animateCollisionP1 = () => {
+  paddle1X -= 6
+  setTimeout(() => paddle1X += 6, 50)
+  setTimeout(() => paddle1X -= 3, 100)
+  setTimeout(() => paddle1X += 3, 150)
+  setTimeout(() => paddle1X -= 1, 200)
+  setTimeout(() => paddle1X += 1, 250)
+}
+
+const animateCollisionP2 = () => {
+  paddle2X += 6
+  setTimeout(() => paddle2X -= 6, 50)
+  setTimeout(() => paddle2X += 3, 100)
+  setTimeout(() => paddle2X -= 3, 150)
+  setTimeout(() => paddle2X += 1, 200)
+  setTimeout(() => paddle2X -= 1, 250)
+}
+
 const drawEverything = () => {
   canvasContext.fillStyle = "black"; /*black background*/
   canvasContext.fillRect(0, 0, canvas.width, canvas.height)
   canvasContext.fillStyle = "red"; /*middle line*/
   canvasContext.fillRect(canvas.width / 2, 0, 1, canvas.height)
-  // canvasContext.fillStyle = "white"; /*ball*/
-  // canvasContext.fillRect(ballX, ballY, 10, 10)
   roundedRect(canvasContext, ballX, ballY, 10, 10, 4, 'white')
   roundedRect(canvasContext, paddle1X, paddle1Y, 10, paddleHeight, 4, colorPaddle1)
-  // canvasContext.fillStyle = colorPaddle1;/*Paddle1*/
-  // canvasContext.fillRect(paddle1X, paddle1Y, 10, paddleHeight)
   roundedRect(canvasContext, paddle2X, paddle2Y, 10, paddleHeight, 4, colorPaddle2)
-  // canvasContext.fillStyle = colorPaddle2; /*Paddle2*/
-  // canvasContext.fillRect(paddle2X, paddle2Y, 10, paddleHeight)
 }
 
 let volume = 1
-function setVolume(value) {
+
+const setVolume = (value) => {
   volume = value === 0 ? 0 : value * 2 / 10
   const volumeElements = Array.from(document.getElementsByClassName('volume-item'))
   volumeElements.forEach(element => {

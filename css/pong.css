@@ -147,6 +147,7 @@ dialog {
 
 .option-input {
   width: 80px;
+  accent-color: black;
 }
 
 #volume-control {
