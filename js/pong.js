@@ -1,44 +1,44 @@
-window.addEventListener("keydown", (e) => {
-  const keys = [" ", "ArrowLeft", "ArrowUp", "ArrowRight", "ArrowDown"]
+window.addEventListener('keydown', (e) => {
+  const keys = [' ', 'ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown']
   if (keys.includes(e.key)) {
     e.preventDefault()
   }
 }, false)
 
-window.addEventListener("gamepad1Connected", (e) => {
+window.addEventListener('gamepad1Connected', (e) => {
   
-  console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+  console.log('Gamepad connected at index %d: %s. %d buttons, %d axes.',
     e.gamepad.index, e.gamepad.id,
     e.gamepad.buttons.length, e.gamepad.axes.length)
 })
 
-window.addEventListener("gamepad2Connected", (e) => {
+window.addEventListener('gamepad2Connected', (e) => {
   gamepad2Connected = true
 
-  console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+  console.log('Gamepad connected at index %d: %s. %d buttons, %d axes.',
   e.gamepad.index, e.gamepad.id,
   e.gamepad.buttons.length, e.gamepad.axes.length)
 })
   
-const canvas = document.getElementById("game-canvas")
-const generalButtons = document.getElementById("general-buttons")
-const modal = document.getElementById("modal")
-const descriptionTxt = document.getElementById("description")
+const canvas = document.getElementById('game-canvas')
+const generalButtons = document.getElementById('general-buttons')
+const modal = document.getElementById('modal')
+const descriptionTxt = document.getElementById('description')
 
-const colorInputP1 = document.getElementById("color-picker-p1")
-const colorInputP2 = document.getElementById("color-picker-p2")
-const gameSpeedInput = document.getElementById("game-speed")
+const colorInputP1 = document.getElementById('color-picker-p1')
+const colorInputP2 = document.getElementById('color-picker-p2')
+const gameSpeedInput = document.getElementById('game-speed')
 
-const soundCheer1 = document.getElementById("cheer1")
-const soundCheer2 = document.getElementById("cheer2")
-const soundVictory = document.getElementById("victory")
-const bounce = document.getElementById("bounce")
-const bounceWall = document.getElementById("bounceWall")
+const soundGoal = document.getElementById('goal')
+const soundVictory = document.getElementById('victory')
+const soundLose = document.getElementById('lose')
+const bounce = document.getElementById('bounce')
+const bounceWall = document.getElementById('bounceWall')
 
-let colorPaddle1 = "#ed3d0d"
-let colorPaddle2 = "#26ed17"
+let colorPaddle1 = '#ed3d0d'
+let colorPaddle2 = '#26ed17'
 
-const font = "48px retro"
+const font = '48px retro'
 
 let runGame
 
@@ -83,26 +83,26 @@ let gameSpeedModifier = 0
 let touchControls = false
 let touchY
 
-colorInputP1.addEventListener("change", () => {
+colorInputP1.addEventListener('change', () => {
   colorPaddle1 = colorInputP1.value
 })
 
-colorInputP2.addEventListener("change", () => {
+colorInputP2.addEventListener('change', () => {
   colorPaddle2 = colorInputP2.value
 })
 
-gameSpeedInput.addEventListener("change", () => {
+gameSpeedInput.addEventListener('change', () => {
   gameSpeed = parseInt(gameSpeedInput.value)
 })
 
-canvas.addEventListener("touchstart", changeTouchPosition, false)
-canvas.addEventListener("touchmove", changeTouchPosition, false)
+canvas.addEventListener('touchstart', changeTouchPosition, false)
+canvas.addEventListener('touchmove', changeTouchPosition, false)
 
 window.onload = function () {
-  document.addEventListener("keydown", keyDownHandler, false)
-  document.addEventListener("keyup", keyUpHandler, false)
+  document.addEventListener('keydown', keyDownHandler, false)
+  document.addEventListener('keyup', keyUpHandler, false)
   if(navigator.getGamepads()[0] !== null){
-    console.log("gamepad connected")
+    console.log('gamepad connected')
   }
   console.log(navigator.getGamepads()[0])
 }
@@ -118,8 +118,8 @@ function closeSettings() {
 function startGame(singlePlayer) {
   isSinglePlayer = singlePlayer
   gameStarted = true
-  canvas.style.display = "block"
-  canvasContext = canvas.getContext("2d")
+  canvas.style.display = 'block'
+  canvasContext = canvas.getContext('2d')
   runGame = singlePlayer
     ? setInterval(onePlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
     : setInterval(twoPlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
@@ -129,7 +129,7 @@ function startGame(singlePlayer) {
 
 const drawScore = () => {
   canvasContext.font = font
-  canvasContext.fillStyle = "white"
+  canvasContext.fillStyle = 'white'
   canvasContext.fillText(Score1, canvas.width / 4 - 20, 60)
   canvasContext.fillText(Score2, 3 * canvas.width / 4, 60)
 }
@@ -382,10 +382,10 @@ const keyUpHandler = (event) => {
 }
 
 const drawVictoryMessage = (p1Wins) => {
-  const message1 = p1Wins ? "Win" : "Lose"
-  const message2 = p1Wins ? "Lose" : "Win"
+  const message1 = p1Wins ? 'Win' : 'Lose'
+  const message2 = p1Wins ? 'Lose' : 'Win'
   canvasContext.font = font
-  canvasContext.fillStyle = "white"
+  canvasContext.fillStyle = 'white'
   canvasContext.fillText(message1, 120, 350)
   canvasContext.fillText(message2, 130 + canvas.width / 2, 350)
 }
@@ -396,32 +396,35 @@ const playSound = (sound, pitch) => {
 }
 
 const setScore = () => {
-  const scored = ballX >= canvas.width || ballX <= 0
-  if (ballX >= canvas.width) {
+  const scoredByP1 = ballX >= canvas.width
+  const scoredByP2 = ballX <= 0
+
+  const scored = scoredByP1 || scoredByP2
+
+  if(scored) {
+    soundGoal.pause()
+    soundGoal.currentTime = 0
+    playSound(soundGoal)
     clearInterval(runGame)
     gameSpeedModifier = 0
     runGame = isSinglePlayer
         ? setInterval(onePlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
         : setInterval(twoPlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
+  }
+  if (scoredByP1) {
     Score1 = Score1 + 1
-    playSound(soundCheer1)
   }
 
-  if (ballX <= 0) {
-    clearInterval(runGame)
-    gameSpeedModifier = 0
-    runGame = isSinglePlayer
-        ? setInterval(onePlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
-        : setInterval(twoPlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
+  if (scoredByP2) {
     Score2 = Score2 + 1
-    playSound(soundCheer2)
   }
 
   const p1Wins = Score1 >= 7
   const p2Wins = Score2 >= 7
 
   if (p1Wins || p2Wins) {
-    playSound(soundVictory)
+    if (p2Wins && isSinglePlayer) playSound(soundLose)
+    else playSound(soundVictory)
     clearInterval(runGame)
     setTimeout(() => window.location.reload(), 5000)
     drawVictoryMessage(p1Wins)
