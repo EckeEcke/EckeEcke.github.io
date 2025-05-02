@@ -379,11 +379,11 @@ article div {
   }
 
   8%, 24% {
-    transform: translateY(10px)
+    transform: translateY(5px)
   }
 
   16% {
-    transform: translateY(20px)
+    transform: translateY(10px)
   }
 }
 
