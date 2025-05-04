@@ -32,8 +32,10 @@ const gameSpeedInput = document.getElementById('game-speed')
 const soundGoal = document.getElementById('goal')
 const soundVictory = document.getElementById('victory')
 const soundLose = document.getElementById('lose')
-const bounce = document.getElementById('bounce')
-const bounceWall = document.getElementById('bounceWall')
+const soundBounce = document.getElementById('bounce')
+const soundBounceWall = document.getElementById('bounceWall')
+const soundButtonClick = document.getElementById('buttonClick')
+const soundCountDown = document.getElementById('countdown')
 
 let colorPaddle1 = '#ed3d0d'
 let colorPaddle2 = '#26ed17'
@@ -70,6 +72,7 @@ let padRightPressed = false
 
 let gameStarted = false
 let isSinglePlayer = true
+let countdownValue = 3
 
 let collisionP1 = false
 let collisionP2 = false
@@ -107,24 +110,45 @@ window.onload = function () {
   console.log(navigator.getGamepads()[0])
 }
 
-function openSettings() {
+const openSettings = () => {
+  soundButtonClick.pause()
+  soundButtonClick.currentTime = 0
+  playSound(soundButtonClick)
   modal.showModal()
 }
 
-function closeSettings() {
+const closeSettings = () => {
+  soundButtonClick.pause()
+  soundButtonClick.currentTime = 0
+  playSound(soundButtonClick)
   modal.close()
 }
 
-function startGame(singlePlayer) {
+const setCountdown = () => {
+  const countdownInterval = setInterval(() => {
+    countdownValue--
+
+    if (countdownValue === 0) {
+      clearInterval(countdownInterval)
+      gameStarted = true
+    }
+  }, 1000)
+}
+
+const startGame = (singlePlayer) => {
+  soundButtonClick.pause()
+  soundButtonClick.currentTime = 0
+  playSound(soundButtonClick)
+  playSound(soundCountDown)
+  setCountdown()
   isSinglePlayer = singlePlayer
-  gameStarted = true
   canvas.style.display = 'block'
   canvasContext = canvas.getContext('2d')
   runGame = singlePlayer
     ? setInterval(onePlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
     : setInterval(twoPlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
   generalButtons.style.display = 'none'
-  descriptionTxt.style.display = "none"
+  descriptionTxt.style.display = 'none'
 }
 
 const drawScore = () => {
@@ -134,7 +158,7 @@ const drawScore = () => {
   canvasContext.fillText(Score2, 3 * canvas.width / 4, 60)
 }
 
-function twoPlayerMode() {
+const twoPlayerMode = () => {
   drawEverything()
   moveEverything()
   collision(paddle2X, paddle2Y, upPressed, downPressed, collisionP2, 1)
@@ -158,6 +182,7 @@ function onePlayerMode () {
 }
 
 const moveEverything = () => {
+  if (!gameStarted) return
   ballX = ballX + ballSpeedX * ballDirectionX
   ballY = ballY + ballSpeedY * 2
 
@@ -170,7 +195,7 @@ const moveEverything = () => {
 
   if (ballHitsBottom || ballHitsTop) {
     ballSpeedY = -ballSpeedY
-    playSound(bounceWall)
+    playSound(soundBounceWall)
   }
 
   if (ballHitsBottom) ballY = canvas.height
@@ -481,8 +506,8 @@ const collision = (paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadI
     if (isPressedUp && ballSpeedY > 0) {
       ballSpeedY += 1
     }
-    leftPressed && collisionP2 ? playSound(bounce, 16) : playSound(bounce, 0.5)
-    isPressedRight && collisionP1 ? playSound(bounce, 16) : playSound(bounce, 0.5)
+    leftPressed && collisionP2 ? playSound(soundBounce, 16) : playSound(bounce, 0.5)
+    isPressedRight && collisionP1 ? playSound(soundBounce, 16) : playSound(bounce, 0.5)
   }
 }
 
@@ -505,13 +530,15 @@ const animateCollisionP2 = () => {
 }
 
 const drawEverything = () => {
-  canvasContext.fillStyle = "black"; /*black background*/
+  canvasContext.fillStyle = 'black' /*black background*/
   canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-  canvasContext.fillStyle = "red"; /*middle line*/
+  canvasContext.fillStyle = 'red' /*middle line*/
   canvasContext.fillRect(canvas.width / 2, 0, 1, canvas.height)
   roundedRect(canvasContext, ballX, ballY, 10, 10, 4, 'white')
   roundedRect(canvasContext, paddle1X, paddle1Y, 10, paddleHeight, 4, colorPaddle1)
   roundedRect(canvasContext, paddle2X, paddle2Y, 10, paddleHeight, 4, colorPaddle2)
+  canvasContext.fillStyle = 'white' /*middle line*/
+  if (countdownValue > 0) canvasContext.fillText(countdownValue.toString(), canvas.width / 2 - 20, canvas.height / 2 - 40)
 }
 
 let volume = 1
