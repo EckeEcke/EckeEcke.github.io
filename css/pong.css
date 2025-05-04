@@ -44,6 +44,24 @@ canvas {
   margin: 0 auto ;
   border: 5px solid white;
   border-radius: 8px;
+  position: relative;
+}
+
+#trophy {
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
+
+.trophy-hidden {
+  display: none;
+}
+
+.trophy-p1 {
+  left: 28%;
+}
+
+.trophy-p2 {
+  left: 72%;
 }
 
 input[type="radio"] {

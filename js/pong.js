@@ -24,10 +24,12 @@ const canvas = document.getElementById('game-canvas')
 const generalButtons = document.getElementById('general-buttons')
 const modal = document.getElementById('modal')
 const descriptionTxt = document.getElementById('description')
+const trophyImage = document.getElementById('trophy')
 
 const colorInputP1 = document.getElementById('color-picker-p1')
 const colorInputP2 = document.getElementById('color-picker-p2')
 const gameSpeedInput = document.getElementById('game-speed')
+const pointsToWinInput = document.getElementById('points-to-win')
 
 const soundGoal = document.getElementById('goal')
 const soundVictory = document.getElementById('victory')
@@ -36,6 +38,7 @@ const soundBounce = document.getElementById('bounce')
 const soundBounceWall = document.getElementById('bounceWall')
 const soundButtonClick = document.getElementById('buttonClick')
 const soundCountDown = document.getElementById('countdown')
+const music = document.getElementById('music')
 
 let colorPaddle1 = '#ed3d0d'
 let colorPaddle2 = '#26ed17'
@@ -73,6 +76,7 @@ let padRightPressed = false
 let gameStarted = false
 let isSinglePlayer = true
 let countdownValue = 3
+let pointsToWin = pointsToWinInput.value
 
 let collisionP1 = false
 let collisionP2 = false
@@ -96,6 +100,10 @@ colorInputP2.addEventListener('change', () => {
 
 gameSpeedInput.addEventListener('change', () => {
   gameSpeed = parseInt(gameSpeedInput.value)
+})
+
+pointsToWinInput.addEventListener('change', () => {
+  pointsToWin = parseInt(pointsToWinInput.value)
 })
 
 canvas.addEventListener('touchstart', changeTouchPosition, false)
@@ -140,6 +148,8 @@ const startGame = (singlePlayer) => {
   soundButtonClick.currentTime = 0
   playSound(soundButtonClick)
   playSound(soundCountDown)
+  playSound(music)
+  music.loop = true
   setCountdown()
   isSinglePlayer = singlePlayer
   canvas.style.display = 'block'
@@ -406,13 +416,29 @@ const keyUpHandler = (event) => {
   }
 }
 
+const drawCenteredText = (text, x, y) => {
+  const textWidth = canvasContext.measureText(text).width
+  const centeredX = x - textWidth / 2
+  canvasContext.fillText(text, centeredX, y)
+}
+
+const fadeOutMusic = () => {
+  const fadeOutInterval = setInterval(() => {
+    if (music.volume <= 0.1 || music.playbackRate < 0.5) clearInterval(fadeOutInterval)
+    music.volume -= 0.1
+    music.playbackRate -= 0.1
+  }, 100)
+}
+
 const drawVictoryMessage = (p1Wins) => {
+  trophyImage.classList.remove('trophy-hidden')
+  trophyImage.classList.add(p1Wins ? 'trophy-p1' : 'trophy-p2')
   const message1 = p1Wins ? 'Win' : 'Lose'
   const message2 = p1Wins ? 'Lose' : 'Win'
   canvasContext.font = font
   canvasContext.fillStyle = 'white'
-  canvasContext.fillText(message1, 120, 350)
-  canvasContext.fillText(message2, 130 + canvas.width / 2, 350)
+  drawCenteredText(message1, canvas.width / 4, 350)
+  drawCenteredText(message2, canvas.width * 3 / 4, 350)
 }
 
 const playSound = (sound, pitch) => {
@@ -444,14 +470,15 @@ const setScore = () => {
     Score2 = Score2 + 1
   }
 
-  const p1Wins = Score1 >= 7
-  const p2Wins = Score2 >= 7
+  const p1Wins = Score1 >= pointsToWin
+  const p2Wins = Score2 >= pointsToWin
 
   if (p1Wins || p2Wins) {
+    fadeOutMusic()
     if (p2Wins && isSinglePlayer) playSound(soundLose)
     else playSound(soundVictory)
     clearInterval(runGame)
-    setTimeout(() => window.location.reload(), 5000)
+    setTimeout(() => window.location.reload(), 7000)
     drawVictoryMessage(p1Wins)
     return
   }

@@ -16,11 +16,14 @@
   <audio src="sounds/pong/bounce-wall.wav" id="bounceWall"></audio>
   <audio src="sounds/pong/button.mp3" id="buttonClick"></audio>
   <audio src="sounds/pong/countdown.mp3" id="countdown"></audio>
+  <audio src="sounds/pong/music.mp3" id="music"></audio>
 
   <div class="content-wrapper crt">
     <h1>Pong</h1>
 
     <canvas id="game-canvas" width="800px" height="600px"></canvas>
+
+    <img src="images/pong/trophy.gif" alt="trophy for winner" id="trophy" class="trophy-hidden" />
 
     <br>
 
@@ -76,6 +79,9 @@
     <br><br>
     <input name="game-speed" class="option-input" type="range" id="game-speed" min=100 max=125 step=5 value=100>
     <label for="game-speed">&nbsp Set gamespeed &nbsp</label>
+    <br><br>
+    <input name=points-to-win" class="option-input" type="number" min=1 max=15 value="7" id="points-to-win"/>
+    <label for="points-to-win">&nbsp Points to win &nbsp</label>
     <div class="dialog-buttons">
       <button onclick="location.reload()">Cancel</button>
       <button onclick="closeSettings()">Confirm</button>
