@@ -43,6 +43,7 @@ canvas {
   display: none;
   margin: 0 auto ;
   border: 5px solid white;
+  border-radius: 8px;
 }
 
 input[type="radio"] {
