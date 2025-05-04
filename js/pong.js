@@ -164,8 +164,8 @@ const startGame = (singlePlayer) => {
 const drawScore = () => {
   canvasContext.font = font
   canvasContext.fillStyle = 'white'
-  canvasContext.fillText(Score1, canvas.width / 4 - 20, 60)
-  canvasContext.fillText(Score2, 3 * canvas.width / 4, 60)
+  drawCenteredText(Score1, canvas.width / 4, 60)
+  drawCenteredText(Score2, canvas.width * 3 / 4, 60)
 }
 
 const twoPlayerMode = () => {
