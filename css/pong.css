@@ -57,11 +57,11 @@ canvas {
 }
 
 .trophy-p1 {
-  left: 28%;
+  left: calc(50% - 200px);
 }
 
 .trophy-p2 {
-  left: 72%;
+  left: calc(50% + 200px);
 }
 
 input[type="radio"] {
