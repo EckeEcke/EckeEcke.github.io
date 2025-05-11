@@ -639,10 +639,8 @@ const drawObstacles = () => {
 }
 
 const drawEverything = () => {
-  canvasContext.fillStyle = 'black' /*black background*/
-  canvasContext.fillRect(0, 0, canvas.width, canvas.height)
   roundedRect(0, 0, canvas.width, canvas.height, 8, '#000000')
-  roundedRect(1, 1, canvas.width - 2, canvas.height - 2, 4, '#000000')
+  roundedRect(2, 2, canvas.width - 4, canvas.height - 4, 4, '#000000')
   canvasContext.fillStyle = 'rgba(255,0,0,0.4)' /*middle line*/
   canvasContext.fillRect(canvas.width / 2, 0, 1, canvas.height)
   drawObstacles()
