@@ -27,13 +27,6 @@
 
     <br>
 
-    <article id="description">
-      To make my first steps in Javascript I created this simple Pong game using Javascript and HTML Canvas.
-      I implemented a collision detection, sounds, a CPU opponent and gamepad support via gamepad API.
-    </article>
-
-    <br>
-
     <div id="general-buttons">
       <button id="start-button" onclick="startGame(true)">
         1P &#127955; vs CPU 🤖
@@ -53,7 +46,6 @@
     </article>
 
     <div class="wrapper">
-      <button id="fullscreen-button" data-fullscreen="inactive" onclick="setFullscreen()">FULLSCREEN </button>
       <div id="volume-control">
         <div>VOLUME</div>
         <span onclick="setVolume(0)"> | </span>
@@ -63,21 +55,21 @@
         <span onclick="setVolume(4)" data-value="4" class="volume-item">&#11036;</span>
         <span onclick="setVolume(5)" data-value="5" class="volume-item">&#11036;</span>
       </div>
+      <button id="fullscreen-button" data-fullscreen="inactive" onclick="setFullscreen()">FULLSCREEN </button>
+      <a href="https://github.com/EckeEcke/EckeEcke.github.io/blob/master/js/pong.js" target="_blank">
+        <img id="github-link" alt="link to my github" src="images/github-pixelated.png" />
+      </a>
     </div>
-
-    <a href="https://github.com/EckeEcke/EckeEcke.github.io/blob/master/js/pong.js" target="_blank">
-      <img id="github-link" alt="link to my github" src="images/github-pixelated.png" />
-    </a>
   </div>
 
   <dialog id="modal">
     <h2>SETTINGS</h2>
     <div class="option-wrapper">
-      <input name="color-picker-p1" class="option-input" type="color" id="color-picker-p1" value="#ed3d0d">
+      <input name="color-picker-p1" class="option-input" type="color" id="color-picker-p1" value="#00ff00">
       <label for="color-picker-p1">Choose color P1</label>
     </div>
     <div class="option-wrapper">
-      <input name="color-picker-p2" class="option-input" type="color" id="color-picker-p2" value="#26ed17">
+      <input name="color-picker-p2" class="option-input" type="color" id="color-picker-p2" value="#FFA500">
       <label for="color-picker-p2">Choose color P2</label>
     </div>
     <div class="option-wrapper">

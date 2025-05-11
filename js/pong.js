@@ -48,7 +48,6 @@ const setFullscreen = () => {
 const canvas = document.getElementById('game-canvas')
 const generalButtons = document.getElementById('general-buttons')
 const modal = document.getElementById('modal')
-const descriptionTxt = document.getElementById('description')
 const trophyImage = document.getElementById('trophy')
 
 const colorInputP1 = document.getElementById('color-picker-p1')
@@ -68,8 +67,8 @@ const soundButtonClick = document.getElementById('buttonClick')
 const soundCountDown = document.getElementById('countdown')
 const music = document.getElementById('music')
 
-let colorPaddle1 = '#ed3d0d'
-let colorPaddle2 = '#26ed17'
+let colorPaddle1 = '#00ff00'
+let colorPaddle2 = '#FFA500'
 
 const font = '48px retro'
 
@@ -188,11 +187,12 @@ const startGame = (singlePlayer) => {
   isSinglePlayer = singlePlayer
   canvas.style.display = 'block'
   canvasContext = canvas.getContext('2d')
+  canvasContext.shadowBlur = 4
+  canvasContext.shadowColor = '#55ffff99'
   runGame = singlePlayer
     ? setInterval(onePlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
     : setInterval(twoPlayerMode, 1000 / (gameSpeed + gameSpeedModifier))
   generalButtons.style.display = 'none'
-  descriptionTxt.style.display = 'none'
 }
 
 const drawScore = () => {
@@ -209,6 +209,7 @@ const twoPlayerMode = () => {
   moveEverything()
   collision(paddle2X, paddle2Y, upPressed, downPressed, collisionP2, 1)
   collision(paddle1X, paddle1Y, wPressed, sPressed, collisionP1, 0)
+  collisionWithObstacle()
   move1()
   move2()
   if (scored && !gameOver) resetAfterScore()
@@ -629,8 +630,8 @@ const drawObstacles = () => {
   const hasTwoObstacles = amountObstacles >= 2
   if (!hasAtLeastOneObstacle) return
 
-  roundedRect(canvasContext, obstacleX , obstacleY, obstacleWidth, obstacleHeight, 4, 'rgba(255,0,0,0.4)')
-  if (hasTwoObstacles) roundedRect(canvasContext, obstacleX , obstacle2Y, obstacleWidth, obstacleHeight, 4, 'rgba(255,0,0,0.4)')
+  roundedRect(obstacleX , obstacleY, obstacleWidth, obstacleHeight, 4, '#ff0000ee')
+  if (hasTwoObstacles) roundedRect(obstacleX , obstacle2Y, obstacleWidth, obstacleHeight, 4, '#ff0000ee')
   obstacleY++
   obstacle2Y++
   if (obstacleY > canvas.height + 100) obstacleY = -100
@@ -640,14 +641,16 @@ const drawObstacles = () => {
 const drawEverything = () => {
   canvasContext.fillStyle = 'black' /*black background*/
   canvasContext.fillRect(0, 0, canvas.width, canvas.height)
+  roundedRect(0, 0, canvas.width, canvas.height, 8, '#000000')
+  roundedRect(1, 1, canvas.width - 2, canvas.height - 2, 4, '#000000')
   canvasContext.fillStyle = 'rgba(255,0,0,0.4)' /*middle line*/
   canvasContext.fillRect(canvas.width / 2, 0, 1, canvas.height)
   drawObstacles()
   const gameOver = checkGameOver()
   if (!gameOver) {
-    roundedRect(canvasContext, ballX, ballY, 10, 10, 4, 'white') /* paddles + ball */
-    roundedRect(canvasContext, paddle1X, paddle1Y, 10, paddleHeight, 4, colorPaddle1)
-    roundedRect(canvasContext, paddle2X, paddle2Y, 10, paddleHeight, 4, colorPaddle2)
+    roundedRect(ballX, ballY, 10, 10, 4, 'white') /* paddles + ball */
+    roundedRect(paddle1X, paddle1Y, 10, paddleHeight, 4, colorPaddle1 + 'dd')
+    roundedRect(paddle2X, paddle2Y, 10, paddleHeight, 4, colorPaddle2 + 'dd')
   }
   if (gameOver) drawVictoryMessage()
   canvasContext.fillStyle = 'white'
@@ -672,21 +675,27 @@ const setVolume = (value) => {
 const volumeFromSessionStorage = window.sessionStorage.getItem('volume')
 if (volumeFromSessionStorage) setVolume(parseFloat(volumeFromSessionStorage))
 
-const roundedRect = (ctx, x, y, width, height, radius, color) => {
-  ctx.beginPath()
-  ctx.moveTo(x + radius, y)
-  ctx.lineTo(x + width - radius, y)
-  ctx.arcTo(x + width, y, x + width, y + radius, radius)
-  ctx.lineTo(x + width, y + height - radius)
-  ctx.arcTo(x + width, y + height, x + width - radius, y + height, radius)
-  ctx.lineTo(x + radius, y + height)
-  ctx.arcTo(x, y + height, x, y + height - radius, radius)
-  ctx.lineTo(x, y + radius)
-  ctx.arcTo(x, y, x + radius, y, radius)
-  ctx.closePath()
-  ctx.fillStyle = color
-  ctx.fill()
-  ctx.strokeStyle = color
-  ctx.lineWidth = 2
-  ctx.stroke()
+const roundedRect = (x, y, width, height, radius, color) => {
+  canvasContext.shadowColor = color
+  if (color === '#000000') canvasContext.shadowColor = '#ffffff'
+  canvasContext.shadowBlur = 8
+  canvasContext.shadowOffsetX = 0
+  canvasContext.shadowOffsetY = 0
+  canvasContext.beginPath()
+  canvasContext.moveTo(x + radius, y)
+  canvasContext.lineTo(x + width - radius, y)
+  canvasContext.arcTo(x + width, y, x + width, y + radius, radius)
+  canvasContext.lineTo(x + width, y + height - radius)
+  canvasContext.arcTo(x + width, y + height, x + width - radius, y + height, radius)
+  canvasContext.lineTo(x + radius, y + height)
+  canvasContext.arcTo(x, y + height, x, y + height - radius, radius)
+  canvasContext.lineTo(x, y + radius)
+  canvasContext.arcTo(x, y, x + radius, y, radius)
+  canvasContext.closePath()
+  canvasContext.fillStyle = color
+  canvasContext.fill()
+  canvasContext.strokeStyle = color
+  canvasContext.lineWidth = 2
+  canvasContext.stroke()
+  canvasContext.shadowColor = '#ffffff'
 }

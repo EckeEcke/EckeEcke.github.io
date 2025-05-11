@@ -17,26 +17,13 @@ body {
   /*preventing scroll reload in mobile view */
 }
 
+body {
+  display: flex; justify-content: center;
+}
+
 * {
   font-family: retro, serif;
-}
-
-nav a {
-  color: white;
-  font-size: 1em;
-  background-color: black;
-  border-radius: 20px;
-}
-
-a:hover {
-  color: rgb(155, 131, 103);
-  text-decoration: none;
-  transition: 400ms;
-}
-
-nav {
-  text-align: center;
-  margin-bottom: 5vh;
+  text-shadow: 0 0 8px #55ffff99;
 }
 
 canvas {
@@ -45,6 +32,7 @@ canvas {
   border: 5px solid white;
   border-radius: 8px;
   position: relative;
+  box-shadow: 0 0 8px #55ffff99;
 }
 
 #trophy {
@@ -68,12 +56,11 @@ input[type="radio"] {
   transform: scale(1.5);
 }
 
-
-.black-box {
-  width: 100%;
-  height: 110%;
-  background-color: black;
-  margin: 0 auto;
+h1 {
+  color: white;
+  text-align: center;
+  margin-top: 0;
+  font-size: 3rem;
 }
 
 article {
@@ -85,12 +72,6 @@ article {
   margin: 16px auto 32px;
 }
 
-h1 {
-  color: white;
-  text-align: center;
-  margin-top: 0;
-}
-
 .controls {
   display: block;
   text-align: center;
@@ -99,24 +80,18 @@ h1 {
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100vh;
   justify-content: center;
-}
-
-#sound-button {
-  display: block;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  font-size: 3.2em;
-  background-color: rgb(0,0,0,0.7);
-  border-style: none;
-  padding: 10px 12px 12px 12px;
 }
 
 #start-button,
 #start-button-2p {
   background: orange;
+  box-shadow: 0 0 4px orange;
+}
+
+#settings-button,
+#fullscreen-button {
+  box-shadow: 0 0 4px white;
 }
 
 #start-button,
@@ -220,10 +195,7 @@ dialog {
 #github-link {
   background: white;
   border-radius: 8px;
-  position: fixed;
   height: 32px;
-  right: 32px;
-  bottom: 32px;
   padding: 8px;
 }
 
@@ -234,7 +206,7 @@ dialog {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 16px;
+  gap: 32px;
   flex-wrap: wrap;
 }
 
@@ -254,4 +226,16 @@ dialog {
   z-index: 2;
   background-size: 100% 2px, 3px 100%;
   pointer-events: none;
+}
+
+@media (min-width: 1440px) and (min-height: 900px) {
+  .content-wrapper {
+    zoom: 125%;
+  }
+}
+
+@media (min-width: 1900px) and (min-height: 1200px) {
+  .content-wrapper {
+    zoom: 150%;
+  }
 }
