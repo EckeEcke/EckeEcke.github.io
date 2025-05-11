@@ -72,23 +72,34 @@
 
   <dialog id="modal">
     <h2>SETTINGS</h2>
-    <input name="color-picker-p1" class="option-input" type="color" id="color-picker-p1" value="#ed3d0d">
-    <label for="color-picker-p1">&nbsp Choose color P1</label>
-    <br><br>
-    <input name="color-picker-p2" class="option-input" type="color" id="color-picker-p2" value="#26ed17">
-    <label for="color-picker-p2">&nbsp Choose color P2</label>
-    <br><br>
-    <input name="game-speed" class="option-input" type="range" id="game-speed" min=100 max=125 step=5 value=100>
-    <label for="game-speed">&nbsp Set gamespeed &nbsp</label>
-    <br><br>
-    <input name="paddle-size" class="option-input" type="range" id="paddle-size" min=50 max=150 step=25 value=100>
-    <label for="paddle-size">&nbsp Paddle Size &nbsp</label>
-    <br><br>
-    <input name="difficulty-cpu" class="option-input" type="range" id="difficulty-cpu" min=3 max=9 step=1 value=6>
-    <label for="difficulty-cpu">&nbsp Difficulty CPU &nbsp</label>
-    <br><br>
-    <input name=points-to-win" class="option-input" type="number" min=1 max=15 value="7" id="points-to-win"/>
-    <label for="points-to-win">&nbsp Points to win &nbsp</label>
+    <div class="option-wrapper">
+      <input name="color-picker-p1" class="option-input" type="color" id="color-picker-p1" value="#ed3d0d">
+      <label for="color-picker-p1">Choose color P1</label>
+    </div>
+    <div class="option-wrapper">
+      <input name="color-picker-p2" class="option-input" type="color" id="color-picker-p2" value="#26ed17">
+      <label for="color-picker-p2">Choose color P2</label>
+    </div>
+    <div class="option-wrapper">
+      <input name=points-to-win" class="option-input" type="number" min=1 max=15 value="7" id="points-to-win" />
+      <label for="points-to-win">Points to win</label>
+    </div>
+    <div class="option-wrapper">
+      <input name="game-speed" class="option-input" type="range" id="game-speed" min=75 max=125 step=5 value=100>
+      <label for="game-speed">Set gamespeed</label>
+    </div>
+    <div class="option-wrapper">
+      <input name="paddle-size" class="option-input" type="range" id="paddle-size" min=50 max=150 step=25 value=100>
+      <label for="paddle-size">Paddle Size</label>
+    </div>
+    <div class="option-wrapper">
+      <input name="difficulty-cpu" class="option-input" type="range" id="difficulty-cpu" min=3 max=9 step=1 value=6>
+      <label for="difficulty-cpu">Difficulty CPU</label>
+    </div>
+    <div class="option-wrapper">
+      <input name=obstacles" class="option-input" type="range" min=0 max=2 value="0" id="obstacles" />
+      <label for="obstacles">Amount Obstacles</label>
+    </div>
     <div class="dialog-buttons">
       <button onclick="location.reload()">Cancel</button>
       <button onclick="closeSettings()">Confirm</button>

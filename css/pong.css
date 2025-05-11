@@ -134,6 +134,12 @@ h1 {
 
 #fullscreen-button {
   border-radius: 8px;
+  transition: 0.3s;
+}
+
+#fullscreen-button:hover {
+  opacity: 0.9;
+  transform: scale(1.1);
 }
 
 #fullscreen-button[data-fullscreen="active"] {
@@ -178,6 +184,14 @@ dialog {
 .dialog-buttons button {
   padding: 0.5rem;
   border-radius: 0.5rem;
+}
+
+.option-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 25px;
+  margin-bottom: 16px;
 }
 
 .option-input {

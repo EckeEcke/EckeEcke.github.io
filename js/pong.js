@@ -21,6 +21,9 @@ window.addEventListener('gamepad2Connected', (e) => {
 })
 
 const setFullscreen = () => {
+  soundButtonClick.pause()
+  soundButtonClick.currentTime = 0
+  playSound(soundButtonClick)
   const button = document.getElementById('fullscreen-button')
 
   if (!document.fullscreenElement) {
@@ -54,6 +57,7 @@ const gameSpeedInput = document.getElementById('game-speed')
 const pointsToWinInput = document.getElementById('points-to-win')
 const paddleSizeInput = document.getElementById('paddle-size')
 const difficultyCPUInput = document.getElementById('difficulty-cpu')
+const obstacleInput = document.getElementById('obstacles')
 
 const soundGoal = document.getElementById('goal')
 const soundVictory = document.getElementById('victory')
@@ -104,6 +108,8 @@ let pointsToWin = pointsToWinInput.value
 
 let collisionP1 = false
 let collisionP2 = false
+let collisionObstacle = false
+let amountObstacles = 0
 let Score1 = 0
 let Score2 = 0
 let paddleHeight = 100
@@ -123,14 +129,14 @@ gameSpeedInput.addEventListener('change', () => gameSpeed = parseInt(gameSpeedIn
 
 paddleSizeInput.addEventListener('change', () => paddleHeight = parseInt(paddleSizeInput.value))
 
-difficultyCPUInput.addEventListener('change', () => {
-  difficultyCPU = parseInt(difficultyCPUInput.value)
-})
+difficultyCPUInput.addEventListener('change', () => difficultyCPU = parseInt(difficultyCPUInput.value))
 
 pointsToWinInput.addEventListener('change', () => {
   pointsToWin = parseInt(pointsToWinInput.value)
   if (pointsToWin < 1) pointsToWin = 1
 })
+
+obstacleInput.addEventListener('change', () => amountObstacles = parseInt(obstacleInput.value))
 
 canvas.addEventListener('touchstart', changeTouchPosition, false)
 canvas.addEventListener('touchmove', changeTouchPosition, false)
@@ -174,7 +180,7 @@ const startGame = (singlePlayer) => {
   soundButtonClick.currentTime = 0
   playSound(soundButtonClick)
   playSound(soundCountDown)
-  playSound(music)
+  setTimeout(() => playSound(music), 3000)
   paddle1Y = canvas.height / 2 - paddleHeight / 2
   paddle2Y = canvas.height / 2 - paddleHeight / 2
   music.loop = true
@@ -216,6 +222,7 @@ function onePlayerMode () {
   moveEverything()
   collision(paddle2X, paddle2Y, upPressed, downPressed, collisionP2, 1)
   collision(paddle1X, paddle1Y, wPressed, sPressed, collisionP1, 0)
+  collisionWithObstacle()
   move1()
   move1Touch()
   if (scored && !gameOver) resetAfterScore()
@@ -486,6 +493,8 @@ const setScore = () => {
   const scored = scoredByP1 || scoredByP2
 
   if(scored) {
+    obstacleY = -450
+    obstacle2Y = -750
     soundGoal.pause()
     soundGoal.currentTime = 0
     playSound(soundGoal)
@@ -531,6 +540,7 @@ const collision = (paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadI
   const withinYRange = ballY >= paddleY - tolerance && ballY < paddleY - 1 + paddleHeight + tolerance
 
   if (withinXRange && withinYRange && !collisionDetected) {
+    collisionObstacle = false
     const isRightSide = ballX > canvas.width / 2
     collisionP1 = !isRightSide
     collisionP2 = isRightSide
@@ -572,6 +582,23 @@ const collision = (paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadI
   }
 }
 
+const collisionWithObstacle = () => {
+  const hasAtLeastOneObstacle = amountObstacles >= 1
+  const hasTwoObstacles = amountObstacles >= 2
+  if (!hasAtLeastOneObstacle) return
+  const withinXRange = ballX > obstacleX - 5 && ballX < obstacleX + 15
+  const withinYRange =
+      (ballY >= obstacleY - tolerance && ballY < obstacleY - 1 + obstacleHeight + tolerance) ||
+      (hasTwoObstacles && ballY >= obstacle2Y - tolerance && ballY < obstacle2Y - 1 + obstacleHeight + tolerance)
+  if (withinXRange && withinYRange && !collisionObstacle) {
+    playSound(soundBounceWall)
+    ballDirectionX = -ballDirectionX
+    collisionObstacle = true
+    collisionP1 = false
+    collisionP2 = false
+  }
+}
+
 const animateCollisionP1 = () => {
   paddle1X -= 6
   setTimeout(() => paddle1X += 6, 50)
@@ -590,11 +617,32 @@ const animateCollisionP2 = () => {
   setTimeout(() => paddle2X -= 1, 250)
 }
 
+let obstacleY = -450
+const obstacleWidth = 10
+const obstacleHeight = 100
+const obstacleX = canvas.width / 2 - obstacleWidth / 2
+
+let obstacle2Y = -750
+
+const drawObstacles = () => {
+  const hasAtLeastOneObstacle = amountObstacles >= 1
+  const hasTwoObstacles = amountObstacles >= 2
+  if (!hasAtLeastOneObstacle) return
+
+  roundedRect(canvasContext, obstacleX , obstacleY, obstacleWidth, obstacleHeight, 4, 'rgba(255,0,0,0.4)')
+  if (hasTwoObstacles) roundedRect(canvasContext, obstacleX , obstacle2Y, obstacleWidth, obstacleHeight, 4, 'rgba(255,0,0,0.4)')
+  obstacleY++
+  obstacle2Y++
+  if (obstacleY > canvas.height + 100) obstacleY = -100
+  if (obstacle2Y > canvas.height + 100) obstacle2Y = -100
+}
+
 const drawEverything = () => {
   canvasContext.fillStyle = 'black' /*black background*/
   canvasContext.fillRect(0, 0, canvas.width, canvas.height)
   canvasContext.fillStyle = 'rgba(255,0,0,0.4)' /*middle line*/
   canvasContext.fillRect(canvas.width / 2, 0, 1, canvas.height)
+  drawObstacles()
   const gameOver = checkGameOver()
   if (!gameOver) {
     roundedRect(canvasContext, ballX, ballY, 10, 10, 4, 'white') /* paddles + ball */
