@@ -132,6 +132,22 @@ h1 {
   min-width: 300px;
 }
 
+#fullscreen-button {
+  border-radius: 8px;
+}
+
+#fullscreen-button[data-fullscreen="active"] {
+  background-color: white;
+}
+
+
+#fullscreen-button[data-fullscreen="inactive"] {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  opacity: 0.8;
+}
+
 #start-button:hover,
 #start-button-2p:hover,
 #settings-button:hover,
@@ -165,6 +181,7 @@ dialog {
 }
 
 .option-input {
+  margin: 0;
   width: 80px;
   accent-color: black;
 }

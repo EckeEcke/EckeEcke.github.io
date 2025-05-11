@@ -53,6 +53,7 @@
     </article>
 
     <div class="wrapper">
+      <button id="fullscreen-button" data-fullscreen="inactive" onclick="setFullscreen()">FULLSCREEN </button>
       <div id="volume-control">
         <div>VOLUME</div>
         <span onclick="setVolume(0)"> | </span>
@@ -79,6 +80,12 @@
     <br><br>
     <input name="game-speed" class="option-input" type="range" id="game-speed" min=100 max=125 step=5 value=100>
     <label for="game-speed">&nbsp Set gamespeed &nbsp</label>
+    <br><br>
+    <input name="paddle-size" class="option-input" type="range" id="paddle-size" min=50 max=150 step=25 value=100>
+    <label for="paddle-size">&nbsp Paddle Size &nbsp</label>
+    <br><br>
+    <input name="difficulty-cpu" class="option-input" type="range" id="difficulty-cpu" min=3 max=9 step=1 value=6>
+    <label for="difficulty-cpu">&nbsp Difficulty CPU &nbsp</label>
     <br><br>
     <input name=points-to-win" class="option-input" type="number" min=1 max=15 value="7" id="points-to-win"/>
     <label for="points-to-win">&nbsp Points to win &nbsp</label>

@@ -19,6 +19,28 @@ window.addEventListener('gamepad2Connected', (e) => {
   e.gamepad.index, e.gamepad.id,
   e.gamepad.buttons.length, e.gamepad.axes.length)
 })
+
+const setFullscreen = () => {
+  const button = document.getElementById('fullscreen-button')
+
+  if (!document.fullscreenElement) {
+    document.body.requestFullscreen()
+        .then(() => {
+          button.setAttribute('data-fullscreen', 'active')
+        })
+        .catch(() => {
+          button.setAttribute('data-fullscreen', 'inactive')
+        })
+  } else {
+    document.exitFullscreen()
+        .then(() => {
+          button.setAttribute('data-fullscreen', 'inactive')
+        })
+        .catch(() => {
+          button.setAttribute('data-fullscreen', 'active')
+        })
+  }
+}
   
 const canvas = document.getElementById('game-canvas')
 const generalButtons = document.getElementById('general-buttons')
@@ -30,6 +52,8 @@ const colorInputP1 = document.getElementById('color-picker-p1')
 const colorInputP2 = document.getElementById('color-picker-p2')
 const gameSpeedInput = document.getElementById('game-speed')
 const pointsToWinInput = document.getElementById('points-to-win')
+const paddleSizeInput = document.getElementById('paddle-size')
+const difficultyCPUInput = document.getElementById('difficulty-cpu')
 
 const soundGoal = document.getElementById('goal')
 const soundVictory = document.getElementById('victory')
@@ -82,28 +106,30 @@ let collisionP1 = false
 let collisionP2 = false
 let Score1 = 0
 let Score2 = 0
-const paddleHeight = 100
+let paddleHeight = 100
 const tolerance = 20
 let gameSpeed = 100
 let gameSpeedModifier = 0
+let difficultyCPU = 6
 
 let touchControls = false
 let touchY
 
-colorInputP1.addEventListener('change', () => {
-  colorPaddle1 = colorInputP1.value
-})
+colorInputP1.addEventListener('change', () => colorPaddle1 = colorInputP1.value)
 
-colorInputP2.addEventListener('change', () => {
-  colorPaddle2 = colorInputP2.value
-})
+colorInputP2.addEventListener('change', () => colorPaddle2 = colorInputP2.value)
 
-gameSpeedInput.addEventListener('change', () => {
-  gameSpeed = parseInt(gameSpeedInput.value)
+gameSpeedInput.addEventListener('change', () => gameSpeed = parseInt(gameSpeedInput.value))
+
+paddleSizeInput.addEventListener('change', () => paddleHeight = parseInt(paddleSizeInput.value))
+
+difficultyCPUInput.addEventListener('change', () => {
+  difficultyCPU = parseInt(difficultyCPUInput.value)
 })
 
 pointsToWinInput.addEventListener('change', () => {
   pointsToWin = parseInt(pointsToWinInput.value)
+  if (pointsToWin < 1) pointsToWin = 1
 })
 
 canvas.addEventListener('touchstart', changeTouchPosition, false)
@@ -149,6 +175,8 @@ const startGame = (singlePlayer) => {
   playSound(soundButtonClick)
   playSound(soundCountDown)
   playSound(music)
+  paddle1Y = canvas.height / 2 - paddleHeight / 2
+  paddle2Y = canvas.height / 2 - paddleHeight / 2
   music.loop = true
   setCountdown()
   isSinglePlayer = singlePlayer
@@ -169,24 +197,28 @@ const drawScore = () => {
 }
 
 const twoPlayerMode = () => {
+  const scored = setScore()
+  const gameOver = checkGameOver()
   drawEverything()
   moveEverything()
   collision(paddle2X, paddle2Y, upPressed, downPressed, collisionP2, 1)
   collision(paddle1X, paddle1Y, wPressed, sPressed, collisionP1, 0)
   move1()
   move2()
-  setScore()
+  if (scored && !gameOver) resetAfterScore()
   drawScore()
 }
 
 function onePlayerMode () {
+  const scored = setScore()
+  const gameOver = checkGameOver()
   drawEverything()
   moveEverything()
   collision(paddle2X, paddle2Y, upPressed, downPressed, collisionP2, 1)
   collision(paddle1X, paddle1Y, wPressed, sPressed, collisionP1, 0)
   move1()
   move1Touch()
-  setScore()
+  if (scored && !gameOver) resetAfterScore()
   drawScore()
   moveAI()
 }
@@ -231,8 +263,8 @@ const move1 = () => {
   if (sPressed) {
     paddle1Y += 6
   }
-  if (paddle1Y > 500) {
-    paddle1Y = 500
+  if (paddle1Y > canvas.height - paddleHeight) {
+    paddle1Y = canvas.height - paddleHeight
   }
   if (dPressed && paddle1X < canvas.width /2.5) {
     paddle1X += 5
@@ -264,8 +296,8 @@ const move1Gamepad = () => {
   if (padDownPressed) {
     paddle1Y += 6
   }
-  if (paddle1Y > 500) {
-    paddle1Y = 500
+  if (paddle1Y > canvas.height - paddleHeight) {
+    paddle1Y = canvas.height - paddleHeight
   }
   if (padRightPressed && paddle1X < canvas.width /2.5) {
     paddle1X += 5
@@ -284,8 +316,8 @@ const move2 = () => {
   if (downPressed) {
     paddle2Y = paddle2Y + 8;
   }
-  if (paddle2Y > 500) {
-    paddle2Y = 500
+  if (paddle2Y > canvas.height - paddleHeight) {
+    paddle2Y = canvas.height - paddleHeight
   }
   if (upPressed) {
     paddle2Y = paddle2Y - 6;
@@ -309,21 +341,21 @@ const moveAI = () => {
   if (paddle2Y < 0) {
     paddle2Y = 0
   }
-  if (paddle2Y > 500) {
-    paddle2Y = 500
+  if (paddle2Y > canvas.height - paddleHeight) {
+    paddle2Y = canvas.height - paddleHeight
   }
 }
 
 const moveAItoBall = () => {
   downPressed = false
   upPressed = false
-  if (ballY > paddle2Y + 50) {
-    paddle2Y += 6
+  if (ballY > paddle2Y + paddleHeight / 2) {
+    paddle2Y += difficultyCPU
     downPressed = true
   }
 
-  if (ballY < paddle2Y + 50) {
-    paddle2Y -= 6
+  if (ballY < paddle2Y + paddleHeight / 2) {
+    paddle2Y -= difficultyCPU
     upPressed = true
   }
 }
@@ -331,9 +363,9 @@ const moveAItoBall = () => {
 const resetAfterScore = () => {
   ballX = 395
   ballY = 300
-  paddle1Y = 250
+  paddle1Y = canvas.height / 2 - paddleHeight / 2
   paddle1X = 30
-  paddle2Y = 250
+  paddle2Y = canvas.height / 2 - paddleHeight / 2
   paddle2X = 760
   ballSpeedY = 0
   let p1Scored = ballDirectionX < 0
@@ -424,13 +456,14 @@ const drawCenteredText = (text, x, y) => {
 
 const fadeOutMusic = () => {
   const fadeOutInterval = setInterval(() => {
-    if (music.volume <= 0.1 || music.playbackRate < 0.5) clearInterval(fadeOutInterval)
+    if (music.volume <= 0.2 || music.playbackRate < 0.5) clearInterval(fadeOutInterval)
     music.volume -= 0.1
     music.playbackRate -= 0.1
   }, 100)
 }
 
-const drawVictoryMessage = (p1Wins) => {
+const drawVictoryMessage = () => {
+  const p1Wins = Score1 > Score2
   trophyImage.classList.remove('trophy-hidden')
   trophyImage.classList.add(p1Wins ? 'trophy-p1' : 'trophy-p2')
   const message1 = p1Wins ? 'Win' : 'Lose'
@@ -470,22 +503,23 @@ const setScore = () => {
     Score2 = Score2 + 1
   }
 
+  return scored
+}
+
+const checkGameOver = () => {
   const p1Wins = Score1 >= pointsToWin
   const p2Wins = Score2 >= pointsToWin
+  const gameOver = p1Wins || p2Wins
 
-  if (p1Wins || p2Wins) {
+  if (gameOver) {
     fadeOutMusic()
     if (p2Wins && isSinglePlayer) playSound(soundLose)
     else playSound(soundVictory)
     clearInterval(runGame)
     setTimeout(() => window.location.reload(), 7000)
-    drawVictoryMessage(p1Wins)
-    return
   }
 
-  if (scored) {
-    resetAfterScore()
-  }
+  return gameOver
 }
 
 const collision = (paddleX, paddleY, upBTN, downBTN, collisionDetected, gamepadIndex) => {
@@ -559,19 +593,26 @@ const animateCollisionP2 = () => {
 const drawEverything = () => {
   canvasContext.fillStyle = 'black' /*black background*/
   canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-  canvasContext.fillStyle = 'red' /*middle line*/
+  canvasContext.fillStyle = 'rgba(255,0,0,0.4)' /*middle line*/
   canvasContext.fillRect(canvas.width / 2, 0, 1, canvas.height)
-  roundedRect(canvasContext, ballX, ballY, 10, 10, 4, 'white')
-  roundedRect(canvasContext, paddle1X, paddle1Y, 10, paddleHeight, 4, colorPaddle1)
-  roundedRect(canvasContext, paddle2X, paddle2Y, 10, paddleHeight, 4, colorPaddle2)
-  canvasContext.fillStyle = 'white' /*middle line*/
+  const gameOver = checkGameOver()
+  if (!gameOver) {
+    roundedRect(canvasContext, ballX, ballY, 10, 10, 4, 'white') /* paddles + ball */
+    roundedRect(canvasContext, paddle1X, paddle1Y, 10, paddleHeight, 4, colorPaddle1)
+    roundedRect(canvasContext, paddle2X, paddle2Y, 10, paddleHeight, 4, colorPaddle2)
+  }
+  if (gameOver) drawVictoryMessage()
+  canvasContext.fillStyle = 'white'
   if (countdownValue > 0) canvasContext.fillText(countdownValue.toString(), canvas.width / 2 - 20, canvas.height / 2 - 40)
 }
 
 let volume = 1
 
 const setVolume = (value) => {
-  volume = value === 0 ? 0 : value * 2 / 10
+  if (value === null || value < 0 || value > 5) {
+    volume = 1
+  } else volume = Number(value) * 2 / 10
+  sessionStorage.setItem('volume', value)
   const volumeElements = Array.from(document.getElementsByClassName('volume-item'))
   volumeElements.forEach(element => {
           element.innerHTML = element.dataset.value > value ? '&#9645;' : '&#11036;'
@@ -579,6 +620,9 @@ const setVolume = (value) => {
   const audio = document.querySelectorAll('audio')
   audio.forEach(sound => sound.volume = volume)
 }
+
+const volumeFromSessionStorage = window.sessionStorage.getItem('volume')
+if (volumeFromSessionStorage) setVolume(parseFloat(volumeFromSessionStorage))
 
 const roundedRect = (ctx, x, y, width, height, radius, color) => {
   ctx.beginPath()
