@@ -634,8 +634,8 @@ const handleAchievedTrophies = (p1Wins) => {
   const achievedTrophies = []
 
   if (p1Wins && !trophies.firstWin.unlocked) {
-    trophies.obstacles.unlocked = true
-    achievedTrophies.push(trophies.obstacles)
+    trophies.firstWin.unlocked = true
+    achievedTrophies.push(trophies.firstWin)
   }
 
   if (p1Wins && settings.amountObstacles > 1 && !trophies.obstacles.unlocked) {

@@ -153,6 +153,7 @@ article {
   height: 48px;
   width: 48px;
   border-radius: 8px;
+  transition: 0.3s;
 }
 
 #trophies-button img {
@@ -259,6 +260,12 @@ dialog {
   border-radius: 8px;
   height: 32px;
   padding: 8px;
+  transition: 0.3s;
+}
+
+#github-link:hover,
+#trophies-button:hover {
+  transform: scale(1.1);
 }
 
 .wrapper {
