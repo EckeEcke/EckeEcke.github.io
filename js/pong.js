@@ -657,13 +657,13 @@ const handleAchievedTrophies = (p1Wins) => {
     achievedTrophies.push(trophies.miniPaddle)
   }
 
+  localStorage.setItem('trophies', JSON.stringify(trophies))
+
   achievedTrophies.forEach((item, index) => {
     setTimeout(() => {
       showTrophyToast(item)
     }, index * 1000)
   })
-
-  localStorage.setItem('trophies', JSON.stringify(trophies))
 }
 
 const showTrophyToast = (trophy) => {
@@ -702,8 +702,8 @@ const collision = (paddle, upBTN, downBTN, gamepadIndex) => {
       settings.gameSpeedModifier += 1
       if (settings.gameSpeedModifier >= 20 && !trophies.rallies.unlocked) {
         trophies.rallies.unlocked = true
-        showTrophyToast(trophies.rallies)
         localStorage.setItem('trophies', JSON.stringify(trophies))
+        showTrophyToast(trophies.rallies)
       }
       clearInterval(runGame)
       runGame = settings.isSinglePlayer
