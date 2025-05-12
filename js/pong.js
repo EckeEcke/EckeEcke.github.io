@@ -643,9 +643,9 @@ const handleAchievedTrophies = (p1Wins) => {
     achievedTrophies.push(trophies.obstacles)
   }
 
-  if (p1Wins && settings.difficultyCPU >= 9 && !trophies.difficultyCPU.unlocked) {
-    trophies.difficultyCPU.unlocked = true
-    achievedTrophies.push(trophies.difficultyCPU)
+  if (p1Wins && settings.difficultyCPU >= 9 && !trophies.hardCPU.unlocked) {
+    trophies.hardCPU.unlocked = true
+    achievedTrophies.push(trophies.hardCPU)
   }
 
   if (p1Wins && !settings.isSinglePlayer && !trophies.multiplayer.unlocked) {
