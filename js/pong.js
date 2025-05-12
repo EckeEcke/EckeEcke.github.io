@@ -684,9 +684,9 @@ const showTrophyToast = (trophy) => {
 
 const collision = (paddle, upBTN, downBTN, gamepadIndex) => {
   const gamepadConnected = navigator && navigator.getGamepads()[gamepadIndex] !== null
-  const isPressedDown = downBTN || (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[13].pressed)
-  const isPressedUp = upBTN || (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[12].pressed)
-  const isPressedRight = buttonsPressed.d || (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[15].pressed)
+  const isPressedDown = downBTN || (gamepadConnected && navigator && navigator.getGamepads()[gamepadIndex].buttons[13].pressed)
+  const isPressedUp = upBTN || (gamepadConnected && navigator && navigator.getGamepads()[gamepadIndex].buttons[12].pressed)
+  const isPressedRight = buttonsPressed.d || (gamepadConnected && navigator && navigator.getGamepads()[gamepadIndex].buttons[15].pressed)
   const withinXRange = ball.x > paddle.x - 5 && ball.x < paddle.x + 15
   const withinYRange = ball.y >= paddle.y - settings.tolerance && ball.y < paddle.y - 1 + paddle.height + settings.tolerance
 
