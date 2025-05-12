@@ -189,7 +189,7 @@ inputs.obstacles.addEventListener('change', () => settings.amountObstacles = par
 window.onload = () => {
   document.addEventListener('keydown', keyDownHandler, false)
   document.addEventListener('keyup', keyUpHandler, false)
-  if (navigator !== undefined && navigator !== null  && navigator.getGamepads()[0] !== null) {
+  if (typeof navigator !== 'undefined' && typeof navigator.getGamepads === 'function' && navigator.getGamepads()[0] !== null) {
     console.log('gamepad connected')
   }
 }
@@ -325,7 +325,7 @@ const moveEverything = () => {
 }
 
 const move1 = () => {
-  const gamepad1Connected = navigator !== undefined && navigator !== null && navigator.getGamepads()[0] !== null
+  const gamepad1Connected = typeof navigator !== 'undefined' && typeof navigator.getGamepads === 'function' && navigator.getGamepads()[0] !== null
 
   if (gamepad1Connected) {
     move1Gamepad()
@@ -685,10 +685,10 @@ const showTrophyToast = (trophy) => {
 }
 
 const collision = (paddle, upBTN, downBTN) => {
-  const gamepadConnected = navigator !== undefined && navigator !== null && navigator.getGamepads()[paddle.gamePadIndex] !== null
-  const isPressedDown = downBTN || (gamepadConnected && navigator !== undefined && navigator !== null  && navigator.getGamepads()[paddle.gamePadIndex].buttons[13].pressed)
-  const isPressedUp = upBTN || (gamepadConnected && navigator !== undefined && navigator !== null  && navigator.getGamepads()[paddle.gamePadIndex].buttons[12].pressed)
-  const isPressedRight = buttonsPressed.d || (gamepadConnected && navigator && navigator.getGamepads()[paddle.gamePadIndex].buttons[15].pressed)
+  const gamepadConnected = typeof navigator !== 'undefined' && typeof navigator.getGamepads === 'function'  && navigator.getGamepads()[paddle.gamePadIndex] !== null
+  const isPressedDown = downBTN || (gamepadConnected && navigator.getGamepads()[paddle.gamePadIndex].buttons[13].pressed)
+  const isPressedUp = upBTN || (gamepadConnected && navigator.getGamepads()[paddle.gamePadIndex].buttons[12].pressed)
+  const isPressedRight = buttonsPressed.d || (gamepadConnected && navigator.getGamepads()[paddle.gamePadIndex].buttons[15].pressed)
   const withinXRange = ball.x > paddle.x - 5 && ball.x < paddle.x + 15
   const withinYRange = ball.y >= paddle.y - settings.tolerance && ball.y < paddle.y - 1 + paddle.height + settings.tolerance
 
