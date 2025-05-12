@@ -643,7 +643,7 @@ const handleAchievedTrophies = (p1Wins) => {
     achievedTrophies.push(trophies.obstacles)
   }
 
-  if (p1Wins && settings.difficultyCPU >= 10 && !trophies.difficultyCPU.unlocked) {
+  if (p1Wins && settings.difficultyCPU >= 9 && !trophies.difficultyCPU.unlocked) {
     trophies.difficultyCPU.unlocked = true
     achievedTrophies.push(trophies.difficultyCPU)
   }
@@ -679,6 +679,8 @@ const showTrophyToast = (trophy) => {
   setTimeout(() => {
     div.remove()
   }, 6000)
+
+  checkTrophiesInLocalStorage()
 }
 
 const collision = (paddle, upBTN, downBTN, gamepadIndex) => {

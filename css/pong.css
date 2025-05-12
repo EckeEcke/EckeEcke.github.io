@@ -83,6 +83,10 @@ article {
   justify-content: center;
 }
 
+button {
+  cursor: pointer;
+}
+
 #start-button,
 #start-button-2p {
   background: orange;
