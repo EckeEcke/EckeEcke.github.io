@@ -56,6 +56,9 @@
         <span onclick="setVolume(5)" data-value="5" class="volume-item">&#11036;</span>
       </div>
       <button id="fullscreen-button" data-fullscreen="inactive" onclick="setFullscreen()">FULLSCREEN </button>
+      <button id="trophies-button" onclick="openTrophies()">
+        <img src="images/pong/trophy.gif" alt="trophy-button" />
+      </button>
       <a href="https://github.com/EckeEcke/EckeEcke.github.io/blob/master/js/pong.js" target="_blank">
         <img id="github-link" alt="link to my github" src="images/github-pixelated.png" />
       </a>
@@ -97,6 +100,39 @@
       <button onclick="closeSettings()">Confirm</button>
     </div>
   </dialog>
+
+  <dialog id="modal-trophies">
+    <h2>TROPHIES</h2>
+    <div id="win-trophy" class="trophy-wrapper">
+      <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
+      <span class="trophy-message">Win a game</span>
+    </div>
+    <div id="mini-paddle-trophy" class="trophy-wrapper">
+      <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
+      <span class="trophy-message">Win with mini paddle</span>
+    </div>
+    <div id="highest-difficulty-trophy" class="trophy-wrapper">
+      <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
+      <span class="trophy-message">beat highest difficulty CPU</span>
+    </div>
+    <div id="obstacles-trophy" class="trophy-wrapper">
+      <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
+      <span class="trophy-message">Win with 2 obstacles</span>
+    </div>
+    <div id="multiplayer-trophy" class="trophy-wrapper">
+      <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
+      <span class="trophy-message">Win a multiplayer game</span>
+    </div>
+    <div id="rallies-trophy" class="trophy-wrapper">
+      <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
+      <span class="trophy-message">20 consecutive rallies</span>
+    </div>
+    <div class="dialog-buttons">
+      <button onclick="closeTrophies()">BACK</button>
+    </div>
+  </dialog>
+
+  <div id="toasts"></div>
 
   <script src="./js/pong.js"></script>
 </body>

@@ -129,6 +129,68 @@ article {
   opacity: 0.8;
 }
 
+#toasts {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.toast {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  width: 300px;
+}
+
+#trophies-button {
+  height: 48px;
+  width: 48px;
+  border-radius: 8px;
+}
+
+#trophies-button img {
+  width: 32px;
+  height: 32px;
+}
+
+.trophy-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.trophy-message {
+  opacity: 0.3;
+}
+
+.trophy-icon {
+  width: 32px;
+  height: 32px;
+  background: green;
+  border-radius: 8px;
+  opacity: 0;
+}
+
+.trophy-toast {
+  width: 48px;
+  height: 48px;
+  background: green;
+  border-radius: 8px;
+}
+
+.trophy-wrapper.unlocked .trophy-icon,
+.trophy-wrapper.unlocked .trophy-message {
+  opacity: 1;
+}
+
 #start-button:hover,
 #start-button-2p:hover,
 #settings-button:hover,

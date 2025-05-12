@@ -1,6 +1,7 @@
 const canvas = document.getElementById('game-canvas')
 const generalButtons = document.getElementById('general-buttons')
 const modal = document.getElementById('modal')
+const modalTrophies = document.getElementById('modal-trophies')
 const trophyImage = document.getElementById('trophy')
 
 const inputs = {
@@ -29,6 +30,39 @@ let runGame
 let gamepad2Connected = false
 
 let canvasContext
+
+let trophies = {
+  firstWin: {
+    message: 'win a game',
+    unlocked: false,
+    id: 'win-trophy',
+  },
+  rallies: {
+    message: '20 consecutive rallies',
+    unlocked: false,
+    id: 'rallies-trophy',
+  },
+  miniPaddle: {
+    message: 'win game with mini paddle',
+    unlocked: false,
+    id: 'mini-paddle-trophy',
+  },
+  hardCPU: {
+    message: 'win against highest difficulty CPU',
+    unlocked: false,
+    id: 'highest-difficulty-trophy',
+  },
+  obstacles: {
+    message: 'win with two obstacles',
+    unlocked: false,
+    id: 'obstacles-trophy',
+  },
+  multiplayer: {
+    message: 'win multiplayer game',
+    unlocked: false,
+    id: 'multiplayer-trophy',
+  },
+}
 
 const gameStates = {
   notStarted: 'game not started yet',
@@ -150,10 +184,10 @@ inputs.pointsToWin.addEventListener('change', () => {
 
 inputs.obstacles.addEventListener('change', () => settings.amountObstacles = parseInt(inputs.obstacles.value))
 
-window.onload = function () {
+window.onload = () => {
   document.addEventListener('keydown', keyDownHandler, false)
   document.addEventListener('keyup', keyUpHandler, false)
-  if(navigator.getGamepads()[0] !== null){
+  if (navigator.getGamepads()[0] !== null) {
     console.log('gamepad connected')
   }
   console.log(navigator.getGamepads()[0])
@@ -190,6 +224,16 @@ const openSettings = () => {
 const closeSettings = () => {
   playSound(sounds.buttonClick)
   modal.close()
+}
+
+const openTrophies = () => {
+  playSound(sounds.buttonClick)
+  modalTrophies.showModal()
+}
+
+const closeTrophies = () => {
+  playSound(sounds.buttonClick)
+  modalTrophies.close()
 }
 
 const setCountdown = () => {
@@ -560,12 +604,81 @@ const checkGameOver = () => {
 
   if (gameOver) {
     fadeOutMusic()
+    handleAchievedTrophies(p1Wins)
     if (p2Wins && settings.isSinglePlayer) playSound(sounds.lose)
     else playSound(sounds.victory)
     clearInterval(runGame)
-    setTimeout(() => window.location.reload(), 7000)
+    setTimeout(() => window.location.reload(), 10000)
     settings.gameState = gameStates.gameOver
   }
+}
+
+const checkTrophiesInLocalStorage = () => {
+  const trophiesFromStorage = localStorage.getItem('trophies')
+
+  if(!trophiesFromStorage) return
+
+  trophies = JSON.parse(trophiesFromStorage)
+  Object.entries(trophies).forEach(([_, trophy]) => {
+    if (trophy.unlocked) {
+      const element = document.getElementById(trophy.id)
+      if (!element) return
+      element.classList.add('unlocked')
+    }
+  })
+}
+
+checkTrophiesInLocalStorage()
+
+const handleAchievedTrophies = (p1Wins) => {
+  const achievedTrophies = []
+
+  if (p1Wins && !trophies.firstWin.unlocked) {
+    trophies.obstacles.unlocked = true
+    achievedTrophies.push(trophies.obstacles)
+  }
+
+  if (p1Wins && settings.amountObstacles > 1 && !trophies.obstacles.unlocked) {
+    trophies.obstacles.unlocked = true
+    achievedTrophies.push(trophies.obstacles)
+  }
+
+  if (p1Wins && settings.difficultyCPU >= 10 && !trophies.difficultyCPU.unlocked) {
+    trophies.difficultyCPU.unlocked = true
+    achievedTrophies.push(trophies.difficultyCPU)
+  }
+
+  if (p1Wins && !settings.isSinglePlayer && !trophies.multiplayer.unlocked) {
+    trophies.multiplayer.unlocked = true
+    achievedTrophies.push(trophies.multiplayer)
+  }
+
+  if (p1Wins && settings.paddleHeight <= 50 && !trophies.miniPaddle.unlocked) {
+    trophies.miniPaddle.unlocked = true
+    achievedTrophies.push(trophies.miniPaddle)
+  }
+
+  achievedTrophies.forEach((item, index) => {
+    setTimeout(() => {
+      showTrophyToast(item)
+    }, index * 1000)
+  })
+
+  localStorage.setItem('trophies', JSON.stringify(trophies))
+}
+
+const showTrophyToast = (trophy) => {
+  playSound(sounds.buttonClick)
+  const div = document.createElement('div')
+  div.innerHTML = `
+        <img class='trophy-toast' src='images/pong/trophy.gif' alt='trophy-icon' />
+        <span>${trophy.message}</span> 
+      `
+  div.classList.add('toast')
+  document.getElementById('toasts').appendChild(div)
+  setTimeout(() => {
+    div.remove()
+  }, 6000)
 }
 
 const collision = (paddle, upBTN, downBTN, gamepadIndex) => {
@@ -586,6 +699,11 @@ const collision = (paddle, upBTN, downBTN, gamepadIndex) => {
 
     if (paddle1.collision || paddle2.collision) {
       settings.gameSpeedModifier += 1
+      if (settings.gameSpeedModifier >= 20 && !trophies.rallies.unlocked) {
+        trophies.rallies.unlocked = true
+        showTrophyToast(trophies.rallies)
+        localStorage.setItem('trophies', JSON.stringify(trophies))
+      }
       clearInterval(runGame)
       runGame = settings.isSinglePlayer
           ? setInterval(onePlayerMode, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
