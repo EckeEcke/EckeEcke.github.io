@@ -99,6 +99,7 @@ const paddle1 = {
   score: 0,
   color: '#00ff00',
   collision: false,
+  gamePadIndex: 0,
 }
 
 const paddle2 = {
@@ -108,6 +109,7 @@ const paddle2 = {
   score: 0,
   color: '#FFA500',
   collision: false,
+  gamePadIndex: 1,
 }
 
 const obstacle1 = {
@@ -187,7 +189,7 @@ inputs.obstacles.addEventListener('change', () => settings.amountObstacles = par
 window.onload = () => {
   document.addEventListener('keydown', keyDownHandler, false)
   document.addEventListener('keyup', keyUpHandler, false)
-  if (navigator && navigator.getGamepads()[0] !== null) {
+  if (navigator !== undefined && navigator !== null  && navigator.getGamepads()[0] !== null) {
     console.log('gamepad connected')
   }
 }
@@ -277,8 +279,8 @@ const twoPlayerMode = () => {
   checkGameOver()
   drawEverything()
   moveEverything()
-  collision(paddle2, buttonsPressed.up, buttonsPressed.down, 1)
-  collision(paddle1, buttonsPressed.w, buttonsPressed.s, 0)
+  collision(paddle2, buttonsPressed.up, buttonsPressed.down)
+  collision(paddle1, buttonsPressed.w, buttonsPressed.s)
   collisionWithObstacle()
   move1()
   move2()
@@ -291,8 +293,8 @@ const onePlayerMode = () => {
   checkGameOver()
   drawEverything()
   moveEverything()
-  collision(paddle2, buttonsPressed.up, buttonsPressed.down, 1)
-  collision(paddle1, buttonsPressed.w, buttonsPressed.s, 0)
+  collision(paddle2, buttonsPressed.up, buttonsPressed.down)
+  collision(paddle1, buttonsPressed.w, buttonsPressed.s)
   collisionWithObstacle()
   move1()
   if (scored) resetAfterScore()
@@ -323,7 +325,7 @@ const moveEverything = () => {
 }
 
 const move1 = () => {
-  let gamepad1Connected = navigator && navigator.getGamepads()[0] !== null
+  const gamepad1Connected = navigator !== undefined && navigator !== null && navigator.getGamepads()[0] !== null
 
   if (gamepad1Connected) {
     move1Gamepad()
@@ -682,11 +684,11 @@ const showTrophyToast = (trophy) => {
   checkTrophiesInLocalStorage()
 }
 
-const collision = (paddle, upBTN, downBTN, gamepadIndex) => {
-  const gamepadConnected = navigator && navigator.getGamepads()[gamepadIndex] !== null
-  const isPressedDown = downBTN || (gamepadConnected && navigator && navigator.getGamepads()[gamepadIndex].buttons[13].pressed)
-  const isPressedUp = upBTN || (gamepadConnected && navigator && navigator.getGamepads()[gamepadIndex].buttons[12].pressed)
-  const isPressedRight = buttonsPressed.d || (gamepadConnected && navigator && navigator.getGamepads()[gamepadIndex].buttons[15].pressed)
+const collision = (paddle, upBTN, downBTN) => {
+  const gamepadConnected = navigator !== undefined && navigator !== null && navigator.getGamepads()[paddle.gamePadIndex] !== null
+  const isPressedDown = downBTN || (gamepadConnected && navigator !== undefined && navigator !== null  && navigator.getGamepads()[paddle.gamePadIndex].buttons[13].pressed)
+  const isPressedUp = upBTN || (gamepadConnected && navigator !== undefined && navigator !== null  && navigator.getGamepads()[paddle.gamePadIndex].buttons[12].pressed)
+  const isPressedRight = buttonsPressed.d || (gamepadConnected && navigator && navigator.getGamepads()[paddle.gamePadIndex].buttons[15].pressed)
   const withinXRange = ball.x > paddle.x - 5 && ball.x < paddle.x + 15
   const withinYRange = ball.y >= paddle.y - settings.tolerance && ball.y < paddle.y - 1 + paddle.height + settings.tolerance
 
