@@ -189,9 +189,13 @@ inputs.obstacles.addEventListener('change', () => settings.amountObstacles = par
 window.onload = () => {
   document.addEventListener('keydown', keyDownHandler, false)
   document.addEventListener('keyup', keyUpHandler, false)
-  if (typeof navigator !== 'undefined' && typeof navigator.getGamepads === 'function' && navigator.getGamepads()[0] !== null) {
+  if (checkGamePadConnected()) {
     console.log('gamepad connected')
   }
+}
+
+const checkGamePadConnected = () => {
+  return typeof navigator !== 'undefined' && typeof navigator.getGamepads === 'function' && navigator.getGamepads()[0] !== null && navigator?.getGamepads?.()[0]?.connected
 }
 
 const setFullscreen = () => {
@@ -325,9 +329,7 @@ const moveEverything = () => {
 }
 
 const move1 = () => {
-  const gamepad1Connected = typeof navigator !== 'undefined' && typeof navigator.getGamepads === 'function' && navigator.getGamepads()[0] !== null
-
-  if (gamepad1Connected) {
+  if (checkGamePadConnected()) {
     move1Gamepad()
     return
   }
