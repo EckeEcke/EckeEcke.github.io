@@ -187,10 +187,9 @@ inputs.obstacles.addEventListener('change', () => settings.amountObstacles = par
 window.onload = () => {
   document.addEventListener('keydown', keyDownHandler, false)
   document.addEventListener('keyup', keyUpHandler, false)
-  if (navigator.getGamepads()[0] !== null) {
+  if (navigator && navigator.getGamepads()[0] !== null) {
     console.log('gamepad connected')
   }
-  console.log(navigator.getGamepads()[0])
 }
 
 const setFullscreen = () => {
@@ -324,7 +323,7 @@ const moveEverything = () => {
 }
 
 const move1 = () => {
-  let gamepad1Connected = navigator.getGamepads()[0] !== null
+  let gamepad1Connected = navigator && navigator.getGamepads()[0] !== null
 
   if (gamepad1Connected) {
     move1Gamepad()
@@ -684,7 +683,7 @@ const showTrophyToast = (trophy) => {
 }
 
 const collision = (paddle, upBTN, downBTN, gamepadIndex) => {
-  const gamepadConnected = navigator.getGamepads()[gamepadIndex] !== null
+  const gamepadConnected = navigator && navigator.getGamepads()[gamepadIndex] !== null
   const isPressedDown = downBTN || (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[13].pressed)
   const isPressedUp = upBTN || (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[12].pressed)
   const isPressedRight = buttonsPressed.d || (gamepadConnected && navigator.getGamepads()[gamepadIndex].buttons[15].pressed)
