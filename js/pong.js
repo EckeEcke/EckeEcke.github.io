@@ -431,10 +431,10 @@ const resetAfterScore = () => {
     canvasContext.fillStyle = `rgba(255,0,0,${backgroundOpacity})`
     backgroundOpacity += 0.2
     canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-    drawLetter(letterG, 100, canvas.height / 2 - 40, textOpacity)
-    drawLetter(letterO, 220, canvas.height / 2 - 40, textOpacity)
-    drawLetter(letterA, 340, canvas.height / 2 - 40, textOpacity)
-    drawLetter(letterL, 460, canvas.height / 2 - 40, textOpacity)
+    drawLetter(letterG, 110, canvas.height / 2 - 40, textOpacity)
+    drawLetter(letterO, 230, canvas.height / 2 - 40, textOpacity)
+    drawLetter(letterA, 350, canvas.height / 2 - 40, textOpacity)
+    drawLetter(letterL, 470, canvas.height / 2 - 40, textOpacity)
     drawLetter(exclamationMark, 580, canvas.height / 2 - 40, textOpacity)
     if (textOpacity === 0.5) textOpacity = 1
     else textOpacity = 0.5
