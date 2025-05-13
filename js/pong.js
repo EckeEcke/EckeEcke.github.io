@@ -4,6 +4,9 @@ const modal = document.getElementById('modal')
 const modalTrophies = document.getElementById('modal-trophies')
 const trophyImage = document.getElementById('trophy')
 
+let canvasWidth = canvas.width
+let canvasHeight = canvas.height
+
 const inputs = {
   colorPaddle1: document.getElementById('color-picker-p1'),
   colorPaddle2: document.getElementById('color-picker-p2'),
@@ -75,13 +78,14 @@ const settings = {
   isSinglePlayer: true,
   difficultyCPU: 6,
   pointsToWin: inputs.pointsToWin.value,
-  gameSpeed: 100,
+  gameSpeed: 90,
   gameSpeedModifier: 0,
   amountObstacles: 0,
   countdownValue: 3,
   tolerance: 20,
   font: '48px retro',
   paddleHeight: parseInt(inputs.paddleSize.value),
+  goalAnimationRunning: false,
 }
 
 const ball = {
@@ -113,7 +117,7 @@ const paddle2 = {
 }
 
 const obstacle1 = {
-  x: canvas.width / 2 - 5,
+  x: canvasWidth / 2 - 5,
   y: -450,
   width: 10,
   height: 100,
@@ -121,7 +125,7 @@ const obstacle1 = {
 }
 
 const obstacle2 = {
-  x: canvas.width / 2 - 5,
+  x: canvasWidth / 2 - 5,
   y: -750,
   width: 10,
   height: 100,
@@ -255,55 +259,37 @@ const setCountdown = () => {
 const startGame = (singlePlayer) => {
   playSound(sounds.buttonClick)
   playSound(sounds.countDown)
+  requestAnimationFrame(drawEverything)
   setTimeout(() => playSound(sounds.music), 3000)
   sounds.music.loop = true
-  paddle1.y = canvas.height / 2 - paddle1.height / 2
-  paddle2.y = canvas.height / 2 - paddle2.height / 2
+  paddle1.y = canvasHeight / 2 - paddle1.height / 2
+  paddle2.y = canvasHeight / 2 - paddle2.height / 2
   setCountdown()
   settings.isSinglePlayer = singlePlayer
   canvas.style.display = 'block'
   canvasContext = canvas.getContext('2d')
   canvasContext.shadowBlur = 4
   canvasContext.shadowColor = '#55ffff99'
-  runGame = singlePlayer
-    ? setInterval(onePlayerMode, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
-    : setInterval(twoPlayerMode, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
+  runGame = setInterval(gameLoop, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
   generalButtons.style.display = 'none'
 }
 
 const drawScore = () => {
   canvasContext.font = settings.font
   canvasContext.fillStyle = 'white'
-  drawCenteredText(paddle1.score, canvas.width / 4, 60)
-  drawCenteredText(paddle2.score, canvas.width * 3 / 4, 60)
+  drawCenteredText(paddle1.score, canvasWidth / 4, 60)
+  drawCenteredText(paddle2.score, canvasWidth * 3 / 4, 60)
 }
 
-const twoPlayerMode = () => {
-  const scored = setScore()
+const gameLoop = () => {
+  setScore()
   checkGameOver()
-  drawEverything()
   moveEverything()
   collision(paddle2, buttonsPressed.up, buttonsPressed.down)
   collision(paddle1, buttonsPressed.w, buttonsPressed.s)
   collisionWithObstacle()
   move1()
-  move2()
-  if (scored) resetAfterScore()
-  drawScore()
-}
-
-const onePlayerMode = () => {
-  const scored = setScore()
-  checkGameOver()
-  drawEverything()
-  moveEverything()
-  collision(paddle2, buttonsPressed.up, buttonsPressed.down)
-  collision(paddle1, buttonsPressed.w, buttonsPressed.s)
-  collisionWithObstacle()
-  move1()
-  if (scored) resetAfterScore()
-  drawScore()
-  moveAI()
+  settings.isSinglePlayer ? moveAI() : move2()
 }
 
 const moveEverything = () => {
@@ -311,11 +297,11 @@ const moveEverything = () => {
   ball.x = ball.x + ball.speedX * ball.directionX
   ball.y = ball.y + ball.speedY * 2
 
-  if (ball.x >= canvas.width || ball.x <= 0) {
+  if (ball.x >= canvasWidth|| ball.x <= 0) {
     ball.directionX = ball.directionX * -1
   }
   
-  const ballHitsBottom = ball.y >= canvas.height
+  const ballHitsBottom = ball.y >= canvasHeight
   const ballHitsTop = ball.y <= 0
 
   if (ballHitsBottom || ballHitsTop) {
@@ -323,7 +309,7 @@ const moveEverything = () => {
     playSound(sounds.bounceWall)
   }
 
-  if (ballHitsBottom) ball.y = canvas.height
+  if (ballHitsBottom) ball.y = canvasHeight
 
   if (ballHitsTop) ball.y = 0
 }
@@ -343,10 +329,10 @@ const move1 = () => {
   if (buttonsPressed.s) {
     paddle1.y += 6
   }
-  if (paddle1.y > canvas.height - paddle1.height) {
-    paddle1.y = canvas.height - paddle1.height
+  if (paddle1.y > canvasHeight - paddle1.height) {
+    paddle1.y = canvasHeight - paddle1.height
   }
-  if (buttonsPressed.d && paddle1.x < canvas.width /2.5) {
+  if (buttonsPressed.d && paddle1.x < canvasWidth /2.5) {
     paddle1.x += 5
   }
   if (buttonsPressed.a && paddle1.x > 20) {
@@ -364,10 +350,10 @@ const move1Gamepad = () => {
   if (buttonsPressed.padDown) {
     paddle1.y += 6
   }
-  if (paddle1.y > canvas.height - paddle1.height) {
-    paddle1.y = canvas.height - paddle1.height
+  if (paddle1.y > canvasHeight - paddle1.height) {
+    paddle1.y = canvasHeight - paddle1.height
   }
-  if (buttonsPressed.padRight && paddle1.x < canvas.width / 2.5) {
+  if (buttonsPressed.padRight && paddle1.x < canvasWidth / 2.5) {
     paddle1.x += 5
   }
   if (buttonsPressed.padLeft && paddle1.x > 20) {
@@ -379,8 +365,8 @@ const move2 = () => {
   if (buttonsPressed.down) {
     paddle2.y = paddle2.y + 8;
   }
-  if (paddle2.y > canvas.height - paddle2.height) {
-    paddle2.y = canvas.height - paddle2.height
+  if (paddle2.y > canvasHeight - paddle2.height) {
+    paddle2.y = canvasHeight - paddle2.height
   }
   if (buttonsPressed.up) {
     paddle2.y = paddle2.y - 6;
@@ -388,10 +374,10 @@ const move2 = () => {
   if (paddle2.y < 0) {
     paddle2.y = 0
   }
-  if (buttonsPressed.right && paddle2.x < canvas.width - 20) {
+  if (buttonsPressed.right && paddle2.x < canvasWidth - 20) {
     paddle2.x += 5
   }
-  if (buttonsPressed.left && paddle2.x > canvas.width - canvas.width /2.5) {
+  if (buttonsPressed.left && paddle2.x > canvasWidth - canvasWidth /2.5) {
     paddle2.x -= 5
   }
 
@@ -404,8 +390,8 @@ const moveAI = () => {
   if (paddle2.y < 0) {
     paddle2.y = 0
   }
-  if (paddle2.y > canvas.height - paddle2.height) {
-    paddle2.y = canvas.height - paddle2.height
+  if (paddle2.y > canvasHeight - paddle2.height) {
+    paddle2.y = canvasHeight - paddle2.height
   }
 }
 
@@ -424,31 +410,25 @@ const moveAItoBall = () => {
 }
 
 const resetAfterScore = () => {
-  if (settings.gameState === gameStates.gameOver) return
-  let backgroundOpacity = 0
-  let textOpacity = 0.5
-  const drawGoalAnimation = setInterval(() => {
-    canvasContext.fillStyle = `rgba(255,0,0,${backgroundOpacity})`
-    backgroundOpacity += 0.2
-    canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-    drawLetter(letterG, 110, canvas.height / 2 - 40, textOpacity)
-    drawLetter(letterO, 230, canvas.height / 2 - 40, textOpacity)
-    drawLetter(letterA, 350, canvas.height / 2 - 40, textOpacity)
-    drawLetter(letterL, 470, canvas.height / 2 - 40, textOpacity)
-    drawLetter(exclamationMark, 580, canvas.height / 2 - 40, textOpacity)
-    if (textOpacity === 0.5) textOpacity = 1
-    else textOpacity = 0.5
-  }, 50)
+  if (settings.gameState === gameStates.gameOver) {
+    settings.goalAnimationRunning = false
+    return
+  }
+
+  playSound(sounds.goal)
 
   setTimeout(() => {
-    clearInterval(drawGoalAnimation)
-    if (settings.gameState === gameStates.gameOver) return
+    settings.goalAnimationRunning = false
+    runGame = setInterval(gameLoop, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
+    settings.gameSpeedModifier = 0
+    obstacle1.y = -450
+    obstacle2.y = -750
     animationOpacity = 0
     ball.x = 395
     ball.y = 300
-    paddle1.y = canvas.height / 2 - paddle1.height / 2
+    paddle1.y = canvasHeight / 2 - paddle1.height / 2
     paddle1.x = 30
-    paddle2.y = canvas.height / 2 - paddle2.height / 2
+    paddle2.y = canvasHeight / 2 - paddle2.height / 2
     paddle2.x = 760
     ball.speedY = 0
     let p1Scored = ball.directionX < 0
@@ -553,39 +533,26 @@ const drawVictoryMessage = () => {
   const message1 = p1Wins ? 'Win' : 'Lose'
   const message2 = p1Wins ? 'Lose' : 'Win'
   canvasContext.fillStyle = 'white'
-  drawCenteredText(message1, canvas.width / 4, 350)
-  drawCenteredText(message2, canvas.width * 3 / 4, 350)
+  drawCenteredText(message1, canvasWidth / 4, 350)
+  drawCenteredText(message2, canvasWidth * 3 / 4, 350)
 }
 
-const playSound = (sound, pitch) => {
-  sound.pause()
-  sound.currentTime = 0
-  sound.playbackRate = pitch ?? 1
-  setTimeout(() => {
-    sound.play().catch(error => {
-      console.error('Playback failed:', error)
-    })
-  }, 0)
+const playSound = (sound) => {
+  sound.play()
 }
 
 const setScore = () => {
   if (settings.gameState === gameStates.gameOver) return
-  const scoredByP1 = ball.x >= canvas.width
+  const scoredByP1 = ball.x >= canvasWidth
   const scoredByP2 = ball.x <= 0
 
   const scored = scoredByP1 || scoredByP2
 
   if(scored) {
-    obstacle1.y = -450
-    obstacle2.y = -750
-    playSound(sounds.goal)
+    settings.goalAnimationRunning = true
+    resetAfterScore()
     clearInterval(runGame)
-    settings.gameSpeedModifier = 0
-    setTimeout(() => {
-      runGame = settings.isSinglePlayer
-          ? setInterval(onePlayerMode, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
-          : setInterval(twoPlayerMode, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
-    }, 2000)
+    checkGameOver()
   }
 
   if (scoredByP1) {
@@ -595,8 +562,6 @@ const setScore = () => {
   if (scoredByP2) {
     paddle2.score++
   }
-
-  return scored
 }
 
 const checkGameOver = () => {
@@ -606,13 +571,14 @@ const checkGameOver = () => {
   const gameOver = p1Wins || p2Wins
 
   if (gameOver) {
+    settings.gameState = gameStates.gameOver
+    settings.goalAnimationRunning = false
+    clearInterval(runGame)
     fadeOutMusic()
     handleAchievedTrophies(p1Wins)
     if (p2Wins && settings.isSinglePlayer) playSound(sounds.lose)
     else playSound(sounds.victory)
-    clearInterval(runGame)
     setTimeout(() => window.location.reload(), 10000)
-    settings.gameState = gameStates.gameOver
   }
 }
 
@@ -697,7 +663,7 @@ const collision = (paddle, upBTN, downBTN) => {
   if (withinXRange && withinYRange && !paddle.collision) {
     obstacle1.collision = false
     obstacle2.collision = false
-    const isRightSide = ball.x > canvas.width / 2
+    const isRightSide = ball.x > canvasWidth / 2
     paddle1.collision = !isRightSide
     paddle2.collision = isRightSide
     ball.directionX = -ball.directionX
@@ -709,10 +675,10 @@ const collision = (paddle, upBTN, downBTN) => {
         localStorage.setItem('trophies', JSON.stringify(trophies))
         showTrophyToast(trophies.rallies)
       }
-      clearInterval(runGame)
-      runGame = settings.isSinglePlayer
-          ? setInterval(onePlayerMode, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
-          : setInterval(twoPlayerMode, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
+      if (settings.gameSpeedModifier % 10 === 0) {
+        clearInterval(runGame)
+        runGame = setInterval(gameLoop, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
+      }
     }
 
     if (paddle1.collision) {
@@ -780,6 +746,21 @@ const animateCollisionP2 = () => {
   setTimeout(() => paddle2.x -= 1, 250)
 }
 
+let backgroundOpacity = 0
+let textOpacity = 0.5
+
+const drawGoalAnimation = () => {
+  canvasContext.fillStyle = `rgba(255,0,0,${backgroundOpacity})`
+  canvasContext.fillRect(0, 0, canvasWidth, canvasHeight)
+  backgroundOpacity += 0.2
+  drawLetter(letterG, 110, canvasHeight / 2 - 40, textOpacity)
+  drawLetter(letterO, 230, canvasHeight / 2 - 40, textOpacity)
+  drawLetter(letterA, 350, canvasHeight / 2 - 40, textOpacity)
+  drawLetter(letterL, 470, canvasHeight / 2 - 40, textOpacity)
+  drawLetter(exclamationMark, 580, canvasHeight / 2 - 40, textOpacity)
+  textOpacity === 0.5 ? textOpacity = 1 : textOpacity = 0.5
+}
+
 const drawObstacles = () => {
   const hasAtLeastOneObstacle = settings.amountObstacles >= 1
   const hasTwoObstacles = settings.amountObstacles >= 2
@@ -789,24 +770,53 @@ const drawObstacles = () => {
   if (hasTwoObstacles) roundedRect(obstacle2.x , obstacle2.y, obstacle2.width, obstacle2.height, 4, '#ff0000ee')
   obstacle1.y++
   obstacle2.y++
-  if (obstacle1.y > canvas.height + 100) obstacle1.y = -100
-  if (obstacle2.y > canvas.height + 100) obstacle2.y = -100
+  if (obstacle1.y > canvasHeight + 100) obstacle1.y = -100
+  if (obstacle2.y > canvasHeight + 100) obstacle2.y = -100
+}
+
+const drawPlayingField = () => {
+  roundedRect(2, 2, canvasWidth - 4, canvasHeight - 4, 4, '#000000')
+  canvasContext.fillStyle = 'rgba(255,0,0,0.4)' /*middle line*/
+  canvasContext.fillRect(canvasWidth / 2, 0, 1, canvasHeight)
+}
+
+const drawBallsAndPaddles = () => {
+  roundedRect(ball.x, ball.y, 10, 10, 4, 'white') /* paddles + ball */
+  roundedRect(paddle1.x, paddle1.y, 10, paddle1.height, 4, paddle1.color + 'dd')
+  roundedRect(paddle2.x, paddle2.y, 10, paddle2.height, 4, paddle2.color + 'dd')
+}
+
+const drawCountDown = () => {
+  canvasContext.fillStyle = 'white'
+  if (settings.countdownValue > 0) {
+    canvasContext.fillText(settings.countdownValue, canvasWidth / 2 - 20, canvasHeight / 2 - 40)
+  }
 }
 
 const drawEverything = () => {
-  roundedRect(0, 0, canvas.width, canvas.height, 8, '#000000')
-  roundedRect(2, 2, canvas.width - 4, canvas.height - 4, 4, '#000000')
-  canvasContext.fillStyle = 'rgba(255,0,0,0.4)' /*middle line*/
-  canvasContext.fillRect(canvas.width / 2, 0, 1, canvas.height)
-  if (settings.gameState !== gameStates.gameOver) {
-    drawObstacles()
-    roundedRect(ball.x, ball.y, 10, 10, 4, 'white') /* paddles + ball */
-    roundedRect(paddle1.x, paddle1.y, 10, paddle1.height, 4, paddle1.color + 'dd')
-    roundedRect(paddle2.x, paddle2.y, 10, paddle2.height, 4, paddle2.color + 'dd')
+  canvasContext.clearRect(0, 0, canvasWidth, canvasHeight)
+
+  if (!settings.goalAnimationRunning) {
+    drawPlayingField()
+    if (settings.gameState !== gameStates.gameOver) {
+      drawObstacles()
+      drawBallsAndPaddles()
+    }
+
+    drawCountDown()
+    backgroundOpacity = 0
+    textOpacity = 0.5
   }
+
+  drawScore()
+
   if (settings.gameState === gameStates.gameOver) drawVictoryMessage()
-  canvasContext.fillStyle = 'white'
-  if (settings.countdownValue > 0) canvasContext.fillText(settings.countdownValue, canvas.width / 2 - 20, canvas.height / 2 - 40)
+
+  if (settings.goalAnimationRunning && settings.gameState !== gameStates.gameOver) {
+      drawGoalAnimation()
+  }
+
+  requestAnimationFrame(drawEverything)
 }
 
 let volume = 1
@@ -833,22 +843,17 @@ const roundedRect = (x, y, width, height, radius, color) => {
   canvasContext.shadowBlur = 8
   canvasContext.shadowOffsetX = 0
   canvasContext.shadowOffsetY = 0
-  canvasContext.beginPath()
-  canvasContext.moveTo(x + radius, y)
-  canvasContext.lineTo(x + width - radius, y)
-  canvasContext.arcTo(x + width, y, x + width, y + radius, radius)
-  canvasContext.lineTo(x + width, y + height - radius)
-  canvasContext.arcTo(x + width, y + height, x + width - radius, y + height, radius)
-  canvasContext.lineTo(x + radius, y + height)
-  canvasContext.arcTo(x, y + height, x, y + height - radius, radius)
-  canvasContext.lineTo(x, y + radius)
-  canvasContext.arcTo(x, y, x + radius, y, radius)
-  canvasContext.closePath()
+
   canvasContext.fillStyle = color
-  canvasContext.fill()
   canvasContext.strokeStyle = color
   canvasContext.lineWidth = 2
+
+  canvasContext.beginPath()
+  canvasContext.roundRect(x, y, width, height, radius)
+  canvasContext.fill()
   canvasContext.stroke()
+  canvasContext.closePath()
+
   canvasContext.shadowColor = '#ffffff'
 }
 

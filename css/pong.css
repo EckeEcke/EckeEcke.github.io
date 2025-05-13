@@ -158,6 +158,8 @@ button {
   width: 48px;
   border-radius: 8px;
   transition: 0.3s;
+  background: white;
+  border: none;
 }
 
 #trophies-button img {
