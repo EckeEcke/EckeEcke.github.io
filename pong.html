@@ -17,6 +17,7 @@
   <audio src="sounds/pong/button.mp3" id="buttonClick"></audio>
   <audio src="sounds/pong/countdown.mp3" id="countdown"></audio>
   <audio src="sounds/pong/music.mp3" id="music"></audio>
+  <audio src="sounds/pong/trophy-unlocked.mp3" id="trophy-unlocked"></audio>
 
   <div class="content-wrapper">
     <h1>Pong</h1>
@@ -59,7 +60,7 @@
       <button id="trophies-button" onclick="openTrophies()">
         <img src="images/pong/trophy.gif" alt="trophy-button" />
       </button>
-      <a href="https://github.com/EckeEcke/EckeEcke.github.io/blob/master/js/pong.js" target="_blank">
+      <a href="https://github.com/EckeEcke/EckeEcke.github.io/blob/master/js/pong.js" onclick="unlockGithubTrophy()" target="_blank">
         <img id="github-link" alt="link to my github" src="images/github-pixelated.png" />
       </a>
     </div>
@@ -126,6 +127,14 @@
     <div id="rallies-trophy" class="trophy-wrapper">
       <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
       <span class="trophy-message">20 consecutive rallies</span>
+    </div>
+    <div id="settings-trophy" class="trophy-wrapper">
+      <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
+      <span class="trophy-message">Open the settings</span>
+    </div>
+    <div id="github-trophy" class="trophy-wrapper">
+      <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
+      <span class="trophy-message">Open my Github link</span>
     </div>
     <div class="dialog-buttons">
       <button onclick="closeTrophies()">BACK</button>

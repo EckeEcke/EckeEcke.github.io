@@ -4,8 +4,8 @@ const modal = document.getElementById('modal')
 const modalTrophies = document.getElementById('modal-trophies')
 const trophyImage = document.getElementById('trophy')
 
-let canvasWidth = canvas.width
-let canvasHeight = canvas.height
+const canvasWidth = canvas.width
+const canvasHeight = canvas.height
 
 const inputs = {
   colorPaddle1: document.getElementById('color-picker-p1'),
@@ -26,6 +26,7 @@ const sounds = {
   buttonClick: document.getElementById('buttonClick'),
   countDown: document.getElementById('countdown'),
   music: document.getElementById('music'),
+  trophyUnlocked: document.getElementById('trophy-unlocked')
 }
 
 let runGame
@@ -33,6 +34,8 @@ let runGame
 let gamepad2Connected = false
 
 let canvasContext
+
+const trophiesVersionId = 1
 
 let trophies = {
   firstWin: {
@@ -65,6 +68,16 @@ let trophies = {
     unlocked: false,
     id: 'multiplayer-trophy',
   },
+  openSettings: {
+    message: 'open the settings',
+    unlocked: false,
+    id: 'settings-trophy',
+  },
+  openGithub: {
+    message: 'open my github link',
+    unlocked: false,
+    id: 'github-trophy',
+  }
 }
 
 const gameStates = {
@@ -169,6 +182,10 @@ window.addEventListener('gamepad2Connected', (e) => {
   e.gamepad.buttons.length, e.gamepad.axes.length)
 })
 
+const checkGamePadConnected = () => {
+  return typeof navigator !== 'undefined' && typeof navigator.getGamepads === 'function' && navigator.getGamepads()[0] !== null && navigator?.getGamepads?.()[0]?.connected
+}
+
 inputs.colorPaddle1.addEventListener('change', () => paddle1.color = inputs.colorPaddle1.value)
 
 inputs.colorPaddle2.addEventListener('change', () => paddle2.color = inputs.colorPaddle2.value)
@@ -198,10 +215,6 @@ window.onload = () => {
   }
 }
 
-const checkGamePadConnected = () => {
-  return typeof navigator !== 'undefined' && typeof navigator.getGamepads === 'function' && navigator.getGamepads()[0] !== null && navigator?.getGamepads?.()[0]?.connected
-}
-
 const setFullscreen = () => {
   playSound(sounds.buttonClick)
   const button = document.getElementById('fullscreen-button')
@@ -228,11 +241,20 @@ const setFullscreen = () => {
 const openSettings = () => {
   playSound(sounds.buttonClick)
   modal.showModal()
+  if (!trophies.openSettings.unlocked) {
+    unlockTrophy(trophies.openSettings)
+  }
 }
 
 const closeSettings = () => {
   playSound(sounds.buttonClick)
   modal.close()
+}
+
+const unlockGithubTrophy = () => {
+  if (!trophies.openGithub.unlocked) {
+    unlockTrophy(trophies.openGithub)
+  }
 }
 
 const openTrophies = () => {
@@ -272,13 +294,6 @@ const startGame = (singlePlayer) => {
   canvasContext.shadowColor = '#55ffff99'
   runGame = setInterval(gameLoop, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
   generalButtons.style.display = 'none'
-}
-
-const drawScore = () => {
-  canvasContext.font = settings.font
-  canvasContext.fillStyle = 'white'
-  drawCenteredText(paddle1.score, canvasWidth / 4, 60)
-  drawCenteredText(paddle2.score, canvasWidth * 3 / 4, 60)
 }
 
 const gameLoop = () => {
@@ -512,18 +527,17 @@ const keyUpHandler = (event) => {
   }
 }
 
+const drawScore = () => {
+  canvasContext.font = settings.font
+  canvasContext.fillStyle = 'white'
+  drawCenteredText(paddle1.score, canvasWidth / 4, 60)
+  drawCenteredText(paddle2.score, canvasWidth * 3 / 4, 60)
+}
+
 const drawCenteredText = (text, x, y) => {
   const textWidth = canvasContext.measureText(text).width
   const centeredX = x - textWidth / 2
   canvasContext.fillText(text, centeredX, y)
-}
-
-const fadeOutMusic = () => {
-  const fadeOutInterval = setInterval(() => {
-    if (sounds.music.volume <= 0.2 || sounds.music.playbackRate < 0.5) clearInterval(fadeOutInterval)
-    sounds.music.volume -= 0.1
-    sounds.music.playbackRate -= 0.1
-  }, 100)
 }
 
 const drawVictoryMessage = () => {
@@ -564,6 +578,14 @@ const setScore = () => {
   }
 }
 
+const fadeOutMusic = () => {
+  const fadeOutInterval = setInterval(() => {
+    if (sounds.music.volume <= 0.2 || sounds.music.playbackRate < 0.5) clearInterval(fadeOutInterval)
+    sounds.music.volume -= 0.1
+    sounds.music.playbackRate -= 0.1
+  }, 100)
+}
+
 const checkGameOver = () => {
   if (settings.gameState === gameStates.gameOver) return
   const p1Wins = paddle1.score >= settings.pointsToWin
@@ -583,6 +605,9 @@ const checkGameOver = () => {
 }
 
 const checkTrophiesInLocalStorage = () => {
+  const trophiesVersionIdFromStorage = localStorage.getItem('trophies-version-id')
+  if (!trophiesVersionIdFromStorage || JSON.parse(trophiesVersionIdFromStorage) !== trophiesVersionId) return
+
   const trophiesFromStorage = localStorage.getItem('trophies')
 
   if(!trophiesFromStorage) return
@@ -627,6 +652,7 @@ const handleAchievedTrophies = (p1Wins) => {
     achievedTrophies.push(trophies.miniPaddle)
   }
 
+  localStorage.setItem('trophies-version-id', JSON.stringify(trophiesVersionId))
   localStorage.setItem('trophies', JSON.stringify(trophies))
 
   achievedTrophies.forEach((item, index) => {
@@ -637,7 +663,7 @@ const handleAchievedTrophies = (p1Wins) => {
 }
 
 const showTrophyToast = (trophy) => {
-  playSound(sounds.buttonClick)
+  playSound(sounds.trophyUnlocked)
   const div = document.createElement('div')
   div.innerHTML = `
         <img class='trophy-toast' src='images/pong/trophy.gif' alt='trophy-icon' />
@@ -650,6 +676,13 @@ const showTrophyToast = (trophy) => {
   }, 6000)
 
   checkTrophiesInLocalStorage()
+}
+
+const unlockTrophy = (trophy) => {
+  trophy.unlocked = true
+  localStorage.setItem('trophies-version-id', JSON.stringify(trophiesVersionId))
+  localStorage.setItem('trophies', JSON.stringify(trophies))
+  showTrophyToast(trophy)
 }
 
 const collision = (paddle, upBTN, downBTN) => {
@@ -671,9 +704,7 @@ const collision = (paddle, upBTN, downBTN) => {
     if (paddle1.collision || paddle2.collision) {
       settings.gameSpeedModifier += 1
       if (settings.gameSpeedModifier >= 20 && !trophies.rallies.unlocked) {
-        trophies.rallies.unlocked = true
-        localStorage.setItem('trophies', JSON.stringify(trophies))
-        showTrophyToast(trophies.rallies)
+        unlockTrophy(trophies.rallies)
       }
       if (settings.gameSpeedModifier % 10 === 0) {
         clearInterval(runGame)
