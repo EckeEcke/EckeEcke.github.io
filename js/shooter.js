@@ -1,7 +1,13 @@
+// _______________________________________________________________
+// HTML ELEMENTS
+
 const canvas = document.getElementById('game-canvas')
 const canvasContext = canvas.getContext('2d')
 const nameInput = document.getElementById('name-input')
 canvasContext.font = '24px retro'
+
+// _______________________________________________________________
+// IMAGES
 
 const imageSources = {
   playerShip: './images/shooter/spaceship.png',
@@ -24,6 +30,19 @@ const images = {
   trumpHead: new Image(),
   background: new Image(),
 }
+
+function loadImages() {
+  images.snakeHead.src = imageSources.snakeHead
+  images.snakeBody.src = imageSources.snakeBody
+  images.enemyShip.src = imageSources.enemyShip
+  images.trumpHead.src = imageSources.trumpHead
+  images.background.src = imageSources.background
+  images.playerShip.src = imageSources.playerShip
+  images.explosion.src = imageSources.explosion
+}
+
+// _______________________________________________________________
+// SOUNDS
 
 const soundSources = {
   laserEnemy: './sounds/shooter/laser-enemy.wav',
@@ -50,6 +69,32 @@ const sounds = {
   loseSound: undefined,
   gameMusic: undefined,
 }
+
+function loadSounds() {
+  sounds.laserEnemy = new Audio(soundSources.laserEnemy)
+  sounds.laser = new Audio(soundSources.laser)
+  sounds.laser.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.laser2 = new Audio(soundSources.laser2)
+  sounds.laser2.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.laser3 = new Audio(soundSources.laser3)
+  sounds.laser3.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.powerup = new Audio(soundSources.powerup)
+  sounds.powerup.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.alertSound = new Audio(soundSources.alertSound)
+  sounds.alertSound.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.hitSound = new Audio(soundSources.hitSound)
+  sounds.hitSound.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.spaceshipSound = new Audio(soundSources.spaceshipSound)
+  sounds.spaceshipSound.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.loseSound = new Audio(soundSources.loseSound)
+  sounds.loseSound.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.gameMusic = new Audio(soundSources.gameMusic)
+  sounds.gameMusic.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.gameMusic.loop = true
+}
+
+// _______________________________________________________________
+// GAME DATA
 
 const gameStates = {
   titleScreen: 'displaying title screen',
@@ -105,6 +150,8 @@ const touchControls = {
 const spaceship = {
   x: 150,
   y: 580,
+  width: 80,
+  height: 100,
   canon: {
     y: 520,
     x: 200,
@@ -199,23 +246,39 @@ const asteroids = [
 const enemyShip1 = {
   x: 0,
   y: 60,
+  width: 50,
+  height: 50,
   speed: 4,
   lives: 1,
   shotFired: false,
   shotSpeed: 5,
+  shotX: 0,
+  shotX2: 0,
+  shotY: 0,
+  shotWidth: 10,
+  shotHeight: 20,
 }
 
 const enemyShip2 = {
   x: 260,
   y: 120,
+  width: 50,
+  height: 50,
   speed: -4,
   lives: 1,
   shotFired: false,
   shotSpeed: 5,
+  shotX: 0,
+  shotX2: 0,
+  shotY: 0,
+  shotWidth: 10,
+  shotHeight: 20,
 }
 
 const snake = {
   elements: [],
+  elementWidth: 40,
+  elementHeight: 40,
   lives: 8,
   color: 0,
 }
@@ -227,52 +290,13 @@ const intervals = {
   listenForStart: null,
 }
 
-function loadImages() {
-  images.snakeHead.src = imageSources.snakeHead
-  images.snakeBody.src = imageSources.snakeBody
-  images.enemyShip.src = imageSources.enemyShip
-  images.trumpHead.src = imageSources.trumpHead
-  images.background.src = imageSources.background
-  images.playerShip.src = imageSources.playerShip
-  images.explosion.src = imageSources.explosion
-}
-
-function loadSounds() {
-  sounds.laserEnemy = new Audio(soundSources.laserEnemy)
-  sounds.laser = new Audio(soundSources.laser)
-  sounds.laser.onloadeddata = () => gameState.gameLoaded += 10
-  sounds.laser2 = new Audio(soundSources.laser2)
-  sounds.laser2.onloadeddata = () => gameState.gameLoaded += 10
-  sounds.laser3 = new Audio(soundSources.laser3)
-  sounds.laser3.onloadeddata = () => gameState.gameLoaded += 10
-  sounds.powerup = new Audio(soundSources.powerup)
-  sounds.powerup.onloadeddata = () => gameState.gameLoaded += 10
-  sounds.alertSound = new Audio(soundSources.alertSound)
-  sounds.alertSound.onloadeddata = () => gameState.gameLoaded += 10
-  sounds.hitSound = new Audio(soundSources.hitSound)
-  sounds.hitSound.onloadeddata = () => gameState.gameLoaded += 10
-  sounds.spaceshipSound = new Audio(soundSources.spaceshipSound)
-  sounds.spaceshipSound.onloadeddata = () => gameState.gameLoaded += 10
-  sounds.loseSound = new Audio(soundSources.loseSound)
-  sounds.loseSound.onloadeddata = () => gameState.gameLoaded += 10
-  sounds.gameMusic = new Audio(soundSources.gameMusic)
-  sounds.gameMusic.onloadeddata = () => gameState.gameLoaded += 10
-  sounds.gameMusic.loop = true
-}
-
 function startGame() {
   sounds.spaceshipSound.play()
   gameState.state = gameStates.spaceshipAnimation
 }
 
-function setScore() {
-  if (gameState.score > gameState.highScore) {
-    gameState.highScore = gameState.score
-    gameState.isHighScore = true
-  }
-
-  gameState.multiplier = Math.floor(gameState.streak / 10) + 1 <= 3 ? Math.floor(gameState.streak / 10) + 1 : 3
-}
+// _______________________________________________________________
+// GAME LOGIC
 
 function runGame() {
   moveShip()
@@ -296,38 +320,13 @@ function runEnemies() {
   }
 }
 
-function changeTouchPosition(event) {
-  touchControls.active = true
-  touchControls.x = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX
-  if (!buttonsPressed.s) {
-    buttonsPressed.s = true
-    gameState.score = 0
-    startGame()
+function setScore() {
+  if (gameState.score > gameState.highScore) {
+    gameState.highScore = gameState.score
+    gameState.isHighScore = true
   }
-}
 
-function keyDownHandler(event) {
-  if (event.key === 'a' || event.key === 'ArrowLeft') {
-    buttonsPressed.a = true
-  }
-  else if (event.key === 'd' || event.key === 'ArrowRight') {
-    buttonsPressed.d = true
-  }
-  else if (event.key === 'w' || event.key === 'ArrowUp') {
-    buttonsPressed.w = true
-  }
-}
-
-function keyUpHandler(event) {
-  if (event.key === 'a' || event.key === 'ArrowLeft') {
-    buttonsPressed.a = false
-  }
-  else if (event.key === 'd' || event.key === 'ArrowRight') {
-    buttonsPressed.d = false
-  }
-  else if (event.key === 'w' || event.key === 'ArrowUp') {
-    buttonsPressed.w = false
-  }
+  gameState.multiplier = Math.floor(gameState.streak / 10) + 1 <= 3 ? Math.floor(gameState.streak / 10) + 1 : 3
 }
 
 function shoot() {
@@ -367,32 +366,6 @@ function resetAsteroids() {
   asteroids.forEach(roid => {
     if (roid.y > 0) roid.y = -50
   })
-}
-
-document.getElementById('highscore-form').onsubmit = function (event) {
-  event.preventDefault()
-  let player = nameInput.value
-  if (player.length === 0) {
-    player = 'Player'
-  }
-  const data = { Player: player, Score: gameState.score }
-  fetch('https://shooter-backend-vercel.vercel.app/api/postHighscore', {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
-    .then(response => response.json())
-    .catch(err => console.log(err))
-  nameInput.value = ''
-  buttonsPressed.s = false
-  nameInput.style.display = 'none'
-  gameState.highScoresLoaded = false
-  gameState.state = gameStates.titleScreen
-  gameState.round = rounds.snake
-  resetGame()
 }
 
 function gameOver() {
@@ -442,20 +415,29 @@ function startNextRound() {
   intervals.background = setInterval(moveBackground, 1000 / 30)
 }
 
-function drawSpaceshipAnimation() {
-  canvasContext.fillStyle = 'black'
-  canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-  canvasContext.drawImage(images.background, 0, gameState.backgroundScrollPosition)
-  canvasContext.fillStyle = 'limegreen'
-  canvasContext.textAlign = 'center'
-  canvasContext.fillText(gameState.score === 0 ? 'Save earth!' : 'Next round!', canvas.width / 2, canvas.height / 2)
-  canvasContext.fillText(gameState.bonusScore > 0 ? `Bonus Score: ${gameState.bonusScore}` : '', canvas.width / 2, canvas.height / 2 + 50)
-  canvasContext.drawImage(images.playerShip, spaceship.x, spaceship.y - 60, 80, 100)
-  spaceship.y -= 5
-  if (gameState.backgroundScrollPosition < 80) gameState.backgroundScrollPosition += 1.2
-  if (spaceship.y < -50) {
-      startNextRound()
-  }
+function handleGameover() {
+  spaceship.playerKilled = true
+  window.navigator.vibrate(1000)
+  gameState.round = rounds.asteroids
+  clearInterval(intervals.enemies)
+  clearInterval(intervals.game)
+  clearInterval(intervals.background)
+  gameState.backgroundScrollPosition = -300
+  gameState.enemiesRequired = 6
+  sounds.gameMusic.playbackRate = 0.5
+  gameState.musicRunning  = false
+  setTimeout(() => {
+    sounds.gameMusic.pause()
+    sounds.gameMusic.currentTime = 0
+    sounds.gameMusic.playbackRate = 1
+  }, 1000)
+  gameState.streak = 0
+  sounds.loseSound.play()
+  setTimeout(() => {
+    gameState.state = gameStates.gameOver
+    gameState.isHighScore = false
+    gameState.gameSpeed = 60
+  }, 2000)
 }
 
 function resetGame() {
@@ -466,55 +448,55 @@ function resetGame() {
     lives: 1,
     image: images.snakeHead,
   },
-  {
-    x: 40,
-    y: 0,
-    speed: 8,
-    lives: 2,
-    image: images.snakeBody
-  },
-  {
-    x: 80,
-    y: 0,
-    speed: 8,
-    lives: 3,
-    image: images.snakeBody
-  },
-  {
-    x: 120,
-    y: 0,
-    speed: 8,
-    lives: 4,
-    image: images.snakeBody
-  },
-  {
-    x: 160,
-    y: 0,
-    speed: 8,
-    lives: 5,
-    image: images.snakeBody
-  },
-  {
-    x: 200,
-    y: 0,
-    speed: 8,
-    lives: 6,
-    image: images.snakeBody
-  },
-  {
-    x: 240,
-    y: 0,
-    speed: 8,
-    lives: 7,
-    image: images.snakeBody
-  },
-  {
-    x: 280,
-    y: 0,
-    speed: 8,
-    lives: 8,
-    image: images.snakeBody
-  }]
+    {
+      x: 40,
+      y: 0,
+      speed: 8,
+      lives: 2,
+      image: images.snakeBody
+    },
+    {
+      x: 80,
+      y: 0,
+      speed: 8,
+      lives: 3,
+      image: images.snakeBody
+    },
+    {
+      x: 120,
+      y: 0,
+      speed: 8,
+      lives: 4,
+      image: images.snakeBody
+    },
+    {
+      x: 160,
+      y: 0,
+      speed: 8,
+      lives: 5,
+      image: images.snakeBody
+    },
+    {
+      x: 200,
+      y: 0,
+      speed: 8,
+      lives: 6,
+      image: images.snakeBody
+    },
+    {
+      x: 240,
+      y: 0,
+      speed: 8,
+      lives: 7,
+      image: images.snakeBody
+    },
+    {
+      x: 280,
+      y: 0,
+      speed: 8,
+      lives: 8,
+      image: images.snakeBody
+    }]
 
   asteroids[0].y = -50
   asteroids[1].y = -100
@@ -539,253 +521,6 @@ function resetGame() {
   gameState.backgroundScrollPosition = -220
   gameState.enemyshipCount = 0
   gameState.bonusScore = 0
-}
-
-function setVolume(value) {
-  gameState.volume = value === 0 ? 0 : value * 2 / 10
-  const volumeElements = Array.from(document.getElementsByClassName('volume-item'))
-  volumeElements.forEach(element => {
-          element.innerHTML = element.dataset.value > value ? '&#9645;' : '&#11036;'
-  })
-  for (let key in sounds) {
-    if (sounds[key] instanceof Audio) {
-      sounds[key].volume = gameState.volume
-    }
-  }
-}
-
-function drawEverything() {
-  canvasContext.fillStyle = 'black'
-  canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-  canvasContext.drawImage(images.background, 0, gameState.backgroundScrollPosition)
-  drawShipAndShot()
-  drawScore()
-
-  if (gameState.state === gameStates.titleScreen) {
-    canvasContext.fillStyle = 'black'
-    canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-    canvasContext.textAlign = 'center'
-    canvasContext.fillStyle = 'limegreen'
-    drawStartScreen()
-  }
-
-  if (gameState.state === gameStates.spaceshipAnimation) {
-    drawSpaceshipAnimation()
-  }
-
-  if (gameState.state === gameStates.asteroidsRound) {
-    drawAsteroids()
-  }
-
-  if (gameState.state === gameStates.enemyShipRound) {
-    drawEnemyShip(enemyShip1)
-    drawEnemyShip(enemyShip2)
-    drawEnemyShot(enemyShip1)
-    drawEnemyShot(enemyShip2)
-  }
-
-  if (gameState.state === gameStates.snakeRound) {
-    drawSnake()
-  }
-
-  if (gameState.state === gameStates.gameOver) {
-    drawGameOverScreen()
-  }
-
-  requestAnimationFrame(drawEverything)
-}
-
-function drawScore() {
-  canvasContext.textAlign = 'start'
-  canvasContext.fillStyle = 'limegreen'
-  canvasContext.fillText('Score', 12, 30)
-  canvasContext.fillText('Hi-Score', 25 + canvas.width / 2, 30)
-  canvasContext.fillStyle = 'white'
-  canvasContext.fillText(gameState.score, 12, 60)
-  canvasContext.fillText(gameState.highScore, 25 + canvas.width / 2, 60)
-}
-
-function drawGameOverScreen() {
-  canvasContext.fillStyle = 'black'
-  canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-  canvasContext.fillStyle = 'limegreen'
-  canvasContext.textAlign = 'center'
-  canvasContext.fillText('Game over', canvas.width / 2, canvas.height / 2 - 100)
-  canvasContext.fillText('Score: ' + gameState.score, canvas.width / 2, canvas.height / 2 - 50)
-  nameInput.style.display = 'block'
-  nameInput.focus()
-  if (gameState.isHighScore) {
-    canvasContext.fillText('New Highscore', canvas.width / 2, 100)
-  }
-}
-
-function handleGameover() {
-  if (spaceship.playerKilled) {
-    window.navigator.vibrate(1000)
-    gameState.round = rounds.asteroids
-    clearInterval(intervals.enemies)
-    clearInterval(intervals.game)
-    clearInterval(intervals.background)
-    gameState.backgroundScrollPosition = -300
-    gameState.enemiesRequired = 6
-    sounds.gameMusic.playbackRate = 0.5
-    gameState.musicRunning  = false
-    setTimeout(() => {
-      sounds.gameMusic.pause()
-      sounds.gameMusic.currentTime = 0
-      sounds.gameMusic.playbackRate = 1
-    }, 1000)
-    gameState.streak = 0
-    sounds.loseSound.play()
-    setTimeout(() => {
-      gameState.state = gameStates.gameOver
-      gameState.isHighScore = false
-      gameState.gameSpeed = 60
-    }, 2000)
-  }
-  spaceship.playerKilled = true
-}
-
-function drawShipAndShot() {
-  let fillColor
-  switch (gameState.multiplier) {
-    case 2: fillColor = 'red'; break
-    case 3: fillColor = 'blue'; break
-    default: fillColor = 'limegreen'
-  }
-
-  canvasContext.fillStyle = fillColor
-  canvasContext.drawImage(spaceship.playerKilled ? images.explosion : images.playerShip, spaceship.x, spaceship.y - 60, 80, 100)
-  canvasContext.fillRect(spaceship.shot.x, spaceship.shot.y, spaceship.shot.width, spaceship.shot.height)
-  canvasContext.fillStyle = 'limegreen'
-}
-
-function drawStartScreen() {
-  gameState.timer += 1
-  if (!gameState.highScoresLoaded && !gameState.highScoresLoading) {
-    gameState.highScoresLoading = true
-    fetch('https://shooter-backend-vercel.vercel.app/api/getHighscores')
-        .then(response => response.json())
-        .then(data => gameState.highScores = data)
-        .then(() => {
-          gameState.highScore = gameState.highScores[0]?.Score || 1000
-          gameState.highScoresLoaded = true
-          gameState.highScoresLoading = false
-        })
-        .catch(() => gameState.highScoresLoading = false)
-  }
-  if (gameState.timer % 500 === 0 && gameState.highScoresLoaded) {
-    gameState.timer = 0
-    if (gameState.displayedScreen === 'controls') {
-      gameState.displayedScreen.displayedScreen = 'manual'
-      return
-    }
-    if (gameState.displayedScreen.displayedScreen === 'manual') {
-      gameState.displayedScreen = 'highscores'
-      return
-    }
-    else gameState.displayedScreen = 'controls'
-  }
-  if (gameState.displayedScreen === 'controls') {
-    drawControlsScreen()
-  }
-
-  if (gameState.displayedScreen === 'highscores') {
-    drawHighscores()
-  }
-
-  if (gameState.displayedScreen === 'manual') {
-    drawManual()
-  }
-}
-
-function drawControlsScreen() {
-  canvasContext.fillText(gameState.gameLoaded < 100 ? `Loading: ${gameState.gameLoaded}%` : 'Press S to start', canvas.width / 2, canvas.height / 3)
-  canvasContext.fillText(gameState.gameLoaded < 100 ? gameState.loadingAnimation : '', canvas.width / 2, canvas.height / 3 + 50)
-  canvasContext.fillText('Controls', canvas.width / 2, canvas.height / 2 + 50)
-  canvasContext.fillText('Left: A', canvas.width / 2, canvas.height / 2 + 100)
-  canvasContext.fillText('Right: D', canvas.width / 2, canvas.height / 2 + 150)
-  canvasContext.fillText('Shoot: W', canvas.width / 2, canvas.height / 2 + 200)
-
-  if (gameState.loadingAnimation.length < 3) gameState.loadingAnimation += '.'
-  if (gameState.loadingAnimation.length >= 3) gameState.loadingAnimation = ''
-}
-
-function drawHighscores() {
-  canvasContext.fillText('Highscores', canvas.width / 2, 70)
-
-  if (!gameState.highScores || gameState.highScores.length <= 1) {
-    canvasContext.textAlign = 'left'
-    canvasContext.fillText('Loading...', 20, 50 + 140)
-  }
-  else for (let i = 0; i < 8; i++) {
-    canvasContext.textAlign = 'left'
-    canvasContext.fillText(i + 1 + ' ' + gameState.highScores[i].Player, 20, i * 50 + 140)
-    canvasContext.textAlign = 'right'
-    canvasContext.fillText(gameState.highScores[i].Score, canvas.width - 20, i * 50 + 140)
-  }
-}
-
-function drawManual() {
-  canvasContext.fillText('Points', canvas.width / 2, 70)
-  canvasContext.textAlign = 'left'
-  canvasContext.fillText('GREEN Shot ', 20, 140)
-  canvasContext.fillText('RED Shot ', 20, 220)
-  canvasContext.fillText('BLUE Shot ', 20, 300)
-  canvasContext.drawImage(asteroidImage, 30, 350, 50, 50)
-  canvasContext.drawImage(images.enemyShip, 30, 430, 50, 50)
-  canvasContext.drawImage(images.snakeHead, 30, 505, 50, 50)
-  canvasContext.textAlign = 'right'
-  canvasContext.fillText('1x PTS', canvas.width - 20, 140)
-  canvasContext.fillText('2x PTS', canvas.width - 20, 220)
-  canvasContext.fillText('3x PTS', canvas.width - 20, 300)
-  canvasContext.fillText('5 PTS', canvas.width - 20, 380)
-  canvasContext.fillText('30 PTS', canvas.width - 20, 460)
-  canvasContext.fillText('10 PTS', canvas.width - 20, 540)
-}
-
-function drawAsteroids() {
-  canvasContext.textAlign = 'center'
-  canvasContext.fillStyle = 'white'
-  canvasContext.fillText(`${gameState.enemyshipCount}/${gameState.enemiesRequired}`, canvas.width / 2, canvas.height / 2 + 100)
-  asteroids.forEach(roid => {
-    if(roid.hit) return
-    canvasContext.drawImage(roid.image, roid.x, roid.y, roid.width, roid.height)
-  })
-}
-
-function drawEnemyShip(obj) {
-  if (obj.lives > 0) {
-    canvasContext.drawImage(images.enemyShip, obj.x, obj.y, 50, 50)
-  }
-  if (obj.lives % 1 !== 0) {
-    canvasContext.drawImage(images.explosion, obj.x, obj.y, 50, 50)
-  }
-}
-
-function drawEnemyShot(obj) {
-  if (obj.shotFired) {
-    canvasContext.fillStyle = 'red'
-    canvasContext.fillRect(obj.shotX, obj.shotY, 10, 20)
-    canvasContext.fillRect(obj.shotX2, obj.shotY, 10, 20)
-  }
-}
-
-function drawSnake() {
-  canvasContext.filter = `hue-rotate(${snake.color}deg)`
-  snake.elements.forEach((element, index) => {
-    drawSnakeElement(index+1, element.x, element.y, element.image)
-  })
-  canvasContext.filter = 'none'
-}
-
-function drawSnakeElement(lives, x, y, element) {
-  if (snake.lives >= lives) {
-    canvasContext.drawImage(gameState.score >= 1000 ? images.trumpHead : element, x, y, 40, 40)
-  }
-  if (snake.lives === lives - 0.5) {
-    canvasContext.drawImage(images.explosion, x, y, 40, 40)
-  }
 }
 
 function moveEnemyShip(obj) {
@@ -913,7 +648,7 @@ function moveAsteroid(obj) {
     obj.y += obj.speed + 1
   }
   if (obj.y > canvas.height) {
-    obj.y = -50
+    obj.y = -100
   }
 }
 
@@ -1000,12 +735,17 @@ function hitDetectionSingle(obj) {
     obj.image.src = imageSources.explosion
     spaceship.shot.shotFired = false
     spaceship.shot.y = 600
+
+    const maxAsteroidY = 350
+    const minAsteroidY = 20
+    const maxAsteroidX = 350
+    const minAsteroidX = 20
     setTimeout(() => {
       obj.hit = true
       obj.countBlocker = false
       obj.image.src = imageSources.asteroid
-      obj.y = -(Math.random() * (350 - 20)) + 20
-      obj.x = (Math.random() * (350 - 20)) + 20
+      obj.y = -(Math.random() * (maxAsteroidY - minAsteroidY)) + minAsteroidY
+      obj.x = (Math.random() * (maxAsteroidX - minAsteroidX)) + minAsteroidX
     }, 100)
     setTimeout(() => obj.hit = false, 2000)
 
@@ -1018,6 +758,285 @@ function hitDetectionSingle(obj) {
     endLevel()
   }
 }
+
+// _______________________________________________________________
+// CONTROLS
+
+function changeTouchPosition(event) {
+  touchControls.active = true
+  touchControls.x = event.targetTouches ? event.targetTouches[0].pageX - canvas.offsetLeft : event.offsetX
+  if (!buttonsPressed.s) {
+    buttonsPressed.s = true
+    gameState.score = 0
+    startGame()
+  }
+}
+
+function keyDownHandler(event) {
+  if (event.key === 'a' || event.key === 'ArrowLeft') {
+    buttonsPressed.a = true
+  }
+  else if (event.key === 'd' || event.key === 'ArrowRight') {
+    buttonsPressed.d = true
+  }
+  else if (event.key === 'w' || event.key === 'ArrowUp') {
+    buttonsPressed.w = true
+  }
+}
+
+function keyUpHandler(event) {
+  if (event.key === 'a' || event.key === 'ArrowLeft') {
+    buttonsPressed.a = false
+  }
+  else if (event.key === 'd' || event.key === 'ArrowRight') {
+    buttonsPressed.d = false
+  }
+  else if (event.key === 'w' || event.key === 'ArrowUp') {
+    buttonsPressed.w = false
+  }
+}
+
+// _______________________________________________________________
+// DRAW GRAPHICS
+
+function drawSpaceshipAnimation() {
+  canvasContext.fillStyle = 'black'
+  canvasContext.fillRect(0, 0, canvas.width, canvas.height)
+  canvasContext.drawImage(images.background, 0, gameState.backgroundScrollPosition)
+  canvasContext.fillStyle = 'limegreen'
+  canvasContext.textAlign = 'center'
+  canvasContext.fillText(gameState.score === 0 ? 'Save earth!' : 'Next round!', canvas.width / 2, canvas.height / 2)
+  canvasContext.fillText(gameState.bonusScore > 0 ? `Bonus Score: ${gameState.bonusScore}` : '', canvas.width / 2, canvas.height / 2 + 50)
+  canvasContext.drawImage(images.playerShip, spaceship.x, spaceship.y - 60, spaceship.width, spaceship.height)
+  spaceship.y -= 5
+  if (gameState.backgroundScrollPosition < 80) gameState.backgroundScrollPosition += 1.2
+  if (spaceship.y < -50) {
+      startNextRound()
+  }
+}
+
+function drawEverything() {
+  canvasContext.fillStyle = 'black'
+  canvasContext.fillRect(0, 0, canvas.width, canvas.height)
+  canvasContext.drawImage(images.background, 0, gameState.backgroundScrollPosition)
+  drawShipAndShot()
+  drawScore()
+
+  if (gameState.state === gameStates.titleScreen) {
+    canvasContext.fillStyle = 'black'
+    canvasContext.fillRect(0, 0, canvas.width, canvas.height)
+    canvasContext.textAlign = 'center'
+    canvasContext.fillStyle = 'limegreen'
+    drawStartScreen()
+  }
+
+  if (gameState.state === gameStates.spaceshipAnimation) {
+    drawSpaceshipAnimation()
+  }
+
+  if (gameState.state === gameStates.asteroidsRound) {
+    drawAsteroids()
+  }
+
+  if (gameState.state === gameStates.enemyShipRound) {
+    drawEnemyShip(enemyShip1)
+    drawEnemyShip(enemyShip2)
+    drawEnemyShot(enemyShip1)
+    drawEnemyShot(enemyShip2)
+  }
+
+  if (gameState.state === gameStates.snakeRound) {
+    drawSnake()
+  }
+
+  if (gameState.state === gameStates.gameOver) {
+    drawGameOverScreen()
+  }
+
+  requestAnimationFrame(drawEverything)
+}
+
+function drawScore() {
+  canvasContext.textAlign = 'start'
+  canvasContext.fillStyle = 'limegreen'
+  canvasContext.fillText('Score', 12, 30)
+  canvasContext.fillText('Hi-Score', 25 + canvas.width / 2, 30)
+  canvasContext.fillStyle = 'white'
+  canvasContext.fillText(gameState.score, 12, 60)
+  canvasContext.fillText(gameState.highScore, 25 + canvas.width / 2, 60)
+}
+
+function drawGameOverScreen() {
+  canvasContext.fillStyle = 'black'
+  canvasContext.fillRect(0, 0, canvas.width, canvas.height)
+  canvasContext.fillStyle = 'limegreen'
+  canvasContext.textAlign = 'center'
+  canvasContext.fillText('Game over', canvas.width / 2, canvas.height / 2 - 100)
+  canvasContext.fillText('Score: ' + gameState.score, canvas.width / 2, canvas.height / 2 - 50)
+  nameInput.style.display = 'block'
+  nameInput.focus()
+  if (gameState.isHighScore) {
+    canvasContext.fillText('New Highscore', canvas.width / 2, 100)
+  }
+}
+
+function drawShipAndShot() {
+  let fillColor
+  switch (gameState.multiplier) {
+    case 2: fillColor = 'red'; break
+    case 3: fillColor = 'blue'; break
+    default: fillColor = 'limegreen'
+  }
+
+  canvasContext.fillStyle = fillColor
+  canvasContext.drawImage(spaceship.playerKilled ? images.explosion : images.playerShip, spaceship.x, spaceship.y - 60, spaceship.width, spaceship.height)
+  canvasContext.fillRect(spaceship.shot.x, spaceship.shot.y, spaceship.shot.width, spaceship.shot.height)
+  canvasContext.fillStyle = 'limegreen'
+}
+
+function drawStartScreen() {
+  gameState.timer += 1
+  if (!gameState.highScoresLoaded && !gameState.highScoresLoading) {
+    gameState.highScoresLoading = true
+    fetch('https://shooter-backend-vercel.vercel.app/api/getHighscores')
+        .then(response => response.json())
+        .then(data => gameState.highScores = data)
+        .then(() => {
+          gameState.highScore = gameState.highScores[0]?.Score || 1000
+          gameState.highScoresLoaded = true
+          gameState.highScoresLoading = false
+        })
+        .catch(() => gameState.highScoresLoading = false)
+  }
+  if (gameState.timer % 500 === 0 && gameState.highScoresLoaded) {
+    gameState.timer = 0
+    if (gameState.displayedScreen === 'controls') {
+      gameState.displayedScreen.displayedScreen = 'manual'
+      return
+    }
+    if (gameState.displayedScreen.displayedScreen === 'manual') {
+      gameState.displayedScreen = 'highscores'
+      return
+    }
+    else gameState.displayedScreen = 'controls'
+  }
+  if (gameState.displayedScreen === 'controls') {
+    drawControlsScreen()
+  }
+
+  if (gameState.displayedScreen === 'highscores') {
+    drawHighscores()
+  }
+
+  if (gameState.displayedScreen === 'manual') {
+    drawManual()
+  }
+}
+
+function drawControlsScreen() {
+  canvasContext.fillText(gameState.gameLoaded < 100 ? `Loading: ${gameState.gameLoaded}%` : 'Press S to start', canvas.width / 2, canvas.height / 3)
+  canvasContext.fillText(gameState.gameLoaded < 100 ? gameState.loadingAnimation : '', canvas.width / 2, canvas.height / 3 + 50)
+  canvasContext.fillText('Controls', canvas.width / 2, canvas.height / 2 + 50)
+  canvasContext.fillText('Left: A', canvas.width / 2, canvas.height / 2 + 100)
+  canvasContext.fillText('Right: D', canvas.width / 2, canvas.height / 2 + 150)
+  canvasContext.fillText('Shoot: W', canvas.width / 2, canvas.height / 2 + 200)
+
+  if (gameState.loadingAnimation.length < 3) gameState.loadingAnimation += '.'
+  if (gameState.loadingAnimation.length >= 3) gameState.loadingAnimation = ''
+}
+
+function drawHighscores() {
+  canvasContext.fillText('Highscores', canvas.width / 2, 70)
+
+  if (!gameState.highScores || gameState.highScores.length <= 1) {
+    canvasContext.textAlign = 'left'
+    canvasContext.fillText('Loading...', 20, 50 + 140)
+  }
+  else for (let i = 0; i < 8; i++) {
+    canvasContext.textAlign = 'left'
+    canvasContext.fillText(i + 1 + ' ' + gameState.highScores[i].Player, 20, i * 50 + 140)
+    canvasContext.textAlign = 'right'
+    canvasContext.fillText(gameState.highScores[i].Score, canvas.width - 20, i * 50 + 140)
+  }
+}
+
+function drawManual() {
+  canvasContext.fillText('Points', canvas.width / 2, 70)
+  canvasContext.textAlign = 'left'
+  canvasContext.fillText('GREEN Shot ', 20, 140)
+  canvasContext.fillText('RED Shot ', 20, 220)
+  canvasContext.fillText('BLUE Shot ', 20, 300)
+  canvasContext.drawImage(asteroidImage, 30, 350, 50, 50)
+  canvasContext.drawImage(images.enemyShip, 30, 430, 50, 50)
+  canvasContext.drawImage(images.snakeHead, 30, 505, 50, 50)
+  canvasContext.textAlign = 'right'
+  canvasContext.fillText('1x PTS', canvas.width - 20, 140)
+  canvasContext.fillText('2x PTS', canvas.width - 20, 220)
+  canvasContext.fillText('3x PTS', canvas.width - 20, 300)
+  canvasContext.fillText('5 PTS', canvas.width - 20, 380)
+  canvasContext.fillText('30 PTS', canvas.width - 20, 460)
+  canvasContext.fillText('10 PTS', canvas.width - 20, 540)
+}
+
+function drawAsteroids() {
+  canvasContext.textAlign = 'center'
+  canvasContext.fillStyle = 'white'
+  canvasContext.fillText(`${gameState.enemyshipCount}/${gameState.enemiesRequired}`, canvas.width / 2, canvas.height / 2 + 100)
+  asteroids.forEach(roid => {
+    if(roid.hit) return
+    canvasContext.drawImage(roid.image, roid.x, roid.y, roid.width, roid.height)
+  })
+}
+
+function drawEnemyShip(obj) {
+  if (obj.lives > 0) {
+    canvasContext.drawImage(images.enemyShip, obj.x, obj.y, obj.width, obj.height)
+  }
+  if (obj.lives % 1 !== 0) {
+    canvasContext.drawImage(images.explosion, obj.x, obj.y, obj.width, obj.height)
+  }
+}
+
+function drawEnemyShot(obj) {
+  if (obj.shotFired) {
+    canvasContext.fillStyle = 'red'
+    canvasContext.fillRect(obj.shotX, obj.shotY, obj.shotWidth, obj.shotHeight)
+    canvasContext.fillRect(obj.shotX2, obj.shotY, obj.shotWidth, obj.shotHeight)
+  }
+}
+
+function drawSnake() {
+  canvasContext.filter = `hue-rotate(${snake.color}deg)`
+  snake.elements.forEach((element, index) => {
+    drawSnakeElement(index+1, element.x, element.y, element.image)
+  })
+  canvasContext.filter = 'none'
+}
+
+function drawSnakeElement(lives, x, y, element) {
+  if (snake.lives >= lives) {
+    canvasContext.drawImage(gameState.score >= 1000 ? images.trumpHead : element, x, y, snake.elementWidth, snake.elementHeight)
+  }
+  if (snake.lives === lives - 0.5) {
+    canvasContext.drawImage(images.explosion, x, y, snake.elementWidth, snake.elementHeight)
+  }
+}
+
+function setVolume(value) {
+  gameState.volume = value === 0 ? 0 : value * 2 / 10
+  const volumeElements = Array.from(document.getElementsByClassName('volume-item'))
+  volumeElements.forEach(element => {
+    element.innerHTML = element.dataset.value > value ? '&#9645;' : '&#11036;'
+  })
+  for (let key in sounds) {
+    if (sounds[key] instanceof Audio) {
+      sounds[key].volume = gameState.volume
+    }
+  }
+}
+
+// _______________________________________________________________
+// INITIALIZE GAME
 
 window.onload = () => {
   if (!gameState.highScoresLoaded) {
@@ -1056,4 +1075,35 @@ window.onload = () => {
       gameState.state = gameStates.spaceshipAnimation
       buttonsPressed.s = true
     }}, 1000/30)
+}
+
+document.getElementById('highscore-form').onsubmit = function (event) {
+  event.preventDefault()
+  submitHighScore(event)
+}
+
+function submitHighScore(event) {
+  event.preventDefault()
+  let player = nameInput.value
+  if (player.length === 0) {
+    player = 'Player'
+  }
+  const data = { Player: player, Score: gameState.score }
+  fetch('https://shooter-backend-vercel.vercel.app/api/postHighscore', {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+      .then(response => response.json())
+      .catch(err => console.log(err))
+  nameInput.value = ''
+  buttonsPressed.s = false
+  nameInput.style.display = 'none'
+  gameState.highScoresLoaded = false
+  gameState.state = gameStates.titleScreen
+  gameState.round = rounds.snake
+  resetGame()
 }
