@@ -1,5 +1,6 @@
 // _______________________________________________________________
 // HTML ELEMENTS
+// _______________________________________________________________
 
 const canvas = document.getElementById('game-canvas')
 const canvasContext = canvas.getContext('2d')
@@ -8,6 +9,7 @@ canvasContext.font = '24px retro'
 
 // _______________________________________________________________
 // IMAGES
+// _______________________________________________________________
 
 const imageSources = {
   playerShip: './images/shooter/spaceship.png',
@@ -17,7 +19,7 @@ const imageSources = {
   asteroid: './images/shooter/asteroid.png',
   explosion: './images/shooter/explosion.png',
   trumpHead: './images/shooter/trumphead.png',
-  background: './images/shooter/space-pixel-background.jpg'
+  background: './images/shooter/background.jpg'
 }
 
 const images = {
@@ -43,6 +45,7 @@ function loadImages() {
 
 // _______________________________________________________________
 // SOUNDS
+// _______________________________________________________________
 
 const soundSources = {
   laserEnemy: './sounds/shooter/laser-enemy.wav',
@@ -95,6 +98,7 @@ function loadSounds() {
 
 // _______________________________________________________________
 // GAME DATA
+// _______________________________________________________________
 
 const gameStates = {
   titleScreen: 'displaying title screen',
@@ -129,7 +133,7 @@ const gameState = {
   enemyShipCount: 0,
   enemiesRequired: 8,
   musicRunning: false,
-  backgroundScrollPosition: -300,
+  backgroundScrollPosition: -1900,
   gameLoaded: 0,
   displayedScreen: 'controls',
   volume: 1,
@@ -297,6 +301,7 @@ function startGame() {
 
 // _______________________________________________________________
 // GAME LOGIC
+// _______________________________________________________________
 
 function runGame() {
   moveShip()
@@ -369,9 +374,6 @@ function resetAsteroids() {
 }
 
 function gameOver() {
-  if (gameState.round === rounds.asteroids && Math.floor(gameState.backgroundScrollPosition / 10) + 30 <= 0) {
-    handleGameover()
-  }
   if (gameState.round === rounds.snake && snake.elements[2].y >= 450) {
     handleGameover()
   }
@@ -422,7 +424,6 @@ function handleGameover() {
   clearInterval(intervals.enemies)
   clearInterval(intervals.game)
   clearInterval(intervals.background)
-  gameState.backgroundScrollPosition = -300
   gameState.enemiesRequired = 6
   sounds.gameMusic.playbackRate = 0.5
   gameState.musicRunning  = false
@@ -518,7 +519,7 @@ function resetGame() {
   buttonsPressed.d = false
   buttonsPressed.w = false
   spaceship.shot.shotFired = false
-  gameState.backgroundScrollPosition = -220
+  gameState.backgroundScrollPosition = -1900
   gameState.enemyshipCount = 0
   gameState.bonusScore = 0
 }
@@ -585,7 +586,7 @@ function moveShot() {
 
 function moveBackground() {
   if (gameState.backgroundScrollPosition < 140) {
-    gameState.backgroundScrollPosition += 0.8
+    gameState.backgroundScrollPosition += 4
   }
 }
 
@@ -717,6 +718,9 @@ function hitDetectionSingle(obj) {
     handleGameover()
     return
   }
+
+  if (!spaceship.shot.shotFired) return
+
   if (spaceship.shot.y <= obj.y + obj.height && spaceship.shot.y >= obj.y &&
       spaceship.shot.x >= obj.x - 10 && spaceship.shot.x + spaceship.shot.width <= obj.x + obj.width) {
     if (!obj.countBlocker) {
@@ -751,7 +755,7 @@ function hitDetectionSingle(obj) {
 
   }
   if (gameState.enemyshipCount === gameState.enemiesRequired) {
-    gameState.bonusScore = (Math.floor((140 - gameState.backgroundScrollPosition) / 4)) * gameState.multiplier
+    gameState.bonusScore = (Math.floor((140 - gameState.backgroundScrollPosition) / 10)) * gameState.multiplier
     gameState.score += gameState.bonusScore
     gameState.enemyshipCount = 0
     gameState.enemiesRequired += 2
@@ -761,6 +765,7 @@ function hitDetectionSingle(obj) {
 
 // _______________________________________________________________
 // CONTROLS
+// _______________________________________________________________
 
 function changeTouchPosition(event) {
   touchControls.active = true
@@ -798,6 +803,7 @@ function keyUpHandler(event) {
 
 // _______________________________________________________________
 // DRAW GRAPHICS
+// _______________________________________________________________
 
 function drawSpaceshipAnimation() {
   canvasContext.fillStyle = 'black'
@@ -809,7 +815,7 @@ function drawSpaceshipAnimation() {
   canvasContext.fillText(gameState.bonusScore > 0 ? `Bonus Score: ${gameState.bonusScore}` : '', canvas.width / 2, canvas.height / 2 + 50)
   canvasContext.drawImage(images.playerShip, spaceship.x, spaceship.y - 60, spaceship.width, spaceship.height)
   spaceship.y -= 5
-  if (gameState.backgroundScrollPosition < 80) gameState.backgroundScrollPosition += 1.2
+  if (gameState.backgroundScrollPosition < 80) gameState.backgroundScrollPosition += 2.5
   if (spaceship.y < -50) {
       startNextRound()
   }
@@ -1022,21 +1028,9 @@ function drawSnakeElement(lives, x, y, element) {
   }
 }
 
-function setVolume(value) {
-  gameState.volume = value === 0 ? 0 : value * 2 / 10
-  const volumeElements = Array.from(document.getElementsByClassName('volume-item'))
-  volumeElements.forEach(element => {
-    element.innerHTML = element.dataset.value > value ? '&#9645;' : '&#11036;'
-  })
-  for (let key in sounds) {
-    if (sounds[key] instanceof Audio) {
-      sounds[key].volume = gameState.volume
-    }
-  }
-}
-
 // _______________________________________________________________
 // INITIALIZE GAME
+// _______________________________________________________________
 
 window.onload = () => {
   if (!gameState.highScoresLoaded) {
@@ -1052,7 +1046,12 @@ window.onload = () => {
 
   loadImages()
   loadSounds()
+
+  const volumeFromSessionStorage = sessionStorage.getItem('volume')
+  if (volumeFromSessionStorage) setVolume(parseFloat(volumeFromSessionStorage))
+
   requestAnimationFrame(drawEverything)
+
   canvas.addEventListener('touchstart', changeTouchPosition, false)
   canvas.addEventListener('touchmove', changeTouchPosition, false)
   canvas.addEventListener('touchend', function () { touchControls.active = false })
@@ -1106,4 +1105,22 @@ function submitHighScore(event) {
   gameState.state = gameStates.titleScreen
   gameState.round = rounds.snake
   resetGame()
+}
+
+// _______________________________________________________________
+// VOLUME CONTROL
+// _______________________________________________________________
+
+function setVolume(value) {
+  gameState.volume = value === 0 ? 0 : value * 2 / 10
+  sessionStorage.setItem('volume', value)
+  const volumeElements = Array.from(document.getElementsByClassName('volume-item'))
+  volumeElements.forEach(element => {
+    element.innerHTML = element.dataset.value > value ? '&#9645;' : '&#11036;'
+  })
+  for (let key in sounds) {
+    if (sounds[key] instanceof Audio) {
+      sounds[key].volume = gameState.volume
+    }
+  }
 }
