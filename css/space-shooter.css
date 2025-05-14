@@ -188,8 +188,8 @@ h2 {
   }
 }
 
-@media (max-width: 1199px) {
-  article {
-    display: none;
+@media (min-width: 1200px) and (min-height: 1200px) {
+  .game-wrapper {
+    zoom: 1.5;
   }
 }
