@@ -204,9 +204,9 @@ const items = {
 }
 
 /*
-_________________
+###########################
 GAME LOGIC
-_________________
+###########################
  */
 
 function movePlayer() {
@@ -694,23 +694,6 @@ function runVictoryAnimation() {
     jumpingPlayerAnimation()
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 ###########################
 DRAWING LGOIC
@@ -873,43 +856,15 @@ function drawAll() {
         drawIntroMessage()
     }
     if (gameState.state === states.wallLevel) {
-        showShadow()
-        disableImageSmoothing()
-        ctx.drawImage(sprites.backgrounds.ruin, 0, 0, canvasWidth, canvasHeight)
-        drawTreasure()
-        drawKey()
-        drawPlayer()
-        drawWall()
-        drawBat(enemies.bats[0])
-        removeShadow()
-        drawPickupMessage(items.key)
-        drawPickupMessage(items.treasure)
-        drawScoreBoard()
+        drawWallLevel()
     }
 
     if (gameState.state === states.batLevel) {
-        showShadow()
-        disableImageSmoothing()
-        ctx.drawImage(sprites.backgrounds.ruin, 0, 0, canvasWidth, canvasHeight)
-        drawPlayer()
-        drawTreasure()
-        drawKey()
-        enemies.bats.forEach(bat => drawBat(bat))
-        enemies.randomBats.forEach(bat => drawBat(bat))
-        removeShadow()
-        drawPickupMessage(items.treasure)
-        drawPickupMessage(items.key)
-        drawScoreBoard()
+        drawBatLevel()
     }
 
     if (gameState.state === states.lavaLevel) {
-        showShadow()
-        disableImageSmoothing()
-        ctx.drawImage(gameState.backgroundLavaLevel, 0, 0, canvasWidth, canvasHeight)
-        drawBridges()
-        drawPlayer()
-        removeShadow()
-        drawScoreBoard()
+        drawLavaLevel()
     }
 
     if (gameState.state === states.nextRoundMessage) {
@@ -925,6 +880,46 @@ function drawAll() {
     }
 
     requestAnimationFrame(drawAll)
+}
+
+function drawWallLevel() {
+    showShadow()
+    disableImageSmoothing()
+    ctx.drawImage(sprites.backgrounds.ruin, 0, 0, canvasWidth, canvasHeight)
+    drawTreasure()
+    drawKey()
+    drawPlayer()
+    drawWall()
+    drawBat(enemies.bats[0])
+    removeShadow()
+    drawPickupMessage(items.key)
+    drawPickupMessage(items.treasure)
+    drawScoreBoard()
+}
+
+function drawBatLevel() {
+    showShadow()
+    disableImageSmoothing()
+    ctx.drawImage(sprites.backgrounds.ruin, 0, 0, canvasWidth, canvasHeight)
+    drawPlayer()
+    drawTreasure()
+    drawKey()
+    enemies.bats.forEach(bat => drawBat(bat))
+    enemies.randomBats.forEach(bat => drawBat(bat))
+    removeShadow()
+    drawPickupMessage(items.treasure)
+    drawPickupMessage(items.key)
+    drawScoreBoard()
+}
+
+function drawLavaLevel() {
+    showShadow()
+    disableImageSmoothing()
+    ctx.drawImage(gameState.backgroundLavaLevel, 0, 0, canvasWidth, canvasHeight)
+    drawBridges()
+    drawPlayer()
+    removeShadow()
+    drawScoreBoard()
 }
 
 /*
