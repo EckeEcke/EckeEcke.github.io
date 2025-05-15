@@ -11,16 +11,16 @@ body {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    /*preventing text selecting in mobile view*/
-    overscroll-behavior-y: contain;
-    /*preventing scroll reload in mobile view */
     background-color: black;
     font-family: pixelFont, serif;
     min-height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin: 0;
+    overscroll-behavior: none
 }
 
 @media (min-width: 800px) and (min-height: 800px) {
