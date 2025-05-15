@@ -372,6 +372,21 @@ article div {
   opacity: 1;
 }
 
+.contact-icons {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.contact-icon,
+.contact-icon svg {
+  height: 48px;
+  width: 48px;
+}
+
+.contact-icon path {
+  fill: rgb(94, 234, 212);
+}
 
 @keyframes arrow-animation {
   0%, 32% {
