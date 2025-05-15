@@ -35,7 +35,7 @@ let gamepad2Connected = false
 
 let canvasContext
 
-const trophiesVersionId = 1
+const trophiesVersionId = 2
 
 let trophies = {
   firstWin: {
@@ -47,6 +47,16 @@ let trophies = {
     message: '20 consecutive rallies',
     unlocked: false,
     id: 'rallies-trophy',
+  },
+  powerShot: {
+    message: 'perform a powershot',
+    unlocked: false,
+    id: 'powershot-trophy',
+  },
+  sliceShot: {
+    message: 'perform a sliceshot',
+    unlocked: false,
+    id: 'sliceshot-trophy',
   },
   miniPaddle: {
     message: 'win game with mini paddle',
@@ -67,6 +77,11 @@ let trophies = {
     message: 'win multiplayer game',
     unlocked: false,
     id: 'multiplayer-trophy',
+  },
+  zeroGoals: {
+    message: 'win without conceding a goal',
+    unlocked: false,
+    id: 'zero-goals-trophy',
   },
   openSettings: {
     message: 'open the settings',
@@ -632,6 +647,11 @@ const handleAchievedTrophies = (p1Wins) => {
     achievedTrophies.push(trophies.firstWin)
   }
 
+  if (p1Wins && !trophies.zeroGoals.unlocked && paddle2.score === 0) {
+    trophies.zeroGoals.unlocked = true
+    achievedTrophies.push(trophies.zeroGoals)
+  }
+
   if (p1Wins && settings.amountObstacles > 1 && !trophies.obstacles.unlocked) {
     trophies.obstacles.unlocked = true
     achievedTrophies.push(trophies.obstacles)
@@ -716,6 +736,8 @@ const collision = (paddle, upBTN, downBTN) => {
       ball.x += isPressedRight ? 5 : 0
       ball.speedX = isPressedRight ? 10 : 5
       animateCollisionP1()
+
+      if (!trophies.powerShot.unlocked && isPressedRight) unlockTrophy(trophies.powerShot)
     }
 
     if (paddle2.collision) {
@@ -730,10 +752,12 @@ const collision = (paddle, upBTN, downBTN) => {
 
     if (isPressedDown && ball.speedY < 0) {
       ball.speedY -= 1
+      if (!trophies.sliceShot.unlocked) unlockTrophy(trophies.sliceShot)
     }
 
     if (isPressedUp && ball.speedY > 0) {
       ball.speedY += 1
+      if (!trophies.sliceShot.unlocked) unlockTrophy(trophies.sliceShot)
     }
     buttonsPressed.left && paddle2.collision ? playSound(sounds.bounce, 16) : playSound(sounds.bounce, 0.5)
     isPressedRight && paddle1.collision ? playSound(sounds.bounce, 16) : playSound(sounds.bounce, 0.5)
