@@ -77,6 +77,10 @@ article {
   text-align: center;
 }
 
+.canvas-wrapper {
+  position: relative;
+}
+
 .content-wrapper {
   display: flex;
   flex-direction: column;
@@ -100,7 +104,8 @@ button {
 
 #start-button,
 #start-button-2p,
-#settings-button {
+#settings-button,
+#restart-button {
   border-radius: 20px;
   padding: 12px;
   font-size: 1.2em;
@@ -109,6 +114,20 @@ button {
   transition: .3s;
   margin: 2rem auto;
   min-width: 300px;
+}
+
+.restart-button-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: flex-end;
+}
+
+#restart-button {
+  display: none;
 }
 
 #fullscreen-button {
@@ -201,10 +220,11 @@ button {
 #start-button:hover,
 #start-button-2p:hover,
 #settings-button:hover,
-.dialog-buttons button:hover {
+.dialog-buttons button:hover,
+#restart-button:hover{
   background-color: white;
   color: red;
-  transform: scale(1.1);
+  scale: 1.1;
 }
 
 dialog h2 {

@@ -557,6 +557,11 @@ const drawCenteredText = (text, x, y) => {
 
 const drawVictoryMessage = () => {
   const p1Wins = paddle1.score > paddle2.score
+  canvasContext.fillStyle = p1Wins ? 'green' : 'red'
+  canvasContext.fillRect(0,0,canvasWidth / 2, canvasHeight)
+  canvasContext.fillStyle = p1Wins ? 'red' : 'green'
+  canvasContext.fillRect(canvasWidth / 2,0,canvasWidth / 2, canvasHeight)
+  drawScore()
   trophyImage.classList.remove('trophy-hidden')
   trophyImage.classList.add(p1Wins ? 'trophy-p1' : 'trophy-p2')
   const message1 = p1Wins ? 'Win' : 'Lose'
@@ -615,7 +620,7 @@ const checkGameOver = () => {
     handleAchievedTrophies(p1Wins)
     if (p2Wins && settings.isSinglePlayer) playSound(sounds.lose)
     else playSound(sounds.victory)
-    setTimeout(() => window.location.reload(), 10000)
+    setTimeout(() => document.getElementById('restart-button').style.display = 'block', 2000)
   }
 }
 

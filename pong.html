@@ -21,8 +21,12 @@
 
   <div class="content-wrapper">
     <h1>Pong</h1>
-
-    <canvas id="game-canvas" width="800px" height="600px"></canvas>
+    <div class="canvas-wrapper">
+      <canvas id="game-canvas" width="800px" height="600px"></canvas>
+      <div class="restart-button-wrapper">
+        <button id="restart-button" onclick="window.location.reload()">PLAY AGAIN</button>
+      </div>
+    </div>
 
     <img src="images/pong/trophy.gif" alt="trophy for winner" id="trophy" class="trophy-hidden" />
 
