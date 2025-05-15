@@ -35,9 +35,14 @@ let gamepad2Connected = false
 
 let canvasContext
 
-const trophiesVersionId = 2
+const trophiesVersionId = 3
 
 let trophies = {
+  firstGoal: {
+    message: 'Score your first goal',
+    unlocked: false,
+    id: 'goal-trophy'
+  },
   firstWin: {
     message: 'win a game',
     unlocked: false,
@@ -69,7 +74,7 @@ let trophies = {
     id: 'highest-difficulty-trophy',
   },
   obstacles: {
-    message: 'win with two obstacles',
+    message: 'win with maximum obstacles',
     unlocked: false,
     id: 'obstacles-trophy',
   },
@@ -155,6 +160,14 @@ const obstacle1 = {
 const obstacle2 = {
   x: canvasWidth / 2 - 5,
   y: -750,
+  width: 10,
+  height: 100,
+  collision: false,
+}
+
+const obstacle3 = {
+  x: canvasWidth / 2 - 5,
+  y: -1050,
   width: 10,
   height: 100,
   collision: false,
@@ -453,6 +466,7 @@ const resetAfterScore = () => {
     settings.gameSpeedModifier = 0
     obstacle1.y = -450
     obstacle2.y = -750
+    obstacle3.y = -1050
     animationOpacity = 0
     ball.x = 395
     ball.y = 300
@@ -591,6 +605,9 @@ const setScore = () => {
 
   if (scoredByP1) {
     paddle1.score++
+    if (!trophies.firstGoal.unlocked) {
+      unlockTrophy(trophies.firstGoal)
+    }
   }
 
   if (scoredByP2) {
@@ -657,7 +674,7 @@ const handleAchievedTrophies = (p1Wins) => {
     achievedTrophies.push(trophies.zeroGoals)
   }
 
-  if (p1Wins && settings.amountObstacles > 1 && !trophies.obstacles.unlocked) {
+  if (p1Wins && settings.amountObstacles === parseInt(inputs.obstacles.max) && !trophies.obstacles.unlocked) {
     trophies.obstacles.unlocked = true
     achievedTrophies.push(trophies.obstacles)
   }
@@ -721,6 +738,7 @@ const collision = (paddle, upBTN, downBTN) => {
   if (withinXRange && withinYRange && !paddle.collision) {
     obstacle1.collision = false
     obstacle2.collision = false
+    obstacle3.collision = false
     const isRightSide = ball.x > canvasWidth / 2
     paddle1.collision = !isRightSide
     paddle2.collision = isRightSide
@@ -772,17 +790,20 @@ const collision = (paddle, upBTN, downBTN) => {
 const collisionWithObstacle = () => {
   const hasAtLeastOneObstacle = settings.amountObstacles >= 1
   const hasTwoObstacles = settings.amountObstacles >= 2
+  const hasThreeObstacles = settings .amountObstacles >= 3
   if (!hasAtLeastOneObstacle) return
   const withinXRange = ball.x > obstacle1.x - 5 && ball.x < obstacle1.x + 15
   const withinYRange =
       (ball.y >= obstacle1.y - settings.tolerance && ball.y < obstacle1.y - 1 + obstacle1.height + settings.tolerance) ||
-      (hasTwoObstacles && ball.y >= obstacle2.y - settings.tolerance && ball.y < obstacle2.y - 1 + obstacle1.height + settings.tolerance)
-  const collisionWithObstacle = obstacle1.collision || obstacle2.collision
+      (hasTwoObstacles && ball.y >= obstacle2.y - settings.tolerance && ball.y < obstacle2.y - 1 + obstacle1.height + settings.tolerance) ||
+      (hasThreeObstacles && ball.y >= obstacle3.y - settings.tolerance && ball.y < obstacle3.y - 1 + obstacle1.height + settings.tolerance)
+  const collisionWithObstacle = obstacle1.collision || obstacle2.collision || obstacle3.collision
   if (withinXRange && withinYRange && !collisionWithObstacle) {
     playSound(sounds.bounceWall)
     ball.directionX = -ball.directionX
     obstacle1.collision = true
     obstacle2.collision = true
+    obstacle3.collision = true
     paddle1.collision = false
     paddle2.collision = false
   }
@@ -824,14 +845,18 @@ const drawGoalAnimation = () => {
 const drawObstacles = () => {
   const hasAtLeastOneObstacle = settings.amountObstacles >= 1
   const hasTwoObstacles = settings.amountObstacles >= 2
+  const hasThreeObstacles = settings.amountObstacles >= 3
   if (!hasAtLeastOneObstacle) return
 
   roundedRect(obstacle1.x , obstacle1.y, obstacle1.width, obstacle1.height, 4, '#ff0000ee')
   if (hasTwoObstacles) roundedRect(obstacle2.x , obstacle2.y, obstacle2.width, obstacle2.height, 4, '#ff0000ee')
+  if (hasThreeObstacles) roundedRect(obstacle3.x , obstacle3.y, obstacle3.width, obstacle3.height, 4, '#ff0000ee')
   obstacle1.y++
   obstacle2.y++
-  if (obstacle1.y > canvasHeight + 100) obstacle1.y = -100
-  if (obstacle2.y > canvasHeight + 100) obstacle2.y = -100
+  obstacle3.y++
+  if (obstacle1.y > canvasHeight + 100) obstacle1.y = -200
+  if (obstacle2.y > canvasHeight + 100) obstacle2.y = -200
+  if (obstacle3.y > canvasHeight + 100) obstacle3.y = -200
 }
 
 const drawPlayingField = () => {

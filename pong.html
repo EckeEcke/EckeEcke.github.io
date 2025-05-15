@@ -97,7 +97,7 @@
       <label for="difficulty-cpu">Difficulty CPU</label>
     </div>
     <div class="option-wrapper">
-      <input name=obstacles" class="option-input" type="range" min=0 max=2 value="0" id="obstacles" />
+      <input name=obstacles" class="option-input" type="range" min=0 max=3 value="0" id="obstacles" />
       <label for="obstacles">Amount Obstacles</label>
     </div>
     <div class="dialog-buttons">
@@ -108,6 +108,10 @@
 
   <dialog id="modal-trophies">
     <h2>TROPHIES</h2>
+    <div id="goal-trophy" class="trophy-wrapper">
+      <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
+      <span class="trophy-message">Score your first goal</span>
+    </div>
     <div id="win-trophy" class="trophy-wrapper">
       <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
       <span class="trophy-message">Win a game</span>
@@ -134,7 +138,7 @@
     </div>
     <div id="obstacles-trophy" class="trophy-wrapper">
       <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
-      <span class="trophy-message">Win with 2 obstacles</span>
+      <span class="trophy-message">Win with maximum obstacles</span>
     </div>
     <div id="multiplayer-trophy" class="trophy-wrapper">
       <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
