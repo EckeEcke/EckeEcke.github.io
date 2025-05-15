@@ -286,6 +286,7 @@ const unlockGithubTrophy = () => {
 }
 
 const openTrophies = () => {
+  if (settings.goalAnimationRunning) return
   if (settings.gameState === gameStates.gameRunning) clearInterval(runGame)
   playSound(sounds.buttonClick)
   modalTrophies.showModal()
@@ -294,7 +295,8 @@ const openTrophies = () => {
 const closeTrophies = () => {
   playSound(sounds.buttonClick)
   modalTrophies.close()
-  if (settings.gameState === gameStates.gameRunning){
+  clearInterval(runGame)
+  if (settings.gameState === gameStates.gameRunning) {
     runGame = setInterval(gameLoop, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
   }
 }
