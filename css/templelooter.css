@@ -16,7 +16,17 @@ body {
     /*preventing scroll reload in mobile view */
     background-color: black;
     font-family: pixelFont, serif;
-    max-height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+}
+
+@media (min-width: 800px) and (min-height: 800px) {
+    .game-wrapper {
+        zoom: 1.5;
+    }
 }
 
 canvas {
@@ -45,7 +55,6 @@ h1 {
     font-family: pixelFont, serif;
     text-align: center;
     color: white;
-    margin-top: 80px;
 }
 
 .btn-wrapper {
