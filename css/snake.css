@@ -13,6 +13,17 @@ body {
         justify-content: center;
     }
 }
+
+@media (min-width: 1000px) and (min-height: 900px) {
+    .game-wrapper {
+        zoom: 1.5;
+    }
+}
+
+h1 {
+    margin-bottom: 32px;
+}
+
 #game {
     max-width: 100vw;
     height: 350px;

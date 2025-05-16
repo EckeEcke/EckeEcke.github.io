@@ -9,14 +9,18 @@
         <link rel="stylesheet" href="css/snake.css">
     </head>
     <body>
-        <div class="scoreboard-wrapper">
-            <h2>SCORE <span id="score">0</span></h2>
-            <h2>LEVEL <span id="level">1</span></h2>
+        <div class="game-wrapper">
+            <h1>ISOMER SNAKE</h1>
+            <div class="scoreboard-wrapper">
+                <h2>SCORE <span id="score">0</span></h2>
+                <h2>LEVEL <span id="level">1</span></h2>
+            </div>
+            <div id="canvas-wrapper">
+                <canvas id="game" height="700px" width="1000px"></canvas>
+                <h2 id="message"><button onclick="startGame()">START</button></h2>
+            </div>
         </div>
-        <div id="canvas-wrapper">
-            <canvas id="game" height="700px" width="1000px"></canvas>
-            <h2 id="message"><button onclick="startGame()">START</button></h2>
-        </div>
+
         <script src="https://cdnjs.cloudflare.com/ajax/libs/isomer/0.2.6/isomer.min.js"></script>
         <script src="js/snake.js"></script>
     </body>

@@ -196,29 +196,22 @@ const keyUpHandler = (event) => {
 }
 
 const moveSnake = (demo) => {
-    snake.forEach((element,index) => {
+    snake.forEach((element, index) => {
         if (!demo && index === 0) return
+
         const moves = demo ? element.demoMoves : element.moves
+        if (moves.length === 0) return
 
-        if(moves[0] === 'up'){
-            element.y += 0.5
-        }
-        if(moves[0] === 'down'){
-            element.y -= 0.5
-        }
-        if(moves[0] === 'left'){
-            element.x -= 0.5
-        }
-        if(moves[0] === 'right'){
-            element.x += 0.5
-        }
+        if (moves[0] === 'up') element.y += 0.5
+        if (moves[0] === 'down') element.y -= 0.5
+        if (moves[0] === 'left') element.x -= 0.5
+        if (moves[0] === 'right') element.x += 0.5
 
+        const currentMove = moves.shift()
         if (demo) {
-            element.demoMoves = element.demoMoves.slice(1);
-            element.demoMoves.push(element.demoMoves[0]);
+            element.demoMoves.push(currentMove)
         } else {
-            element.moves = element.moves.slice(1);
-            element.moves.push(direction);
+            element.moves.push(direction)
         }
     })
     allowDirectionChange = true
