@@ -917,10 +917,10 @@ function drawStartScreen() {
   if (gameState.timer % 500 === 0 && gameState.highScoresLoaded) {
     gameState.timer = 0
     if (gameState.displayedScreen === 'controls') {
-      gameState.displayedScreen.displayedScreen = 'manual'
+      gameState.displayedScreen = 'manual'
       return
     }
-    if (gameState.displayedScreen.displayedScreen === 'manual') {
+    if (gameState.displayedScreen === 'manual') {
       gameState.displayedScreen = 'highscores'
       return
     }
