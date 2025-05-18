@@ -386,7 +386,7 @@ const checkGameOver = () => {
 
 const animateGameOver = () => {
     let height = 0.5
-    let animation = setInterval(()=>{
+    const animation = setInterval(()=>{
         drawPlayfield()
         drawElements(height)
         messageBox.innerHTML = "<button onclick='location.reload()'>RETRY</button>"
@@ -395,13 +395,6 @@ const animateGameOver = () => {
         } else clearInterval(animation)
     },1000/60)
 }
-
-const setCanvasSize = () => {
-    canvas.innerWidth = document.getElementById('canvas-wrapper').clientWidth
-    canvas.innerHeight = 0.7 * document.getElementById('canvas-wrapper').clientWidth
-}
-
-setCanvasSize()
 
 const showDemo = () => {
     moveSnake(true)
@@ -413,7 +406,6 @@ gameState.intervals.demo = setInterval(showDemo,500)
 
 document.addEventListener('keydown', keyDownHandler, false)
 document.addEventListener('keyup', keyUpHandler, false)
-document.addEventListener('resize', setCanvasSize, false)
 window.addEventListener('keydown', (e) => {
     const keys = [' ', 'ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown']
     if (keys.includes(e.key)) {
