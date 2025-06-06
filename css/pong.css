@@ -23,7 +23,18 @@ body {
 
 * {
   font-family: retro, serif;
+}
+
+body.neon-mode * {
   text-shadow: 0 0 8px #55ffff99;
+}
+
+body.sepia-mode {
+  filter: sepia(1);
+}
+
+body.black-and-white {
+  filter: grayscale(1);
 }
 
 canvas {
@@ -262,6 +273,10 @@ dialog {
   margin: 0;
   width: 80px;
   accent-color: black;
+}
+
+.option-input[type="checkbox"] {
+  height: 20px;
 }
 
 #volume-control {

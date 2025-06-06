@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="images/favicon.png" />
 </head>
 
-<body class="crt">
+<body class="crt neon-mode">
   
   <audio src="sounds/pong/bounce.wav" id="bounce"></audio>
   <audio src="sounds/pong/goal1.mpga" id="goal"></audio>
@@ -100,6 +100,18 @@
       <input name=obstacles" class="option-input" type="range" min=0 max=3 value="0" id="obstacles" />
       <label for="obstacles">Amount Obstacles</label>
     </div>
+    <div class="option-wrapper">
+      <input name=neon-mode" class="option-input" type="checkbox" checked id="neon-mode" />
+      <label for="neon-mode">Neon</label>
+    </div>
+    <div class="option-wrapper">
+      <input name=black-and-white-mode" class="option-input" type="checkbox" id="black-and-white-mode" />
+      <label for="black-and-white-mode">Black and white</label>
+    </div>
+    <div class="option-wrapper">
+      <input name=sepia-mode" class="option-input" type="checkbox" id="sepia-mode" />
+      <label for="sepia-mode">Sepia</label>
+    </div>
     <div class="dialog-buttons">
       <button onclick="location.reload()">Cancel</button>
       <button onclick="closeSettings()">Confirm</button>
@@ -151,6 +163,14 @@
     <div id="settings-trophy" class="trophy-wrapper">
       <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
       <span class="trophy-message">Open the settings</span>
+    </div>
+    <div id="black-and-white-trophy" class="trophy-wrapper">
+      <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
+      <span class="trophy-message">Play a game in black and white</span>
+    </div>
+    <div id="sepia-trophy" class="trophy-wrapper">
+      <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />
+      <span class="trophy-message">Play a game in sepia</span>
     </div>
     <div id="github-trophy" class="trophy-wrapper">
       <img class="trophy-icon" src="images/pong/trophy.gif" alt="trophy-icon" />

@@ -15,6 +15,9 @@ const inputs = {
   paddleSize: document.getElementById('paddle-size'),
   difficultyCPU: document.getElementById('difficulty-cpu'),
   obstacles: document.getElementById('obstacles'),
+  neonMode: document.getElementById('neon-mode'),
+  sepiaMode: document.getElementById('sepia-mode'),
+  blackAndWhiteMode: document.getElementById('black-and-white-mode')
 }
 
 const sounds = {
@@ -35,7 +38,7 @@ let gamepad2Connected = false
 
 let canvasContext
 
-const trophiesVersionId = 3
+const trophiesVersionId = 4
 
 let trophies = {
   firstGoal: {
@@ -97,7 +100,17 @@ let trophies = {
     message: 'open my github link',
     unlocked: false,
     id: 'github-trophy',
-  }
+  },
+  blackAndWhite: {
+    message: 'play a game in black and white',
+    unlocked: false,
+    id: 'black-and-white-trophy'
+  },
+  sepia: {
+    message: 'play a game in sepia',
+    unlocked: false,
+    id: 'sepia-trophy'
+  },
 }
 
 const gameStates = {
@@ -119,6 +132,7 @@ const settings = {
   font: '48px retro',
   paddleHeight: parseInt(inputs.paddleSize.value),
   goalAnimationRunning: false,
+  isNeonMode: inputs.neonMode.checked
 }
 
 const ball = {
@@ -226,6 +240,23 @@ inputs.paddleSize.addEventListener('change', () => {
   paddle2.height = settings.paddleHeight
 })
 
+inputs.neonMode.addEventListener('change', () => {
+  settings.isNeonMode = inputs.neonMode.checked
+  document.body.classList.toggle('neon-mode')
+})
+
+inputs.sepiaMode.addEventListener('change', () => {
+  document.body.classList.toggle('sepia-mode')
+  document.body.classList.remove('black-and-white')
+  inputs.blackAndWhiteMode.checked = false
+})
+
+inputs.blackAndWhiteMode.addEventListener('change', () => {
+  document.body.classList.toggle('black-and-white')
+  document.body.classList.remove('sepia-mode')
+  inputs.sepiaMode.checked = false
+})
+
 inputs.difficultyCPU.addEventListener('change', () => settings.difficultyCPU = parseInt(inputs.difficultyCPU.value))
 
 inputs.pointsToWin.addEventListener('change', () => {
@@ -324,8 +355,10 @@ const startGame = (singlePlayer) => {
   settings.isSinglePlayer = singlePlayer
   canvas.style.display = 'block'
   canvasContext = canvas.getContext('2d')
-  canvasContext.shadowBlur = 4
-  canvasContext.shadowColor = '#55ffff99'
+  if (settings.isNeonMode) {
+    canvasContext.shadowBlur = 4
+    canvasContext.shadowColor = '#55ffff99'
+  }
   runGame = setInterval(gameLoop, 1000 / (settings.gameSpeed + settings.gameSpeedModifier))
   generalButtons.style.display = 'none'
 }
@@ -651,7 +684,7 @@ const checkTrophiesInLocalStorage = () => {
   const trophiesVersionIdFromStorage = localStorage.getItem('trophies-version-id')
   if (!trophiesVersionIdFromStorage || JSON.parse(trophiesVersionIdFromStorage) !== trophiesVersionId) return
 
-  const trophiesFromStorage = localStorage.getItem('trophies')
+  const trophiesFromStorage = localStorage.getItem('trophies-pong')
 
   if(!trophiesFromStorage) return
 
@@ -700,8 +733,18 @@ const handleAchievedTrophies = (p1Wins) => {
     achievedTrophies.push(trophies.miniPaddle)
   }
 
+  if (inputs.blackAndWhiteMode.checked && !trophies.blackAndWhite.unlocked) {
+    trophies.blackAndWhite.unlocked = true
+    achievedTrophies.push(trophies.blackAndWhite)
+  }
+
+  if (inputs.sepiaMode.checked && !trophies.sepia.unlocked) {
+    trophies.sepia.unlocked = true
+    achievedTrophies.push(trophies.sepia)
+  }
+
   localStorage.setItem('trophies-version-id', JSON.stringify(trophiesVersionId))
-  localStorage.setItem('trophies', JSON.stringify(trophies))
+  localStorage.setItem('trophies-pong', JSON.stringify(trophies))
 
   achievedTrophies.forEach((item, index) => {
     setTimeout(() => {
@@ -729,7 +772,7 @@ const showTrophyToast = (trophy) => {
 const unlockTrophy = (trophy) => {
   trophy.unlocked = true
   localStorage.setItem('trophies-version-id', JSON.stringify(trophiesVersionId))
-  localStorage.setItem('trophies', JSON.stringify(trophies))
+  localStorage.setItem('trophies-pong', JSON.stringify(trophies))
   showTrophyToast(trophy)
 }
 
@@ -929,11 +972,14 @@ const volumeFromSessionStorage = window.sessionStorage.getItem('volume')
 if (volumeFromSessionStorage) setVolume(parseFloat(volumeFromSessionStorage))
 
 const roundedRect = (x, y, width, height, radius, color) => {
-  canvasContext.shadowColor = color
-  if (color === '#000000') canvasContext.shadowColor = '#ffffff'
-  canvasContext.shadowBlur = 8
-  canvasContext.shadowOffsetX = 0
-  canvasContext.shadowOffsetY = 0
+  canvasContext.save()
+  if (settings.isNeonMode) {
+    canvasContext.shadowColor = color
+    if (color === '#000000') canvasContext.shadowColor = '#ffffff'
+    canvasContext.shadowBlur = 8
+    canvasContext.shadowOffsetX = 0
+    canvasContext.shadowOffsetY = 0
+  }
 
   canvasContext.fillStyle = color
   canvasContext.strokeStyle = color
@@ -945,7 +991,7 @@ const roundedRect = (x, y, width, height, radius, color) => {
   canvasContext.stroke()
   canvasContext.closePath()
 
-  canvasContext.shadowColor = '#ffffff'
+  canvasContext.restore()
 }
 
 const tileWidth = 20
