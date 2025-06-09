@@ -15,6 +15,7 @@ const inputs = {
   paddleSize: document.getElementById('paddle-size'),
   difficultyCPU: document.getElementById('difficulty-cpu'),
   obstacles: document.getElementById('obstacles'),
+  crtMode: document.getElementById('crt-mode'),
   neonMode: document.getElementById('neon-mode'),
   sepiaMode: document.getElementById('sepia-mode'),
   blackAndWhiteMode: document.getElementById('black-and-white-mode')
@@ -239,6 +240,8 @@ inputs.paddleSize.addEventListener('change', () => {
   paddle1.height = settings.paddleHeight
   paddle2.height = settings.paddleHeight
 })
+
+inputs.crtMode.addEventListener('change', () => document.body.classList.toggle('crt'))
 
 inputs.neonMode.addEventListener('change', () => {
   settings.isNeonMode = inputs.neonMode.checked
