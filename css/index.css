@@ -477,7 +477,7 @@ article div {
   display:flex; 
   gap: 1.5rem;
   max-width: 100vw; 
-  padding: 0 1rem; 
+  padding: 0 1rem;
   margin: 7rem auto; 
   flex-direction: column;
 }
@@ -494,6 +494,13 @@ article div {
 .demo-section article {
   margin: 1rem 0;
   text-wrap: balance;
+  max-width: min(100%, 600px);
+}
+
+@media (min-width: 489px) {
+  .demo-section {
+    padding: 0 2rem;
+  }
 }
 
 @media (min-width: 1200px){

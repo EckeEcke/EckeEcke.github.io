@@ -354,7 +354,6 @@ const runGame = ()=>{
     moveSnakeHead()
     moveSnake(false)
     checkGameOver()
-    setCanvasSize()
 }
 
 const startGame = () => {
