@@ -584,6 +584,7 @@ article div {
   width: 280px;
   height: 100%;
   background: radial-gradient(circle, rgba(15, 23, 42, 1) 0%, rgba(1, 4, 10, 1) 50%, rgba(10, 5, 10, 1) 100%);
+  border: 2px solid rgb(94, 234, 212);
   color: #fff;
   overflow: hidden;
   z-index: 2500;
