@@ -91,27 +91,32 @@ const loadDrawing = () => {
 }
 
 const saveDrawing = () => {
-    fetch('https://drawings-backend.vercel.app/api/postDrawing', {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
+    const confirmed = confirm('Do you want to post your drawing in the drawings gallery?')
+    if (confirmed) {
+        fetch('https://drawings-backend.vercel.app/api/postDrawing', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                image: canvas.toDataURL(),
+                createdAt: new Date().toISOString(),
+                creator: 'Chris',
+            })
+        })
+            .then(response => response.json())
+            .catch(err => console.log(err))
+
+        drawings.push({
             image: canvas.toDataURL(),
             createdAt: new Date().toISOString(),
             creator: 'Chris',
         })
-    })
-        .then(response => response.json())
-        .catch(err => console.log(err))
+        displayDrawingsGallery()
+        toggleDisplay()
+    }
     localStorage.setItem('drawing', canvas.toDataURL())
-    drawings.push({
-        image: canvas.toDataURL(),
-        createdAt: new Date().toISOString(),
-        creator: 'Chris',
-    })
-    displayDrawingsGallery()
 }
 
 const deleteDrawing = () => {
