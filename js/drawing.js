@@ -1,6 +1,7 @@
 const colorSelect = document.getElementById("color-select")
 const lineSelect = document.getElementById("line-width")
 const saveButton = document.getElementById("save-button")
+const downloadButton = document.getElementById("download-button")
 const drawButton = document.getElementById("draw-button")
 const deleteButton = document.getElementById("delete-button")
 const eraseButton = document.getElementById("erase-button")
@@ -39,6 +40,7 @@ const initialize = () => {
     canvas.addEventListener('mouseleave', stopDrawing)
     canvas.addEventListener('touchend', stopDrawing)
     saveButton.addEventListener('click', saveDrawing)
+    downloadButton.addEventListener('click', downloadDrawing)
     deleteButton.addEventListener('click', deleteDrawing)
     drawButton.addEventListener('click', toggleDraw)
     eraseButton.addEventListener('click', toggleErase)
@@ -120,11 +122,26 @@ const saveDrawing = () => {
     localStorage.setItem('drawing', canvas.toDataURL())
 }
 
+const downloadDrawing = () => {
+    const dataURL = canvas.toDataURL('image/png')
+
+    const downloadLink = document.createElement('a')
+    downloadLink.href = dataURL
+    downloadLink.download = 'drawing.png'
+
+    document.body.appendChild(downloadLink)
+
+    downloadLink.click()
+
+    document.body.removeChild(downloadLink)
+}
+
 const deleteDrawing = () => {
     if('drawing' in localStorage) {
         localStorage.removeItem('drawing')
     }
     saveButton.disabled = true
+    downloadButton.disabled = true
     canvasContext.fillStyle = 'white'
     canvasContext.fillRect(0,0,canvas.width,canvas.height)
 }
@@ -143,6 +160,7 @@ const setDrawing = (event) => {
     if(!startedDrawing) initialize()
     startedDrawing = true
     saveButton.disabled = false
+    downloadButton.disabled = false
 
     const x = Math.floor(event.targetTouches ?
         event.targetTouches[0].pageX - canvas.offsetLeft :

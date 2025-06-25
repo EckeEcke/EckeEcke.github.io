@@ -150,7 +150,8 @@ input[type="color"]:hover {
     border-left: none;
 }
 
-#save-button:disabled {
+#save-button:disabled,
+#download-button:disabled {
     opacity: 0.3;
 }
 
