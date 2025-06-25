@@ -11,8 +11,14 @@
     </head>
     <body>
     <div class="toggle-buttons">
-        <button id="drawing-button" class="active">Draw something</button>
-        <button id="gallery-button">Watch Gallery</button>
+        <button id="drawing-button" class="active">
+            Draw
+            <span class="iconify" data-icon="fluent:hand-draw-16-regular"></span>
+        </button>
+        <button id="gallery-button">
+            Gallery
+            <span class="iconify" data-icon="solar:gallery-bold"></span>
+        </button>
     </div>
         <div id="gallery-wrapper" class="hidden">
             <div id="drawings-gallery"></div>
@@ -21,7 +27,7 @@
             <p id="portrait-mode-message">Please use portrait mode to start drawing 🙏🏻</p>
             <canvas id="game-canvas"></canvas>
             <div id="UI">
-                <input id="color-select" type="color" value="#FF0000">
+                <input id="color-select" type="color" value="#BB99CD">
                 <select id="line-width">
                     <option value="2">2pt</option>
                     <option value="4">4pt</option>
@@ -38,8 +44,8 @@
                 <button id="erase-button">
                     <span class="iconify" data-icon="oui:eraser"></span>
                 </button>
-                <button id="save-button">
-                    <span class="iconify" data-icon="mi:save"></span>
+                <button id="save-button" disabled>
+                    <span class="iconify" data-icon="uil:image-upload"></span>
                 </button>
                 <button id="delete-button">
                     <span class="iconify" data-icon="mi:delete"></span>

@@ -49,7 +49,7 @@ const initialize = () => {
 
 window.onload = () => {
     initialize()
-    canvasContext.fillStyle = '#00838f'
+    canvasContext.fillStyle = '#643579'
     canvasContext.font = '40px myFont'
     canvasContext.textAlign = 'center'
     canvasContext.fillText('Drawing App', canvas.width/2, canvas.height/2-20)
@@ -115,6 +115,7 @@ const saveDrawing = () => {
         })
         displayDrawingsGallery()
         toggleDisplay()
+        saveButton.disabled = true
     }
     localStorage.setItem('drawing', canvas.toDataURL())
 }
@@ -123,6 +124,7 @@ const deleteDrawing = () => {
     if('drawing' in localStorage) {
         localStorage.removeItem('drawing')
     }
+    saveButton.disabled = true
     canvasContext.fillStyle = 'white'
     canvasContext.fillRect(0,0,canvas.width,canvas.height)
 }
@@ -140,6 +142,7 @@ const setDrawing = (event) => {
     event.preventDefault()
     if(!startedDrawing) initialize()
     startedDrawing = true
+    saveButton.disabled = false
 
     const x = Math.floor(event.targetTouches ?
         event.targetTouches[0].pageX - canvas.offsetLeft :
@@ -309,7 +312,7 @@ const displayDrawingsGallery = () => {
         galleryContainer.innerHTML = ''
     }
 
-    drawings.forEach((entry, index) => {
+    drawings.forEach((entry) => {
         const img = new Image()
         img.src = entry.image
         galleryContainer.appendChild(img)
