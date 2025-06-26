@@ -10,6 +10,9 @@
         <link rel="manifest" href="./images/drawing-app/site.webmanifest">
     </head>
     <body>
+    <div class="pattern-container">
+        <div class="pattern-animator"></div>
+    </div>
     <div class="toggle-buttons">
         <button id="drawing-button" class="active">
             Draw
@@ -20,42 +23,42 @@
             <span class="iconify" data-icon="solar:gallery-bold"></span>
         </button>
     </div>
-        <div id="gallery-wrapper" class="hidden">
-            <div id="drawings-gallery"></div>
+    <div id="gallery-wrapper" class="hidden">
+        <div id="drawings-gallery"></div>
+    </div>
+    <div id="wrapper">
+        <p id="portrait-mode-message">Please use portrait mode to start drawing 🙏🏻</p>
+        <canvas id="game-canvas"></canvas>
+        <div id="UI">
+            <input id="color-select" type="color" value="#BB99CD">
+            <select id="line-width">
+                <option value="2">2pt</option>
+                <option value="4">4pt</option>
+                <option selected value="6">6pt</option>
+                <option value="8">8pt</option>
+                <option value="10">10pt</option>
+            </select>
+            <button id="draw-button">
+                <span class="iconify" data-icon="streamline:pen-draw-remix"></span>
+            </button>
+            <button id="bucket-button">
+                <span class="iconify" data-icon="streamline-plump:paint-bucket-remix"></span>
+            </button>
+            <button id="erase-button">
+                <span class="iconify" data-icon="oui:eraser"></span>
+            </button>
+            <button id="save-button" disabled>
+                <span class="iconify" data-icon="uil:image-upload"></span>
+            </button>
+            <button id="download-button" disabled>
+                <span class="iconify" data-icon="uil:image-download"></span>
+            </button>
+            <button id="delete-button">
+                <span class="iconify" data-icon="mi:delete"></span>
+            </button>
         </div>
-        <div id="wrapper">
-            <p id="portrait-mode-message">Please use portrait mode to start drawing 🙏🏻</p>
-            <canvas id="game-canvas"></canvas>
-            <div id="UI">
-                <input id="color-select" type="color" value="#BB99CD">
-                <select id="line-width">
-                    <option value="2">2pt</option>
-                    <option value="4">4pt</option>
-                    <option selected value="6">6pt</option>
-                    <option value="8">8pt</option>
-                    <option value="10">10pt</option>
-                </select>
-                <button id="draw-button">
-                    <span class="iconify" data-icon="streamline:pen-draw-remix"></span>
-                </button>
-                <button id="bucket-button">
-                    <span class="iconify" data-icon="streamline-plump:paint-bucket-remix"></span>
-                </button>
-                <button id="erase-button">
-                    <span class="iconify" data-icon="oui:eraser"></span>
-                </button>
-                <button id="save-button" disabled>
-                    <span class="iconify" data-icon="uil:image-upload"></span>
-                </button>
-                <button id="download-button" disabled>
-                    <span class="iconify" data-icon="uil:image-download"></span>
-                </button>
-                <button id="delete-button">
-                    <span class="iconify" data-icon="mi:delete"></span>
-                </button>
-            </div>
-        </div>
-        <script src="./js/drawing.js"></script>
-        <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
+    </div>
+    <script src="./js/drawing.js"></script>
+    <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
     </body>
 </html>
