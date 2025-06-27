@@ -45,8 +45,6 @@ const initialize = () => {
     drawButton.addEventListener('click', toggleDraw)
     eraseButton.addEventListener('click', toggleErase)
     bucketButton.addEventListener('click', toggleBucket)
-
-    loadDrawing()
 }
 
 window.onload = () => {
@@ -78,17 +76,6 @@ const setCanvasSize = () => {
     if(window.innerWidth < 800 && window.innerWidth/window.innerHeight > 0.7) {
         canvas.width = window.innerWidth*0.8
         canvas.height = window.innerWidth
-    }
-}
-
-const loadDrawing = () => {
-    if('drawing' in localStorage) {
-        const drawingURL = localStorage.getItem('drawing')
-        const image = new Image()
-        image.src = drawingURL
-        image.onload = () => {
-            canvasContext.drawImage(image,0,0)
-        }
     }
 }
 
@@ -127,7 +114,6 @@ const saveDrawing = () => {
         toggleDisplay()
         saveButton.disabled = true
     }
-    localStorage.setItem('drawing', canvas.toDataURL())
 }
 
 const downloadDrawing = () => {
@@ -145,9 +131,6 @@ const downloadDrawing = () => {
 }
 
 const deleteDrawing = () => {
-    if('drawing' in localStorage) {
-        localStorage.removeItem('drawing')
-    }
     saveButton.disabled = true
     downloadButton.disabled = true
     canvasContext.fillStyle = 'white'
@@ -329,16 +312,15 @@ const floodFill = (startX, startY, fillColor) => {
 }
 
 const displayDrawingsGallery = () => {
-    let galleryContainer = document.getElementById('drawings-gallery')
-    if (!galleryContainer) {
-        galleryContainer = document.createElement('div')
-        galleryContainer.id = 'drawings-gallery'
-        document.body.appendChild(galleryContainer)
-    } else {
-        galleryContainer.innerHTML = ''
-    }
+    const galleryContainer = document.getElementById('drawings-gallery')
 
-    drawings.forEach((entry) => {
+    galleryContainer.innerHTML = ''
+
+    const sortedDrawings = [...drawings].sort((a, b) =>
+        new Date(b.createdAt) - new Date(a.createdAt)
+    )
+
+    sortedDrawings.forEach((entry) => {
         const img = new Image()
         img.src = entry.image
         galleryContainer.appendChild(img)
