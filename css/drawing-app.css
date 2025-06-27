@@ -162,7 +162,6 @@ input[type="color"]:hover {
     position: fixed;
     top: 0;
     width: 100%;
-    box-shadow: rgba(17, 12, 46, 0.15) 0 48px 100px 0;
 }
 
 #gallery-button,
