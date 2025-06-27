@@ -144,6 +144,7 @@ input[type="color"]:hover {
     gap: 12px;
     flex-wrap: wrap;
     margin: 56px 0;
+    padding-bottom: 32px;
     width: min(1400px, 100%);
     justify-content: center;
 }
@@ -152,6 +153,7 @@ input[type="color"]:hover {
     height: auto;
     width: 400px;
     max-width: 100%;
+    box-shadow: rgba(17, 12, 46, 0.15) 0 48px 100px 0;
 }
 
 .toggle-buttons {
@@ -160,6 +162,7 @@ input[type="color"]:hover {
     position: fixed;
     top: 0;
     width: 100%;
+    box-shadow: rgba(17, 12, 46, 0.15) 0 48px 100px 0;
 }
 
 #gallery-button,
