@@ -217,6 +217,33 @@ input[type="color"]:hover {
     display: none!important;
 }
 
+#upload-success-toast {
+    position: fixed;
+    bottom: 2px;
+    right: 2px;
+    color: white;
+    background: rgba(0,128,0,0.9);
+    padding: 16px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+#upload-fail-toast {
+    position: fixed;
+    bottom: 2px;
+    right: 2px;
+    color: white;
+    background: rgba(222,0,0,0.9);
+    padding: 16px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+#upload-success-toast.inactive,
+#upload-fail-toast.inactive {
+    bottom: -100px;
+}
+
 @media (max-width: 550px){
     #UI {
         width: 100vw;
@@ -235,5 +262,6 @@ input[type="color"]:hover {
 
     #portrait-mode-message {
         display: block;
+        color: white;
     }
 }

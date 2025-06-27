@@ -108,7 +108,15 @@ const saveDrawing = () => {
             })
         })
             .then(response => response.json())
-            .catch(err => console.log(err))
+            .then(() => {
+                document.getElementById('upload-success-toast').classList.remove('inactive')
+                setTimeout(() => document.getElementById('upload-success-toast').classList.add('inactive'), 2000)
+            })
+            .catch(err => {
+                document.getElementById('upload-fail-toast').classList.remove('inactive')
+                setTimeout(() => document.getElementById('upload-fail-toast').classList.add('inactive'), 2000)
+                console.log(err)
+            })
 
         drawings.push({
             image: canvas.toDataURL(),
