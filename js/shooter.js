@@ -561,7 +561,6 @@ function runEnemies() {
     activeAsteroids().forEach(asteroid => {
       asteroid.moveAsteroid()
       asteroid.detectCollisionWithShip()
-      console.log(activeShots().length)
       activeShots().forEach(shot => asteroid.detectCollisionWithShot(shot))
     })
 
