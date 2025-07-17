@@ -34,13 +34,22 @@ const images = {
 }
 
 function loadImages() {
-  images.snakeHead.src = imageSources.snakeHead
-  images.snakeBody.src = imageSources.snakeBody
-  images.enemyShip.src = imageSources.enemyShip
-  images.trumpHead.src = imageSources.trumpHead
-  images.background.src = imageSources.background
-  images.playerShip.src = imageSources.playerShip
-  images.explosion.src = imageSources.explosion
+    images.snakeHead.onload = () => gameState.gameLoaded += 5
+    images.snakeBody.onload = () => gameState.gameLoaded += 5
+    images.enemyShip.onload = () => gameState.gameLoaded += 5
+    images.trumpHead.onload = () => gameState.gameLoaded += 5
+    images.background.onload = () => gameState.gameLoaded += 5
+    images.playerShip.onload = () => gameState.gameLoaded += 5
+    images.explosion.onload = () => gameState.gameLoaded += 10
+    images.asteroid.onload = () => gameState.gameLoaded += 10
+    images.snakeHead.src = imageSources.snakeHead
+    images.snakeBody.src = imageSources.snakeBody
+    images.enemyShip.src = imageSources.enemyShip
+    images.trumpHead.src = imageSources.trumpHead
+    images.background.src = imageSources.background
+    images.playerShip.src = imageSources.playerShip
+    images.explosion.src = imageSources.explosion
+    images.asteroid.src = imageSources.asteroid
 }
 
 // _______________________________________________________________
@@ -76,23 +85,23 @@ const sounds = {
 function loadSounds() {
   sounds.laserEnemy = new Audio(soundSources.laserEnemy)
   sounds.laser = new Audio(soundSources.laser)
-  sounds.laser.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.laser.onloadeddata = () => gameState.gameLoaded += 5
   sounds.laser2 = new Audio(soundSources.laser2)
-  sounds.laser2.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.laser2.onloadeddata = () => gameState.gameLoaded += 5
   sounds.laser3 = new Audio(soundSources.laser3)
-  sounds.laser3.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.laser3.onloadeddata = () => gameState.gameLoaded += 5
   sounds.powerup = new Audio(soundSources.powerup)
-  sounds.powerup.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.powerup.onloadeddata = () => gameState.gameLoaded += 5
   sounds.alertSound = new Audio(soundSources.alertSound)
-  sounds.alertSound.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.alertSound.onloadeddata = () => gameState.gameLoaded += 5
   sounds.hitSound = new Audio(soundSources.hitSound)
-  sounds.hitSound.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.hitSound.onloadeddata = () => gameState.gameLoaded += 5
   sounds.spaceshipSound = new Audio(soundSources.spaceshipSound)
-  sounds.spaceshipSound.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.spaceshipSound.onloadeddata = () => gameState.gameLoaded += 5
   sounds.loseSound = new Audio(soundSources.loseSound)
-  sounds.loseSound.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.loseSound.onloadeddata = () => gameState.gameLoaded += 5
   sounds.gameMusic = new Audio(soundSources.gameMusic)
-  sounds.gameMusic.onloadeddata = () => gameState.gameLoaded += 10
+  sounds.gameMusic.onloadeddata = () => gameState.gameLoaded += 5
   sounds.gameMusic.loop = true
 }
 
@@ -151,139 +160,368 @@ const touchControls = {
   active: false,
 }
 
-const spaceship = {
-  x: 150,
-  y: 580,
-  width: 80,
-  height: 100,
-  canon: {
-    y: 520,
-    x: 200,
-  },
-  shot: {
-    x: null,
-    y: null,
-    width: 10,
-    height: 20,
-    shotFired: false,
-  },
-  playerKilled: false,
-  hitSomething: false,
-}
+// _______________________________________________________________
+// PLAYER
+// _______________________________________________________________
 
-asteroidImage = new Image()
-asteroidImage.src = imageSources.asteroid
-asteroidImage2 = new Image()
-asteroidImage2.src = imageSources.asteroid
-asteroidImage3 = new Image()
-asteroidImage3.src = imageSources.asteroid
-asteroidImage4 = new Image()
-asteroidImage4.src = imageSources.asteroid
-asteroidImage5 = new Image()
-asteroidImage5.src = imageSources.asteroid
-asteroidImage6 = new Image()
-asteroidImage6.src = imageSources.asteroid
-
-const asteroids = [
-  {
-    x: 100,
-    y: -50,
-    width: 30,
-    height: 30,
-    hit: false,
-    image: asteroidImage,
-    countBlocker: false,
-    speed: 2,
-  },
-  {
-    x: 200,
-    y: -100,
-    width: 40,
-    height: 40,
-    hit: false,
-    image: asteroidImage2,
-    countBlocker: false,
-    speed: 2.4,
-  },
-  {
-    x: 300,
-    y: -200,
-    width: 60,
-    height: 60,
-    hit: false,
-    image: asteroidImage3,
-    countBlocker: false,
-    speed: 1.6,
-  },
-  {
-    x: 150,
-    y: -300,
-    width: 80,
-    height: 80,
-    hit: false,
-    image: asteroidImage4,
-    countBlocker: false,
-    speed: 2.4,
-  },
-  {
-    x: 250,
-    y: -350,
-    width: 80,
-    height: 80,
-    hit: false,
-    image: asteroidImage5,
-    countBlocker: false,
-    speed: 2.8,
-  },
-  {
-    x: 50,
-    y: -150,
-    width: 30,
-    height: 30,
-    hit: false,
-    image: asteroidImage6,
-    countBlocker: false,
-    speed: 3.6,
+class Player {
+  constructor() {
+    this.x = 150
+    this.y = 580
+    this.width = 80
+    this.height = 100
+    this.killed = false
+    this.shotCoolDown = false
   }
-]
 
-const enemyShip1 = {
-  x: 0,
-  y: 60,
-  width: 50,
-  height: 50,
-  speed: 4,
-  lives: 1,
-  shotFired: false,
-  shotSpeed: 5,
-  shotX: 0,
-  shotX2: 0,
-  shotY: 0,
-  shotWidth: 10,
-  shotHeight: 20,
+  draw() {
+    canvasContext.drawImage(player.killed ? images.explosion : images.playerShip, this.x, this.y - 60, this.width, this.height)
+  }
+
+  move() {
+    let gamepadConnected = navigator.getGamepads()[0] !== null
+    if (buttonsPressed.a || (gamepadConnected && navigator.getGamepads()[0].buttons[14].pressed )) {
+      this.x -= 4
+    }
+    if (this.x < -20) {
+      this.x = -20
+    }
+
+    if (buttonsPressed.d || (gamepadConnected && navigator.getGamepads()[0].buttons[15].pressed )) {
+      this.x += 4
+    }
+
+    if (this.x > 340) {
+      this.x = 340
+    }
+  }
+
+  moveTouch() {
+    if (touchControls.active) {
+      if (this.x > touchControls.x) {
+        this.x -= 4
+      }
+
+      if (this.x < touchControls.x) {
+        this.x += 4
+      }
+    }
+  }
+
+  shoot() {
+    if (this.shotCoolDown) return
+    const gamepadConnected = navigator.getGamepads()[0] !== null
+
+    if (buttonsPressed.w || (gamepadConnected && navigator.getGamepads()[0].buttons[0].pressed)) {
+      this.shotCoolDown = true
+      setTimeout(() => this.shotCoolDown = false, 350)
+      const shot = new Shot()
+      shots.push(shot)
+      shot.playSound()
+    }
+
+    if (touchControls.active) {
+      window.navigator.vibrate(100)
+      this.shotCoolDown = true
+      setTimeout(() => this.shotCoolDown = false, 350)
+      const shot = new Shot()
+      shots.push(shot)
+      shot.playSound()
+    }
+  }
 }
 
-const enemyShip2 = {
-  x: 260,
-  y: 120,
-  width: 50,
-  height: 50,
-  speed: -4,
-  lives: 1,
-  shotFired: false,
-  shotSpeed: 5,
-  shotX: 0,
-  shotX2: 0,
-  shotY: 0,
-  shotWidth: 10,
-  shotHeight: 20,
+const player = new Player()
+
+// _______________________________________________________________
+// ASTEROIDS
+// _______________________________________________________________
+
+const asteroids = []
+const addAsteroids = () => asteroids.push(new Asteroid(100, -50, 30, 2), new Asteroid(200, -100, 40, 2.4),
+    new Asteroid(300, -200, 60, 1.6), new Asteroid(150, -300, 80, 2),
+    new Asteroid(50, -150, 30, 3))
+
+const activeAsteroids = () => asteroids.filter(asteroid => !asteroid.hit)
+
+const resetAsteroids = () => {
+  asteroids.length = 0
+  addAsteroids()
 }
 
-const snake = {
-  elements: [],
-  elementWidth: 40,
-  elementHeight: 40,
-  lives: 8,
+class Asteroid {
+  constructor(x, y, size, speed) {
+    this.x = x
+    this.y = y
+    this.width = size
+    this.height = size
+    this.hit = false
+    this.countBlocker = false
+    this.speed = speed
+  }
+
+  moveAsteroid() {
+    if (this.hit) return
+    if (gameState.score < 400) {
+      this.y += this.speed
+    } else if (gameState.score < 800) {
+      this.y += this.speed + 0.2
+    } else if (gameState.score < 1200) {
+      this.y += this.speed + 0.6
+    } else {
+      this.y += this.speed + 1
+    }
+    if (this.y > canvas.height) {
+      this.hit = true
+      this.addNewAsteroid()
+    }
+  }
+
+  drawAsteroid() {
+    canvasContext.drawImage(
+        this.countBlocker ? images.explosion : images.asteroid,
+        this.x,
+        this.y,
+        this.width,
+        this.height)
+  }
+
+  addNewAsteroid() {
+    const maxAsteroidY = 350
+    const minAsteroidY = 100
+    const maxAsteroidX = canvas.width - this.width
+    const minAsteroidX = 0
+    const y = -(Math.random() * (maxAsteroidY - minAsteroidY)) - minAsteroidY
+    const x = (Math.random() * (maxAsteroidX - minAsteroidX)) + minAsteroidX
+    asteroids.push(new Asteroid(x,y,this.width, this.speed))
+  }
+
+  detectCollisionWithShip() {
+    if (this.hit) return
+
+    const sameY = player.y < this.y + this.height && player.y + 100 > this.y
+    const sameX = player.x + 10 < this.x + this.width &&
+        player.x + 80 > this.x + this.width
+
+    if (sameY && sameX) {
+      handleGameover()
+    }
+  }
+
+  detectCollisionWithShot(shot) {
+    const sameX = shot.x >= this.x - 10 && shot.x + shot.width <= this.x + this.width
+    const sameY = shot.y <= this.y + this.height && shot.y >= this.y
+
+    if (sameY && sameX) {
+      if (!this.countBlocker) {
+        shot.isActive = false
+        sounds.hitSound.pause()
+        sounds.hitSound.currentTime = 0
+        sounds.hitSound.play()
+        gameState.enemyshipCount += 1
+        gameState.score += 5 * gameState.multiplier
+        gameState.streak += 1
+
+        if (gameState.streak % 10 === 0) {
+          sounds.powerup.play()
+        }
+      }
+      this.countBlocker = true
+
+      setTimeout(() => {
+        this.hit = true
+        this.addNewAsteroid()
+      }, 100)
+    }
+  }
+}
+
+asteroids.push(new Asteroid(100, -50, 30), new Asteroid(200, -100, 40),
+    new Asteroid(300, -200, 60), new Asteroid(150, -300, 80),
+    new Asteroid(50, -150, 30))
+
+// _______________________________________________________________
+// ENEMYSHIPS
+// _______________________________________________________________
+
+class EnemyShip {
+  constructor(x,y) {
+      this.x = x
+      this.y = y
+      this.width = 50
+      this.height = 50
+      this.speed = 4
+      this.lives = 2
+      this.shotFired = false
+      this.shotSpeed = 5
+      this.shotX = 0
+      this.shotX2 = 0
+      this.shotY = 0
+      this.shotWidth = 10
+      this.shotHeight = 20
+  }
+
+  drawShip() {
+    if (this.lives >= 1) {
+      canvasContext.drawImage(images.enemyShip, this.x, this.y, this.width, this.height)
+    }
+    if (this.lives % 1 !== 0) {
+      canvasContext.drawImage(images.explosion, this.x, this.y, this.width, this.height)
+    }
+  }
+
+  drawShot() {
+    if (this.shotFired) {
+      canvasContext.fillStyle = 'red'
+      canvasContext.fillRect(this.shotX, this.shotY, this.shotWidth, this.shotHeight)
+      canvasContext.fillRect(this.shotX2, this.shotY, this.shotWidth, this.shotHeight)
+    }
+  }
+
+  moveShip() {
+    this.x += this.speed
+    if (this.x <= 0 || this.x >= canvas.width - 40) {
+      this.speed = this.speed * (-1)
+    }
+  }
+
+  moveShots() {
+    if (this.x + 20 >= player.x && this.x <= player.x + 20 && this.shotFired === false && this.lives >= 1) {
+      this.shotX = this.x
+      this.shotX2 = this.x + 30
+      this.shotY = this.y
+      this.shotFired = true
+
+      sounds.laserEnemy.play()
+    }
+    if (this.shotFired) {
+      this.shotY += this.shotSpeed
+    }
+    if (this.shotY > canvas.height) {
+      this.shotFired = false
+    }
+
+    this.detectHittingPlayer()
+
+  }
+
+  detectHittingPlayer() {
+    const shotCollisionX = player.x + 10 < this.shotX + 30 && player.x + 80 > this.shotX + 20
+    const shotCollisionY = player.y < this.shotY + 30 && player.y + 10 > this.shotY
+    const hitByEnemyShot =  shotCollisionX && shotCollisionY && this.lives >= 1
+    if (hitByEnemyShot) {
+      handleGameover()
+    }
+  }
+
+  detectHitByPlayer(shot) {
+    if (this.lives <= 0) return
+    const collisionY = shot.y <= this.y + 40 && shot.y >= this.y
+    const collisionX = shot.x >= this.x &&
+        shot.x + shot.width <= this.x + 50
+
+    if (collisionY && collisionX && this.lives >= 1 && shot.isActive) {
+      this.lives -= 0.5
+      sounds.hitSound.play()
+      setTimeout(() => this.lives -= 0.5, 100)
+      shot.isActive = false
+      gameState.score += 30 * gameState.multiplier
+      gameState.streak += 1
+    }
+  }
+}
+
+function moveShipEnemies() {
+  enemyShips.forEach(enemy => {
+    enemy.moveShip()
+    enemy.moveShots()
+    enemy.detectHittingPlayer()
+    activeShots().forEach(shot => enemy.detectHitByPlayer(shot))
+  })
+
+  if (!enemyShips.some(enemy => enemy.lives > 0)) {
+    endLevel()
+  }
+}
+
+const enemyShips = [new EnemyShip(0,60), new EnemyShip(260, 120)]
+
+// _______________________________________________________________
+// SNAKE
+// _______________________________________________________________
+
+class SnakeElement {
+  constructor(x,isHead) {
+    this.x = x
+    this.y = 0
+    this.size = 40
+    this.speed = 8
+    this.lives = isHead ? 4 : 1
+    this.image = isHead ? images.snakeHead : images.snakeBody
+  }
+
+  draw() {
+    canvasContext.fillStyle = '#80008055'
+    if (this.lives === 0) {
+      canvasContext.fillRect(this.x, this.y + this.size / 2 - 2, this.size, 4)
+      return
+    }
+    canvasContext.filter = `hue-rotate(${snakeNew.color}deg)`
+    if (this.lives > 0.5) {
+      canvasContext.drawImage(gameState.score >= 1510 && gameState.score < 2000
+          ? images.trumpHead : this.image, this.x, this.y, this.size, this.size)
+    }
+
+    if (this.lives % 1 !== 0) {
+      canvasContext.drawImage(images.explosion, this.x, this.y, this.size, this.size)
+    }
+    canvasContext.filter = 'none'
+  }
+
+  move() {
+    this.x -= this.speed
+    if (this.x < -50 || this.x > 400) {
+      this.y += 40
+      this.speed = this.speed * (-1)
+    }
+
+    if (this.lives > 0.5 && this.y >= 450 && this.x < canvas.width - 20) handleGameover()
+  }
+
+  hitDetection(shot) {
+    const collisionY = shot.y <= this.y + 40 && shot.y >= this.y
+    const collisionX = shot.x >= this.x && shot.x + shot.width <= this.x + 40
+    if (collisionY && collisionX && this.lives > 0.5) {
+      shot.isActive = false
+      snakeNew.color += 50
+      this.lives -= 0.5
+      setTimeout(() => this.lives -= 0.5, 100)
+      gameState.score += 10 * gameState.multiplier
+      gameState.streak += 1
+
+      if (gameState.streak % 10 === 0) {
+        sounds.powerup.play()
+      }
+
+      setTimeout(() => { snakeNew.color -= 50 }, 50)
+      sounds.hitSound.pause()
+      sounds.hitSound.currentTime = 0
+      sounds.hitSound.play()
+    }
+  }
+}
+
+const snakeNew = {
+  elements: [
+    new SnakeElement(0,true),
+    new SnakeElement(40,false),
+    new SnakeElement(80,false),
+    new SnakeElement(120,false),
+    new SnakeElement(160,false),
+    new SnakeElement(200,false),
+    new SnakeElement(240,false),
+    new SnakeElement(280,false)
+  ],
   color: 0,
 }
 
@@ -304,21 +542,36 @@ function startGame() {
 // _______________________________________________________________
 
 function runGame() {
-  moveShip()
-  moveShipTouch()
-  shoot()
+  player.move()
+  player.moveTouch()
+  player.shoot()
   setScore()
-  gameOver()
 }
 
 function runEnemies() {
   if (gameState.round === rounds.snake) {
-    moveSnake()
-    hitDetectionSnake()
+    snakeNew.elements.forEach(element => {
+      element.move()
+      activeShots().forEach(shot => element.hitDetection(shot))
+    })
+
+    if(snakeNew.elements[0].lives === 0 || !snakeNew.elements.some(element => element.lives > 0)) endLevel()
   }
   if (gameState.round === rounds.asteroids) {
-    moveAsteroids()
-    hitDetectionAsteroids()
+    activeAsteroids().forEach(asteroid => {
+      asteroid.moveAsteroid()
+      asteroid.detectCollisionWithShip()
+      console.log(activeShots().length)
+      activeShots().forEach(shot => asteroid.detectCollisionWithShot(shot))
+    })
+
+    if (gameState.enemyshipCount === gameState.enemiesRequired) {
+      gameState.bonusScore = (Math.floor((140 - gameState.backgroundScrollPosition) / 10)) * gameState.multiplier
+      gameState.score += gameState.bonusScore
+      gameState.enemyshipCount = 0
+      gameState.enemiesRequired += 2
+      endLevel()
+    }
   }
   if (gameState.round === rounds.enemyShips) {
     moveShipEnemies()
@@ -334,13 +587,42 @@ function setScore() {
   gameState.multiplier = Math.floor(gameState.streak / 10) + 1 <= 3 ? Math.floor(gameState.streak / 10) + 1 : 3
 }
 
-function shoot() {
-  const gamepadConnected = navigator.getGamepads()[0] !== null
+// _______________________________________________________________
+// SHOTS
+// _______________________________________________________________
 
-  if (!spaceship.shot.shotFired && (buttonsPressed.w || (gamepadConnected && navigator.getGamepads()[0].buttons[0].pressed))) {
-    spaceship.shot.shotFired = true
-    spaceship.shot.x = spaceship.canon.x - spaceship.shot.width / 2
-    spaceship.shot.y = spaceship.canon.y
+class Shot {
+  constructor() {
+    this.width = 10
+    this.height = 20
+    this.x = player.x + 40 - this.width / 2
+    this.y = player.y - 60
+    this.isActive = true
+  }
+
+  move() {
+    if (this.isActive) this.y -= 10
+
+    if (this.y <= -20) {
+      this.isActive = false
+      gameState.streak = 0
+    }
+  }
+
+  draw() {
+    let fillColor
+    switch (gameState.multiplier) {
+      case 2: fillColor = 'red'; break
+      case 3: fillColor = 'blue'; break
+      default: fillColor = 'limegreen'
+    }
+
+    canvasContext.fillStyle = fillColor
+    canvasContext.fillRect(this.x, this.y, this.width, this.height)
+    canvasContext.fillStyle = 'limegreen'
+  }
+
+  playSound() {
     switch (gameState.multiplier) {
       case 2: {
         sounds.laser2.play()
@@ -355,29 +637,14 @@ function shoot() {
       }
     }
   }
-
-  if (touchControls.active && !spaceship.shot.shotFired) {
-    window.navigator.vibrate(100)
-    spaceship.shot.shotFired = true
-    spaceship.shot.x = spaceship.canon.x - spaceship.shot.width / 2
-    spaceship.shot.y = spaceship.canon.y
-    sounds.laser.play()
-  }
-
-  moveShot()
 }
 
-function resetAsteroids() {
-  asteroids.forEach(roid => {
-    if (roid.y > 0) roid.y = -50
-  })
-}
+const shots = []
+const activeShots = () => shots.filter(shot => shot.isActive)
 
-function gameOver() {
-  if (gameState.round === rounds.snake && snake.elements[2].y >= 450) {
-    handleGameover()
-  }
-}
+// _______________________________________________________________
+// GAME HANDLING
+// _______________________________________________________________
 
 function endLevel() {
   clearInterval(intervals.enemies)
@@ -385,7 +652,7 @@ function endLevel() {
   clearInterval(intervals.background)
   gameState.state = gameStates.spaceshipAnimation
   sounds.spaceshipSound.play()
-  snake.color += 20
+  snakeNew.color += 20
   gameState.gameSpeed += 2
   canvasContext.fillStyle = 'limegreen'
   canvasContext.fillText('Next round!', 100, canvas.height / 2)
@@ -399,7 +666,6 @@ function startNextRound() {
   }
   switch (gameState.round) {
     case rounds.snake:
-      resetAsteroids()
       gameState.round = rounds.asteroids
       gameState.state = gameStates.asteroidsRound
       break
@@ -418,7 +684,7 @@ function startNextRound() {
 }
 
 function handleGameover() {
-  spaceship.playerKilled = true
+  player.killed = true
   window.navigator.vibrate(1000)
   gameState.round = rounds.asteroids
   clearInterval(intervals.enemies)
@@ -442,324 +708,37 @@ function handleGameover() {
 }
 
 function resetGame() {
-  snake.elements = [{
-    x: 0,
-    y: 0,
-    speed: 8,
-    lives: 1,
-    image: images.snakeHead,
-  },
-    {
-      x: 40,
-      y: 0,
-      speed: 8,
-      lives: 2,
-      image: images.snakeBody
-    },
-    {
-      x: 80,
-      y: 0,
-      speed: 8,
-      lives: 3,
-      image: images.snakeBody
-    },
-    {
-      x: 120,
-      y: 0,
-      speed: 8,
-      lives: 4,
-      image: images.snakeBody
-    },
-    {
-      x: 160,
-      y: 0,
-      speed: 8,
-      lives: 5,
-      image: images.snakeBody
-    },
-    {
-      x: 200,
-      y: 0,
-      speed: 8,
-      lives: 6,
-      image: images.snakeBody
-    },
-    {
-      x: 240,
-      y: 0,
-      speed: 8,
-      lives: 7,
-      image: images.snakeBody
-    },
-    {
-      x: 280,
-      y: 0,
-      speed: 8,
-      lives: 8,
-      image: images.snakeBody
-    }]
+  shots.length = 0
+  player.shotCoolDown = false
+  resetAsteroids()
+  snakeNew.elements.length = 0
+  snakeNew.elements = [
+    new SnakeElement(0,true),
+    new SnakeElement(40,false),
+    new SnakeElement(80,false),
+    new SnakeElement(120,false),
+    new SnakeElement(160,false),
+    new SnakeElement(200,false),
+    new SnakeElement(240,false),
+    new SnakeElement(280,false)
+  ]
 
-  asteroids[0].y = -50
-  asteroids[1].y = -100
-  asteroids[2].y = -200
-  asteroids[3].y = -300
-  spaceship.x = 150
-  spaceship.canon.y = 520
-  spaceship.canon.x = spaceship.x + 40
-  spaceship.shot.x = spaceship.canon.x - spaceship.shot.width / 2
-  spaceship.shot.y = canvas.height
-  spaceship.playerKilled = false
-  spaceship.y = 580
-  enemyShip1.lives = 2
-  enemyShip2.lives = 2
-  enemyShip1.shotY = enemyShip1.y
-  enemyShip2.shotY = enemyShip2.y
-  snake.lives = 8
+  player.x = 150
+  player.killed = false
+  player.y = 580
+  enemyShips.length = 0
+  enemyShips.push(new EnemyShip(0,60), new EnemyShip(260, 120))
   buttonsPressed.a = false
   buttonsPressed.d = false
   buttonsPressed.w = false
-  spaceship.shot.shotFired = false
   gameState.backgroundScrollPosition = -1900
   gameState.enemyshipCount = 0
   gameState.bonusScore = 0
 }
 
-function moveEnemyShip(obj) {
-  obj.x += obj.speed
-  if (obj.x <= 0 || obj.x >= canvas.width - 40) {
-    obj.speed = obj.speed * (-1)
-  }
-}
-
-function moveEnemyShots(obj, target) {
-  if (obj.x + 20 >= target && obj.x <= target + 20 && obj.shotFired === false && obj.lives >= 1) {
-    obj.shotX = obj.x
-    obj.shotX2 = obj.x + 30
-    obj.shotY = obj.y
-    obj.shotFired = true
-
-    sounds.laserEnemy.play()
-  }
-  if (obj.shotFired) {
-    obj.shotY += obj.shotSpeed
-  }
-  if (obj.shotY > canvas.height) {
-    obj.shotFired = false
-  }
-  const hitByEnemyShot = spaceship.y < obj.shotY + 30 && spaceship.y + 10 > obj.shotY && spaceship.x + 10 < obj.shotX + 30 && spaceship.x + 80 > obj.shotX + 20 && obj.lives >= 1
-  if (hitByEnemyShot) {
-    handleGameover()
-  }
-}
-
-function moveShipEnemies() {
-  moveEnemyShip(enemyShip1)
-  moveEnemyShots(enemyShip1, spaceship.x)
-  hitDetectionShip(enemyShip1)
-  moveEnemyShip(enemyShip2)
-  moveEnemyShots(enemyShip2, spaceship.x)
-  hitDetectionShip(enemyShip2)
-  if (enemyShip1.lives <= 0 && enemyShip2.lives <= 0) {
-    enemyShip1.shotFired = false
-    enemyShip2.shotFired = false
-    enemyShip1.speed *= 1.1
-    enemyShip2.speed *= 1.1
-    endLevel()
-  }
-}
-
-function moveAsteroids() {
-  asteroids.forEach(roid => {
-    if(roid.hit) return
-    moveAsteroid(roid)
-  })
-}
-
-function moveShot() {
-  if (spaceship.shot.shotFired) spaceship.shot.y -= 5
-
-  if (spaceship.shot.y <= -20) {
-    spaceship.shot.shotFired = false
-    gameState.streak = 0
-  }
-}
-
 function moveBackground() {
   if (gameState.backgroundScrollPosition < 140) {
     gameState.backgroundScrollPosition += 4
-  }
-}
-
-function moveShip() {
-  let gamepadConnected = navigator.getGamepads()[0] !== null
-  if (buttonsPressed.a || (gamepadConnected && navigator.getGamepads()[0].buttons[14].pressed )) {
-    spaceship.x -= 4
-    spaceship.canon.x -= 4
-  }
-  if (spaceship.x < -20) {
-    spaceship.x = -20
-    spaceship.canon.x = 20
-  }
-
-  if (buttonsPressed.d || (gamepadConnected && navigator.getGamepads()[0].buttons[15].pressed )) {
-    spaceship.x += 4
-    spaceship.canon.x += 4
-  }
-
-  if (spaceship.x > 340) {
-    spaceship.x = 340
-    spaceship.canon.x = 380
-  }
-}
-
-function moveShipTouch() {
-  if (touchControls.active) {
-    if (spaceship.x > touchControls.x) {
-      spaceship.x -= 4
-      spaceship.canon.x -= 4
-    }
-
-    if (spaceship.x < touchControls.x) {
-      spaceship.x += 4
-      spaceship.canon.x += 4
-    }
-  }
-}
-
-function moveElement(obj) {
-  obj.x -= obj.speed
-  if (obj.x < -50 || obj.x > 400) {
-    obj.y += 40
-    obj.speed = obj.speed * (-1)
-  }
-}
-
-function moveSnake() {
-  snake.elements.forEach(element => moveElement(element))
-}
-
-function moveAsteroid(obj) {
-  if (gameState.score < 400) {
-    obj.y += obj.speed
-  } else if (gameState.score < 800) {
-    obj.y += obj.speed + 0.2
-  } else if (gameState.score < 1200) {
-    obj.y += obj.speed + 0.6
-  } else {
-    obj.y += obj.speed + 1
-  }
-  if (obj.y > canvas.height) {
-    obj.y = -100
-  }
-}
-
-function hitDetectionAsteroids() {
-  asteroids.forEach(roid => hitDetectionSingle(roid))
-}
-
-function hitDetectionSnake() {
-
-  spaceship.hitSomething = false
-
-  snake.elements.forEach(element => hitDetection(element))
-
-  if (spaceship.hitSomething) {
-    snake.color += 50
-    spaceship.shot.shotFired = false
-    snake.lives -= 0.5
-    setTimeout(() => snake.lives -= 0.5, 100)
-    gameState.score += 10 * gameState.multiplier
-    gameState.streak += 1
-
-    if (gameState.streak % 10 === 0) {
-      sounds.powerup.play()
-    }
-    spaceship.shot.shotFired = false
-    spaceship.shot.y = 600
-    setTimeout(() => { snake.color -= 50 }, 50)
-    sounds.hitSound.pause()
-    sounds.hitSound.currentTime = 0
-    sounds.hitSound.play()
-  }
-
-
-  if (snake.lives === 0) {
-    endLevel()
-  }
-}
-
-function hitDetection(obj) {
-  if (spaceship.shot.y <= obj.y + 40 && spaceship.shot.y >= obj.y &&
-      spaceship.shot.x >= obj.x && spaceship.shot.x + spaceship.shot.width <= obj.x + 40 &&
-      snake.lives >= obj.lives) {
-    spaceship.hitSomething = true
-  }
-}
-
-function hitDetectionShip(obj) {
-  if (obj.lives <= 0) return
-
-  if (spaceship.shot.y <= obj.y + 40 && spaceship.shot.y >= obj.y && spaceship.shot.x >= obj.x &&
-      spaceship.shot.x + spaceship.shot.width <= obj.x + 50 &&
-      obj.lives >= 1 && spaceship.shot.shotFired) {
-    obj.lives -= 0.5
-    sounds.hitSound.play()
-    setTimeout(() => obj.lives -= 0.5, 100)
-    spaceship.shot.shotFired = false
-    spaceship.shot.y = 600
-    gameState.score += 30 * gameState.multiplier
-    gameState.streak += 1
-  }
-}
-
-function hitDetectionSingle(obj) {
-  if (spaceship.y < obj.y + obj.height && spaceship.y + 100 > obj.y && spaceship.x + 10 < obj.x + obj.width &&
-      spaceship.x + 80 > obj.x + obj.width) {
-    handleGameover()
-    return
-  }
-
-  if (!spaceship.shot.shotFired) return
-
-  if (spaceship.shot.y <= obj.y + obj.height && spaceship.shot.y >= obj.y &&
-      spaceship.shot.x >= obj.x - 10 && spaceship.shot.x + spaceship.shot.width <= obj.x + obj.width) {
-    if (!obj.countBlocker) {
-      sounds.hitSound.pause()
-      sounds.hitSound.currentTime = 0
-      sounds.hitSound.play()
-      gameState.enemyshipCount += 1
-      gameState.score += 5 * gameState.multiplier
-      gameState.streak += 1
-
-      if (gameState.streak % 10 === 0) {
-        sounds.powerup.play()
-      }
-    }
-    obj.countBlocker = true
-    obj.image.src = imageSources.explosion
-    spaceship.shot.shotFired = false
-    spaceship.shot.y = 600
-
-    const maxAsteroidY = 350
-    const minAsteroidY = 20
-    const maxAsteroidX = 350
-    const minAsteroidX = 20
-    setTimeout(() => {
-      obj.hit = true
-      obj.countBlocker = false
-      obj.image.src = imageSources.asteroid
-      obj.y = -(Math.random() * (maxAsteroidY - minAsteroidY)) + minAsteroidY
-      obj.x = (Math.random() * (maxAsteroidX - minAsteroidX)) + minAsteroidX
-    }, 100)
-    setTimeout(() => obj.hit = false, 2000)
-
-  }
-  if (gameState.enemyshipCount === gameState.enemiesRequired) {
-    gameState.bonusScore = (Math.floor((140 - gameState.backgroundScrollPosition) / 10)) * gameState.multiplier
-    gameState.score += gameState.bonusScore
-    gameState.enemyshipCount = 0
-    gameState.enemiesRequired += 2
-    endLevel()
   }
 }
 
@@ -813,10 +792,10 @@ function drawSpaceshipAnimation() {
   canvasContext.textAlign = 'center'
   canvasContext.fillText(gameState.score === 0 ? 'Save earth!' : 'Next round!', canvas.width / 2, canvas.height / 2)
   canvasContext.fillText(gameState.bonusScore > 0 ? `Bonus Score: ${gameState.bonusScore}` : '', canvas.width / 2, canvas.height / 2 + 50)
-  canvasContext.drawImage(images.playerShip, spaceship.x, spaceship.y - 60, spaceship.width, spaceship.height)
-  spaceship.y -= 5
+  canvasContext.drawImage(images.playerShip, player.x, player.y - 60, player.width, player.height)
+  player.y -= 5
   if (gameState.backgroundScrollPosition < 80) gameState.backgroundScrollPosition += 2.5
-  if (spaceship.y < -50) {
+  if (player.y < -50) {
       startNextRound()
   }
 }
@@ -841,18 +820,21 @@ function drawEverything() {
   }
 
   if (gameState.state === gameStates.asteroidsRound) {
-    drawAsteroids()
+    activeAsteroids().forEach(asteroid => asteroid.drawAsteroid())
+    canvasContext.textAlign = 'center'
+    canvasContext.fillStyle = 'white'
+    canvasContext.fillText(`${gameState.enemyshipCount}/${gameState.enemiesRequired}`, canvas.width / 2, canvas.height / 2 + 100)
   }
 
   if (gameState.state === gameStates.enemyShipRound) {
-    drawEnemyShip(enemyShip1)
-    drawEnemyShip(enemyShip2)
-    drawEnemyShot(enemyShip1)
-    drawEnemyShot(enemyShip2)
+    enemyShips.forEach(enemy => {
+      enemy.drawShip()
+      enemy.drawShot()
+    })
   }
 
   if (gameState.state === gameStates.snakeRound) {
-    drawSnake()
+    snakeNew.elements.forEach(element => element.draw())
   }
 
   if (gameState.state === gameStates.gameOver) {
@@ -887,17 +869,12 @@ function drawGameOverScreen() {
 }
 
 function drawShipAndShot() {
-  let fillColor
-  switch (gameState.multiplier) {
-    case 2: fillColor = 'red'; break
-    case 3: fillColor = 'blue'; break
-    default: fillColor = 'limegreen'
-  }
+  player.draw()
 
-  canvasContext.fillStyle = fillColor
-  canvasContext.drawImage(spaceship.playerKilled ? images.explosion : images.playerShip, spaceship.x, spaceship.y - 60, spaceship.width, spaceship.height)
-  canvasContext.fillRect(spaceship.shot.x, spaceship.shot.y, spaceship.shot.width, spaceship.shot.height)
-  canvasContext.fillStyle = 'limegreen'
+  if (activeShots().length > 0) activeShots().forEach(shot => {
+    shot.move()
+    shot.draw()
+  })
 }
 
 function drawStartScreen() {
@@ -972,7 +949,7 @@ function drawManual() {
   canvasContext.fillText('GREEN Shot ', 20, 140)
   canvasContext.fillText('RED Shot ', 20, 220)
   canvasContext.fillText('BLUE Shot ', 20, 300)
-  canvasContext.drawImage(asteroidImage, 30, 350, 50, 50)
+  canvasContext.drawImage(images.asteroid, 30, 350, 50, 50)
   canvasContext.drawImage(images.enemyShip, 30, 430, 50, 50)
   canvasContext.drawImage(images.snakeHead, 30, 505, 50, 50)
   canvasContext.textAlign = 'right'
@@ -982,50 +959,6 @@ function drawManual() {
   canvasContext.fillText('5 PTS', canvas.width - 20, 380)
   canvasContext.fillText('30 PTS', canvas.width - 20, 460)
   canvasContext.fillText('10 PTS', canvas.width - 20, 540)
-}
-
-function drawAsteroids() {
-  canvasContext.textAlign = 'center'
-  canvasContext.fillStyle = 'white'
-  canvasContext.fillText(`${gameState.enemyshipCount}/${gameState.enemiesRequired}`, canvas.width / 2, canvas.height / 2 + 100)
-  asteroids.forEach(roid => {
-    if(roid.hit) return
-    canvasContext.drawImage(roid.image, roid.x, roid.y, roid.width, roid.height)
-  })
-}
-
-function drawEnemyShip(obj) {
-  if (obj.lives > 0) {
-    canvasContext.drawImage(images.enemyShip, obj.x, obj.y, obj.width, obj.height)
-  }
-  if (obj.lives % 1 !== 0) {
-    canvasContext.drawImage(images.explosion, obj.x, obj.y, obj.width, obj.height)
-  }
-}
-
-function drawEnemyShot(obj) {
-  if (obj.shotFired) {
-    canvasContext.fillStyle = 'red'
-    canvasContext.fillRect(obj.shotX, obj.shotY, obj.shotWidth, obj.shotHeight)
-    canvasContext.fillRect(obj.shotX2, obj.shotY, obj.shotWidth, obj.shotHeight)
-  }
-}
-
-function drawSnake() {
-  canvasContext.filter = `hue-rotate(${snake.color}deg)`
-  snake.elements.forEach((element, index) => {
-    drawSnakeElement(index+1, element.x, element.y, element.image)
-  })
-  canvasContext.filter = 'none'
-}
-
-function drawSnakeElement(lives, x, y, element) {
-  if (snake.lives >= lives) {
-    canvasContext.drawImage(gameState.score >= 1000 ? images.trumpHead : element, x, y, snake.elementWidth, snake.elementHeight)
-  }
-  if (snake.lives === lives - 0.5) {
-    canvasContext.drawImage(images.explosion, x, y, snake.elementWidth, snake.elementHeight)
-  }
 }
 
 // _______________________________________________________________
