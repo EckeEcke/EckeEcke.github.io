@@ -53,8 +53,9 @@ input {
   background-color: black; 
   color: limegreen; 
   font-size: 24px; 
-  border: 0; 
-  outline: 0
+  border: 0;
+  outline: 0;
+  caret-color: transparent;
 }
 
 input::placeholder {

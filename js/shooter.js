@@ -61,7 +61,7 @@ const soundSources = {
   laser: './sounds/shooter/laser.wav',
   laser2: './sounds/shooter/laser2.wav',
   laser3: './sounds/shooter/laser3.wav',
-  powerup: './sounds/shooter/shooter-powerup.wav',
+  powerUp: './sounds/shooter/shooter-powerup.wav',
   alertSound: './sounds/shooter/alert.wav',
   hitSound: './sounds/shooter/hit.wav',
   spaceshipSound: './sounds/shooter/spaceship-rising.wav',
@@ -74,7 +74,7 @@ const sounds = {
   laser: undefined,
   laser2: undefined,
   laser3: undefined,
-  powerup: undefined,
+  powerUp: undefined,
   alertSound: undefined,
   hitSound: undefined,
   spaceshipSound: undefined,
@@ -90,8 +90,8 @@ function loadSounds() {
   sounds.laser2.onloadeddata = () => gameState.gameLoaded += 5
   sounds.laser3 = new Audio(soundSources.laser3)
   sounds.laser3.onloadeddata = () => gameState.gameLoaded += 5
-  sounds.powerup = new Audio(soundSources.powerup)
-  sounds.powerup.onloadeddata = () => gameState.gameLoaded += 5
+  sounds.powerUp = new Audio(soundSources.powerUp)
+  sounds.powerUp.onloadeddata = () => gameState.gameLoaded += 5
   sounds.alertSound = new Audio(soundSources.alertSound)
   sounds.alertSound.onloadeddata = () => gameState.gameLoaded += 5
   sounds.hitSound = new Audio(soundSources.hitSound)
@@ -218,7 +218,6 @@ class Player {
     }
 
     if (touchControls.active) {
-      window.navigator.vibrate(100)
       this.shotCoolDown = true
       setTimeout(() => this.shotCoolDown = false, 350)
       const shot = new Shot()
@@ -303,7 +302,7 @@ class Asteroid {
         player.x + 80 > this.x + this.width
 
     if (sameY && sameX) {
-      handleGameover()
+      handleGameOver()
     }
   }
 
@@ -320,8 +319,8 @@ class Asteroid {
         gameState.score += 5 * gameState.multiplier
         gameState.streak += 1
 
-        if (gameState.streak % 10 === 0) {
-          sounds.powerup.play()
+        if (gameState.streak % 10 === 0 && gameState.streak <= 30) {
+          sounds.powerUp.play()
         }
       }
       this.countBlocker = true
@@ -337,7 +336,7 @@ class Asteroid {
 addAsteroids()
 
 // _______________________________________________________________
-// ENEMYSHIPS
+// ENEMY SHIPS
 // _______________________________________________________________
 
 class EnemyShip {
@@ -398,7 +397,6 @@ class EnemyShip {
     }
 
     this.detectHittingPlayer()
-
   }
 
   detectHittingPlayer() {
@@ -406,7 +404,7 @@ class EnemyShip {
     const shotCollisionY = player.y < this.shotY + 30 && player.y + 10 > this.shotY
     const hitByEnemyShot =  shotCollisionX && shotCollisionY && this.lives >= 1
     if (hitByEnemyShot) {
-      handleGameover()
+      handleGameOver()
     }
   }
 
@@ -462,7 +460,7 @@ class SnakeElement {
       canvasContext.fillRect(this.x, this.y + this.size / 2 - 4, this.size, 8)
       return
     }
-    canvasContext.filter = `hue-rotate(${snakeNew.color}deg)`
+    canvasContext.filter = `hue-rotate(${snake.color}deg)`
     if (this.lives > 0.5) {
       canvasContext.drawImage(gameState.score >= 1510 && gameState.score < 2000
           ? images.trumpHead : this.image, this.x, this.y, this.size, this.size)
@@ -481,7 +479,7 @@ class SnakeElement {
       this.speed = this.speed * (-1)
     }
 
-    if (this.lives > 0.5 && this.y >= 450 && this.x < canvas.width - 20) handleGameover()
+    if (this.lives > 0.5 && this.y >= 450 && this.x < canvas.width - 20) handleGameOver()
   }
 
   hitDetection(shot) {
@@ -489,17 +487,17 @@ class SnakeElement {
     const collisionX = shot.x >= this.x && shot.x + shot.width <= this.x + 40
     if (collisionY && collisionX && this.lives > 0.5) {
       shot.isActive = false
-      snakeNew.color += 50
+      snake.color += 50
       this.lives -= 0.5
       setTimeout(() => this.lives -= 0.5, 100)
       gameState.score += 10 * gameState.multiplier
       gameState.streak += 1
 
       if (gameState.streak % 10 === 0) {
-        sounds.powerup.play()
+        sounds.powerUp.play()
       }
 
-      setTimeout(() => { snakeNew.color -= 50 }, 50)
+      setTimeout(() => { snake.color -= 50 }, 50)
       sounds.hitSound.pause()
       sounds.hitSound.currentTime = 0
       sounds.hitSound.play()
@@ -507,8 +505,14 @@ class SnakeElement {
   }
 }
 
-const snakeNew = {
-  elements: [
+const snake = {
+  elements: [],
+  color: 0,
+}
+
+function addSnakeElements () {
+  snake.elements.length = 0
+  snake.elements = [
     new SnakeElement(0,true),
     new SnakeElement(40,false),
     new SnakeElement(80,false),
@@ -517,9 +521,10 @@ const snakeNew = {
     new SnakeElement(200,false),
     new SnakeElement(240,false),
     new SnakeElement(280,false)
-  ],
-  color: 0,
+  ]
 }
+
+addSnakeElements()
 
 const intervals = {
   game: null,
@@ -546,12 +551,12 @@ function runGame() {
 
 function runEnemies() {
   if (gameState.round === rounds.snake) {
-    snakeNew.elements.forEach(element => {
+    snake.elements.forEach(element => {
       element.move()
       activeShots().forEach(shot => element.hitDetection(shot))
     })
 
-    if(snakeNew.elements[0].lives === 0 || !snakeNew.elements.some(element => element.lives > 0)) endLevel()
+    if(snake.elements[0].lives === 0 || !snake.elements.some(element => element.lives > 0)) endLevel()
   }
   if (gameState.round === rounds.asteroids) {
     activeAsteroids().forEach(asteroid => {
@@ -643,7 +648,7 @@ function endLevel() {
   clearInterval(intervals.background)
   gameState.state = gameStates.spaceshipAnimation
   sounds.spaceshipSound.play()
-  snakeNew.color += 20
+  snake.color += 20
   gameState.gameSpeed += 2
   canvasContext.fillStyle = 'limegreen'
   canvasContext.fillText('Next round!', 100, canvas.height / 2)
@@ -676,7 +681,7 @@ function startNextRound() {
   intervals.background = setInterval(moveBackground, 1000 / 30)
 }
 
-function handleGameover() {
+function handleGameOver() {
   player.killed = true
   window.navigator.vibrate(1000)
   gameState.round = rounds.asteroids
@@ -703,18 +708,7 @@ function resetGame() {
   shots.length = 0
   player.shotCoolDown = false
   resetAsteroids()
-  snakeNew.elements.length = 0
-  snakeNew.elements = [
-    new SnakeElement(0,true),
-    new SnakeElement(40,false),
-    new SnakeElement(80,false),
-    new SnakeElement(120,false),
-    new SnakeElement(160,false),
-    new SnakeElement(200,false),
-    new SnakeElement(240,false),
-    new SnakeElement(280,false)
-  ]
-
+  addSnakeElements()
   player.x = 150
   player.killed = false
   player.y = 580
@@ -821,7 +815,7 @@ function drawEverything() {
   }
 
   if (gameState.state === gameStates.snakeRound) {
-    snakeNew.elements.forEach(element => element.draw())
+    snake.elements.forEach(element => element.draw())
   }
 
   if (gameState.state === gameStates.gameOver) {
