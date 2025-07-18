@@ -136,11 +136,8 @@ const gameState = {
   loadingAnimation: '.',
   timer: 0,
   multiplier: 0,
-  bonusScore: 0,
   streak: 0,
   gameSpeed: 60,
-  enemyShipCount: 0,
-  enemiesRequired: 8,
   musicRunning: false,
   backgroundScrollPosition: -1900,
   gameLoaded: 0,
@@ -240,7 +237,7 @@ const player = new Player()
 const asteroids = []
 const addAsteroids = () => asteroids.push(new Asteroid(100, -50, 30, 2), new Asteroid(200, -100, 40, 2.4),
     new Asteroid(300, -200, 60, 1.6), new Asteroid(150, -300, 80, 2),
-    new Asteroid(50, -150, 30, 3))
+    new Asteroid(50, -150, 30, 3), new Asteroid(250, -400, 100, 1.5))
 
 const activeAsteroids = () => asteroids.filter(asteroid => !asteroid.hit)
 
@@ -248,6 +245,8 @@ const resetAsteroids = () => {
   asteroids.length = 0
   addAsteroids()
 }
+
+let respawnAsteroids = false
 
 class Asteroid {
   constructor(x, y, size, speed) {
@@ -273,7 +272,7 @@ class Asteroid {
     }
     if (this.y > canvas.height) {
       this.hit = true
-      this.addNewAsteroid()
+      if (respawnAsteroids) this.addNewAsteroid()
     }
   }
 
@@ -293,7 +292,7 @@ class Asteroid {
     const minAsteroidX = 0
     const y = -(Math.random() * (maxAsteroidY - minAsteroidY)) - minAsteroidY
     const x = (Math.random() * (maxAsteroidX - minAsteroidX)) + minAsteroidX
-    asteroids.push(new Asteroid(x,y,this.width, this.speed))
+    if (respawnAsteroids) asteroids.push(new Asteroid(x,y,this.width, this.speed))
   }
 
   detectCollisionWithShip() {
@@ -309,7 +308,7 @@ class Asteroid {
   }
 
   detectCollisionWithShot(shot) {
-    const sameX = shot.x >= this.x - 10 && shot.x + shot.width <= this.x + this.width
+    const sameX = shot.x >= this.x - 10 && shot.x + shot.width <= this.x + this.width + 10
     const sameY = shot.y <= this.y + this.height && shot.y >= this.y
 
     if (sameY && sameX) {
@@ -318,7 +317,6 @@ class Asteroid {
         sounds.hitSound.pause()
         sounds.hitSound.currentTime = 0
         sounds.hitSound.play()
-        gameState.enemyshipCount += 1
         gameState.score += 5 * gameState.multiplier
         gameState.streak += 1
 
@@ -336,9 +334,7 @@ class Asteroid {
   }
 }
 
-asteroids.push(new Asteroid(100, -50, 30), new Asteroid(200, -100, 40),
-    new Asteroid(300, -200, 60), new Asteroid(150, -300, 80),
-    new Asteroid(50, -150, 30))
+addAsteroids()
 
 // _______________________________________________________________
 // ENEMYSHIPS
@@ -463,7 +459,7 @@ class SnakeElement {
   draw() {
     canvasContext.fillStyle = '#80008055'
     if (this.lives === 0) {
-      canvasContext.fillRect(this.x, this.y + this.size / 2 - 2, this.size, 4)
+      canvasContext.fillRect(this.x, this.y + this.size / 2 - 4, this.size, 8)
       return
     }
     canvasContext.filter = `hue-rotate(${snakeNew.color}deg)`
@@ -564,11 +560,7 @@ function runEnemies() {
       activeShots().forEach(shot => asteroid.detectCollisionWithShot(shot))
     })
 
-    if (gameState.enemyshipCount === gameState.enemiesRequired) {
-      gameState.bonusScore = (Math.floor((140 - gameState.backgroundScrollPosition) / 10)) * gameState.multiplier
-      gameState.score += gameState.bonusScore
-      gameState.enemyshipCount = 0
-      gameState.enemiesRequired += 2
+    if (activeAsteroids().length === 0) {
       endLevel()
     }
   }
@@ -665,8 +657,10 @@ function startNextRound() {
   }
   switch (gameState.round) {
     case rounds.snake:
+      respawnAsteroids = true
       gameState.round = rounds.asteroids
       gameState.state = gameStates.asteroidsRound
+      setTimeout(() => respawnAsteroids = false, 10000)
       break
     case rounds.enemyShips:
       gameState.round = rounds.snake
@@ -689,7 +683,6 @@ function handleGameover() {
   clearInterval(intervals.enemies)
   clearInterval(intervals.game)
   clearInterval(intervals.background)
-  gameState.enemiesRequired = 6
   sounds.gameMusic.playbackRate = 0.5
   gameState.musicRunning  = false
   setTimeout(() => {
@@ -727,12 +720,11 @@ function resetGame() {
   player.y = 580
   enemyShips.length = 0
   enemyShips.push(new EnemyShip(0,60), new EnemyShip(260, 120))
+  if (gameState.score > 1500) enemyShips.push(new EnemyShip(0, 180))
   buttonsPressed.a = false
   buttonsPressed.d = false
   buttonsPressed.w = false
   gameState.backgroundScrollPosition = -1900
-  gameState.enemyshipCount = 0
-  gameState.bonusScore = 0
 }
 
 function moveBackground() {
@@ -790,7 +782,6 @@ function drawSpaceshipAnimation() {
   canvasContext.fillStyle = 'limegreen'
   canvasContext.textAlign = 'center'
   canvasContext.fillText(gameState.score === 0 ? 'Save earth!' : 'Next round!', canvas.width / 2, canvas.height / 2)
-  canvasContext.fillText(gameState.bonusScore > 0 ? `Bonus Score: ${gameState.bonusScore}` : '', canvas.width / 2, canvas.height / 2 + 50)
   canvasContext.drawImage(images.playerShip, player.x, player.y - 60, player.width, player.height)
   player.y -= 5
   if (gameState.backgroundScrollPosition < 80) gameState.backgroundScrollPosition += 2.5
@@ -820,9 +811,6 @@ function drawEverything() {
 
   if (gameState.state === gameStates.asteroidsRound) {
     activeAsteroids().forEach(asteroid => asteroid.drawAsteroid())
-    canvasContext.textAlign = 'center'
-    canvasContext.fillStyle = 'white'
-    canvasContext.fillText(`${gameState.enemyshipCount}/${gameState.enemiesRequired}`, canvas.width / 2, canvas.height / 2 + 100)
   }
 
   if (gameState.state === gameStates.enemyShipRound) {
