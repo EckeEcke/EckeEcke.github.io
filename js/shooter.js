@@ -119,10 +119,11 @@ class Player {
     this.killed = false
     this.shotCoolDown = false
     this.shots = []
+    this.activeShots = []
   }
 
-  activeShots() {
-    return this.shots.filter(shot => shot.isActive)
+  setActiveShots() {
+    this.activeShots = this.shots.filter(shot => shot.isActive)
   }
 
   draw() {
@@ -163,19 +164,12 @@ class Player {
     if (this.shotCoolDown) return
     const gamepadConnected = navigator.getGamepads()[0] !== null
 
-    if (buttonsPressed.w || (gamepadConnected && navigator.getGamepads()[0].buttons[0].pressed)) {
+    if (buttonsPressed.w || (gamepadConnected && navigator.getGamepads()[0].buttons[0].pressed) || touchControls.active) {
       this.shotCoolDown = true
       setTimeout(() => this.shotCoolDown = false, 350)
       const shot = new Shot()
       this.shots.push(shot)
-      shot.playSound()
-    }
-
-    if (touchControls.active) {
-      this.shotCoolDown = true
-      setTimeout(() => this.shotCoolDown = false, 350)
-      const shot = new Shot()
-      this.shots.push(shot)
+      game.player.setActiveShots()
       shot.playSound()
     }
   }
@@ -233,6 +227,14 @@ class Game {
     this.displayedScreen = screens.controls
     this.volume = 1
     this.player = new Player()
+    this.respawnAsteroids = false
+    this.asteroids = []
+    this.activeAsteroids = []
+    this.enemyShips = []
+    this.snake = {
+      elements: [],
+      color: 0,
+    }
   }
 
   startGame() {
@@ -243,14 +245,14 @@ class Game {
   resetGame() {
     this.player.shots.length = 0
     this.player.shotCoolDown = false
-    resetAsteroids()
-    addSnakeElements()
+    this.resetAsteroids()
+    this.addSnakeElements()
     this.player.x = 150
     this.player.killed = false
     this.player.y = 580
-    enemyShips.length = 0
-    enemyShips.push(new EnemyShip(0,60), new EnemyShip(260, 120))
-    if (this.score > 1500) enemyShips.push(new EnemyShip(0, 180))
+    this.enemyShips.length = 0
+    this.enemyShips.push(new EnemyShip(0,60), new EnemyShip(260, 120))
+    if (this.score > 1500) this.enemyShips.push(new EnemyShip(0, 180))
     buttonsPressed.a = false
     buttonsPressed.d = false
     buttonsPressed.w = false
@@ -295,16 +297,16 @@ class Game {
     }
     switch (this.round) {
       case null:
-        respawnAsteroids = true
+        this.respawnAsteroids = true
         this.round = rounds.asteroids
         this.state = gameStates.asteroidsRound
-        setTimeout(() => respawnAsteroids = false, 10000)
+        setTimeout(() => this.respawnAsteroids = false, 10000)
         break
       case rounds.snake:
-        respawnAsteroids = true
+        this.respawnAsteroids = true
         this.round = rounds.asteroids
         this.state = gameStates.asteroidsRound
-        setTimeout(() => respawnAsteroids = false, 10000)
+        setTimeout(() => this.respawnAsteroids = false, 10000)
         break
       case rounds.enemyShips:
         this.round = rounds.snake
@@ -326,7 +328,7 @@ class Game {
     clearInterval(intervals.background)
     this.state = gameStates.spaceshipAnimation
     sounds.spaceshipSound.play()
-    snake.color += 20
+    this.snake.color += 20
     this.gameSpeed += 2
     canvasContext.fillStyle = 'limegreen'
     canvasContext.fillText('Next round!', 100, canvas.height / 2)
@@ -334,26 +336,39 @@ class Game {
 
   runEnemies = () => {
     if (this.round === rounds.snake) {
-      snake.elements.forEach(element => {
+      this.snake.elements.forEach(element => {
         element.move()
-        this.player.activeShots().forEach(shot => element.hitDetection(shot))
+        this.player.activeShots.forEach(shot => element.hitDetection(shot))
       })
 
-      if(snake.elements[0].lives === 0 || !snake.elements.some(element => element.lives > 0)) this.endLevel()
+      if(this.snake.elements[0].lives === 0 || !this.snake.elements.some(element => element.lives > 0)) this.endLevel()
     }
     if (this.round === rounds.asteroids) {
-      activeAsteroids().forEach(asteroid => {
+      this.activeAsteroids.forEach(asteroid => {
         asteroid.moveAsteroid()
         asteroid.detectCollisionWithShip()
-        this.player.activeShots().forEach(shot => asteroid.detectCollisionWithShot(shot))
+        this.player.activeShots.forEach(shot => asteroid.detectCollisionWithShot(shot))
       })
 
-      if (activeAsteroids().length === 0) {
+      if (this.activeAsteroids.length === 0) {
         this.endLevel()
       }
     }
     if (this.round === rounds.enemyShips) {
-      moveShipEnemies()
+      this.moveShipEnemies()
+    }
+  }
+
+  moveShipEnemies() {
+    this.enemyShips.forEach(enemy => {
+      enemy.moveShip()
+      enemy.moveShots()
+      enemy.detectHittingPlayer()
+      this.player.activeShots.forEach(shot => enemy.detectHitByPlayer(shot))
+    })
+
+    if (!this.enemyShips.some(enemy => enemy.lives > 0)) {
+      this.endLevel()
     }
   }
 
@@ -466,7 +481,7 @@ class Game {
   drawShipAndShot() {
     this.player.draw()
 
-    if (this.player.activeShots().length > 0) this.player.activeShots().forEach(shot => {
+    if (this.player.activeShots.length > 0) this.player.activeShots.forEach(shot => {
       shot.move()
       shot.draw()
     })
@@ -517,18 +532,18 @@ class Game {
     }
 
     if (this.state === gameStates.asteroidsRound) {
-      activeAsteroids().forEach(asteroid => asteroid.drawAsteroid())
+      this.activeAsteroids.forEach(asteroid => asteroid.drawAsteroid())
     }
 
     if (this.state === gameStates.enemyShipRound) {
-      enemyShips.forEach(enemy => {
+      this.enemyShips.forEach(enemy => {
         enemy.drawShip()
         enemy.drawShot()
       })
     }
 
     if (this.state === gameStates.snakeRound) {
-      snake.elements.forEach(element => element.draw())
+      this.snake.elements.forEach(element => element.draw())
     }
 
     if (this.state === gameStates.gameOver) {
@@ -567,7 +582,7 @@ class Game {
             this.highScore = this.highScores[0]?.Score || 1000
             this.highScoresLoaded = true
             this.highScoresLoading = false
-            this.switchInfoScreen()
+            setTimeout(() => this.switchInfoScreen(), 3000)
           })
           .catch(() => this.highScoresLoading = false)
   }
@@ -598,6 +613,36 @@ class Game {
     this.round = null
     this.resetGame()
   }
+
+  addAsteroids() {
+    this.asteroids.push(new Asteroid(100, -50, 30, 2), new Asteroid(200, -100, 40, 2.4),
+        new Asteroid(300, -200, 60, 1.6), new Asteroid(150, -300, 80, 2),
+        new Asteroid(50, -150, 30, 3), new Asteroid(250, -400, 100, 1.5))
+  }
+
+  resetAsteroids() {
+    this.asteroids.length = 0
+    this.addAsteroids()
+    this.setActiveAsteroids()
+  }
+
+  setActiveAsteroids() {
+    this.activeAsteroids = this.asteroids.filter(asteroid => !asteroid.hit)
+  }
+
+  addSnakeElements () {
+    this.snake.elements.length = 0
+    this.snake.elements = [
+      new SnakeElement(0,true),
+      new SnakeElement(40,false),
+      new SnakeElement(80,false),
+      new SnakeElement(120,false),
+      new SnakeElement(160,false),
+      new SnakeElement(200,false),
+      new SnakeElement(240,false),
+      new SnakeElement(280,false)
+    ]
+  }
 }
 
 let game = new Game()
@@ -609,20 +654,6 @@ function setVolume(value) {
 // _______________________________________________________________
 // ASTEROIDS
 // _______________________________________________________________
-
-const asteroids = []
-const addAsteroids = () => asteroids.push(new Asteroid(100, -50, 30, 2), new Asteroid(200, -100, 40, 2.4),
-    new Asteroid(300, -200, 60, 1.6), new Asteroid(150, -300, 80, 2),
-    new Asteroid(50, -150, 30, 3), new Asteroid(250, -400, 100, 1.5))
-
-const activeAsteroids = () => asteroids.filter(asteroid => !asteroid.hit)
-
-const resetAsteroids = () => {
-  asteroids.length = 0
-  addAsteroids()
-}
-
-let respawnAsteroids = false
 
 class Asteroid {
   constructor(x, y, size, speed) {
@@ -648,7 +679,8 @@ class Asteroid {
     }
     if (this.y > canvas.height) {
       this.hit = true
-      if (respawnAsteroids) this.addNewAsteroid()
+      game.setActiveAsteroids()
+      if (game.respawnAsteroids) this.addNewAsteroid()
     }
   }
 
@@ -668,7 +700,8 @@ class Asteroid {
     const minAsteroidX = 0
     const y = -(Math.random() * (maxAsteroidY - minAsteroidY)) - minAsteroidY
     const x = (Math.random() * (maxAsteroidX - minAsteroidX)) + minAsteroidX
-    if (respawnAsteroids) asteroids.push(new Asteroid(x,y,this.width, this.speed))
+    if (game.respawnAsteroids) game.asteroids.push(new Asteroid(x,y,this.width, this.speed))
+    game.setActiveAsteroids()
   }
 
   detectCollisionWithShip() {
@@ -690,6 +723,7 @@ class Asteroid {
     if (sameY && sameX) {
       if (!this.countBlocker) {
         shot.isActive = false
+        game.player.setActiveShots()
         sounds.hitSound.pause()
         sounds.hitSound.currentTime = 0
         sounds.hitSound.play()
@@ -705,13 +739,12 @@ class Asteroid {
 
       setTimeout(() => {
         this.hit = true
+        game.setActiveAsteroids()
         this.addNewAsteroid()
       }, 100)
     }
   }
 }
-
-addAsteroids()
 
 // _______________________________________________________________
 // ENEMY SHIPS
@@ -797,26 +830,12 @@ class EnemyShip {
       sounds.hitSound.play()
       setTimeout(() => this.lives -= 0.5, 100)
       shot.isActive = false
+      game.player.setActiveShots()
       game.score += 30 * game.multiplier
       game.streak += 1
     }
   }
 }
-
-function moveShipEnemies() {
-  enemyShips.forEach(enemy => {
-    enemy.moveShip()
-    enemy.moveShots()
-    enemy.detectHittingPlayer()
-    game.player.activeShots().forEach(shot => enemy.detectHitByPlayer(shot))
-  })
-
-  if (!enemyShips.some(enemy => enemy.lives > 0)) {
-    game.endLevel()
-  }
-}
-
-const enemyShips = [new EnemyShip(0,60), new EnemyShip(260, 120)]
 
 // _______________________________________________________________
 // SNAKE
@@ -838,7 +857,7 @@ class SnakeElement {
       canvasContext.fillRect(this.x, this.y + this.size / 2 - 4, this.size, 8)
       return
     }
-    canvasContext.filter = `hue-rotate(${snake.color}deg)`
+    canvasContext.filter = `hue-rotate(${game.snake.color}deg)`
     if (this.lives > 0.5) {
       canvasContext.drawImage(game.score >= 1510 && game.score < 2000
           ? images.trumpHead : this.image, this.x, this.y, this.size, this.size)
@@ -865,7 +884,8 @@ class SnakeElement {
     const collisionX = shot.x >= this.x && shot.x + shot.width <= this.x + 40
     if (collisionY && collisionX && this.lives > 0.5) {
       shot.isActive = false
-      snake.color += 50
+      game.player.setActiveShots()
+      game.snake.color += 50
       this.lives -= 0.5
       setTimeout(() => this.lives -= 0.5, 100)
       game.score += 10 * game.multiplier
@@ -875,34 +895,13 @@ class SnakeElement {
         sounds.powerUp.play()
       }
 
-      setTimeout(() => { snake.color -= 50 }, 50)
+      setTimeout(() => { game.snake.color -= 50 }, 50)
       sounds.hitSound.pause()
       sounds.hitSound.currentTime = 0
       sounds.hitSound.play()
     }
   }
 }
-
-const snake = {
-  elements: [],
-  color: 0,
-}
-
-function addSnakeElements () {
-  snake.elements.length = 0
-  snake.elements = [
-    new SnakeElement(0,true),
-    new SnakeElement(40,false),
-    new SnakeElement(80,false),
-    new SnakeElement(120,false),
-    new SnakeElement(160,false),
-    new SnakeElement(200,false),
-    new SnakeElement(240,false),
-    new SnakeElement(280,false)
-  ]
-}
-
-addSnakeElements()
 
 // _______________________________________________________________
 // SHOTS
@@ -922,6 +921,7 @@ class Shot {
 
     if (this.y <= -20) {
       this.isActive = false
+      game.player.setActiveShots()
       game.streak = 0
     }
   }
