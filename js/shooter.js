@@ -40,8 +40,8 @@ function loadImages() {
     images.trumpHead.onload = () => game.gameLoaded += 5
     images.background.onload = () => game.gameLoaded += 5
     images.playerShip.onload = () => game.gameLoaded += 5
-    images.explosion.onload = () => game.gameLoaded += 10
-    images.asteroid.onload = () => game.gameLoaded += 10
+    images.explosion.onload = () => game.gameLoaded += 5
+    images.asteroid.onload = () => game.gameLoaded += 5
     images.snakeHead.src = imageSources.snakeHead
     images.snakeBody.src = imageSources.snakeBody
     images.enemyShip.src = imageSources.enemyShip
@@ -67,6 +67,8 @@ const soundSources = {
   spaceshipSound: './sounds/shooter/spaceship-rising.wav',
   loseSound: './sounds/shooter/lose-shooter.wav',
   gameMusic: './sounds/shooter/space-shooter-music.mp3',
+  shieldUp: './sounds/shooter/shield-up.wav',
+  shieldDown: './sounds/shooter/shield-down.wav',
 }
 
 const sounds = {
@@ -80,6 +82,8 @@ const sounds = {
   spaceshipSound: undefined,
   loseSound: undefined,
   gameMusic: undefined,
+  shieldUp: undefined,
+  shieldDown: undefined,
 }
 
 function loadSounds() {
@@ -104,6 +108,10 @@ function loadSounds() {
   sounds.gameMusic = new Audio(soundSources.gameMusic)
   sounds.gameMusic.onloadeddata = () => game.gameLoaded += 5
   sounds.gameMusic.loop = true
+  sounds.shieldUp = new Audio(soundSources.shieldUp)
+  sounds.shieldUp.onloadeddata = () => game.gameLoaded += 5
+  sounds.shieldDown = new Audio(soundSources.shieldDown)
+  sounds.shieldDown.onloadeddata = () => game.gameLoaded += 5
 }
 
 // _______________________________________________________________
@@ -112,14 +120,17 @@ function loadSounds() {
 
 class Player {
   constructor() {
-    this.x = 150
-    this.y = 580
-    this.width = 80
-    this.height = 100
+    this.height = 64
+    this.width = 40
+    this.x = canvas.width / 2 - this.width / 2
+    this.y = canvas.height - this.height
     this.killed = false
     this.shotCoolDown = false
     this.shots = []
     this.activeShots = []
+    this.hasShield = false
+    this.hasWideShot = false
+    this.hasLongShot = false
   }
 
   setActiveShots() {
@@ -127,7 +138,20 @@ class Player {
   }
 
   draw() {
-    canvasContext.drawImage(this.killed ? images.explosion : images.playerShip, this.x, this.y - 60, this.width, this.height)
+    this.killed
+        ? canvasContext.drawImage(images.explosion, this.x + (this.height - this.width) / 2, this.y, this.height, this.height)
+        : canvasContext.drawImage(images.playerShip, this.x, this.y, this.width, this.height)
+    if (!this.hasShield) return
+    const radius = 50
+    const x = this.x + this.width / 2
+    const y = this.y + this.height / 2
+    canvasContext.beginPath()
+    canvasContext.arc(x, y, radius, 0, Math.PI * 2)
+    const gradient = canvasContext.createRadialGradient(x, y, 0, x, y, radius)
+    gradient.addColorStop(0, 'rgba(255, 0, 0, 0.3)')
+    gradient.addColorStop(1, 'rgba(0, 0, 255, 0.3)')
+    canvasContext.fillStyle = gradient
+    canvasContext.fill()
   }
 
   move() {
@@ -135,16 +159,16 @@ class Player {
     if (buttonsPressed.a || (gamepadConnected && navigator.getGamepads()[0].buttons[14].pressed )) {
       this.x -= 4
     }
-    if (this.x < -20) {
-      this.x = -20
+    if (this.x < 0) {
+      this.x = 0
     }
 
     if (buttonsPressed.d || (gamepadConnected && navigator.getGamepads()[0].buttons[15].pressed )) {
       this.x += 4
     }
 
-    if (this.x > 340) {
-      this.x = 340
+    if (this.x > canvas.width - this.width) {
+      this.x = canvas.width - this.width
     }
   }
 
@@ -235,6 +259,7 @@ class Game {
       elements: [],
       color: 0,
     }
+    this.powerUp = null
   }
 
   startGame() {
@@ -247,9 +272,9 @@ class Game {
     this.player.shotCoolDown = false
     this.resetAsteroids()
     this.addSnakeElements()
-    this.player.x = 150
+    this.player.x = canvas.width / 2 - this.player.width / 2
     this.player.killed = false
-    this.player.y = 580
+    this.player.y = canvas.height - this.player.height
     this.enemyShips.length = 0
     this.enemyShips.push(new EnemyShip(0,60), new EnemyShip(260, 120))
     if (this.score > 1500) this.enemyShips.push(new EnemyShip(0, 180))
@@ -306,20 +331,23 @@ class Game {
         this.respawnAsteroids = true
         this.round = rounds.asteroids
         this.state = gameStates.asteroidsRound
+        if (this.score > 250) this.powerUp = new PowerUp(powerUpTypes.shield)
         setTimeout(() => this.respawnAsteroids = false, 10000)
-        break
-      case rounds.enemyShips:
-        this.round = rounds.snake
-        this.state = gameStates.snakeRound
         break
       case rounds.asteroids:
         this.round = rounds.enemyShips
         this.state = gameStates.enemyShipRound
+        if (this.score > 500) this.powerUp = new PowerUp(powerUpTypes.wideShot)
+        break
+      case rounds.enemyShips:
+        this.round = rounds.snake
+        this.state = gameStates.snakeRound
+        if (this.score > 750) this.powerUp = new PowerUp(powerUpTypes.longShot)
         break
     }
     intervals.game = setInterval(this.runGame, 1000 / 140)
     intervals.enemies = setInterval(this.runEnemies, 1000 / this.gameSpeed)
-    intervals.background = setInterval(game.moveBackground, 1000 / 30)
+    intervals.background = setInterval(game.moveBackground, 1000 / 60)
   }
 
   endLevel() {
@@ -335,6 +363,11 @@ class Game {
   }
 
   runEnemies = () => {
+    if (this.powerUp) {
+      this.powerUp.move()
+      this.powerUp.detectCollisionWithPlayer()
+    }
+
     if (this.round === rounds.snake) {
       this.snake.elements.forEach(element => {
         element.move()
@@ -362,8 +395,6 @@ class Game {
   moveShipEnemies() {
     this.enemyShips.forEach(enemy => {
       enemy.moveShip()
-      enemy.moveShots()
-      enemy.detectHittingPlayer()
       this.player.activeShots.forEach(shot => enemy.detectHitByPlayer(shot))
     })
 
@@ -479,22 +510,25 @@ class Game {
   }
 
   drawShipAndShot() {
-    this.player.draw()
-
     if (this.player.activeShots.length > 0) this.player.activeShots.forEach(shot => {
       shot.move()
       shot.draw()
     })
+
+    this.player.draw()
   }
 
   drawScore() {
     canvasContext.textAlign = 'start'
     canvasContext.fillStyle = 'limegreen'
     canvasContext.fillText('Score', 12, 30)
-    canvasContext.fillText('Hi-Score', 25 + canvas.width / 2, 30)
     canvasContext.fillStyle = 'white'
     canvasContext.fillText(this.score, 12, 60)
-    canvasContext.fillText(this.highScore, 25 + canvas.width / 2, 60)
+    canvasContext.textAlign = 'right'
+    canvasContext.fillStyle = 'limegreen'
+    canvasContext.fillText('Hi-Score', canvas.width - 12, 30)
+    canvasContext.fillStyle = 'white'
+    canvasContext.fillText(this.highScore, canvas.width - 12, 60)
   }
 
   drawSpaceshipAnimation() {
@@ -504,7 +538,19 @@ class Game {
     canvasContext.fillStyle = 'limegreen'
     canvasContext.textAlign = 'center'
     canvasContext.fillText(this.score === 0 ? 'Save earth!' : 'Next round!', canvas.width / 2, canvas.height / 2)
-    canvasContext.drawImage(images.playerShip, this.player.x, this.player.y - 60, this.player.width, this.player.height)
+    canvasContext.drawImage(images.playerShip, this.player.x, this.player.y - this.player.height / 2, this.player.width, this.player.height)
+    if (this.player.hasShield) {
+      const radius = 50
+      const x = this.player.x + this.player.width / 2
+      const y = this.player.y
+      canvasContext.beginPath()
+      canvasContext.arc(x, y, radius, 0, Math.PI * 2)
+      const gradient = canvasContext.createRadialGradient(x, y, 0, x, y, radius)
+      gradient.addColorStop(0, 'rgba(255, 0, 0, 0.3)')
+      gradient.addColorStop(1, 'rgba(0, 0, 255, 0.3)')
+      canvasContext.fillStyle = gradient
+      canvasContext.fill()
+    }
     this.player.y -= 5
     if (this.backgroundScrollPosition < 80) this.backgroundScrollPosition += 2.5
     if (this.player.y < -50) {
@@ -517,6 +563,25 @@ class Game {
     canvasContext.fillRect(0, 0, canvas.width, canvas.height)
     canvasContext.drawImage(images.background, 0, this.backgroundScrollPosition)
     this.drawShipAndShot()
+
+    if (this.state === gameStates.asteroidsRound) {
+      this.activeAsteroids.forEach(asteroid => asteroid.drawAsteroid())
+      if (this.powerUp) this.powerUp.draw()
+    }
+
+    if (this.state === gameStates.enemyShipRound) {
+      this.enemyShips.forEach(enemy => {
+        enemy.handleShots()
+        enemy.drawShip()
+      })
+      if (this.powerUp) this.powerUp.draw()
+    }
+
+    if (this.state === gameStates.snakeRound) {
+      this.snake.elements.forEach(element => element.draw())
+      if (this.powerUp) this.powerUp.draw()
+    }
+
     this.drawScore()
 
     if (this.state === gameStates.titleScreen) {
@@ -531,21 +596,6 @@ class Game {
       this.drawSpaceshipAnimation()
     }
 
-    if (this.state === gameStates.asteroidsRound) {
-      this.activeAsteroids.forEach(asteroid => asteroid.drawAsteroid())
-    }
-
-    if (this.state === gameStates.enemyShipRound) {
-      this.enemyShips.forEach(enemy => {
-        enemy.drawShip()
-        enemy.drawShot()
-      })
-    }
-
-    if (this.state === gameStates.snakeRound) {
-      this.snake.elements.forEach(element => element.draw())
-    }
-
     if (this.state === gameStates.gameOver) {
       this.drawGameOverScreen()
     }
@@ -555,7 +605,7 @@ class Game {
 
   moveBackground = () => {
     if (this.backgroundScrollPosition < 140) {
-      this.backgroundScrollPosition += 4
+      this.backgroundScrollPosition += 2
     }
   }
 
@@ -685,6 +735,7 @@ class Asteroid {
   }
 
   drawAsteroid() {
+    if (this.hit) return
     canvasContext.drawImage(
         this.countBlocker ? images.explosion : images.asteroid,
         this.x,
@@ -705,22 +756,33 @@ class Asteroid {
   }
 
   detectCollisionWithShip() {
-    if (this.hit) return
+    if (this.hit || this.countBlocker) return
+    const tolerance = 6
 
-    const sameY = game.player.y < this.y + this.height && game.player.y + 100 > this.y
-    const sameX = game.player.x + 10 < this.x + this.width &&
-        game.player.x + 80 > this.x + this.width
+    const overlapX = game.player.x + tolerance < this.x + this.width && game.player.x + game.player.width - tolerance > this.x
+    const overlapY = game.player.y + tolerance < this.y + this.height && game.player.y + game.player.height - tolerance > this.y
 
-    if (sameY && sameX) {
-      game.handleGameOver()
+    if (overlapX && overlapY) {
+      if (game.player.hasShield) {
+        sounds.shieldDown.play()
+        this.countBlocker = true
+        game.player.hasShield = false
+        game.player.hasLongShot = false
+        game.player.hasWideShot = false
+        setTimeout(() => {
+          this.hit = true
+          game.setActiveAsteroids()
+        }, 100)
+      }
+      else game.handleGameOver()
     }
   }
 
   detectCollisionWithShot(shot) {
-    const sameX = shot.x >= this.x - 10 && shot.x + shot.width <= this.x + this.width + 10
-    const sameY = shot.y <= this.y + this.height && shot.y >= this.y
+    const overlapX = shot.x < this.x + this.width && shot.x + shot.width > this.x
+    const overlapY = shot.y < this.y + this.height && shot.y + shot.currentHeight > this.y
 
-    if (sameY && sameX) {
+    if (overlapX && overlapY) {
       if (!this.countBlocker) {
         shot.isActive = false
         game.player.setActiveShots()
@@ -757,14 +819,10 @@ class EnemyShip {
       this.width = 50
       this.height = 50
       this.speed = 4
-      this.lives = 2
-      this.shotFired = false
-      this.shotSpeed = 5
-      this.shotX = 0
-      this.shotX2 = 0
-      this.shotY = 0
-      this.shotWidth = 10
-      this.shotHeight = 20
+      this.lives = game.score > 1500 ? 4 : 2
+      this.isShotCoolDown = false
+      this.shots = []
+      this.activeShots = []
   }
 
   drawShip() {
@@ -776,12 +834,21 @@ class EnemyShip {
     }
   }
 
-  drawShot() {
-    if (this.shotFired) {
-      canvasContext.fillStyle = 'red'
-      canvasContext.fillRect(this.shotX, this.shotY, this.shotWidth, this.shotHeight)
-      canvasContext.fillRect(this.shotX2, this.shotY, this.shotWidth, this.shotHeight)
+  shoot() {
+    if (this.isShotCoolDown || game.player.killed) return
+
+    if (this.x + 40 >= game.player.x && this.x <= game.player.x + 40 && this.lives >= 1) {
+      this.shots.push(new EnemyShot(this))
+      this.setActiveShots()
+      sounds.laserEnemy.play()
     }
+
+    this.isShotCoolDown = true
+    setTimeout(() => this.isShotCoolDown = false, 250)
+  }
+
+  setActiveShots() {
+    this.activeShots = this.shots.filter(shot => shot.isActive)
   }
 
   moveShip() {
@@ -791,41 +858,21 @@ class EnemyShip {
     }
   }
 
-  moveShots() {
-    if (this.x + 20 >= game.player.x && this.x <= game.player.x + 20 && this.shotFired === false && this.lives >= 1) {
-      this.shotX = this.x
-      this.shotX2 = this.x + 30
-      this.shotY = this.y
-      this.shotFired = true
-
-      sounds.laserEnemy.play()
-    }
-    if (this.shotFired) {
-      this.shotY += this.shotSpeed
-    }
-    if (this.shotY > canvas.height) {
-      this.shotFired = false
-    }
-
-    this.detectHittingPlayer()
-  }
-
-  detectHittingPlayer() {
-    const shotCollisionX = game.player.x + 10 < this.shotX + 30 && game.player.x + 80 > this.shotX + 20
-    const shotCollisionY = game.player.y < this.shotY + 30 && game.player.y + 10 > this.shotY
-    const hitByEnemyShot =  shotCollisionX && shotCollisionY && this.lives >= 1
-    if (hitByEnemyShot) {
-      game.handleGameOver()
-    }
+  handleShots() {
+    this.shoot()
+    this.activeShots.forEach(shot => {
+      shot.draw()
+      shot.move()
+      shot.detectHittingPlayer()
+    })
   }
 
   detectHitByPlayer(shot) {
     if (this.lives <= 0) return
-    const collisionY = shot.y <= this.y + 40 && shot.y >= this.y
-    const collisionX = shot.x >= this.x &&
-        shot.x + shot.width <= this.x + 50
+    const overlapY = shot.y < this.y + this.height && shot.y + shot.currentHeight > this.y
+    const overlapX = shot.x < this.x + this.width && shot.x + shot.width > this.x
 
-    if (collisionY && collisionX && this.lives >= 1 && shot.isActive) {
+    if (overlapY && overlapX && this.lives >= 1 && shot.isActive) {
       this.lives -= 0.5
       sounds.hitSound.play()
       setTimeout(() => this.lives -= 0.5, 100)
@@ -833,6 +880,66 @@ class EnemyShip {
       game.player.setActiveShots()
       game.score += 30 * game.multiplier
       game.streak += 1
+    }
+  }
+}
+
+class EnemyShot {
+  constructor(enemyShip) {
+    this.enemyShip = enemyShip
+    this.width = 10
+    this.maxHeightShot = game.score > 1500 ? 40 : 20
+    this.currentShotHeight = 0
+    this.x = enemyShip.x
+    this.x2 = enemyShip.x + 30
+    this.y = enemyShip.y
+    this.isActive = true
+    this.shotSpeed = 6
+    this.shotWidth = 10
+  }
+
+  draw() {
+    if (this.isActive) {
+      if (this.currentShotHeight < this.maxHeightShot) this.currentShotHeight += 2
+      canvasContext.fillStyle = 'rgba(255,0,0,0.6)'
+      canvasContext.fillRect(this.x, this.y, this.shotWidth, this.currentShotHeight)
+      canvasContext.fillRect(this.x2, this.y, this.shotWidth, this.currentShotHeight)
+    }
+  }
+
+  move() {
+    if (this.isActive && this.x + 20 >= game.player.x && this.x <= game.player.x + 20 && this.enemyShip.lives >= 1) {
+
+      sounds.laserEnemy.play()
+    }
+    if (this.isActive) {
+      this.y += this.shotSpeed
+    }
+    if (this.y > canvas.height) {
+      this.isActive = false
+      this.enemyShip.setActiveShots()
+    }
+
+    this.detectHittingPlayer()
+  }
+
+  detectHittingPlayer() {
+    if (!this.isActive) return
+    const tolerance = 6
+    const shotCollisionX = game.player.x + 10 + tolerance < this.x + 30 && game.player.x + 80 - tolerance > this.x + 20
+    const shotCollisionX2 = game.player.x + 10 + tolerance < this.x2 + 30 && game.player.x + 80 - tolerance > this.x2 + 20
+    const shotCollisionY = game.player.y + tolerance < this.y + 30 && game.player.y + 10 - tolerance > this.y
+    const hitByEnemyShot = (shotCollisionX || shotCollisionX2) && shotCollisionY && this.enemyShip.lives >= 1
+    if (hitByEnemyShot) {
+      if (game.player.hasShield) {
+        sounds.shieldDown.play()
+        this.currentShotHeight = 0
+        this.isActive = false
+        this.enemyShip.setActiveShots()
+        game.player.hasShield = false
+        game.player.hasLongShot = false
+        game.player.hasWideShot = false
+      } else game.handleGameOver()
     }
   }
 }
@@ -880,9 +987,9 @@ class SnakeElement {
   }
 
   hitDetection(shot) {
-    const collisionY = shot.y <= this.y + 40 && shot.y >= this.y
-    const collisionX = shot.x >= this.x && shot.x + shot.width <= this.x + 40
-    if (collisionY && collisionX && this.lives > 0.5) {
+    const overlapY = shot.y < this.y + this.size && shot.y + shot.currentHeight > this.y
+    const overlapX = shot.x < this.x + this.size && shot.x + shot.width > this.x
+    if (overlapY && overlapX && this.lives > 0.5) {
       shot.isActive = false
       game.player.setActiveShots()
       game.snake.color += 50
@@ -904,38 +1011,159 @@ class SnakeElement {
 }
 
 // _______________________________________________________________
+// POWER UPS
+// _______________________________________________________________
+
+const powerUpTypes = {
+  shield: 'Shield power up',
+  wideShot: 'Wide shot power up',
+  longShot: 'Long shot power up'
+}
+
+class PowerUp {
+  constructor(type) {
+    this.type = type
+    this.maxX = canvas.width - 20
+    this.minX = 20
+    this.x = (Math.random() * (this.maxX - this.minX)) + this.minX
+    this.y = -400
+    this.radius = 20
+    this.speedX = 3
+    this.speedY = 3
+    this.isActive = true
+  }
+
+  draw() {
+    if (!this.isActive) return
+    canvasContext.beginPath()
+    canvasContext.arc(this.x, this.y, this.radius, 0, Math.PI * 2)
+    const gradient = canvasContext.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius)
+    gradient.addColorStop(0, this.getGradientByType().step1)
+    gradient.addColorStop(1, this.getGradientByType().step2)
+    canvasContext.textAlign = 'start'
+    canvasContext.fillStyle = gradient
+    canvasContext.fill()
+    canvasContext.fillStyle = 'limegreen'
+    const powerUpLetter = this.type.at(0)
+    const textWidth = canvasContext.measureText(powerUpLetter).width
+    canvasContext.fillText(powerUpLetter, this.x - textWidth / 2, this.y + this.radius / 3)
+  }
+
+  getGradientByType() {
+    if (this.type === powerUpTypes.shield) return {
+      step1: 'rgba(0, 155, 255, 0.6)',
+      step2: 'rgba(0, 0, 255, 0.6)'
+    }
+    if (this.type === powerUpTypes.wideShot) return {
+      step1: 'rgba(255, 155, 0, 0.6)',
+      step2: 'rgba(255, 0, 0, 0.6)'
+    }
+    if (this.type === powerUpTypes.longShot) return {
+      step1: 'rgba(0, 0, 255, 0.6)',
+      step2: 'rgba(155, 0, 255, 0.6)'
+    }
+  }
+
+  move() {
+    if (this.isActive) {
+      this.y += this.speedY
+      this.x += this.speedX
+      this.x += this.speedX
+      if (this.x > canvas.width) this.speedX = -this.speedX
+      if (this.x < 0) this.speedX = -this.speedX
+    }
+
+    if (this.y > canvas.height) {
+      this.isActive = false
+    }
+  }
+
+  detectCollisionWithPlayer() {
+      if (!this.isActive) return
+      const closestX = Math.max(game.player.x, Math.min(this.x, game.player.x + game.player.width))
+      const closestY = Math.max(game.player.y, Math.min(this.y, game.player.y + game.player.height))
+
+      const distanceX = this.x - closestX
+      const distanceY = this.y - closestY
+
+      const distanceSquared = distanceX * distanceX + distanceY * distanceY
+      const isCollision = distanceSquared < (this.radius * this.radius)
+
+      if (isCollision) {
+        this.isActive = false
+
+        if (this.type === powerUpTypes.shield) {
+          if (game.player.hasShield) game.score += 50
+          game.player.hasShield = true
+        }
+
+        if (this.type === powerUpTypes.wideShot) {
+          if (game.player.hasWideShot) game.score += 50
+          game.player.hasWideShot = true
+        }
+
+        if (this.type === powerUpTypes.longShot) {
+          if (game.player.hasLongShot) game.score += 50
+          game.player.hasLongShot = true
+        }
+
+        if (this.type === powerUpTypes.shield) {
+          sounds.shieldUp.play()
+        } else sounds.powerUp.play()
+      }
+    }
+}
+
+// _______________________________________________________________
 // SHOTS
 // _______________________________________________________________
 
 class Shot {
   constructor() {
-    this.width = 10
-    this.height = 20
-    this.x = game.player.x + 40 - this.width / 2
-    this.y = game.player.y - 60
+    this.width = game.player.hasWideShot ? 30 : 10
+    this.fullHeight = game.player.hasLongShot ? 100 : 20
+    this.currentHeight = 0
+    this.x = game.player.x + game.player.width / 2 - this.width / 2
+    this.y = game.player.y
     this.isActive = true
+    this.shotSpeed = 10
   }
 
   move() {
-    if (this.isActive) this.y -= 10
+    if (this.isActive) this.y -= this.shotSpeed
 
     if (this.y <= -20) {
       this.isActive = false
       game.player.setActiveShots()
       game.streak = 0
     }
+
+    if (this.currentHeight < this.fullHeight) {
+      this.currentHeight += 2
+    }
   }
 
   draw() {
     let fillColor
     switch (game.multiplier) {
-      case 2: fillColor = 'red'; break
-      case 3: fillColor = 'blue'; break
-      default: fillColor = 'limegreen'
+      case 2: fillColor = 'rgba(255, 0, 0, 0.8)'; break
+      case 3: fillColor = 'rgba(0, 0, 255, 0.8)'; break
+      default: fillColor = 'rgba(50, 205, 50, 0.8)'
     }
 
     canvasContext.fillStyle = fillColor
-    canvasContext.fillRect(this.x, this.y, this.width, this.height)
+
+    if (game.player.hasLongShot) {
+      const lineHeight = 3
+      const gap = 3
+      const numLines = Math.floor(this.currentHeight / (lineHeight + gap))
+
+      for (let i = 0; i < numLines; i++) {
+        const yPosition = this.y + i * (lineHeight + gap)
+        canvasContext.fillRect(this.x, yPosition, this.width, lineHeight)
+      }
+    } else canvasContext.fillRect(this.x, this.y, this.width, this.currentHeight)
+
     canvasContext.fillStyle = 'limegreen'
   }
 
@@ -992,7 +1220,7 @@ function keyDownHandler(event) {
   else if (event.key === 'w' || event.key === 'ArrowUp') {
     buttonsPressed.w = true
   }
-  if (event.key === 's' && !buttonsPressed.s && game.gameLoaded >= 100 && game.highScoresLoaded) {
+  if (event.key === 's' && !buttonsPressed.s && game.gameLoaded >= 100) {
     game.score = 0
     game.startGame()
     game.state = gameStates.spaceshipAnimation
