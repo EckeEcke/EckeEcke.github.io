@@ -62,13 +62,14 @@ const soundSources = {
   laser2: './sounds/shooter/laser2.wav',
   laser3: './sounds/shooter/laser3.wav',
   powerUp: './sounds/shooter/shooter-power-up.wav',
-  alertSound: './sounds/shooter/alert.wav',
-  hitSound: './sounds/shooter/hit.wav',
+  hitSound: './sounds/shooter/hit2.wav',
   spaceshipSound: './sounds/shooter/spaceship-rising.wav',
   loseSound: './sounds/shooter/lose-shooter.wav',
   gameMusic: './sounds/shooter/space-shooter-music.mp3',
   shieldUp: './sounds/shooter/shield-up.wav',
   shieldDown: './sounds/shooter/shield-down.wav',
+  explosion: './sounds/shooter/explosion.wav',
+  explosion2: './sounds/shooter/explosion2.wav',
 }
 
 const sounds = {
@@ -77,13 +78,14 @@ const sounds = {
   laser2: undefined,
   laser3: undefined,
   powerUp: undefined,
-  alertSound: undefined,
   hitSound: undefined,
   spaceshipSound: undefined,
   loseSound: undefined,
   gameMusic: undefined,
   shieldUp: undefined,
   shieldDown: undefined,
+  explosion: undefined,
+  explosion2: undefined,
 }
 
 function loadSounds() {
@@ -97,8 +99,6 @@ function loadSounds() {
   sounds.laser3.onloadeddata = () => game.gameLoaded += 5
   sounds.powerUp = new Audio(soundSources.powerUp)
   sounds.powerUp.onloadeddata = () => game.gameLoaded += 5
-  sounds.alertSound = new Audio(soundSources.alertSound)
-  sounds.alertSound.onloadeddata = () => game.gameLoaded += 5
   sounds.hitSound = new Audio(soundSources.hitSound)
   sounds.hitSound.onloadeddata = () => game.gameLoaded += 5
   sounds.spaceshipSound = new Audio(soundSources.spaceshipSound)
@@ -112,6 +112,10 @@ function loadSounds() {
   sounds.shieldUp.onloadeddata = () => game.gameLoaded += 5
   sounds.shieldDown = new Audio(soundSources.shieldDown)
   sounds.shieldDown.onloadeddata = () => game.gameLoaded += 5
+  sounds.explosion = new Audio(soundSources.explosion)
+  sounds.explosion.onloadeddata = () => game.gameLoaded += 3
+  sounds.explosion2 = new Audio(soundSources.explosion2)
+  sounds.explosion2.onloadeddata = () => game.gameLoaded += 2
 }
 
 // _______________________________________________________________
@@ -248,8 +252,6 @@ class Game {
     this.highScoresLoaded = false
     this.highScoresLoading = false
     this.loadingAnimation = '.'
-    this.multiplier = 0
-    this.streak = 0
     this.gameSpeed = 60
     this.musicRunning = false
     this.backgroundScrollPosition = -1900
@@ -282,6 +284,7 @@ class Game {
     this.player.x = canvas.width / 2 - this.player.width / 2
     this.player.killed = false
     this.player.y = canvas.height - this.player.height
+    this.powerUp = null
     this.enemyShips.length = 0
     this.enemyShips.push(new EnemyShip(0,60, false), new EnemyShip(260, 120, true))
     if (this.score > this.minScoreForHardMode) this.enemyShips.push(new EnemyShip(0, 180, false))
@@ -305,7 +308,6 @@ class Game {
       sounds.gameMusic.currentTime = 0
       sounds.gameMusic.playbackRate = 1
     }, 1000)
-    this.streak = 0
     sounds.loseSound.play()
     setTimeout(() => {
       this.state = gameStates.gameOver
@@ -386,8 +388,11 @@ class Game {
       if(this.snake.elements[0].lives === 0) {
         this.snake.elements.forEach((element, index) => {
           setTimeout(() => {
+            sounds.explosion.pause()
+            sounds.explosion.currentTime = 0
+            sounds.explosion.play()
             element.lives = 0.5
-          }, index * 50)
+          }, index * 60)
         })
         this.endLevel()
       }
@@ -422,8 +427,6 @@ class Game {
       this.highScore = this.score
       this.isHighScore = true
     }
-
-    this.multiplier = Math.floor(this.streak / 10) + 1 <= 3 ? Math.floor(this.streak / 10) + 1 : 3
   }
 
   switchInfoScreen() {
@@ -472,21 +475,65 @@ class Game {
   }
 
   drawManual() {
-    canvasContext.fillText('Points', canvas.width / 2, 70)
+    canvasContext.textAlign = 'center'
+    canvasContext.fillStyle = 'limegreen'
+    canvasContext.fillText('Power-Ups', canvas.width / 2, 70)
     canvasContext.textAlign = 'left'
-    canvasContext.fillText('GREEN Shot ', 20, 140)
-    canvasContext.fillText('RED Shot ', 20, 220)
-    canvasContext.fillText('BLUE Shot ', 20, 300)
-    canvasContext.drawImage(images.asteroid, 30, 350, 50, 50)
-    canvasContext.drawImage(images.enemyShip, 30, 430, 50, 50)
-    canvasContext.drawImage(images.snakeHead, 30, 505, 50, 50)
+
+    const shieldPowerUpX = 50
+    const shieldPowerUpY = 130
+    canvasContext.beginPath()
+    canvasContext.arc(shieldPowerUpX, shieldPowerUpY, 20, 0, Math.PI * 2)
+    const shieldGradient = canvasContext.createRadialGradient(shieldPowerUpX, shieldPowerUpY, 0, shieldPowerUpX, shieldPowerUpY, 20)
+    shieldGradient.addColorStop(0, 'rgba(0, 155, 255, 0.6)')
+    shieldGradient.addColorStop(1, 'rgba(0, 0, 255, 0.6)')
+    canvasContext.fillStyle = shieldGradient
+    canvasContext.fill()
+    canvasContext.fillStyle = 'limegreen'
+    const textWidthShield = canvasContext.measureText('S').width
+    canvasContext.fillText('S', shieldPowerUpX - textWidthShield / 2, shieldPowerUpY + 20 / 3)
+
+    const wideShotPowerUpX = 50
+    const wideShotPowerUpY = 190
+    canvasContext.beginPath()
+    canvasContext.arc(wideShotPowerUpX, wideShotPowerUpY, 20, 0, Math.PI * 2)
+    const wideShotGradient = canvasContext.createRadialGradient(wideShotPowerUpX, wideShotPowerUpY, 0, wideShotPowerUpX, wideShotPowerUpY, 20)
+    wideShotGradient.addColorStop(0, 'rgba(255, 155, 0, 0.6)')
+    wideShotGradient.addColorStop(1, 'rgba(255, 0, 0, 0.6)')
+    canvasContext.fillStyle = wideShotGradient
+    canvasContext.fill()
+    canvasContext.fillStyle = 'limegreen'
+    const textWidthWideShot = canvasContext.measureText('W').width
+    canvasContext.fillText('W', wideShotPowerUpX - textWidthWideShot / 2, wideShotPowerUpY + 20 / 3)
+
+    const longShotPowerUpX = 50
+    const longShotPowerUpY = 250
+    canvasContext.beginPath()
+    canvasContext.arc(longShotPowerUpX, longShotPowerUpY, 20, 0, Math.PI * 2)
+    const longShotGradient = canvasContext.createRadialGradient(longShotPowerUpX, longShotPowerUpY, 0, longShotPowerUpX, longShotPowerUpY, 20)
+    longShotGradient.addColorStop(0, 'rgba(0, 0, 255, 0.6)')
+    longShotGradient.addColorStop(1, 'rgba(155, 0, 255, 0.6)')
+    canvasContext.fillStyle = longShotGradient
+    canvasContext.fill()
+    canvasContext.fillStyle = 'limegreen'
+    const textWidthLongShot = canvasContext.measureText('L').width
+    canvasContext.fillText('L', longShotPowerUpX - textWidthLongShot / 2, longShotPowerUpY + 20 / 3)
+
+    canvasContext.fillStyle = 'limegreen'
     canvasContext.textAlign = 'right'
-    canvasContext.fillText('1x PTS', canvas.width - 20, 140)
-    canvasContext.fillText('2x PTS', canvas.width - 20, 220)
-    canvasContext.fillText('3x PTS', canvas.width - 20, 300)
-    canvasContext.fillText('5 PTS', canvas.width - 20, 380)
-    canvasContext.fillText('30 PTS', canvas.width - 20, 460)
-    canvasContext.fillText('10 PTS', canvas.width - 20, 540)
+    canvasContext.fillText('Shield', canvas.width - 30, shieldPowerUpY + 10)
+    canvasContext.fillText('Wide Shot', canvas.width - 30, wideShotPowerUpY + 10)
+    canvasContext.fillText('Long Shot', canvas.width - 30, longShotPowerUpY + 10)
+
+    canvasContext.textAlign = 'center'
+    canvasContext.fillText('Enemies', canvas.width / 2, 360)
+    canvasContext.drawImage(images.asteroid, 30, 400, 40, 40)
+    canvasContext.drawImage(images.enemyShip, 30, 460, 40, 40)
+    canvasContext.drawImage(images.snakeHead, 30, 520, 40, 40)
+    canvasContext.textAlign = 'right'
+    canvasContext.fillText('5 PTS', canvas.width - 30, 430)
+    canvasContext.fillText('30 PTS', canvas.width - 30, 490)
+    canvasContext.fillText('10 PTS', canvas.width - 30, 550)
   }
 
   drawHighScores() {
@@ -815,12 +862,7 @@ class Asteroid {
         sounds.hitSound.pause()
         sounds.hitSound.currentTime = 0
         sounds.hitSound.play()
-        game.score += 5 * game.multiplier
-        game.streak += 1
-
-        if (game.streak % 10 === 0 && game.streak <= 30) {
-          sounds.powerUp.play()
-        }
+        game.score += 5
       }
 
       this.countBlocker = true
@@ -912,12 +954,11 @@ class EnemyShip {
 
     if (overlapY && overlapX && this.lives >= 1 && shot.isActive) {
       this.lives -= 0.5
-      sounds.hitSound.play()
+      this.lives <= 0.5 ? sounds.explosion2.play() : sounds.hitSound.play()
       setTimeout(() => this.lives -= 0.5, 100)
       shot.isActive = false
       game.player.setActiveShots()
-      game.score += 30 * game.multiplier
-      game.streak += 1
+      game.score += 30
     }
   }
 }
@@ -1063,13 +1104,7 @@ class SnakeElement {
       game.snake.color += 50
       this.lives -= 0.5
       setTimeout(() => this.lives -= 0.5, 100)
-      game.score += 10 * game.multiplier
-      game.streak += 1
-
-      if (game.streak % 10 === 0) {
-        sounds.powerUp.play()
-      }
-
+      game.score += 10
       setTimeout(() => { game.snake.color -= 50 }, 50)
       sounds.hitSound.pause()
       sounds.hitSound.currentTime = 0
@@ -1206,7 +1241,6 @@ class Shot {
     if (this.y <= -20) {
       this.isActive = false
       game.player.setActiveShots()
-      game.streak = 0
     }
 
     if (this.currentHeight < this.fullHeight) {
@@ -1216,11 +1250,11 @@ class Shot {
 
   draw() {
     let fillColor
-    switch (game.multiplier) {
-      case 2: fillColor = 'rgba(255, 0, 0, 0.8)'; break
-      case 3: fillColor = 'rgba(0, 0, 255, 0.8)'; break
-      default: fillColor = 'rgba(50, 205, 50, 0.8)'
-    }
+
+    if (!this.isWideShot && !this.isLongShot) fillColor = 'rgba(50, 205, 50, 0.8)'
+    if (this.isWideShot && !this.isLongShot) fillColor = 'rgba(255, 0, 0, 0.8)'
+    if (!this.isWideShot && this.isLongShot) fillColor = 'rgba(0, 0, 255, 0.8)'
+    if (this.isWideShot && this.isLongShot) fillColor = 'rgba(255, 0, 255, 0.8)'
 
     canvasContext.fillStyle = fillColor
 
