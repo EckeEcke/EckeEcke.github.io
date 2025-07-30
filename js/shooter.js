@@ -18,7 +18,7 @@ const imageSources = {
   enemyShip: './images/shooter/enemy-ship.png',
   asteroid: './images/shooter/asteroid.png',
   explosion: './images/shooter/explosion.png',
-  trumpHead: './images/shooter/trump-head.png',
+  bossStructure: './images/shooter/boss-structure.png',
   background: './images/shooter/background.jpg'
 }
 
@@ -29,7 +29,7 @@ const images = {
   enemyShip: new Image(),
   asteroid: new Image(),
   explosion: new Image(),
-  trumpHead: new Image(),
+  bossStructure: new Image(),
   background: new Image(),
 }
 
@@ -37,7 +37,7 @@ function loadImages() {
     images.snakeHead.onload = () => game.gameLoaded += 5
     images.snakeBody.onload = () => game.gameLoaded += 5
     images.enemyShip.onload = () => game.gameLoaded += 5
-    images.trumpHead.onload = () => game.gameLoaded += 5
+    images.bossStructure.onload = () => game.gameLoaded += 5
     images.background.onload = () => game.gameLoaded += 5
     images.playerShip.onload = () => game.gameLoaded += 5
     images.explosion.onload = () => game.gameLoaded += 5
@@ -45,7 +45,7 @@ function loadImages() {
     images.snakeHead.src = imageSources.snakeHead
     images.snakeBody.src = imageSources.snakeBody
     images.enemyShip.src = imageSources.enemyShip
-    images.trumpHead.src = imageSources.trumpHead
+    images.bossStructure.src = imageSources.bossStructure
     images.background.src = imageSources.background
     images.playerShip.src = imageSources.playerShip
     images.explosion.src = imageSources.explosion
@@ -63,9 +63,12 @@ const soundSources = {
   laser3: './sounds/shooter/laser3.wav',
   powerUp: './sounds/shooter/shooter-power-up.wav',
   hitSound: './sounds/shooter/hit2.wav',
+  bossHitSound: './sounds/shooter/boss-hit2.wav',
+  bossAlert: './sounds/shooter/boss-alert.wav',
   spaceshipSound: './sounds/shooter/spaceship-rising.wav',
   loseSound: './sounds/shooter/lose-shooter.wav',
   gameMusic: './sounds/shooter/space-shooter-music.mp3',
+  gameMusic2: './sounds/shooter/music2.mp3',
   shieldUp: './sounds/shooter/shield-up.wav',
   shieldDown: './sounds/shooter/shield-down.wav',
   explosion: './sounds/shooter/explosion.wav',
@@ -79,9 +82,12 @@ const sounds = {
   laser3: undefined,
   powerUp: undefined,
   hitSound: undefined,
+  bossHitSound: undefined,
+  bossAlert: undefined,
   spaceshipSound: undefined,
   loseSound: undefined,
   gameMusic: undefined,
+  gameMusic2: undefined,
   shieldUp: undefined,
   shieldDown: undefined,
   explosion: undefined,
@@ -100,14 +106,21 @@ function loadSounds() {
   sounds.powerUp = new Audio(soundSources.powerUp)
   sounds.powerUp.onloadeddata = () => game.gameLoaded += 5
   sounds.hitSound = new Audio(soundSources.hitSound)
-  sounds.hitSound.onloadeddata = () => game.gameLoaded += 5
+  sounds.hitSound.onloadeddata = () => game.gameLoaded += 3
+  sounds.bossHitSound = new Audio(soundSources.bossHitSound)
+  sounds.bossHitSound.onloadeddata = () => game.gameLoaded += 1
+  sounds.bossAlert = new Audio(soundSources.bossAlert)
+  sounds.bossAlert.onloadeddata = () => game.gameLoaded += 1
   sounds.spaceshipSound = new Audio(soundSources.spaceshipSound)
   sounds.spaceshipSound.onloadeddata = () => game.gameLoaded += 5
   sounds.loseSound = new Audio(soundSources.loseSound)
   sounds.loseSound.onloadeddata = () => game.gameLoaded += 5
   sounds.gameMusic = new Audio(soundSources.gameMusic)
-  sounds.gameMusic.onloadeddata = () => game.gameLoaded += 5
+  sounds.gameMusic.onloadeddata = () => game.gameLoaded += 4
   sounds.gameMusic.loop = true
+  sounds.gameMusic2 = new Audio(soundSources.gameMusic2)
+  sounds.gameMusic2.onloadeddata = () => game.gameLoaded += 1
+  sounds.gameMusic2.loop = true
   sounds.shieldUp = new Audio(soundSources.shieldUp)
   sounds.shieldUp.onloadeddata = () => game.gameLoaded += 5
   sounds.shieldDown = new Audio(soundSources.shieldDown)
@@ -167,14 +180,14 @@ class Player {
   move() {
     let gamepadConnected = navigator.getGamepads()[0] !== null
     if (buttonsPressed.a || (gamepadConnected && navigator.getGamepads()[0].buttons[14].pressed )) {
-      this.x -= 4
+      this.x -= 3
     }
     if (this.x < 0) {
       this.x = 0
     }
 
     if (buttonsPressed.d || (gamepadConnected && navigator.getGamepads()[0].buttons[15].pressed )) {
-      this.x += 4
+      this.x += 3
     }
 
     if (this.x > canvas.width - this.width) {
@@ -204,7 +217,7 @@ class Player {
       const shot = new Shot(this.hasWideShot, this.hasLongShot)
       this.shots.push(shot)
       game.player.setActiveShots()
-      shot.playSound()
+      shot.playLaserSound()
     }
   }
 }
@@ -218,14 +231,18 @@ const gameStates = {
   spaceshipAnimation: 'running spaceship animation',
   asteroidsRound: 'runs asteroids level',
   enemyShipRound: 'runs enemy ship level',
+  obstacleRound: 'runs obstacle level',
   snakeRound: 'runs snake level',
+  bossRound: 'runs boss level',
   gameOver: 'game is over',
 }
 
 const rounds = {
   asteroids: 'asteroid level',
   enemyShips: 'enemy ships level',
+  obstacles: 'obstacle level',
   snake: 'snake level',
+  boss: 'boss level',
 }
 
 const screens = {
@@ -239,6 +256,7 @@ const intervals = {
   enemies: null,
   background: null,
   listenForStart: null,
+  spaceShipAnimation: null,
 }
 
 class Game {
@@ -263,12 +281,15 @@ class Game {
     this.asteroids = []
     this.activeAsteroids = []
     this.enemyShips = []
+    this.obstacles = null
+    this.currentGapPattern = 0
     this.snake = {
       elements: [],
       color: 0,
     }
+    this.boss = null
     this.powerUp = null
-    this.minScoreForHardMode = 1200
+    this.level = 1
   }
 
   startGame() {
@@ -281,13 +302,14 @@ class Game {
     this.player.shotCoolDown = false
     this.resetAsteroids()
     this.addSnakeElements()
+    this.boss = new Boss()
     this.player.x = canvas.width / 2 - this.player.width / 2
     this.player.killed = false
     this.player.y = canvas.height - this.player.height
     this.powerUp = null
     this.enemyShips.length = 0
     this.enemyShips.push(new EnemyShip(0,60, false), new EnemyShip(260, 120, true))
-    if (this.score > this.minScoreForHardMode) this.enemyShips.push(new EnemyShip(0, 180, false))
+    if (this.level > 1) this.enemyShips.push(new EnemyShip(0, 180, false))
     buttonsPressed.a = false
     buttonsPressed.d = false
     buttonsPressed.w = false
@@ -297,13 +319,17 @@ class Game {
   handleGameOver() {
     this.player.killed = true
     window.navigator.vibrate(1000)
-    this.round = rounds.asteroids
+    this.round = null
     clearInterval(intervals.enemies)
     clearInterval(intervals.game)
     clearInterval(intervals.background)
     sounds.gameMusic.playbackRate = 0.5
+    sounds.gameMusic2.playbackRate = 0.5
     this.musicRunning  = false
     setTimeout(() => {
+      sounds.gameMusic2.pause()
+      sounds.gameMusic2.currentTime = 0
+      sounds.gameMusic2.playbackRate = 1
       sounds.gameMusic.pause()
       sounds.gameMusic.currentTime = 0
       sounds.gameMusic.playbackRate = 1
@@ -320,14 +346,27 @@ class Game {
     this.player.move()
     this.player.moveTouch()
     this.player.shoot()
+    if (this.player.activeShots.length > 0) this.player.activeShots.forEach(shot => {
+      shot.move()
+    })
     this.setScore()
   }
 
   startNextRound() {
     this.resetGame()
-    if (!this.musicRunning) {
-      sounds.gameMusic.play()
+    if (this.round !== rounds.obstacles && !this.musicRunning) {
+      sounds.gameMusic.pause()
+      sounds.gameMusic2.pause()
+      sounds.gameMusic2.currentTime = 0
+      sounds.gameMusic2.play()
       this.musicRunning = true
+    }
+    if (this.round === rounds.obstacles) {
+      sounds.gameMusic2.pause()
+      sounds.gameMusic.pause()
+      sounds.gameMusic.currentTime = 0
+      sounds.gameMusic.play()
+      this.musicRunning = false
     }
     switch (this.round) {
       case null:
@@ -336,22 +375,30 @@ class Game {
         this.state = gameStates.asteroidsRound
         setTimeout(() => this.respawnAsteroids = false, 10000)
         break
-      case rounds.snake:
+      case rounds.boss:
+        this.level += 1
         this.respawnAsteroids = true
         this.round = rounds.asteroids
         this.state = gameStates.asteroidsRound
-        if (this.score > 250) this.powerUp = new PowerUp(powerUpTypes.shield)
+        if (this.level > 1) this.powerUp = new PowerUp(powerUpTypes.shield)
         setTimeout(() => this.respawnAsteroids = false, 10000)
         break
       case rounds.asteroids:
         this.round = rounds.enemyShips
         this.state = gameStates.enemyShipRound
-        if (this.score > 500) this.powerUp = new PowerUp(powerUpTypes.wideShot)
+        if (this.level > 1) this.powerUp = new PowerUp(powerUpTypes.wideShot)
+        break
+      case rounds.obstacles:
+        sounds.bossAlert.play()
+        this.round = rounds.boss
+        this.state = gameStates.bossRound
+        this.powerUp = new PowerUp(powerUpTypes.longShot)
         break
       case rounds.enemyShips:
-        this.round = rounds.snake
-        this.state = gameStates.snakeRound
-        if (this.score > 750) this.powerUp = new PowerUp(powerUpTypes.longShot)
+        this.round = rounds.obstacles
+        this.state = gameStates.obstacleRound
+
+          this.obstacles = new ObstacleLevel(getPattern(this.currentGapPattern))
         break
     }
     intervals.game = setInterval(this.runGame, 1000 / 140)
@@ -360,14 +407,17 @@ class Game {
   }
 
   endLevel() {
+    this.player.shots = []
+    this.player.setActiveShots()
     clearInterval(intervals.enemies)
     clearInterval(intervals.game)
     setTimeout(() => {
       clearInterval(intervals.background)
       this.state = gameStates.spaceshipAnimation
+      intervals.spaceShipAnimation = setInterval(() => this.moveShipForAnimation(), 1000/120)
       sounds.spaceshipSound.play()
       this.snake.color += 20
-      this.gameSpeed += 2
+      if (this.gameSpeed < 100) this.gameSpeed += 2
       canvasContext.fillStyle = 'limegreen'
       canvasContext.fillText('Next round!', 100, canvas.height / 2)
     }, 500)
@@ -379,24 +429,53 @@ class Game {
       this.powerUp.detectCollisionWithPlayer()
     }
 
-    if (this.round === rounds.snake) {
-      this.snake.elements.forEach(element => {
-        element.move()
-        this.player.activeShots.forEach(shot => element.hitDetection(shot))
-      })
-
-      if(this.snake.elements[0].lives === 0) {
-        this.snake.elements.forEach((element, index) => {
-          setTimeout(() => {
-            sounds.explosion.pause()
-            sounds.explosion.currentTime = 0
-            sounds.explosion.play()
-            element.lives = 0.5
-          }, index * 60)
+    if (this.round === rounds.boss) {
+      if (this.level === 2) {
+        if (!this.boss.isActive) setTimeout(() => this.boss.activate(), 3000)
+        this.boss.move()
+        this.boss.moveObstacles()
+        this.boss.elements.forEach(element => this.player.activeShots.forEach(shot => element.hitDetection(shot)))
+        if (this.boss.obstacles) this.boss.obstacles.forEach(obstacle => {
+          obstacle.detectCollisionWithShip()
+          this.player.activeShots.forEach(shot => obstacle.hitDetection(shot))
         })
-        this.endLevel()
+        if (this.boss.elements.find(element => element.isHead).lives <= 0) {
+          this.boss.elements.forEach((element, index) => {
+            setTimeout(() => {
+              sounds.explosion.pause()
+              sounds.explosion.currentTime = 0
+              sounds.explosion.play()
+              element.lives = 0.5
+            }, index * 60)
+          })
+          game.score += 250
+          this.endLevel()
+        }
+      } else {
+        if (this.snake.elements.some(element => !element.isActive)) {
+          setTimeout(() => this.snake.elements.forEach(element => element.isActive = true), 3000)
+        }
+        this.snake.elements.forEach(element => {
+          element.move()
+          this.player.activeShots.forEach(shot => element.hitDetection(shot))
+        })
+
+        if(this.snake.elements[0].lives === 0) {
+          this.snake.elements.forEach((element, index) => {
+            setTimeout(() => {
+              sounds.explosion.pause()
+              sounds.explosion.currentTime = 0
+              sounds.explosion.play()
+              element.lives = 0.5
+            }, index * 60)
+          })
+          game.score += 100
+          this.endLevel()
+        }
       }
+
     }
+
     if (this.round === rounds.asteroids) {
       this.activeAsteroids.forEach(asteroid => {
         asteroid.moveAsteroid()
@@ -411,6 +490,14 @@ class Game {
     if (this.round === rounds.enemyShips) {
       this.moveShipEnemies()
     }
+      if (this.round === rounds.obstacles) {
+          this.obstacles.update()
+          if (this.obstacles.isOver()) {
+            this.score += 100
+            this.currentGapPattern += 1
+            this.endLevel()
+          }
+      }
   }
 
   moveShipEnemies() {
@@ -533,7 +620,7 @@ class Game {
     canvasContext.textAlign = 'right'
     canvasContext.fillText('5 PTS', canvas.width - 30, 430)
     canvasContext.fillText('30 PTS', canvas.width - 30, 490)
-    canvasContext.fillText('10 PTS', canvas.width - 30, 550)
+    canvasContext.fillText('100 PTS', canvas.width - 30, 550)
   }
 
   drawHighScores() {
@@ -572,7 +659,6 @@ class Game {
 
   drawShipAndShot() {
     if (this.player.activeShots.length > 0) this.player.activeShots.forEach(shot => {
-      shot.move()
       shot.draw()
     })
 
@@ -612,10 +698,14 @@ class Game {
       canvasContext.fillStyle = gradient
       canvasContext.fill()
     }
-    this.player.y -= 5
-    if (this.backgroundScrollPosition < 80) this.backgroundScrollPosition += 2.5
+  }
+
+  moveShipForAnimation() {
+    this.player.y -= 3
+    if (this.backgroundScrollPosition < 80) this.backgroundScrollPosition += 3
     if (this.player.y < -50) {
       this.startNextRound()
+      clearInterval(intervals.spaceShipAnimation)
     }
   }
 
@@ -638,10 +728,20 @@ class Game {
       if (this.powerUp) this.powerUp.draw()
     }
 
-    if (this.state === gameStates.snakeRound) {
-      this.snake.elements.forEach(element => element.draw())
-      this.snake.elements[0].handleShots()
-      if (this.powerUp) this.powerUp.draw()
+
+    if (this.state === gameStates.obstacleRound) {
+        this.obstacles.draw()
+    }
+
+    if (this.state === gameStates.bossRound) {
+      if (this.level === 2) {
+        this.boss.draw()
+        this.boss.handleShots()
+      } else {
+        this.snake.elements.forEach(element => element.draw())
+        this.snake.elements[0].handleShots()
+        if (this.powerUp) this.powerUp.draw()
+      }
     }
 
     this.drawScore()
@@ -745,14 +845,14 @@ class Game {
   addSnakeElements () {
     this.snake.elements.length = 0
     this.snake.elements = [
-      new SnakeElement(0,true),
-      new SnakeElement(40,false),
-      new SnakeElement(80,false),
-      new SnakeElement(120,false),
-      new SnakeElement(160,false),
-      new SnakeElement(200,false),
-      new SnakeElement(240,false),
-      new SnakeElement(280,false)
+      new SnakeElement(0,-40, true),
+      new SnakeElement(40,-40, false),
+      new SnakeElement(80,-40, false),
+      new SnakeElement(120,-40, false),
+      new SnakeElement(160,-40, false),
+      new SnakeElement(200,-40, false),
+      new SnakeElement(240,-40, false),
+      new SnakeElement(280, -40, false)
     ]
   }
 }
@@ -887,12 +987,12 @@ class EnemyShip {
       this.width = 50
       this.height = 50
       this.speed = this.isLockOn ? 3 : 4
-      this.lives = game.score > game.minScoreForHardMode ? 4 : 2
+      this.lives = game.level > 1 ? 4 : 2
       this.isShotCoolDown = false
       this.shotCoolDown = 500
       this.shots = []
       this.activeShots = []
-      this.isLockOn = game.score > game.minScoreForHardMode ? isLockOn : false
+      this.isLockOn = game.level > 1 ? isLockOn : false
       this.isLockOnMode = false
   }
 
@@ -911,6 +1011,8 @@ class EnemyShip {
     if (this.x + 40 >= game.player.x && this.x <= game.player.x + 40 && this.lives >= 1) {
       this.shots.push(new EnemyShot(this))
       this.setActiveShots()
+      sounds.laserEnemy.pause()
+      sounds.laserEnemy.currentTime = 0
       sounds.laserEnemy.play()
     }
 
@@ -967,13 +1069,13 @@ class EnemyShot {
   constructor(enemy) {
     this.enemyShip = enemy
     this.width = 10
-    this.maxHeightShot = game.score > game.minScoreForHardMode ? 40 : 20
+    this.maxHeightShot = game.level > 1 ? 40 : 20
     this.currentShotHeight = 0
     this.x = enemy.x
     this.x2 = enemy.x + 30
     this.y = enemy.y
     this.isActive = true
-    this.shotSpeed = 6
+    this.shotSpeed = 4
     this.shotWidth = 10
   }
 
@@ -987,10 +1089,6 @@ class EnemyShot {
   }
 
   move() {
-    if (this.isActive && this.x + 20 >= game.player.x && this.x <= game.player.x + 20 && this.enemyShip.lives >= 1) {
-
-      sounds.laserEnemy.play()
-    }
     if (this.isActive) {
       this.y += this.shotSpeed
     }
@@ -1031,10 +1129,10 @@ class EnemyShot {
 // _______________________________________________________________
 
 class SnakeElement {
-  constructor(x,isHead) {
+  constructor(x, y, isHead, regenerates) {
     this.isHead = isHead
     this.x = x
-    this.y = 0
+    this.y = y
     this.size = 40
     this.speed = 8
     this.lives = isHead ? 4 : 1
@@ -1043,6 +1141,9 @@ class SnakeElement {
     this.shotCoolDown = 750
     this.shots = []
     this.activeShots = []
+    this.regenerates = regenerates
+    this.isActive = false
+    this.blinkingTextStartTime = performance.now()
   }
 
   draw() {
@@ -1053,17 +1154,33 @@ class SnakeElement {
     }
     canvasContext.filter = `hue-rotate(${game.snake.color}deg)`
     if (this.lives > 0.5) {
-      canvasContext.drawImage(game.score >= 1510 && game.score < 2000
-          ? images.trumpHead : this.image, this.x, this.y, this.size, this.size)
+      canvasContext.drawImage(this.regenerates
+          ? images.bossStructure : this.image, this.x, this.y, this.size, this.size)
     }
 
     if (this.lives % 1 !== 0) {
       canvasContext.drawImage(images.explosion, this.x, this.y, this.size, this.size)
     }
     canvasContext.filter = 'none'
+
+    if (!this.isActive && this.isHead) {
+      const now = performance.now();
+      const blinkElapsed = (now - this.blinkingTextStartTime) % (2 * 550);
+      const isVisible = blinkElapsed < 550
+      if (isVisible) {
+        canvasContext.save()
+        canvasContext.fillStyle = 'red'
+        canvasContext.font = '32px retro'
+        canvasContext.textAlign = 'center'
+        canvasContext.fillText('BOSS', canvas.width / 2, canvas.height / 2 - 20)
+        canvasContext.fillText('APPROACHES', canvas.width / 2, canvas.height / 2 + 20)
+        canvasContext.restore()
+      }
+    }
   }
 
   move() {
+    if (!this.isActive) return
     this.x -= this.speed
     if (this.x < -50 || this.x > 400) {
       this.y += 40
@@ -1073,10 +1190,21 @@ class SnakeElement {
     if (this.lives > 0.5 && this.y >= 450 && this.x < canvas.width - 20) game.handleGameOver()
   }
 
+  moveAsBoss() {
+    this.x -= this.speed / 4
+    if (this.x <= -120 || this.x > canvas.width + 120) {
+      this.speed = -this.speed
+      this.y += 5
+    }
+  }
+
   shoot() {
-    if (!this.isHead || !(game.score > game.minScoreForHardMode) || this.isShotCoolDown || this.x < 0 || this.x > canvas.width - this.size) return
+    if (!this.isHead || !this.isActive || this.isShotCoolDown || this.x < 0 || this.x > canvas.width - this.size) return
     this.isShotCoolDown = true
     this.shots.push(new EnemyShot(this))
+    sounds.laserEnemy.pause()
+    sounds.laserEnemy.currentTime = 0
+    sounds.laserEnemy.play()
     this.setActiveShots()
     setTimeout(() => this.isShotCoolDown = false, this.shotCoolDown)
   }
@@ -1096,6 +1224,7 @@ class SnakeElement {
   }
 
   hitDetection(shot) {
+    if (this.y < 0) return
     const overlapY = shot.y < this.y + this.size && shot.y + shot.currentHeight > this.y
     const overlapX = shot.x < this.x + this.size && shot.x + shot.width > this.x
     if (overlapY && overlapX && this.lives > 0.5) {
@@ -1103,14 +1232,547 @@ class SnakeElement {
       game.player.setActiveShots()
       game.snake.color += 50
       this.lives -= 0.5
-      setTimeout(() => this.lives -= 0.5, 100)
-      game.score += 10
+      setTimeout(() => {
+        this.lives -= 0.5
+        if (!this.isHead && !this.regenerates) game.score += 10
+        if (this.lives === 0 && this.regenerates) setTimeout(() => this.lives = 1, 1000)
+      }, 100)
+      setTimeout(() => { game.snake.color -= 50 }, 50)
+      const hitSound = this.isHead ? sounds.bossHitSound : sounds.hitSound
+      hitSound.pause()
+      hitSound.currentTime = 0
+      hitSound.play()
+    }
+  }
+}
+
+// _______________________________________________________________
+// BOSS
+// _______________________________________________________________
+
+class Boss {
+  constructor() {
+    this.elements = [
+        new SnakeElement(canvas.width, 60, false, true), new SnakeElement(canvas.width + 40, 60, false, true), new SnakeElement(canvas.width + 80, 60, false, true),
+        new SnakeElement(canvas.width, 100, false, true), new SnakeElement(canvas.width + 40, 100, true, false), new SnakeElement(canvas.width + 80, 100, false, true),
+        new SnakeElement(canvas.width, 140, false, true), new SnakeElement(canvas.width + 40, 140, false, true), new SnakeElement(canvas.width + 80, 140, false, true),
+    ]
+    this.obstacles = null
+    this.moves = true
+    this.bossPosition = 'canvas'
+    this.isActive = false
+  }
+
+  draw() {
+    this.elements.forEach(element => element.draw())
+    if (this.obstacles) this.obstacles.forEach(obstacle => obstacle.draw())
+  }
+
+  activate() {
+    this.isActive = true
+    this.elements.forEach(element => element.isActive = true)
+  }
+
+  handleShots() {
+    this.elements.find(element => element.isHead).handleShots()
+  }
+
+  move() {
+    if (!this.isActive) return
+    if (!this.moves && this.obstacles !== null) return
+    this.elements.forEach(element => element.moveAsBoss())
+    const isLeftOutbound = !this.elements.some(element => element.x > - 50)
+    const isRightOutbound = !this.elements.some(element => element.x < canvas.width + 10)
+    if (this.bossPosition !== 'right-outbound' && isRightOutbound) {
+      this.bossPosition = 'right-outbound'
+      this.moves = false
+      this.setObstacles()
+    }
+    else if (this.bossPosition !== 'left-outbound' && isLeftOutbound) {
+      this.bossPosition = 'left-outbound'
+      this.moves = false
+      this.setObstacles()
+    }
+  }
+
+  setObstacles() {
+    const randomIndex = Math.floor(Math.random() * 9)
+    this.obstacles = [
+        [new Obstacle(0,-40, true), new Obstacle(0,-80, true), new Obstacle(0,-120, true), new Obstacle(0,-160, true)],
+        [new Obstacle(40,-40, true), new Obstacle(40,-80, true), new Obstacle(40,-120, true), new Obstacle(40,-160, true)],
+        [new Obstacle(80,-40, true), new Obstacle(80,-80, true), new Obstacle(80,-120, true), new Obstacle(80,-160, true)],
+        [new Obstacle(120,-40, true), new Obstacle(120,-80, true), new Obstacle(120,-120, true), new Obstacle(120,-160, true)],
+        [new Obstacle(160,-40, true), new Obstacle(160,-80, true), new Obstacle(160,-120, true), new Obstacle(160,-160, true)],
+        [new Obstacle(200,-40, true), new Obstacle(200,-80, true), new Obstacle(200,-120, true), new Obstacle(200,-160, true)],
+        [new Obstacle(240,-40, true), new Obstacle(240,-80, true), new Obstacle(240,-120, true), new Obstacle(240,-160, true)],
+        [new Obstacle(280,-40, true), new Obstacle(280,-80, true), new Obstacle(280,-120, true), new Obstacle(280,-160, true)],
+        [new Obstacle(320,-40, true), new Obstacle(320,-80, true), new Obstacle(320,-120, true), new Obstacle(320,-160, true)],
+        [new Obstacle(360,-40, true), new Obstacle(360,-80, true), new Obstacle(360,-120, true), new Obstacle(360,-160, true)],
+    ]
+    this.obstacles[randomIndex].forEach(entry => entry.isActive = false)
+    this.obstacles[randomIndex + 1].forEach(entry => entry.isActive = false)
+    this.obstacles = this.obstacles.flat()
+  }
+
+  moveObstacles() {
+    if (this.moves) return
+    this.obstacles.forEach(obstacle => obstacle.move())
+    if (!this.obstacles.some(obstacle => obstacle.y < canvas.height)) {
+      this.moves = true
+      this.obstacles = null
+    }
+  }
+}
+
+class Obstacle {
+  constructor(x, y, isActive) {
+    this.x = x
+    this.y = y
+    this.isActive = isActive
+    this.speedY = 4
+    this.size = canvas.width / 10
+    this.lives = 1
+  }
+
+  draw() {
+    if (!this.isActive) return
+    canvasContext.filter = `hue-rotate(${game.snake.color}deg)`
+    if (this.lives > 0.5) {
+      canvasContext.drawImage(images.bossStructure, this.x, this.y, this.size, this.size)
+    }
+
+    if (this.lives % 1 !== 0) {
+      canvasContext.drawImage(images.explosion, this.x, this.y, this.size, this.size)
+    }
+    canvasContext.filter = 'none'
+  }
+
+  move() {
+    this.y += this.speedY
+  }
+
+  hitDetection(shot) {
+    if (!this.isActive) return
+    const overlapY = shot.y < this.y + this.size && shot.y + shot.currentHeight > this.y
+    const overlapX = shot.x < this.x + this.size && shot.x + shot.width > this.x
+    if (overlapY && overlapX && this.lives > 0.5) {
+      shot.isActive = false
+      game.player.setActiveShots()
+      game.snake.color += 50
+      this.lives -= 0.5
+      setTimeout(() => {
+        this.lives -= 0.5
+        this.isActive = false
+      }, 100)
       setTimeout(() => { game.snake.color -= 50 }, 50)
       sounds.hitSound.pause()
       sounds.hitSound.currentTime = 0
       sounds.hitSound.play()
     }
   }
+
+  detectCollisionWithShip() {
+    if (!this.isActive) return
+    const tolerance = 6
+
+    const overlapX = game.player.x + tolerance < this.x + this.size && game.player.x + game.player.width - tolerance > this.x
+    const overlapY = game.player.y + tolerance < this.y + this.size && game.player.y + game.player.height - tolerance > this.y
+
+    if (overlapX && overlapY) {
+      if (!game.player.hasShield && game.player.isInvincible) {
+        this.isActive = false
+        return
+      }
+      if (game.player.hasShield) {
+        sounds.shieldDown.play()
+        game.player.hasShield = false
+        game.player.hasLongShot = false
+        game.player.hasWideShot = false
+        this.isActive = false
+        setTimeout(() => {
+          if (!game.player.hasShield) game.player.isInvincible = false
+        }, 500)
+        game.player.isInvincible = true
+      } else if (!game.player.isInvincible) {
+        game.handleGameOver()
+      }
+    }
+  }
+}
+
+// _______________________________________________________________
+// OBSTACLE LEVEL
+// _______________________________________________________________
+
+const getPattern = (oldPattern) => {
+  if (oldPattern === 1) return gapPattern2
+  else if (oldPattern === 2) return gapPattern3
+  else return gapPattern
+}
+
+const gapPattern = [
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,0,0,0,0,0,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,0,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+]
+
+const gapPattern2 = [
+    [1,0,0,0,0,0,0,0,0,1],
+    [1,1,0,0,0,0,0,0,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,1],
+    [1,1,1,0,0,0,0,0,0,1],
+    [1,1,1,1,0,0,0,0,0,1],
+    [1,1,1,1,1,0,0,0,0,1],
+    [1,1,1,1,1,1,0,0,0,1],
+    [1,1,1,1,1,0,0,0,1,1],
+    [1,1,1,0,0,0,0,0,1,1],
+    [1,0,0,0,0,0,0,0,1,1],
+    [1,0,0,0,0,0,0,1,1,1],
+    [1,0,0,0,0,0,0,1,1,1],
+    [1,0,0,0,0,0,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,1,0,0,1,1,1,1],
+    [1,1,1,1,0,0,1,1,1,1],
+    [1,1,1,1,0,0,1,1,1,1],
+    [1,1,1,1,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,0,0,0,0,0,0,1,1],
+    [1,0,0,0,0,0,0,0,0,1]
+]
+
+const gapPattern3 = [
+    [0,0,0,0,0,0,0,0,0,0],
+    [1,0,0,0,1,1,0,0,0,1],
+    [1,0,0,0,1,1,0,0,0,1],
+    [1,0,0,0,1,1,0,0,0,1],
+    [1,1,1,0,1,1,0,1,1,1],
+    [1,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,1],
+    [1,1,0,0,0,0,0,0,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,0,0,0,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,1,1,1,1,1],
+    [1,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,0,0,1],
+    [1,1,1,0,0,0,0,0,0,1],
+    [1,1,1,1,0,0,0,0,0,1],
+    [1,1,1,1,1,0,0,0,0,1],
+    [1,1,1,1,1,1,0,0,0,1],
+    [1,1,1,1,1,0,0,0,1,1],
+    [1,1,1,0,0,0,0,0,1,1],
+    [1,0,0,0,0,0,0,0,1,1],
+    [1,0,0,0,0,0,0,1,1,1],
+    [1,0,0,0,0,0,0,1,1,1],
+    [1,0,0,0,0,0,1,1,1,1],
+    [1,0,0,0,1,1,1,1,1,1],
+    [1,0,0,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,0,1,1,1],
+    [1,1,0,0,0,0,0,0,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,0,0,0,0,0,0,1,1],
+    [1,1,0,0,0,0,0,0,1,1],
+    [1,1,1,0,0,0,0,1,1,1]
+]
+
+class ObstacleLevel {
+    constructor(pattern) {
+        this.pattern = pattern
+        this.currentRow = 0
+        this.activeObstacles = []
+        this.obstacleSize = canvas.width / 10
+        this.y = -80
+    }
+
+    update() {
+        this.y -= this.obstacleSize
+        if (this.currentRow < this.pattern.length) {
+            const row = this.pattern[this.currentRow];
+            row.forEach((cell, col) => {
+                if (cell === 1) {
+                    this.activeObstacles.push(
+                        new Obstacle(
+                            col * this.obstacleSize,
+                            this.y,
+                            true
+                        )
+                    );
+                }
+            })
+            this.currentRow++
+        }
+
+        this.activeObstacles.forEach(obs => obs.move())
+
+        this.activeObstacles = this.activeObstacles.filter(obs => obs.y < canvas.height + 40)
+
+        this.handleCollisions()
+    }
+
+    handleCollisions() {
+        this.activeObstacles.forEach(o => o.detectCollisionWithShip())
+        game.player.activeShots.forEach(shot => {
+            this.activeObstacles.forEach(obs => obs.hitDetection(shot))
+        })
+    }
+
+    draw() {
+        this.activeObstacles.forEach(obs => { if(obs.y >= -20) obs.draw()})
+    }
+
+    isOver() {
+        return game.player.y + game.player.height < this.activeObstacles[this.activeObstacles.length - 1].y
+    }
 }
 
 // _______________________________________________________________
@@ -1129,7 +1791,7 @@ class PowerUp {
     this.maxX = canvas.width - 20
     this.minX = 20
     this.x = (Math.random() * (this.maxX - this.minX)) + this.minX
-    this.y = -400
+    this.y = -800
     this.radius = 20
     this.speedX = 3
     this.speedY = 3
@@ -1232,7 +1894,7 @@ class Shot {
     this.x = game.player.x + game.player.width / 2 - this.width / 2
     this.y = game.player.y
     this.isActive = true
-    this.shotSpeed = 10
+    this.shotSpeed = 6
   }
 
   move() {
@@ -1272,20 +1934,14 @@ class Shot {
     canvasContext.fillStyle = 'limegreen'
   }
 
-  playSound() {
-    switch (game.multiplier) {
-      case 2: {
-        sounds.laser2.play()
-        break
-      }
-      case 3: {
-        sounds.laser3.play()
-        break
-      }
-      default: {
-        sounds.laser.play()
-      }
-    }
+  playLaserSound() {
+      let sound
+      if (game.player.hasWideShot && game.player.hasLongShot) sound = sounds.laser3
+      else if (game.player.hasWideShot || game.player.hasLongShot) sound = sounds.laser2
+      else sound = sounds.laser
+      sound.pause()
+      sound.currentTime = 0
+      sound.play()
   }
 }
 
@@ -1329,6 +1985,7 @@ function keyDownHandler(event) {
     game.score = 0
     game.startGame()
     game.state = gameStates.spaceshipAnimation
+    intervals.spaceShipAnimation = setInterval(() => game.moveShipForAnimation(), 1000/120)
     buttonsPressed.s = true
   }
 }
