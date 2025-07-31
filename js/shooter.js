@@ -1968,6 +1968,9 @@ function changeTouchPosition(event) {
     buttonsPressed.s = true
     game.score = 0
     game.startGame()
+    game.state = gameStates.spaceshipAnimation
+    intervals.spaceShipAnimation = setInterval(() => game.moveShipForAnimation(), 1000/120)
+    buttonsPressed.s = true
   }
 }
 
