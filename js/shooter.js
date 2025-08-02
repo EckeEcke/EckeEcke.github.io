@@ -327,11 +327,10 @@ class Game {
     this.enemyShips = []
     this.obstacles = null
     this.currentGapPattern = 0
-    this.snake = {
-      elements: [],
-      color: 0,
-    }
+    this.snake = null
+    this.dualSnakes = null
     this.boss = null
+    this.colorVariable = 0
     this.powerUp = null
     this.level = 1
     this.music = sounds.gameMusic2
@@ -346,7 +345,11 @@ class Game {
     this.player.shots.length = 0
     this.player.shotCoolDown = false
     this.resetAsteroids()
-    this.addSnakeElements()
+    this.snake = new Snake(this.addSnakeElements(),this.colorVariable)
+    this.dualSnakes = [
+        new Snake(this.addDualSnakes().snake1,this.colorVariable),
+        new Snake(this.addDualSnakes().snake2,this.colorVariable)
+    ]
     this.boss = new Boss()
     this.player.x = canvas.width / 2 - this.player.width / 2
     this.player.killed = false
@@ -452,7 +455,6 @@ class Game {
       this.state = gameStates.spaceshipAnimation
       intervals.spaceShipAnimation = setInterval(() => this.moveShipForAnimation(), 1000/120)
       playSound(sounds.spaceshipSound)
-      this.snake.color += 20
       if (this.gameSpeed < 100) this.gameSpeed += 2
       canvasContext.fillStyle = 'limegreen'
       canvasContext.fillText('Next round!', 100, canvas.height / 2)
@@ -509,7 +511,7 @@ class Game {
   }
 
   runBossLevel() {
-    if (this.level === 2) {
+    if (this.level === 3) {
       if (!this.boss.isActive) setTimeout(() => this.boss.activate(), 3000)
       this.boss.move()
       this.boss.moveObstacles()
@@ -529,29 +531,46 @@ class Game {
             element.lives = 0.5
           }, index * 60)
         })
+        game.score += 500
+        this.endLevel()
+      }
+    } else if (this.level === 2) {
+      if (!this.dualSnakes.some(snake => snake.isActive)) {
+        setTimeout(() => {
+          this.dualSnakes.forEach(snake => snake.activate())
+        }, 3000)
+      }
+
+      this.dualSnakes.forEach(snake => {
+        snake.move()
+        snake.detectHitByPlayer()
+      })
+
+      const snake1IsDead = this.dualSnakes[0].isDead()
+      const snake2IsDead = this.dualSnakes[1].isDead()
+
+      if (snake1IsDead) {
+        this.dualSnakes[0].runDeathAnimation()
+      }
+
+      if (snake2IsDead) {
+        this.dualSnakes[1].runDeathAnimation()
+      }
+
+      if(snake1IsDead && snake2IsDead) {
         game.score += 250
         this.endLevel()
       }
     } else {
-      if (this.snake.elements.some(element => !element.isActive)) {
-        setTimeout(() => this.snake.elements.forEach(element => element.isActive = true), 3000)
+      if (!this.snake.isActive) {
+        setTimeout(() => this.snake.activate(), 3000)
       }
-      this.snake.elements.forEach(element => {
-        element.move()
-        element.handleShots()
-        this.player.activeShots.forEach(shot => element.hitDetection(shot))
-      })
+      this.snake.move()
+      this.snake.detectHitByPlayer()
 
-      if(this.snake.elements[0].lives === 0) {
-        this.snake.elements.forEach((element, index) => {
-          element.shots = []
-          element.setActiveShots()
-          setTimeout(() => {
-            playSound(sounds.explosion)
-            element.lives = 0.5
-          }, index * 60)
-        })
-        game.score += 100
+      if (this.snake.isDead()) {
+        this.snake.runDeathAnimation()
+        game.score += 150
         this.endLevel()
       }
     }
@@ -750,10 +769,13 @@ class Game {
         break
 
       case gameStates.bossRound:
-        if (this.level === 2) {
+        if (this.level === 3) {
           this.boss.draw()
+        } else if (this.level === 2) {
+          this.dualSnakes.forEach(snake => snake.draw())
+          if (this.powerUp) this.powerUp.draw()
         } else {
-          this.snake.elements.forEach(element => element.draw())
+          this.snake.draw()
           if (this.powerUp) this.powerUp.draw()
         }
         break
@@ -859,9 +881,8 @@ class Game {
     this.activeAsteroids = this.asteroids.filter(asteroid => !asteroid.hit)
   }
 
-  addSnakeElements () {
-    this.snake.elements.length = 0
-    this.snake.elements = [
+  addSnakeElements() {
+    return [
       new SnakeElement(0,-40, true),
       new SnakeElement(40,-40, false),
       new SnakeElement(80,-40, false),
@@ -871,6 +892,23 @@ class Game {
       new SnakeElement(240,-40, false),
       new SnakeElement(280, -40, false)
     ]
+  }
+
+  addDualSnakes() {
+    return {
+      snake1: [
+        new SnakeElement(0,-40, true),
+        new SnakeElement(40,-40, false),
+        new SnakeElement(80,-40, false),
+        new SnakeElement(120,-40, false),
+      ],
+      snake2: [
+        new SnakeElement(canvas.width - 120,- 80, true),
+        new SnakeElement(canvas.width - 80,-80, false),
+        new SnakeElement(canvas.width - 40,-80, false),
+        new SnakeElement(canvas.width, -80, false)
+      ]
+    }
   }
 }
 
@@ -1139,6 +1177,67 @@ class EnemyShot {
 // SNAKE
 // _______________________________________________________________
 
+class Snake {
+  constructor(snakeElements, color) {
+    this.elements = snakeElements
+    this.color = color
+    this.isActive = false
+    this.blinkingTextStartTime = performance.now()
+  }
+
+  activate() {
+    this.isActive = true
+    this.elements.forEach(element => element.isActive = true)
+  }
+
+  move() {
+    if (!this.isActive) return
+    this.elements.forEach(element => {
+      element.move()
+      element.handleShots()
+    })
+  }
+
+  draw() {
+    if (!this.isActive) {
+      const now = performance.now();
+      const blinkElapsed = (now - this.blinkingTextStartTime) % (2 * 550);
+      const isVisible = blinkElapsed < 550
+      if (isVisible) {
+        drawBossWarning(this.blinkingTextStartTime)
+      }
+    } else this.elements.forEach(element => element.draw())
+  }
+
+  detectHitByPlayer() {
+    this.elements.forEach(element => {
+      game.player.activeShots.forEach(shot => element.hitDetection(shot))
+    }
+  )}
+
+  isDead() {
+    return this.elements.find(element => element.isHead).lives === 0
+  }
+
+  runDeathAnimation() {
+    this.elements.forEach((element, index) => {
+      if (!element.isActive) return
+      element.shots = []
+      element.setActiveShots()
+      setTimeout(() => {
+        playSound(sounds.explosion)
+        element.lives = 0.5
+        if (index === this.elements.length - 1) {
+          this.elements.forEach(element => {
+            element.lives = 0
+            element.isActive = false
+          })
+        }
+      }, index * 60)
+    })
+  }
+}
+
 class SnakeElement {
   constructor(x, y, isHead, regenerates) {
     this.isHead = isHead
@@ -1154,40 +1253,24 @@ class SnakeElement {
     this.activeShots = []
     this.regenerates = regenerates
     this.isActive = false
-    this.blinkingTextStartTime = performance.now()
   }
 
   draw() {
     canvasContext.fillStyle = '#80008055'
-    if (this.lives === 0) {
+    if (this.lives === 0 && this.isActive) {
       canvasContext.fillRect(this.x, this.y + this.size / 2 - 4, this.size, 8)
       return
     }
-    canvasContext.filter = `hue-rotate(${game.snake.color}deg)`
+    canvasContext.filter = `hue-rotate(${game.colorVariable}deg)`
     if (this.lives > 0.5) {
       canvasContext.drawImage(this.regenerates
           ? images.bossStructure : this.image, this.x, this.y, this.size, this.size)
     }
 
-    if (this.lives % 1 !== 0) {
+    if (this.lives % 1 !== 0 && this.isActive) {
       canvasContext.drawImage(images.explosion, this.x, this.y, this.size, this.size)
     }
     canvasContext.filter = 'none'
-
-    if (!this.isActive && this.isHead) {
-      const now = performance.now();
-      const blinkElapsed = (now - this.blinkingTextStartTime) % (2 * 550);
-      const isVisible = blinkElapsed < 550
-      if (isVisible) {
-        canvasContext.save()
-        canvasContext.fillStyle = 'red'
-        canvasContext.font = '32px retro'
-        canvasContext.textAlign = 'center'
-        canvasContext.fillText('BOSS', canvas.width / 2, canvas.height / 2 - 20)
-        canvasContext.fillText('APPROACHES', canvas.width / 2, canvas.height / 2 + 20)
-        canvasContext.restore()
-      }
-    }
 
     if (game.player.killed) return
     if (this.isHead) {
@@ -1217,7 +1300,7 @@ class SnakeElement {
   }
 
   shoot() {
-    if (!this.isHead || !this.isActive || this.isShotCoolDown || this.x < 0 || this.x > canvas.width - this.size) return
+    if (!this.isHead || !this.isActive || this.isShotCoolDown || this.x < 0 || this.y < 0 || this.x > canvas.width - this.size) return
     this.isShotCoolDown = true
     this.shots.push(new EnemyShot(this))
     playSound(sounds.laserEnemy)
@@ -1245,22 +1328,41 @@ class SnakeElement {
     if (overlapY && overlapX && this.lives > 0.5) {
       shot.isActive = false
       game.player.setActiveShots()
-      game.snake.color += 50
+      game.colorVariable += 50
       this.lives -= 0.5
       setTimeout(() => {
         this.lives -= 0.5
         if (!this.isHead && !this.regenerates) game.score += 10
         if (this.lives === 0 && this.regenerates) setTimeout(() => this.lives = 1, 1000)
       }, 100)
-      setTimeout(() => { game.snake.color -= 50 }, 50)
+      setTimeout(() => { game.colorVariable -= 50 }, 50)
       playSound(this.isHead ? sounds.bossHitSound : sounds.hitSound)
     }
   }
 }
 
 // _______________________________________________________________
+// DUAL SNAKE
+// _______________________________________________________________
+
+// _______________________________________________________________
 // BOSS
 // _______________________________________________________________
+
+function drawBossWarning(blinkingTextStartTime) {
+  const now = performance.now();
+  const blinkElapsed = (now - blinkingTextStartTime) % (2 * 550);
+  const isVisible = blinkElapsed < 550
+  if (isVisible) {
+    canvasContext.save()
+    canvasContext.fillStyle = 'red'
+    canvasContext.font = '32px retro'
+    canvasContext.textAlign = 'center'
+    canvasContext.fillText('BOSS', canvas.width / 2, canvas.height / 2 - 20)
+    canvasContext.fillText('APPROACHES', canvas.width / 2, canvas.height / 2 + 20)
+    canvasContext.restore()
+  }
+}
 
 class Boss2 {
   constructor() {
@@ -1281,11 +1383,18 @@ class Boss {
     this.moves = true
     this.bossPosition = 'canvas'
     this.isActive = false
+    this.blinkingTextStartTime = performance.now()
   }
 
   draw() {
     this.elements.forEach(element => element.draw())
     if (this.obstacles) this.obstacles.forEach(obstacle => obstacle.draw())
+    const now = performance.now();
+    const blinkElapsed = (now - this.blinkingTextStartTime) % (2 * 550);
+    const isVisible = blinkElapsed < 550
+    if (isVisible && !this.isActive) {
+      drawBossWarning(this.blinkingTextStartTime)
+    }
   }
 
   activate() {
@@ -1360,7 +1469,7 @@ class Obstacle {
 
   draw() {
     if (!this.isActive) return
-    canvasContext.filter = `hue-rotate(${game.snake.color}deg)`
+    canvasContext.filter = `hue-rotate(${game.colorVariable}deg)`
     if (this.lives > 0.5) {
       canvasContext.drawImage(images.bossStructure, this.x, this.y, this.size, this.size)
     }
@@ -1382,13 +1491,13 @@ class Obstacle {
     if (overlapY && overlapX && this.lives > 0.5) {
       shot.isActive = false
       game.player.setActiveShots()
-      game.snake.color += 50
+      game.colorVariable += 50
       this.lives -= 0.5
       setTimeout(() => {
         this.lives -= 0.5
         this.isActive = false
       }, 100)
-      setTimeout(() => { game.snake.color -= 50 }, 50)
+      setTimeout(() => { game.colorVariable -= 50 }, 50)
       playSound(sounds.hitSound)
     }
   }
@@ -1437,7 +1546,7 @@ const gapPattern = [
     [1,1,0,0,0,1,1,1,1,1],
     [1,1,0,0,0,1,1,1,1,1],
     [1,0,0,0,1,1,1,1,1,1],
-    [1,0,0,0,1,1,1,1,1,1],
+    [1,2,0,0,1,1,1,1,1,1],
     [1,0,0,0,0,1,1,1,1,1],
     [1,0,0,0,0,1,1,1,1,1],
     [1,1,0,0,0,1,1,1,1,1],
@@ -1460,9 +1569,9 @@ const gapPattern = [
     [1,1,0,0,0,0,1,1,1,1],
     [1,1,0,0,0,0,0,1,1,1],
     [1,1,1,0,0,0,0,1,1,1],
+    [1,1,1,1,0,0,2,1,1,1],
     [1,1,1,1,0,0,0,1,1,1],
-    [1,1,1,1,0,0,0,1,1,1],
-    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,1,0,0,0,0,1,1,1],
     [1,1,1,0,0,0,1,1,1,1],
     [1,1,0,0,0,0,1,1,1,1],
     [1,1,0,0,0,0,1,1,1,1],
@@ -1729,7 +1838,7 @@ const gapPattern3 = [
     [1,1,1,1,1,0,0,0,1,1],
     [1,1,1,0,0,0,0,0,1,1],
     [1,0,0,0,0,0,0,0,1,1],
-    [1,0,0,0,0,0,0,1,1,1],
+    [1,0,0,0,0,0,2,1,1,1],
     [1,0,0,0,0,0,0,1,1,1],
     [1,0,0,0,0,0,1,1,1,1],
     [1,0,0,0,1,1,1,1,1,1],
