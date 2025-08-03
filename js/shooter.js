@@ -1953,19 +1953,27 @@ const powerUpTypes = {
   longShot: 'Long shot power up'
 }
 
-function drawPowerUp(x,y,radius,type) {
+function drawPowerUp(x, y, radius, type) {
+  canvasContext.save()
   canvasContext.beginPath()
   canvasContext.arc(x, y, radius, 0, Math.PI * 2)
-  const gradient = canvasContext.createRadialGradient(x, y, 0, x, y, radius)
-  gradient.addColorStop(0, getGradientByType(type).step1)
-  gradient.addColorStop(1, getGradientByType(type).step2)
-  canvasContext.textAlign = 'start'
+
+  const gradient = canvasContext.createRadialGradient(x,y,0,x,y,radius)
+  const gradientColors = getGradientByType(type)
+  gradient.addColorStop(0, gradientColors.step1)
+  gradient.addColorStop(1, gradientColors.step2)
+
   canvasContext.fillStyle = gradient
   canvasContext.fill()
-  canvasContext.fillStyle = 'limegreen'
+
   const powerUpLetter = type.at(0)
-  const textWidth = canvasContext.measureText(powerUpLetter).width
-  canvasContext.fillText(powerUpLetter, x - textWidth / 2, y + radius / 3)
+
+  canvasContext.font = `${radius}px retro`
+  canvasContext.textAlign = 'center'
+  canvasContext.textBaseline = 'middle'
+  canvasContext.fillStyle = 'limegreen'
+  canvasContext.fillText(powerUpLetter, x, y)
+  canvasContext.restore()
 }
 
 function getGradientByType(type) {
@@ -1990,7 +1998,11 @@ class PowerUp {
     this.minX = 20
     this.x = (Math.random() * (this.maxX - this.minX)) + this.minX
     this.y = -800
+    this.baseRadius = 20
     this.radius = 20
+    this.pulseTime = 0
+    this.pulseSpeed = 0.07
+    this.pulseRange = 3
     this.speedX = 3
     this.speedY = 3
     this.isActive = true
@@ -1998,6 +2010,8 @@ class PowerUp {
 
   draw() {
     if (!this.isActive) return
+    this.pulseTime += this.pulseSpeed
+    this.radius = this.baseRadius + Math.sin(this.pulseTime) * this.pulseRange
     drawPowerUp(this.x,this.y,this.radius,this.type)
   }
 
