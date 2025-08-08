@@ -79,6 +79,8 @@ const soundSources = {
   explosion: './sounds/shooter/explosion.wav',
   explosion2: './sounds/shooter/explosion2.wav',
   thankYou: './sounds/shooter/thank-you.mp3',
+  teleport: './sounds/shooter/teleport.wav',
+  credits: './sounds/shooter/credits.mp3',
 }
 
 const sounds = {
@@ -100,6 +102,8 @@ const sounds = {
   explosion: undefined,
   explosion2: undefined,
   thankYou: undefined,
+  teleport: undefined,
+  credits: undefined,
 }
 
 function loadSounds() {
@@ -137,11 +141,15 @@ function loadSounds() {
   sounds.shieldDown = new Audio(soundSources.shieldDown)
   sounds.shieldDown.onloadeddata = () => game.gameLoaded += 5
   sounds.explosion = new Audio(soundSources.explosion)
-  sounds.explosion.onloadeddata = () => game.gameLoaded += 2
+  sounds.explosion.onloadeddata = () => game.gameLoaded += 1
   sounds.explosion2 = new Audio(soundSources.explosion2)
-  sounds.explosion2.onloadeddata = () => game.gameLoaded += 2
+  sounds.explosion2.onloadeddata = () => game.gameLoaded += 1
   sounds.thankYou = new Audio(soundSources.thankYou)
   sounds.thankYou.onloadeddata = () => game.gameLoaded += 1
+  sounds.teleport = new Audio(soundSources.teleport)
+  sounds.teleport.onloadeddata = () => game.gameLoaded += 1
+  sounds.credits = new Audio(soundSources.credits)
+  sounds.credits.onloadeddata = () => game.gameLoaded += 1
 }
 
 function playSound(sound) {
@@ -257,6 +265,7 @@ class Player {
   }
 
   handlePlayer() {
+    if (game.state === gameStates.credits) return
     this.move()
     this.moveTouch()
     this.shoot()
@@ -279,6 +288,7 @@ const gameStates = {
   snakeRound: 'runs snake level',
   bossRound: 'runs boss level',
   gameOver: 'game is over',
+  credits: 'credits are shown'
 }
 
 const rounds = {
@@ -301,6 +311,7 @@ const intervals = {
   background: null,
   listenForStart: null,
   spaceShipAnimation: null,
+  bossPositionSwapping: null,
 }
 
 class Game {
@@ -330,10 +341,13 @@ class Game {
     this.snake = null
     this.dualSnakes = null
     this.boss = null
+    this.boss2 = null
     this.colorVariable = 0
     this.powerUp = null
     this.level = 1
     this.music = sounds.gameMusic2
+    this.gameWon = false
+    this.creditsStartTime = null
   }
 
   startGame() {
@@ -351,6 +365,7 @@ class Game {
         new Snake(this.addDualSnakes().snake2,this.colorVariable)
     ]
     this.boss = new Boss()
+    this.boss2 = new Boss2()
     this.player.x = canvas.width / 2 - this.player.width / 2
     this.player.killed = false
     this.player.y = canvas.height - this.player.height
@@ -362,6 +377,8 @@ class Game {
     buttonsPressed.d = false
     buttonsPressed.w = false
     this.backgroundScrollPosition = -1900
+    sounds.credits.pause()
+    sounds.credits.currentTime = 0
   }
 
   handleGameOver() {
@@ -371,6 +388,7 @@ class Game {
     clearInterval(intervals.enemies)
     clearInterval(intervals.game)
     clearInterval(intervals.background)
+    clearInterval(intervals.bossPositionSwapping)
     this.music.playbackRate = 0.5
     this.musicRunning  = false
     setTimeout(() => {
@@ -442,6 +460,9 @@ class Game {
       playSound(this.music)
       this.musicRunning = false
       playSound(sounds.bossAlert)
+      if (this.level === 4) {
+        intervals.bossPositionSwapping = setInterval(() => this.boss2.swapPositions(), 3000)
+      }
     }
   }
 
@@ -561,7 +582,40 @@ class Game {
         game.score += 250
         this.endLevel()
       }
-    } else {
+    } else if (this.level === 4) {
+      if (!this.boss2.isActive) {
+        setTimeout(() => this.boss2.activate(), 3000)
+      }
+      this.boss2.detectHitByPlayer()
+      this.boss2.handleShots()
+      if (!this.boss2.elements.some(element => element.isHead && element.lives > 0)) {
+        this.boss2.runDeathAnimation()
+        this.music.playbackRate = 0.5
+        setTimeout(() => {
+          this.music.pause()
+        }, 2000)
+        if (!this.gameWon) {
+          this.score += 1000
+          clearInterval(intervals.game)
+          clearInterval(intervals.bossPositionSwapping)
+          clearInterval(intervals.background)
+          setTimeout(() => {
+            this.music.pause()
+            this.round = null
+            this.player.losePowerUps()
+            clearInterval(intervals.enemies)
+            this.musicRunning  = false
+            this.isHighScore = false
+            this.gameSpeed = 60
+            playSound(sounds.credits)
+            this.state = gameStates.credits
+          }, 3000)
+        }
+        this.gameWon = true
+      }
+    }
+
+    else {
       if (!this.snake.isActive) {
         setTimeout(() => this.snake.activate(), 3000)
       }
@@ -700,6 +754,78 @@ class Game {
     }
   }
 
+  drawCreditsScreen() {
+    const creditsLines = [
+      '',
+      '',
+      '',
+      '',
+      'MISSION COMPLETE',
+      'You saved Earth!',
+      '',
+      '',
+      'GAME CREDITS',
+      '',
+      '',
+      'a game by',
+      'Christian Eckardt',
+      '',
+      '',
+      'Music by',
+      'sawsquarenoise',
+      '',
+      '',
+      'Special Thanks to',
+      'All Players',
+      '',
+      '',
+      'Final Score',
+      `${this.score}`,
+      '',
+      '',
+      'Thank you',
+      'for playing!',
+    ]
+    canvasContext.fillStyle = 'black'
+    canvasContext.fillRect(0, 0, canvas.width, canvas.height)
+
+    if (!this.creditsStartTime) {
+      this.creditsStartTime = performance.now()
+    }
+
+    const elapsed = (performance.now() - this.creditsStartTime) / 1000
+    const scrollSpeed = 50
+    const startY = canvas.height + 50
+
+    canvasContext.font = '24px retro'
+    canvasContext.fillStyle = 'limegreen'
+    canvasContext.textAlign = 'center'
+
+    creditsLines.forEach((line, index) => {
+      const lineHeight = 40
+      const yPosition = startY - (elapsed * scrollSpeed) + (index * lineHeight)
+
+      if (yPosition > -30 && yPosition < canvas.height + 30) {
+        if (line === 'CONGRATULATIONS!' || line === 'GAME CREDITS') {
+          canvasContext.font = '32px retro'
+          canvasContext.fillText(line, canvas.width / 2, yPosition)
+          canvasContext.font = '24px retro'
+        } else if (line === `${this.score}`) {
+          canvasContext.fillText(this.score.toString(), canvas.width / 2, yPosition)
+        } else {
+          canvasContext.fillText(line, canvas.width / 2, yPosition)
+        }
+      }
+    })
+
+    const totalHeight = creditsLines.length * 40
+    const creditsFinished = (elapsed * scrollSpeed) > (startY + totalHeight + 50)
+
+    if (creditsFinished) {
+      this.state = gameStates.gameOver
+    }
+  }
+
   drawShipAndShot() {
     if (this.player.activeShots.length > 0) this.player.activeShots.forEach(shot => {
       shot.draw()
@@ -738,8 +864,8 @@ class Game {
     this.player.y -= 3
     if (this.backgroundScrollPosition < 80) this.backgroundScrollPosition += 3
     if (this.player.y < -50) {
-      this.startNextRound()
       clearInterval(intervals.spaceShipAnimation)
+      this.startNextRound()
     }
   }
 
@@ -769,14 +895,15 @@ class Game {
         break
 
       case gameStates.bossRound:
+        if (this.powerUp) this.powerUp.draw()
         if (this.level === 3) {
           this.boss.draw()
         } else if (this.level === 2) {
           this.dualSnakes.forEach(snake => snake.draw())
-          if (this.powerUp) this.powerUp.draw()
+        } else if (this.level === 4) {
+          this.boss2.draw()
         } else {
           this.snake.draw()
-          if (this.powerUp) this.powerUp.draw()
         }
         break
 
@@ -796,6 +923,10 @@ class Game {
 
       case gameStates.gameOver:
         this.drawGameOverScreen()
+        break
+
+      case gameStates.credits:
+        this.drawCreditsScreen()
         break
 
       default: break
@@ -1300,7 +1431,7 @@ class SnakeElement {
   }
 
   shoot() {
-    if (!this.isHead || !this.isActive || this.isShotCoolDown || this.x < 0 || this.y < 0 || this.x > canvas.width - this.size) return
+    if (!this.isHead || !this.isActive || this.isShotCoolDown || this.x < 0 || this.y < 0 || this.x > canvas.width - this.size || this.lives === 0) return
     this.isShotCoolDown = true
     this.shots.push(new EnemyShot(this))
     playSound(sounds.laserEnemy)
@@ -1313,7 +1444,7 @@ class SnakeElement {
   }
 
   handleShots() {
-    if (game.player.killed || !this.isHead) return
+    if (game.player.killed || !this.isHead || this.lives === 0) return
     this.shoot()
     this.activeShots.forEach(shot => {
       shot.move()
@@ -1332,12 +1463,17 @@ class SnakeElement {
       this.lives -= 0.5
       setTimeout(() => {
         this.lives -= 0.5
-        if (!this.isHead && !this.regenerates) game.score += 10
+        if (!this.regenerates) game.score += 10
         if (this.lives === 0 && this.regenerates) setTimeout(() => this.lives = 1, 1000)
       }, 100)
       setTimeout(() => { game.colorVariable -= 50 }, 50)
       playSound(this.isHead ? sounds.bossHitSound : sounds.hitSound)
     }
+  }
+
+  changePosition(x,y) {
+    this.x = x
+    this.y = y
   }
 }
 
@@ -1367,9 +1503,91 @@ function drawBossWarning(blinkingTextStartTime) {
 class Boss2 {
   constructor() {
     this.elements = [
-      new SnakeElement(0, 60, false, true), new SnakeElement(canvas.width + 40, 60, false, true), new SnakeElement(canvas.width + 80, 60, false, true),
+      new SnakeElement(0, 80, false, true), new SnakeElement(40, 80, false, true), new SnakeElement(80, 80, false, true), new SnakeElement(120, 80, false, true), new SnakeElement(160, 80, false, true), new SnakeElement(200, 80, false, true), new SnakeElement(240, 80, false, true), new SnakeElement(280, 80, false, true), new SnakeElement(320, 80, false, true), new SnakeElement(360, 80, false, true),
+      new SnakeElement(0, 120, false, true), new SnakeElement(80, 120, false, true), new SnakeElement(160, 120, false, true), new SnakeElement(200, 120, false, true), new SnakeElement(280, 120, false, true), new SnakeElement(360, 120, false, true),
+      new SnakeElement(0, 160, false, true), new SnakeElement(40, 160, false, true), new SnakeElement(80, 160, false, true), new SnakeElement(120, 160, false, true), new SnakeElement(160, 160, false, true), new SnakeElement(200, 160, false, true), new SnakeElement(240, 160, false, true), new SnakeElement(280, 160, false, true), new SnakeElement(320, 160, false, true), new SnakeElement(360, 160, false, true),
+      new SnakeElement(40, 120, true, false), new SnakeElement(120, 120, true, false), new SnakeElement(240, 120, true, false), new SnakeElement(320, 120, true, false),
     ]
+    this.isActive = false
+    this.blinkingTextStartTime = performance.now()
+    this.isDead = false
   }
+
+  draw() {
+    this.elements.forEach(element => element.draw())
+    const now = performance.now();
+    const blinkElapsed = (now - this.blinkingTextStartTime) % (2 * 550);
+    const isVisible = blinkElapsed < 550
+    if (isVisible && !this.isActive) {
+      drawBossWarning(this.blinkingTextStartTime)
+    }
+  }
+
+  activate() {
+    this.isActive = true
+    this.elements.forEach(element => element.isActive = true)
+  }
+
+  handleShots() {
+    if (this.isDead) return
+    this.elements.forEach(element => element.handleShots())
+  }
+
+  detectHitByPlayer() {
+    this.elements.forEach(element => {
+          game.player.activeShots.forEach(shot => element.hitDetection(shot))
+        }
+    )
+  }
+
+  swapPositions() {
+    if (!this.isActive) return
+
+    const headIndices = []
+    const nonHeadIndices = []
+
+    this.elements.forEach((element, index) => {
+      if (element.isHead && element.lives > 0) {
+        headIndices.push(index)
+      } else if (!element.isHead && element.lives > 0) {
+        nonHeadIndices.push(index)
+      }
+    })
+
+    if (headIndices.length === 0 || nonHeadIndices.length === 0) return
+    headIndices.forEach(headIndex => {
+      const randomNonHeadIndex = nonHeadIndices[Math.floor(Math.random() * nonHeadIndices.length)]
+      const tempX = this.elements[headIndex].x
+      const tempY = this.elements[headIndex].y
+      const tempX2 = this.elements[randomNonHeadIndex].x
+      const tempY2 = this.elements[randomNonHeadIndex].y
+
+      this.elements[headIndex].changePosition(tempX2, tempY2)
+      this.elements[randomNonHeadIndex].changePosition(tempX, tempY)
+    })
+
+    playSound(sounds.teleport)
+  }
+  runDeathAnimation() {
+    if (this.isDead) return
+    this.isDead = true
+    this.elements.forEach((element, index) => {
+      element.shots = []
+      element.setActiveShots()
+      element.regenerates = false
+      setTimeout(() => {
+        playSound(sounds.explosion)
+        element.lives = 0.5
+        if (index === this.elements.length - 1) {
+          this.elements.forEach(element => {
+            element.lives = 0
+            element.isActive = false
+          })
+        }
+      }, index * 60)
+    })
+  }
+
 }
 
 class Boss {
@@ -1532,14 +1750,10 @@ class Obstacle {
 // OBSTACLE LEVEL
 // _______________________________________________________________
 
-const getPattern = (oldPattern) => {
-  if (oldPattern === 1) return gapPattern2
-  else if (oldPattern === 2) return gapPattern3
-  else return gapPattern
-}
+const getPattern = () => gapPatterns[game.level - 1]
 
 const gapPattern = [
-    [1,1,1,0,0,0,1,1,1,1],
+    [1,1,0,0,0,0,0,1,1,1],
     [1,1,1,0,0,0,1,1,1,1],
     [1,1,0,0,0,0,1,1,1,1],
     [1,1,0,0,0,0,1,1,1,1],
@@ -1562,7 +1776,7 @@ const gapPattern = [
     [1,1,0,0,0,1,1,1,1,1],
     [1,1,0,0,0,1,1,1,1,1],
     [1,0,0,0,1,1,1,1,1,1],
-    [1,0,0,0,1,1,1,1,1,1],
+    [1,2,0,0,1,1,1,1,1,1],
     [1,0,0,0,0,1,1,1,1,1],
     [1,0,0,0,0,1,1,1,1,1],
     [1,1,0,0,0,1,1,1,1,1],
@@ -1635,6 +1849,8 @@ const gapPattern = [
     [1,1,1,0,0,0,0,1,1,1],
     [1,1,1,1,0,0,0,1,1,1],
     [1,1,1,1,0,0,0,1,1,1],
+    [1,1,1,0,0,0,0,0,1,1],
+    [1,1,0,0,0,0,0,0,0,1],
 ]
 
 const gapPattern2 = [
@@ -1699,7 +1915,7 @@ const gapPattern2 = [
     [1,1,1,0,0,0,1,1,1,1],
     [1,1,0,0,0,0,1,1,1,1],
     [1,1,0,0,0,0,1,1,1,1],
-    [1,1,0,0,0,1,1,1,1,1],
+    [1,1,2,0,0,1,1,1,1,1],
     [1,1,0,0,0,1,1,1,1,1],
     [1,0,0,0,1,1,1,1,1,1],
     [1,0,0,0,1,1,1,1,1,1],
@@ -1731,7 +1947,7 @@ const gapPattern2 = [
     [1,1,1,0,0,0,0,0,1,1],
     [1,0,0,0,0,0,0,0,1,1],
     [1,0,0,0,0,0,0,1,1,1],
-    [1,0,0,0,0,0,0,1,1,1],
+    [1,2,0,0,0,0,0,1,1,1],
     [1,0,0,0,0,0,1,1,1,1],
     [1,0,0,0,0,1,1,1,1,1],
     [1,0,0,0,0,0,1,1,1,1],
@@ -1850,8 +2066,120 @@ const gapPattern3 = [
     [1,1,1,0,0,0,0,1,1,1],
     [1,1,0,0,0,0,0,0,1,1],
     [1,1,0,0,0,0,0,0,1,1],
-    [1,1,1,0,0,0,0,1,1,1]
+    [1,1,1,0,0,0,0,1,1,1],
+    [1,1,0,0,0,0,0,0,1,1],
 ]
+
+const gapPattern4 = [
+  [0,0,0,0,0,0,0,0,0,0],
+  [1,0,1,1,1,1,0,0,0,1],
+  [1,0,1,1,1,1,0,0,0,1],
+  [1,0,1,1,1,1,0,0,0,1],
+  [1,0,1,1,1,1,0,0,1,1],
+  [1,2,1,0,0,0,0,0,0,1],
+  [1,2,1,0,0,0,0,0,0,1],
+  [1,2,1,0,0,0,0,0,0,1],
+  [1,0,1,0,0,0,0,0,1,1],
+  [1,1,1,0,0,0,0,1,1,1],
+  [1,1,0,0,0,0,1,1,1,1],
+  [1,0,0,0,0,0,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,2,0,0,1,1,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,0,1,1,1,1],
+  [1,1,1,0,0,0,0,1,1,1],
+  [1,1,1,0,0,0,0,1,1,1],
+  [1,1,1,0,0,0,0,0,1,1],
+  [1,1,1,1,0,0,0,0,0,1],
+  [1,1,1,1,0,0,0,0,1,1],
+  [1,1,1,0,0,0,0,1,1,1],
+  [1,1,0,0,0,0,1,1,1,1],
+  [1,1,0,0,0,0,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,0,0,0,1,1,1,1,1,1],
+  [1,0,0,0,1,1,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,1,1,0,0,0,1,1,1,1],
+  [1,1,1,0,0,0,0,0,0,1],
+  [1,1,1,1,0,0,0,2,0,1],
+  [1,1,1,1,0,0,0,0,0,1],
+  [1,1,1,0,0,0,1,1,1,1],
+  [1,1,1,0,0,0,1,1,1,1],
+  [1,1,0,0,0,0,1,1,1,1],
+  [1,1,0,0,0,0,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,0,0,0,1,1,1,1,1,1],
+  [1,0,0,0,1,1,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,1,1,0,0,0,1,1,1,1],
+  [1,1,1,0,0,0,0,1,1,1],
+  [1,1,1,1,0,0,0,1,1,1],
+  [1,1,1,1,0,0,0,1,1,1],
+  [1,1,1,0,0,0,1,1,1,1],
+  [1,1,1,0,0,0,1,1,1,1],
+  [1,1,0,0,0,0,1,1,1,1],
+  [1,1,0,0,0,0,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,0,0,0,1,1,1,1,1,1],
+  [1,0,0,0,1,1,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,1,1,0,0,0,1,1,1,1],
+  [1,1,1,0,0,0,0,1,1,1],
+  [1,1,1,1,0,0,0,1,1,1],
+  [1,1,1,1,0,0,0,1,1,1],
+  [1,1,1,0,0,0,1,1,1,1],
+  [1,1,1,0,0,0,1,1,1,1],
+  [1,1,0,0,0,0,1,1,1,1],
+  [1,1,0,0,0,0,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,1,0,0,0,1,1,1,1,1],
+  [1,0,0,0,1,1,1,1,1,1],
+  [1,0,0,0,1,1,1,1,1,1],
+  [1,0,0,0,0,1,1,1,1,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,1],
+  [1,1,1,0,0,0,0,0,0,1],
+  [1,1,1,1,0,0,0,0,0,1],
+  [1,1,1,1,1,0,0,0,0,1],
+  [1,1,1,1,1,1,0,0,0,1],
+  [1,1,1,1,1,0,0,0,1,1],
+  [1,1,1,0,0,0,0,0,1,1],
+  [1,0,0,0,0,0,0,0,1,1],
+  [1,0,0,0,0,0,2,1,1,1],
+  [1,0,0,0,0,0,0,1,1,1],
+  [1,0,0,0,0,0,1,1,1,1],
+  [1,0,0,0,1,1,1,1,1,1],
+  [1,0,0,0,0,0,1,1,1,1],
+  [1,1,0,0,0,0,0,1,1,1],
+  [1,1,0,0,0,0,0,0,1,1],
+  [1,1,1,0,0,0,0,1,1,1],
+  [1,1,1,1,0,0,0,0,1,1,1],
+  [1,1,1,0,0,0,0,1,1,1],
+  [1,1,0,0,0,0,0,0,1,1],
+  [1,1,0,0,0,0,0,0,1,1],
+  [1,1,1,0,0,0,0,1,1,1],
+  [1,1,0,0,0,0,0,0,1,1],
+]
+
+const gapPatterns = [gapPattern, gapPattern2, gapPattern3, gapPattern4]
 
 class Collectible {
   constructor(x, y) {
@@ -2072,7 +2400,7 @@ class Shot {
   constructor(isWideShot, isLongShot) {
     this.isWideShot = isWideShot
     this.isLongShot = isLongShot
-    this.width = this.isWideShot ? 30 : 10
+    this.width = this.isWideShot ? 20 : 10
     this.fullHeight = this.isLongShot ? 100 : 20
     this.currentHeight = 0
     this.x = game.player.x + game.player.width / 2 - this.width / 2
@@ -2095,6 +2423,7 @@ class Shot {
   }
 
   draw() {
+    canvasContext.save()
     let fillColor
 
     if (!this.isWideShot && !this.isLongShot) fillColor = 'rgba(50, 205, 50, 0.8)'
@@ -2115,7 +2444,7 @@ class Shot {
       }
     } else canvasContext.fillRect(this.x, this.y, this.width, this.currentHeight)
 
-    canvasContext.fillStyle = 'limegreen'
+    canvasContext.restore()
   }
 
   playLaserSound() {
