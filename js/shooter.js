@@ -999,7 +999,7 @@ class Game {
   addAsteroids() {
     this.asteroids.push(new Asteroid(100, -50, 30, 2.2), new Asteroid(200, -100, 40, 2.4),
         new Asteroid(300, -200, 60, 2.4), new Asteroid(150, -300, 80, 2.4),
-        new Asteroid(50, -150, 30, 3), new Asteroid(250, -400, 100, 1.5), new Asteroid(0, -400, 80, 3.5))
+        new Asteroid(50, -150, 30, 3), new Asteroid(250, -400, 100, 2.2), new Asteroid(0, -400, 80, 3.5))
   }
 
   resetAsteroids() {
@@ -1032,12 +1032,14 @@ class Game {
         new SnakeElement(40,-40, false),
         new SnakeElement(80,-40, false),
         new SnakeElement(120,-40, false),
+        new SnakeElement(160,-40, false),
       ],
       snake2: [
-        new SnakeElement(canvas.width - 120,- 80, true),
+        new SnakeElement(canvas.width - 160,- 80, true),
+        new SnakeElement(canvas.width - 120,- 80, false),
         new SnakeElement(canvas.width - 80,-80, false),
         new SnakeElement(canvas.width - 40,-80, false),
-        new SnakeElement(canvas.width, -80, false)
+        new SnakeElement(canvas.width, -80, false),
       ]
     }
   }
