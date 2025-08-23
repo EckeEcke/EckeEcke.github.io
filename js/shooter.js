@@ -20,6 +20,7 @@ const imageSources = {
   explosion: './images/shooter/explosion.png',
   bossStructure: './images/shooter/boss-structure.png',
   background: './images/shooter/background.jpg',
+  backgroundLoop: './images/shooter/background-loop.jpg',
   astronaut: './images/shooter/astronaut2.png',
 }
 
@@ -32,6 +33,8 @@ const images = {
   explosion: new Image(),
   bossStructure: new Image(),
   background: new Image(),
+  backgroundLoop1: new Image(),
+  backgroundLoop2: new Image(),
   astronaut: new Image(),
 }
 
@@ -50,6 +53,8 @@ function loadImages() {
     images.enemyShip.src = imageSources.enemyShip
     images.bossStructure.src = imageSources.bossStructure
     images.background.src = imageSources.background
+    images.backgroundLoop1.src = imageSources.backgroundLoop
+    images.backgroundLoop2.src = imageSources.backgroundLoop
     images.playerShip.src = imageSources.playerShip
     images.explosion.src = imageSources.explosion
     images.asteroid.src = imageSources.asteroid
@@ -327,7 +332,8 @@ class Game {
     this.loadingAnimation = '.'
     this.gameSpeed = 60
     this.musicRunning = false
-    this.backgroundScrollPosition = -1900
+    this.animationBackgroundScrollPosition = -1900
+    this.backgroundScrollPositions = [0, -2200]
     this.gameLoaded = 0
     this.displayedScreen = screens.controls
     this.volume = 1
@@ -377,6 +383,7 @@ class Game {
     buttonsPressed.d = false
     buttonsPressed.w = false
     this.backgroundScrollPosition = -1900
+    this.animationBackgroundScrollPosition = -1900
     sounds.credits.pause()
     sounds.credits.currentTime = 0
   }
@@ -850,7 +857,7 @@ class Game {
   drawSpaceshipAnimation() {
     canvasContext.fillStyle = 'black'
     canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-    canvasContext.drawImage(images.background, 0, this.backgroundScrollPosition)
+    canvasContext.drawImage(images.background, 0, this.animationBackgroundScrollPosition)
     canvasContext.fillStyle = 'limegreen'
     canvasContext.textAlign = 'center'
     canvasContext.fillText(this.score === 0 ? 'Save earth!' : 'Next round!', canvas.width / 2, canvas.height / 2)
@@ -862,7 +869,7 @@ class Game {
 
   moveShipForAnimation() {
     this.player.y -= 3
-    if (this.backgroundScrollPosition < 80) this.backgroundScrollPosition += 3
+    if (this.animationBackgroundScrollPosition < 80) this.animationBackgroundScrollPosition += 3
     if (this.player.y < -50) {
       clearInterval(intervals.spaceShipAnimation)
       this.startNextRound()
@@ -872,7 +879,8 @@ class Game {
   drawEverything = () => {
     canvasContext.fillStyle = 'black'
     canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-    canvasContext.drawImage(images.background, 0, this.backgroundScrollPosition)
+    this.backgroundScrollPositions.forEach(position => canvasContext.drawImage(images.backgroundLoop1, 0, position))
+    console.log(this.backgroundScrollPositions)
     this.drawShipAndShot()
 
     this.drawScore()
@@ -936,9 +944,10 @@ class Game {
   }
 
   moveBackground = () => {
-    if (this.backgroundScrollPosition < 140) {
-      this.backgroundScrollPosition += 2
-    }
+      this.backgroundScrollPositions.forEach((position, index) => {
+          if (position < 2200) this.backgroundScrollPositions[index] += 2
+          else this.backgroundScrollPositions[index] = -2200
+      })
   }
 
   setVolume(value) {
