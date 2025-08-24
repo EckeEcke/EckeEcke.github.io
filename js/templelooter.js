@@ -27,7 +27,8 @@ const sounds = {
     gate: { src: document.getElementById("gate-sound"), playOnce: false },
     hurt: { src: document.getElementById("hurt-sound"), playOnce: true },
     victory: { src: document.getElementById("victory-sound"), playOnce: true },
-    bat:{ src: document.getElementById("bat-sound"), playOnce: true },
+    bat: { src: document.getElementById("bat-sound"), playOnce: true },
+    drums: { src: document.getElementById("drum-sound"), playOnce: true },
 }
 
 const sprites = {
@@ -59,6 +60,7 @@ const intervals = {
     bat: null,
     game: null,
     key: null,
+    lavaBackground: null
 }
 
 const states = {
@@ -226,7 +228,7 @@ function movePlayer() {
         player1.x += 2
     }
 
-    if (buttonsPressed.w && player1.y > 0) {
+    if (buttonsPressed.w && player1.y > 25) {
         player1.y -= 2
     }
 
@@ -304,7 +306,7 @@ function movePlayerGamepad() {
         player1.x += 2
     }
 
-    if (navigator.getGamepads()[0].buttons[12].pressed && player1.y > 0) {
+    if (navigator.getGamepads()[0].buttons[12].pressed && player1.y > 25) {
         player1.y -= 2
     }
 
@@ -373,10 +375,10 @@ function collision() {
 }
 
 function keyStatusToggle() {
-    items.key.showKey = !items.key.showKey
+    items.key.showKey = true
     items.key.collected = false
     items.key.x = 20 + Math.floor(Math.random() * 300)
-    items.key.y = 50 + Math.floor(Math.random() * 300)
+    items.key.y = 25 + Math.floor(Math.random() * 300)
 }
 
 function collectKey() {
@@ -416,10 +418,10 @@ function moveWall() {
 
     if (enemies.obstacle.x < -30) {
         enemies.obstacle.x = canvasWidth + 50
-        enemies.obstacle.height = 25 * Math.floor(Math.random() * 10)
+        enemies.obstacle.height = 25 * Math.floor(Math.random() * 10) + 25
         player1.passedGate = false
-        items.treasure.x = 20 + Math.floor(Math.random() * 200)
-        items.treasure.y = 20 + Math.floor(Math.random() * 350)
+        items.treasure.x = 25 + Math.floor(Math.random() * 200)
+        items.treasure.y = 25 + Math.floor(Math.random() * 300)
         items.treasure.collected = false
     }
 }
@@ -562,6 +564,7 @@ function endGame() {
         }
 
         if (!gameState.gameover) {
+            pauseSound(sounds.drums)
             gameState.gameover = true
             setTimeout(function () {
                 gameState.round = 1
@@ -577,25 +580,25 @@ function endGame() {
 
 function nextRound() {
     if (player1.keys === gameState.keysRequired) {
+        pauseSound(sounds.drums)
         touchControls.active = false
         gameState.round += 1
         gameState.state = states.nextRoundMessage
         clearInterval(intervals.game)
         initialize()
         playSound(sounds.start)
-        if (gameState.round === 2) {
-            setTimeout(() => {
+        setTimeout(() => {
+            playSound(sounds.drums)
+            if (gameState.round === 2) {
                 gameState.state = states.batLevel
                 intervals.game = setInterval(runBatLevel, 1000 / gameState.gameSpeed)
-            }, 2000)
-        }
-        if (gameState.round === 3) {
-            setTimeout(() => {
+            }
+            if (gameState.round === 3) {
                 gameState.state = states.lavaLevel
                 intervals.game = setInterval(runLavaLevel, 1000 / gameState.gameSpeed)
-            }, 2000)
-            backgroundAnimation = setInterval(toggleBackground, 1000)
-        }
+                intervals.lavaBackground = setInterval(toggleBackground, 1000)
+            }
+        }, 2000)
     }
 }
 
@@ -677,6 +680,7 @@ let gameWon = false
 
 function winGame() {
     if (player1.x > 280 && player1.y > 140 && player1.y < 200 && !gameWon) {
+        pauseSound(sounds.drums)
         playSound(sounds.victory)
         gameWon = true
         player1.score += 500
@@ -964,6 +968,8 @@ window.addEventListener('gamepad1Connected', function(e) {
 const touchBTNStart = document.getElementById("touch-BTN-start")
 
 function startGame() {
+    sounds.drums.loop = true
+    playSound(sounds.drums)
     gameState.state = states.wallLevel
     player1.score = 0
     touchBTNStart.disabled = true
@@ -989,6 +995,11 @@ function playSound(sound) {
     }
 
     sound.src.play()
+}
+
+function pauseSound(sound) {
+    sound.src.pause()
+    sound.src.currentTime = 0
 }
 
 function keyDownHandler(event) {
@@ -1044,7 +1055,7 @@ function initialize() {
     touchControls.active = false
     enemies.obstacle.x = canvasWidth + 200
     enemies.obstacle.y = 0
-    enemies.obstacle.height = 25 * Math.floor(Math.random() * 10)
+    enemies.obstacle.height = 25 * Math.floor(Math.random() * 10) + 25
     player1.isCollision = { x: false, y: false }
     items.treasure.x = 10 + Math.floor(Math.random() * 200)
     items.treasure.y = 50

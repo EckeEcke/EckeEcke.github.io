@@ -382,7 +382,6 @@ class Game {
     buttonsPressed.a = false
     buttonsPressed.d = false
     buttonsPressed.w = false
-    this.backgroundScrollPosition = -1900
     this.animationBackgroundScrollPosition = -1900
     sounds.credits.pause()
     sounds.credits.currentTime = 0
@@ -452,7 +451,7 @@ class Game {
 
     intervals.game = setInterval(this.runGame, 1000 / 140)
     intervals.enemies = setInterval(this.runEnemies, 1000 / this.gameSpeed)
-    intervals.background = setInterval(game.moveBackground, 1000 / 60)
+    if (!intervals.background) intervals.background = setInterval(game.moveBackground, 1000 / 140)
 
     if (this.round !== rounds.boss && !this.musicRunning) {
       if (this.music) this.music.pause()
@@ -479,7 +478,6 @@ class Game {
     clearInterval(intervals.game)
 
     setTimeout(() => {
-      clearInterval(intervals.background)
       this.state = gameStates.spaceshipAnimation
       intervals.spaceShipAnimation = setInterval(() => this.moveShipForAnimation(), 1000/120)
       playSound(sounds.spaceshipSound)
@@ -579,10 +577,12 @@ class Game {
 
       if (snake1IsDead) {
         this.dualSnakes[0].runDeathAnimation()
+        this.dualSnakes[0].activeShots = []
       }
 
       if (snake2IsDead) {
         this.dualSnakes[1].runDeathAnimation()
+        this.dualSnakes[1].activeShots = []
       }
 
       if(snake1IsDead && snake2IsDead) {
@@ -855,9 +855,11 @@ class Game {
   }
 
   drawSpaceshipAnimation() {
-    canvasContext.fillStyle = 'black'
-    canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-    canvasContext.drawImage(images.background, 0, this.animationBackgroundScrollPosition)
+    if (this.score === 0) canvasContext.drawImage(images.background, 0, this.animationBackgroundScrollPosition)
+    else {
+        canvasContext.fillStyle = 'black'
+        canvasContext.fillRect(0, 0, canvas.width, canvas.height)
+    }
     canvasContext.fillStyle = 'limegreen'
     canvasContext.textAlign = 'center'
     canvasContext.fillText(this.score === 0 ? 'Save earth!' : 'Next round!', canvas.width / 2, canvas.height / 2)
@@ -868,8 +870,8 @@ class Game {
   }
 
   moveShipForAnimation() {
-    this.player.y -= 3
-    if (this.animationBackgroundScrollPosition < 80) this.animationBackgroundScrollPosition += 3
+    this.player.y -= 4
+    if (this.animationBackgroundScrollPosition < 80) this.animationBackgroundScrollPosition += 2
     if (this.player.y < -50) {
       clearInterval(intervals.spaceShipAnimation)
       this.startNextRound()
@@ -879,8 +881,9 @@ class Game {
   drawEverything = () => {
     canvasContext.fillStyle = 'black'
     canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-    this.backgroundScrollPositions.forEach(position => canvasContext.drawImage(images.backgroundLoop1, 0, position))
-    console.log(this.backgroundScrollPositions)
+    this.backgroundScrollPositions.forEach(position => {
+        if (position) canvasContext.drawImage(images.backgroundLoop1, 0, position)
+    })
     this.drawShipAndShot()
 
     this.drawScore()
@@ -945,7 +948,7 @@ class Game {
 
   moveBackground = () => {
       this.backgroundScrollPositions.forEach((position, index) => {
-          if (position < 2200) this.backgroundScrollPositions[index] += 2
+          if (position < 2200) this.backgroundScrollPositions[index] += 1
           else this.backgroundScrollPositions[index] = -2200
       })
   }
@@ -1006,9 +1009,9 @@ class Game {
   }
 
   addAsteroids() {
-    this.asteroids.push(new Asteroid(100, -50, 30, 2.2), new Asteroid(200, -100, 40, 2.4),
-        new Asteroid(300, -200, 60, 2.4), new Asteroid(150, -300, 80, 2.4),
-        new Asteroid(50, -150, 30, 3), new Asteroid(250, -400, 100, 2.2), new Asteroid(0, -400, 80, 3.5))
+    this.asteroids.push(new Asteroid(100, -50, 30, 2.5), new Asteroid(200, -100, 40, 2.8),
+        new Asteroid(300, -200, 60, 2.6), new Asteroid(150, -300, 80, 2.6),
+        new Asteroid(50, -150, 30, 3.2), new Asteroid(250, -400, 100, 2.4), new Asteroid(0, -400, 80, 3.6))
   }
 
   resetAsteroids() {
