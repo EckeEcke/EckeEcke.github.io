@@ -29,6 +29,7 @@ const sounds = {
     victory: { src: document.getElementById("victory-sound"), playOnce: true },
     bat: { src: document.getElementById("bat-sound"), playOnce: true },
     drums: { src: document.getElementById("drum-sound"), playOnce: true },
+    timer: { src: document.getElementById("timer-sound"), playOnce: true },
 }
 
 const sprites = {
@@ -60,7 +61,8 @@ const intervals = {
     bat: null,
     game: null,
     key: null,
-    lavaBackground: null
+    lavaBackground: null,
+    time: null
 }
 
 const states = {
@@ -85,6 +87,7 @@ const gameState = {
     batSprite: sprites.bat1,
     backgroundLavaLevel: sprites.backgrounds.lava1,
     background1Lava: true,
+    timer: 99,
 }
 
 const player1 = {
@@ -103,7 +106,6 @@ const player1 = {
     passedGate: false,
     score: 0,
     lives: 3,
-    gatesPassed: 0,
     carriedByBridge: false,
     blockMovementLeft: false,
     kickback: {
@@ -501,7 +503,7 @@ function moveBatByRandom(bat) {
 }
 
 function runWallLevel() {
-    raiseSpeed()
+    checkGatePass()
     collectTreasure()
     collectKey()
     moveWall()
@@ -542,26 +544,13 @@ function toggleBackground() {
 }
 
 function endGame() {
-    if (player1.x + player1.width < -30 || player1.lives === 0) {
+    if (player1.x + player1.width < -30 || player1.lives === 0 || gameState.timer <= 0) {
         player1.lives = 0
         gameState.gameSpeed = 10
         playSound(sounds.death)
         clearInterval(intervals.game)
-
-        switch (gameState.round) {
-            case 1: {
-                intervals.game = setInterval(runWallLevel, 1000 / gameState.gameSpeed)
-                break
-            }
-            case 2: {
-                intervals.game = setInterval(runBatLevel, 1000 / gameState.gameSpeed)
-                break
-            }
-            case 3: {
-                intervals.game = setInterval(runLavaLevel, 1000 / gameState.gameSpeed)
-                break
-            }
-        }
+        clearInterval(intervals.time)
+        pauseSound(sounds.timer)
 
         if (!gameState.gameover) {
             pauseSound(sounds.drums)
@@ -585,9 +574,13 @@ function nextRound() {
         gameState.round += 1
         gameState.state = states.nextRoundMessage
         clearInterval(intervals.game)
+        clearInterval(intervals.time)
+        pauseSound(sounds.timer)
+        gameState.timer = 60
         initialize()
         playSound(sounds.start)
         setTimeout(() => {
+            intervals.time = setInterval(runDownTimer, 1000)
             playSound(sounds.drums)
             if (gameState.round === 2) {
                 gameState.state = states.batLevel
@@ -602,17 +595,10 @@ function nextRound() {
     }
 }
 
-function raiseSpeed() {
+function checkGatePass() {
     if (player1.x > enemies.obstacle.x + 10 && !player1.passedGate) {
-        player1.gatesPassed += 1
         playSound(sounds.gate)
         player1.passedGate = true
-    }
-    if (player1.gatesPassed === 4) {
-        player1.gatesPassed = 0
-        gameState.gameSpeed = 1.1 * gameState.gameSpeed
-        clearInterval(intervals.game)
-        intervals.game = setInterval(runWallLevel, 1000 / gameState.gameSpeed)
     }
 }
 
@@ -681,10 +667,12 @@ let gameWon = false
 function winGame() {
     if (player1.x > 280 && player1.y > 140 && player1.y < 200 && !gameWon) {
         pauseSound(sounds.drums)
+        pauseSound(sounds.timer)
         playSound(sounds.victory)
         gameWon = true
         player1.score += 500
         clearInterval(intervals.game)
+        clearInterval(intervals.time)
         intervals.game = setInterval(() => {
             runVictoryAnimation()
         }, 1000 / 60)
@@ -750,8 +738,7 @@ function drawIntroMessage() {
 }
 
 function drawLives() {
-    ctx.fillStyle = 'red'
-    ctx.font = '30px pixelFont'
+    ctx.save()
 
     switch (player1.lives) {
         case 0:
@@ -766,7 +753,11 @@ function drawLives() {
         default:
             text = '❤❤❤'
     }
-    ctx.fillText(text, 3 / 4 * canvasWidth - 10, 28)
+    ctx.fillStyle = 'red'
+    ctx.font = '30px pixelFont'
+    ctx.textAlign = "right"
+    ctx.fillText(text, canvasWidth - 5, 28)
+    ctx.restore()
 }
 
 function drawPickupMessage(obj) {
@@ -838,8 +829,11 @@ function drawScoreBoard() {
     ctx.fillStyle = 'white'
     ctx.font = '20px pixelFont'
     ctx.textAlign = 'start'
-    ctx.fillText('Score: ' + player1.score, 0, 24)
-    ctx.fillText('🗝x' + player1.keys, 190, 24)
+    ctx.fillText('Score ' + player1.score, 5, 24)
+    ctx.fillText('🗝x' + player1.keys, 180, 24)
+    if (gameState.timer < 20) ctx.fillStyle = 'orange'
+    if (gameState.timer < 10) ctx.fillStyle = 'red'
+    ctx.fillText('⏱' + gameState.timer, 260, 24)
     drawLives()
 }
 
@@ -971,11 +965,19 @@ function startGame() {
     sounds.drums.loop = true
     playSound(sounds.drums)
     gameState.state = states.wallLevel
+    gameState.timer = 60
     player1.score = 0
     touchBTNStart.disabled = true
     initialize()
     intervals.game = setInterval(runWallLevel, 1000 / gameState.gameSpeed)
+    intervals.time = setInterval(runDownTimer, 1000)
     randomInterval = setInterval(randomGenerator, 500)
+}
+
+function runDownTimer() {
+    if (gameState.timer <= 0) return
+    gameState.timer -= 1
+    if (gameState.timer === 10) playSound(sounds.timer)
 }
 
 function setVolume(value) {
@@ -1062,7 +1064,6 @@ function initialize() {
     items.treasure.collected = false
     player1.passedGate = false
     gameState.gameSpeed = 120
-    player1.gatesPassed = 0
     player1.lives = 3
     gameState.gameover = false
     gameWon = false
