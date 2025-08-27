@@ -754,9 +754,9 @@ function drawLives() {
             text = '❤❤❤'
     }
     ctx.fillStyle = 'red'
-    ctx.font = '30px pixelFont'
+    ctx.font = '24px pixelFont'
     ctx.textAlign = "right"
-    ctx.fillText(text, canvasWidth - 5, 28)
+    ctx.fillText(text, canvasWidth - 5, 24)
     ctx.restore()
 }
 
@@ -829,11 +829,11 @@ function drawScoreBoard() {
     ctx.fillStyle = 'white'
     ctx.font = '20px pixelFont'
     ctx.textAlign = 'start'
-    ctx.fillText('Score ' + player1.score, 5, 24)
-    ctx.fillText('🗝x' + player1.keys, 180, 24)
+    const text = 'Score ' + String(player1.score).padStart(4, '0') + ' 🗝x' + player1.keys
+    ctx.fillText(text, 5, 24)
     if (gameState.timer < 20) ctx.fillStyle = 'orange'
     if (gameState.timer < 10) ctx.fillStyle = 'red'
-    ctx.fillText('⏱' + gameState.timer, 260, 24)
+    ctx.fillText('⏱' + gameState.timer, 255, 24)
     drawLives()
 }
 
