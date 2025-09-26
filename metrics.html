@@ -5,10 +5,19 @@
         var t = setInterval(function() {
             if (window.goatcounter && window.goatcounter.visit_count) {
                 clearInterval(t)
-                window.goatcounter.visit_count({append: 'body'})
+                console.log('GoatCounter loaded, attempting to show visit count...')
+
+                window.goatcounter.visit_count({
+                    append: '#visit-count-container',
+                    no_branding: false,
+                    style: 'color: #333; font-size: 14px;'
+                })
             }
         }, 100)
     </script>
+
+    <div id="visit-count-container"></div>
+
     <script data-goatcounter="https://eckeecke.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
