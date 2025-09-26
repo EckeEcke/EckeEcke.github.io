@@ -7,6 +7,11 @@
         color: #5eead5;
         font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
+    h1 {
+        display: block;
+        text-align: center;
+        max-width: 1200px;
+    }
     #metrics-container {
         display: flex;
         flex-direction: row;
@@ -20,9 +25,8 @@
     }
 </style>
 <body>
-    <div id="metrics-container">
-        <h1>METRICS</h1>
-    </div>
+    <h1>METRICS</h1>
+    <div id="metrics-container"></div>
 
     <script>
         const pages = [
@@ -58,7 +62,7 @@
                             path: page.path,
                             append: `#visit-count-${page.id}`,
                             no_branding: true,
-                            style: 'color: #5eead5; font-size: 14px;'
+                            style: '* {color: #5eead5; font-size: 14px;font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;}'
                         })
                     })
                 }
