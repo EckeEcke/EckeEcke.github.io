@@ -1,53 +1,59 @@
 <html lang="en">
+<style>
+    body {
+        background: radial-gradient(circle, rgba(15, 23, 42, 1) 0%, rgba(1, 4, 10, 1) 50%, rgba(10, 5, 10, 1) 100%);
+    }
+</style>
 <body>
     METRICS
+    <div id="metrics-container"></div>
+
     <script>
-        var t = setInterval(function() {
-            if (window.goatcounter && window.goatcounter.visit_count) {
-                clearInterval(t)
-                console.log('GoatCounter loaded, attempting to show visit count...')
+        const pages = [
+            { path: '/', title: 'HOMEPAGE', id: 'homepage' },
+            { path: '/shooter', title: 'SHOOTER GAME', id: 'shooter' },
+            { path: '/pong', title: 'PONG GAME', id: 'pong' },
+            { path: '/snake', title: 'SNAKE GAME', id: 'snake' },
+            { path: '/templelooter', title: 'TEMPLE LOOTER', id: 'templelooter' },
+            { path: '/drawing', title: 'DRAWING APP', id: 'drawing' }
+        ]
 
-                window.goatcounter.visit_count({
-                    path: '/',
-                    append: '#visit-count-container',
-                    no_branding: false,
-                    style: 'color: #333; font-size: 14px;'
-                })
-                window.goatcounter.visit_count({
-                    path: '/shooter',
-                    append: '#visit-count-container',
-                    no_branding: false,
-                    style: 'color: #333; font-size: 14px;'
-                })
-                window.goatcounter.visit_count({
-                    path: '/pong',
-                    append: '#visit-count-container',
-                    no_branding: false,
-                    style: 'color: #333; font-size: 14px;'
-                })
-                window.goatcounter.visit_count({
-                    path: '/snake',
-                    append: '#visit-count-container',
-                    no_branding: false,
-                    style: 'color: #333; font-size: 14px;'
-                })
-                window.goatcounter.visit_count({
-                    path: '/templelooter',
-                    append: '#visit-count-container',
-                    no_branding: false,
-                    style: 'color: #333; font-size: 14px;'
-                })
-                window.goatcounter.visit_count({
-                    path: '/drawing',
-                    append: '#visit-count-container',
-                    no_branding: false,
-                    style: 'color: #333; font-size: 14px;'
-                })
-            }
-        }, 100)
+        function createMetricsHTML() {
+            const container = document.getElementById('metrics-container')
+
+            pages.forEach(page => {
+                const div = document.createElement('div')
+                div.className = 'metric-item'
+                div.innerHTML = `
+                    <h2>${page.title}</h2>
+                    <div id="visit-count-${page.id}" class="visit-count">Loading...</div>
+                `
+                container.appendChild(div)
+            })
+        }
+
+        function loadVisitCounts() {
+            var t = setInterval(function() {
+                if (window.goatcounter && window.goatcounter.visit_count) {
+                    clearInterval(t)
+
+                    pages.forEach(page => {
+                        window.goatcounter.visit_count({
+                            path: page.path,
+                            append: `#visit-count-${page.id}`,
+                            no_branding: true,
+                            style: 'color: rgb(94, 234, 212); font-size: 14px;'
+                        })
+                    })
+                }
+            }, 100)
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            createMetricsHTML()
+            loadVisitCounts()
+        })
     </script>
-
-    <div id="visit-count-container"></div>
 
     <script data-goatcounter="https://eckeecke.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
