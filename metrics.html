@@ -5,6 +5,7 @@
     }
     body * {
         color: #5eead5;
+        font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
     #metrics-container {
         display: flex;
@@ -14,10 +15,14 @@
         max-width: 1200px;
         margin: 12px auto;
     }
+    h1, h2 {
+        text-align: center;
+    }
 </style>
 <body>
-    <h1>METRICS</h1>
-    <div id="metrics-container"></div>
+    <div id="metrics-container">
+        <h1>METRICS</h1>
+    </div>
 
     <script>
         const pages = [
