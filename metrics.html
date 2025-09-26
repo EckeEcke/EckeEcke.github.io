@@ -3,9 +3,20 @@
     body {
         background: radial-gradient(circle, rgba(15, 23, 42, 1) 0%, rgba(1, 4, 10, 1) 50%, rgba(10, 5, 10, 1) 100%);
     }
+    body * {
+        color: #5eead5;
+    }
+    #metrics-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px;
+        max-width: 1200px;
+        margin: 12px auto;
+    }
 </style>
 <body>
-    METRICS
+    <h1>METRICS</h1>
     <div id="metrics-container"></div>
 
     <script>
@@ -26,7 +37,7 @@
                 div.className = 'metric-item'
                 div.innerHTML = `
                     <h2>${page.title}</h2>
-                    <div id="visit-count-${page.id}" class="visit-count">Loading...</div>
+                    <div id="visit-count-${page.id}" class="visit-count"></div>
                 `
                 container.appendChild(div)
             })
@@ -42,7 +53,7 @@
                             path: page.path,
                             append: `#visit-count-${page.id}`,
                             no_branding: true,
-                            style: 'color: rgb(94, 234, 212); font-size: 14px;'
+                            style: 'color: #5eead5; font-size: 14px;'
                         })
                     })
                 }
