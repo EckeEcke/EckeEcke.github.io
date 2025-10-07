@@ -3,6 +3,14 @@
   src: url('../assets/fonts/Ubuntu-M.ttf');
 }
 
+:root {
+    --main-background-color: #fafeff;
+    --intro-font-color: rgb(148, 163, 184);
+    --highlight-color: rgb(94, 234, 212);
+    --blue-font-color: #143a5d;
+    --coral-font-color: #f73163;
+}
+
 header {
   position: relative;
   width: 100%;
@@ -12,7 +20,7 @@ header {
 
 body {
   font-family: Roboto, serif;
-  background: #fafeff;
+  background: var(--main-background-color);
 }
 
 body, html {
@@ -43,11 +51,11 @@ h3 {
 }
 
 .blue-font {
-  color: #143a5d;
+  color: var(--blue-font-color);
 }
 
 .coral-font {
-  color: #f73163;
+  color: var(--coral-font-color);
 }
 
 .screenshot-box-shadow {
@@ -63,7 +71,7 @@ h3 {
   align-items: center;
   gap: 16px;
   font-size: 22px;
-  color: rgb(94, 234, 212);
+  color: var(--highlight-color);
 }
 
 #language-switch .divider-pipe {
@@ -75,7 +83,7 @@ h3 {
   cursor: pointer;
   user-select: none;
   transition: all 0.3s ease;
-  color: rgb(94, 234, 212);
+  color: var(--highlight-color);
   background: transparent;
   border: none;
   padding: 0;
@@ -112,7 +120,7 @@ h3 {
 }
 
 hr {
-  border-color: rgb(94, 234, 212);
+  border-color: var(--highlight-color);
 }
 
 footer {
@@ -122,7 +130,7 @@ footer {
 
 #intro h2 {
   animation-delay: 1.5s;
-  color: rgb(148, 163, 184);
+  color: var(--intro-font-color);
   margin: 16px 0;
 }
 
@@ -137,7 +145,7 @@ footer {
 }
 
 .intro-content p {
-  color: rgb(148, 163, 184);
+  color: var(--intro-font-color);
 }
 
 @media (min-width: 1024px) {
@@ -203,7 +211,7 @@ footer {
   transition: all 0.3s;
   display: flex;
   align-items: center;
-  color: rgb(94, 234, 212);
+  color: var(--highlight-color);
 }
 
 #close-button {
@@ -214,7 +222,7 @@ footer {
   border-style: none;
   transition: all 0.3s;
   z-index: 1;
-  color: rgb(94, 234, 212);
+  color: var(--highlight-color);
 }
 
 #close-button:hover {
@@ -290,7 +298,7 @@ footer {
   background: none;
   border-style: none;
   animation: arrow-animation 5s infinite linear;
-  color: rgb(94, 234, 212);
+  color: var(--highlight-color);
 }
 
 #scroll-back-top-BTN {
@@ -383,7 +391,7 @@ article div {
 }
 
 .contact-icon path {
-  fill: rgb(94, 234, 212);
+  fill: var(--highlight-color);
 }
 
 @keyframes arrow-animation {
@@ -542,31 +550,6 @@ article div {
   margin-top: 4rem;
 }
 
-.btn-primary {
-  background: linear-gradient(-45deg, orange, darkorange);
-  border-color: darkorange!important;
-  border-radius: 0.5rem;
-  text-transform: uppercase;
-  font-weight:bold;
-  padding: 0.75rem 1.5rem;
-  letter-spacing: 0.1rem;
-  box-shadow: 0 0 0 0.5rem rgba(149, 157, 165, 0);
-}
-
-@media (max-width:576px){
-  .btn-primary {
-    width: 100%;
-  }
-}
-
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active {
-  background: linear-gradient(-45deg, darkorange, orange);
-  box-shadow: 0 0 0 .2rem rgba(255, 195, 43, 0.546);
-  text-shadow: 2px 2px #ff0000;
-}
-
 .social-icon {
   transition: all 0.3s;
 }
@@ -582,7 +565,7 @@ article div {
   width: 280px;
   height: 100%;
   background: radial-gradient(circle, rgba(15, 23, 42, 1) 0%, rgba(1, 4, 10, 1) 50%, rgba(10, 5, 10, 1) 100%);
-  border: 2px solid rgb(94, 234, 212);
+  border: 2px solid var(--highlight-color);
   color: #fff;
   overflow: hidden;
   z-index: 2500;
@@ -595,7 +578,7 @@ article div {
 }
 
 .sidebar h4 {
-  color: rgb(94, 234, 212);
+  color: var(--highlight-color);
   padding: 24px;
   margin: 0;
   font-size: 16px;
@@ -644,7 +627,7 @@ article div {
 }
 
 .nav-item:hover, .back-button:hover, .nav-item a:hover {
-  color: rgb(94, 234, 212);
+  color: var(--highlight-color);
 }
 
 .sidebar ul {
@@ -703,7 +686,7 @@ article div {
 }
 
 .used-tech-element {
-  background: rgb(94, 234, 212);
+  background: var(--highlight-color);
   color: rgba(15, 23, 42, 1);
   padding: 8px 10px;
   border-radius: 8px;

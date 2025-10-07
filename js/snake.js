@@ -321,13 +321,29 @@ const drawElements = (height) => {
         if(element.type === 'snake'){
             iso.add(
             Shape.Prism(new Point(0 + element.x,element.y,0), 0.5, 0.5, height),gameState.activePalette.snakeColor)
-            iso.add(new Path([
+            let outlinePath = new Path([
                 Point(element.x, element.y, height),
                 Point(element.x + 0.5, element.y, height),
                 Point(element.x, element.y + 0.5, height),
                 Point(element.x + 0.5, element.y + 0.5, height)
-            ]), new Color(0, 0, 0, 0.5)
-            )
+            ])
+            outlinePath.closed = true
+
+            const isHead = snake.findIndex(part => part.x === element.x && part.y === element.y) === 0
+            const currentMove = isHead ? gameState.direction : (element.moves && element.moves[0])
+
+            if (currentMove === 'left' || currentMove === 'right') {
+                const centerOfRotation = new Point(
+                    element.x + 0.5 / 2,
+                    element.y + 0.5 / 2,
+                    height
+                )
+
+                const angleInRadians = 90 * Math.PI / 180
+
+                outlinePath = outlinePath.rotateZ(centerOfRotation, angleInRadians)
+            }
+            iso.add(outlinePath, new Color(0, 0, 0, 0.5))
         } else {
             if(element.type === 'poop' && element.x >= 0){
                 iso.add(
