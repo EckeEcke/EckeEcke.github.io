@@ -19,42 +19,49 @@ const buttonsPressed = {
 const colorPalettes = {
     level1: {
         playfieldColor: new Color(51, 51, 51),
+        playfieldColorDark: new Color(31, 31, 31),
         snakeColor: new Color(153, 153, 153),
         itemColor: new Color(255, 204, 0),
         poopColor: new Color(255, 59, 48),
     },
     level2: {
         playfieldColor: new Color(50, 98, 115),
+        playfieldColorDark: new Color(30, 78, 95),
         snakeColor: new Color(238, 238, 238),
         itemColor: new Color(227, 151, 116),
         poopColor: new Color(255, 69, 58),
     },
     level3: {
         playfieldColor: new Color(58, 87, 67),
+        playfieldColorDark: new Color(38, 67, 57),
         snakeColor: new Color(252, 236, 82),
         itemColor: new Color(59, 112, 128),
         poopColor: new Color(255, 59, 48),
     },
     level4: {
         playfieldColor: new Color(25, 11, 40),
+        playfieldColorDark: new Color(5, 0, 20),
         snakeColor: new Color(104, 87, 98),
         itemColor: new Color(229, 83, 129),
         poopColor: new Color(255, 0, 0),
     },
     level5: {
         playfieldColor: new Color(57, 57, 58),
+        playfieldColorDark: new Color(37, 37, 38),
         snakeColor: new Color(133, 255, 199),
         itemColor: new Color(255, 133, 82),
         poopColor: new Color(255, 0, 0),
     },
     level6: {
         playfieldColor: new Color(41, 23, 17),
+        playfieldColorDark: new Color(21, 3, 0),
         snakeColor: new Color(141, 220, 164),
         itemColor: new Color(99, 50, 110),
         poopColor: new Color(255, 59, 48),
     },
     level7: {
         playfieldColor: new Color(99, 50, 110),
+        playfieldColorDark: new Color(79, 30, 90),
         snakeColor: new Color(242, 243, 174),
         itemColor: new Color(255, 82, 27),
         poopColor: new Color(255, 0, 0),
@@ -300,10 +307,32 @@ const collision = (element) => {
 }
 
 const drawPlayfield = () => {
-    ctx.clearRect(0,0,canvas.width,canvas.height)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const size = 8;
+    const baseHeight = 1;
+    const baseZ = -1
+
+    const lightColor = gameState.activePalette.playfieldColor
+    const darkColor = gameState.activePalette.playfieldColorDark
+
     iso.add(
-        Shape.Prism(new Point(0,0,-1),8,8,1),gameState.activePalette.playfieldColor
-    )
+        Shape.Prism(new Point(0, 0, baseZ), size, size, baseHeight),
+        lightColor
+    );
+
+    const topSurfaceZ = baseZ + baseHeight;
+
+    for (let x = 0; x < size; x++) {
+        for (let y = 0; y < size; y++) {
+            if ((x + y) % 2 !== 0) {
+                iso.add(
+                    Shape.Prism(new Point(x, y, topSurfaceZ), 1, 1, 0.01),
+                    darkColor
+                )
+            }
+        }
+    }
 }
 
 const drawElements = (height) => {
