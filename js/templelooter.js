@@ -930,7 +930,7 @@ window.onload = function () {
     drawManualScreen()
     addEventListeners()
     intervals.player = setInterval(animateCharacter, 200)
-    intervals.bat = setInterval(animateBat, 160)
+    intervals.bat = setInterval(animateBat, 100)
     intervals.key = setInterval(keyStatusToggle, 5000)
 }
 
