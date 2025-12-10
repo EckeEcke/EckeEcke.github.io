@@ -1299,9 +1299,9 @@ class EnemyShot {
 
   detectHittingPlayer() {
     if (!this.isActive) return
-    const tolerance = 6
-    const shotCollisionX = game.player.x + 10 + tolerance < this.x + 30 && game.player.x + 80 - tolerance > this.x + 20
-    const shotCollisionX2 = game.player.x + 10 + tolerance < this.x2 + 30 && game.player.x + 80 - tolerance > this.x2 + 20
+    const tolerance = 10
+    const shotCollisionX = game.player.x + 10 + tolerance < this.x + 30 && game.player.x + 80 - 10 - tolerance > this.x + 20
+    const shotCollisionX2 = game.player.x + 10 + tolerance < this.x2 + 30 && game.player.x + 80 - 10 - tolerance > this.x2 + 20
     const shotCollisionY = game.player.y + tolerance < this.y + 30 && game.player.y + 10 - tolerance > this.y
     const hitByEnemyShot = (shotCollisionX || shotCollisionX2) && shotCollisionY && this.enemyShip.lives >= 1
     if (hitByEnemyShot) {
