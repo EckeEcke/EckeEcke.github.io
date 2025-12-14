@@ -745,7 +745,7 @@ article div {
 .chess-stats-link {
     display: block;
     width: 320px;
-    margin: 128px auto;
+    margin: 5rem auto;
 }
 
 .chess-stats-link:hover {
