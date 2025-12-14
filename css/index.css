@@ -693,3 +693,61 @@ article div {
   font-family: "Ubuntu", serif;
   font-size: 13px;
 }
+
+#chess-stats {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    background: var(--highlight-color);
+    color: var(--blue-font-color);
+    margin: 0 auto;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    font-family: 'Roboto', 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bolder;
+    text-align: center;
+    box-shadow: rgba(100, 100, 111, 0.2) 0 7px 29px 0;
+}
+
+#chess-stats::before {
+    background: var(--highlight-color);
+    content: "";
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(../images/chess-com-icon.svg);
+    background-position: center center;
+    background-size: 50% auto;
+    background-repeat: no-repeat;
+    background-blend-mode: luminosity;
+    opacity: 0.2;
+    z-index: 1;
+}
+
+.chess-elo {
+    font-size: 20px;
+    margin: 16px auto;
+}
+
+.stats-grid {
+    width: 160px;
+    margin: 16px auto 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.chess-stats-link {
+    display: block;
+    width: 320px;
+    margin: 128px auto;
+}
+
+.chess-stats-link:hover {
+    text-decoration: none;
+}

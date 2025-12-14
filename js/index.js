@@ -66,10 +66,6 @@ const getValidatedLangFromStorage = () => {
   return lang && isValidLang(lang) ? lang : 'en'
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  changeLanguage(getValidatedLangFromStorage())
-})
-
 let showSidebar = false
 const backdrop = document.getElementById("backdrop")
 
@@ -106,7 +102,35 @@ function displayLevel1SidebarContent() {
   })
 }
 
+async function getChessElo() {
+    const url = "https://api.chess.com/pub/player/eckeecke/stats"
+    try {
+        const response = await fetch(url)
+        const result = await response.json()
+        const chessStatsContainer = document.getElementById('chess-stats')
+
+        const statsHTML = `
+            <h2>Chess.com</h2>
+            <h2>Live Stats</h2>
+            <p class="chess-elo">ELO: ${result.chess_rapid.last.rating}</p>
+            <div class="stats-grid">
+                <div>W</div>
+                <div>L</div>
+                <div>D</div>
+                <div>${result.chess_rapid.record.win}</div>
+                <div>${result.chess_rapid.record.loss}</div>
+                <div>${result.chess_rapid.record.draw}</div>
+            </div>
+        `
+        chessStatsContainer.innerHTML = statsHTML
+    } catch (error) {
+        console.error(error.message)
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  changeLanguage(getValidatedLangFromStorage())
+  getChessElo()
   const navItems = document.querySelectorAll('.nav-item')
   const backButtons = document.querySelectorAll('.back-button')
   const level1 = document.querySelector('.level1')
