@@ -110,9 +110,14 @@ async function getChessElo() {
         const chessStatsContainer = document.getElementById('chess-stats')
 
         const statsHTML = `
-            <h2>Chess.com</h2>
-            <h2>Live Stats</h2>
-            <p class="chess-elo">ELO: ${result.chess_rapid.last.rating}</p>
+            <div>
+                <h2>Chess.com</h2>
+                <h2>Live Stats</h2>
+            </div>
+            <div class="elo-wrapper">
+                <p class="chess-elo">ELO</p>
+                <p class="chess-elo">${result.chess_rapid.last.rating}</p>
+            </div>
             <div class="stats-grid">
                 <div>W</div>
                 <div>L</div>
