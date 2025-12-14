@@ -305,8 +305,7 @@ const rounds = {
 }
 
 const screens = {
-  controls: 'controls screen',
-  manual: 'game manual',
+  title: 'title screen',
   highScores: 'highScore list',
 }
 
@@ -324,7 +323,7 @@ class Game {
     this.state = gameStates.titleScreen
     this.round = null
     this.score = 0
-    this.highScore = 'LOADING...'
+    this.highScore = 'LOAD...'
     this.isHighScore = false
     this.highScores = null
     this.highScoresLoaded = false
@@ -335,7 +334,7 @@ class Game {
     this.animationBackgroundScrollPosition = -1900
     this.backgroundScrollPositions = [0, -2200]
     this.gameLoaded = 0
-    this.displayedScreen = screens.controls
+    this.displayedScreen = screens.title
     this.volume = 1
     this.player = new Player()
     this.respawnAsteroids = false
@@ -354,6 +353,31 @@ class Game {
     this.music = sounds.gameMusic2
     this.gameWon = false
     this.creditsStartTime = null
+    this.blinkingTextStartTime = performance.now()
+  }
+
+  getLevelByRound() {
+      let levelByRound
+      switch (this.round) {
+          case rounds.asteroids:
+          case null:
+              levelByRound = 1
+              break
+          case rounds.enemyShips:
+              levelByRound = 2
+              break
+          case rounds.obstacles:
+              levelByRound = 3
+              break
+          case rounds.snake:
+          case rounds.boss:
+              levelByRound = 4
+              break
+          default:
+              levelByRound = 1
+              break
+      }
+      return `${this.level}-${levelByRound}`
   }
 
   startGame() {
@@ -658,14 +682,10 @@ class Game {
 
     setTimeout(() => this.switchInfoScreen(), 5000)
 
-    if (this.displayedScreen === screens.controls) {
-      this.displayedScreen = screens.manual
-      return
-    }
-    if (this.displayedScreen === screens.manual) {
+    if (this.displayedScreen === screens.title) {
       this.displayedScreen = screens.highScores
     }
-    else this.displayedScreen = screens.controls
+    else this.displayedScreen = screens.title
   }
 
   drawStartScreen() {
@@ -678,53 +698,41 @@ class Game {
       return
     }
 
-    if (this.displayedScreen === screens.controls) {
-      this.drawControlsScreen()
+    if (this.displayedScreen === screens.title) {
+      this.drawTitleScreen()
     }
 
     if (this.displayedScreen === screens.highScores) {
       this.drawHighScores()
     }
+  }
 
-    if (this.displayedScreen === screens.manual) {
-      this.drawManual()
+  drawTitleScreen() {
+    const now = performance.now()
+    const blinkElapsed = (now - this.blinkingTextStartTime) % (2 * 800)
+    const isVisible = blinkElapsed < 800
+    canvasContext.drawImage(images.background, 0, this.animationBackgroundScrollPosition)
+    if (isVisible) {
+      canvasContext.fillText(this.gameLoaded < 100 ? `Loading: ${this.gameLoaded}%` : 'Press S to start', canvas.width / 2, canvas.height / 2)
+      canvasContext.fillText(this.gameLoaded < 100 ? this.loadingAnimation : '', canvas.width / 2, canvas.height / 2)
     }
-  }
-
-  drawControlsScreen() {
-    canvasContext.fillText(this.gameLoaded < 100 ? `Loading: ${this.gameLoaded}%` : 'Press S to start', canvas.width / 2, canvas.height / 3)
-    canvasContext.fillText(this.gameLoaded < 100 ? this.loadingAnimation : '', canvas.width / 2, canvas.height / 3 + 50)
-    canvasContext.fillText('Controls', canvas.width / 2, canvas.height / 2 + 50)
-    canvasContext.fillText('Left: A', canvas.width / 2, canvas.height / 2 + 100)
-    canvasContext.fillText('Right: D', canvas.width / 2, canvas.height / 2 + 150)
-    canvasContext.fillText('Shoot: W', canvas.width / 2, canvas.height / 2 + 200)
-
+    canvasContext.save()
+    canvasContext.font = '12px retro'
+    canvasContext.textAlign = 'right'
+    canvasContext.fillText(`version 2.1.0`, canvas.width - 10, canvas.height - 10)
+    canvasContext.restore()
+    canvasContext.save()
+    canvasContext.fillStyle = 'limegreen'
+    canvasContext.font = '48px retro'
+    canvasContext.textAlign = 'center'
+    canvasContext.strokeStyle = 'yellow'
+    canvasContext.lineWidth = 1
+    canvasContext.fillText('SPACE', canvas.width / 2, canvas.height / 2 - 140)
+    canvasContext.strokeText('SPACE', canvas.width / 2, canvas.height / 2 - 140)
+    canvasContext.fillText('FORCE', canvas.width / 2, canvas.height / 2 - 100)
+    canvasContext.strokeText('FORCE', canvas.width / 2, canvas.height / 2 - 100)
+    canvasContext.restore()
     this.drawLoadingAnimation()
-  }
-
-  drawManual() {
-    canvasContext.textAlign = 'center'
-    canvasContext.fillStyle = 'limegreen'
-    canvasContext.fillText('Power-Ups', canvas.width / 2, 70)
-    canvasContext.textAlign = 'left'
-    drawPowerUp(50,130,20,powerUpTypes.shield)
-    drawPowerUp(50,190,20,powerUpTypes.wideShot)
-    drawPowerUp(50,250,20,powerUpTypes.longShot)
-    canvasContext.fillStyle = 'limegreen'
-    canvasContext.textAlign = 'right'
-    canvasContext.fillText('Shield', canvas.width - 30, 130 + 8)
-    canvasContext.fillText('Wide Shot', canvas.width - 30, 190 + 8)
-    canvasContext.fillText('Long Shot', canvas.width - 30, 250 + 8)
-
-    canvasContext.textAlign = 'center'
-    canvasContext.fillText('Enemies', canvas.width / 2, 360)
-    canvasContext.drawImage(images.asteroid, 30, 400, 40, 40)
-    canvasContext.drawImage(images.enemyShip, 30, 460, 40, 40)
-    canvasContext.drawImage(images.snakeHead, 30, 520, 40, 40)
-    canvasContext.textAlign = 'right'
-    canvasContext.fillText('5 PTS', canvas.width - 30, 430)
-    canvasContext.fillText('30 PTS', canvas.width - 30, 490)
-    canvasContext.fillText('100 PTS', canvas.width - 30, 550)
   }
 
   drawHighScores() {
@@ -846,12 +854,17 @@ class Game {
     canvasContext.fillStyle = 'limegreen'
     canvasContext.fillText('Score', 12, 30)
     canvasContext.fillStyle = 'white'
-    canvasContext.fillText(this.score, 12, 60)
+    canvasContext.fillText(this.score, 12, 55)
     canvasContext.textAlign = 'right'
     canvasContext.fillStyle = 'limegreen'
     canvasContext.fillText('Hi-Score', canvas.width - 12, 30)
     canvasContext.fillStyle = 'white'
-    canvasContext.fillText(this.highScore, canvas.width - 12, 60)
+    canvasContext.fillText(this.highScore, canvas.width - 12, 55)
+    canvasContext.textAlign = 'center'
+    canvasContext.fillStyle = 'limegreen'
+    canvasContext.fillText('LVL', canvas.width / 2 - 25, 30)
+    canvasContext.fillStyle = 'white'
+    canvasContext.fillText(`${this.getLevelByRound()}`, canvas.width / 2 - 25, 55)
   }
 
   drawSpaceshipAnimation() {
@@ -1345,8 +1358,8 @@ class Snake {
 
   draw() {
     if (!this.isActive) {
-      const now = performance.now();
-      const blinkElapsed = (now - this.blinkingTextStartTime) % (2 * 550);
+      const now = performance.now()
+      const blinkElapsed = (now - this.blinkingTextStartTime) % (2 * 550)
       const isVisible = blinkElapsed < 550
       if (isVisible) {
         drawBossWarning(this.blinkingTextStartTime)
@@ -2296,32 +2309,51 @@ const powerUpTypes = {
 }
 
 function drawPowerUp(x, y, radius, type) {
-  canvasContext.save()
-  canvasContext.beginPath()
-  canvasContext.arc(x, y, radius, 0, Math.PI * 2)
+    const numSegments = 20
 
-  const gradient = canvasContext.createRadialGradient(x,y,0,x,y,radius)
-  const gradientColors = getGradientByType(type)
-  gradient.addColorStop(0, gradientColors.step1)
-  gradient.addColorStop(1, gradientColors.step2)
+    canvasContext.save()
+    canvasContext.beginPath()
+    for (let i = 0; i < numSegments; i++) {
+        const angle1 = (i / numSegments) * Math.PI * 2;
+        const angle2 = ((i + 1) / numSegments) * Math.PI * 2;
 
-  canvasContext.fillStyle = gradient
-  canvasContext.fill()
+        const x1 = x + radius * Math.cos(angle1);
+        const y1 = y + radius * Math.sin(angle1);
 
-  const powerUpLetter = type.at(0)
+        const x2 = x + radius * Math.cos(angle2);
+        const y2 = y + radius * Math.sin(angle2);
 
-  canvasContext.font = `${radius}px retro`
-  canvasContext.textAlign = 'center'
-  canvasContext.textBaseline = 'middle'
-  canvasContext.fillStyle = 'limegreen'
-  canvasContext.fillText(powerUpLetter, x, y)
-  canvasContext.restore()
+        canvasContext.lineTo(x1, y1);
+        canvasContext.lineTo(x2, y2);
+    }
+    canvasContext.closePath()
+    canvasContext.strokeStyle = 'white'
+    canvasContext.lineWidth = 3
+    canvasContext.stroke()
+
+    canvasContext.beginPath()
+    canvasContext.arc(x, y, radius - 3, 0, Math.PI * 2)
+    const gradient = canvasContext.createRadialGradient(x, y, 0, x, y, radius)
+    const gradientColors = getGradientByType(type)
+    gradient.addColorStop(0, gradientColors.step1)
+    gradient.addColorStop(1, gradientColors.step2)
+    canvasContext.fillStyle = gradient
+    canvasContext.fill()
+
+    const powerUpLetter = type.at(0)
+    canvasContext.font = `${radius}px retro`
+    canvasContext.textAlign = 'center'
+    canvasContext.textBaseline = 'middle'
+    canvasContext.fillStyle = 'white'
+
+    canvasContext.fillText(powerUpLetter, x, y)
+    canvasContext.restore()
 }
 
 function getGradientByType(type) {
   if (type === powerUpTypes.shield) return {
-    step1: 'rgba(0, 155, 255, 0.6)',
-    step2: 'rgba(0, 0, 255, 0.6)'
+    step1: 'rgba(0, 255, 155, 0.6)',
+    step2: 'rgba(0, 255, 0, 0.6)'
   }
   if (type === powerUpTypes.wideShot) return {
     step1: 'rgba(255, 155, 0, 0.6)',
@@ -2447,7 +2479,7 @@ class Shot {
 
     canvasContext.fillStyle = fillColor
 
-    if (this.isLongShot || this.isWideShot) {
+    if (this.isLongShot) {
       const lineHeight = 3
       const gap = 3
       const numLines = Math.floor(this.currentHeight / (lineHeight + gap))

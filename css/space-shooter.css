@@ -33,6 +33,7 @@ canvas {
   display: flex;
   justify-content: center;
   transition: 0.5s;
+  margin-top: 64px;
 }
 
 form {
