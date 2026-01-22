@@ -6,16 +6,22 @@ const canvas = document.getElementById('game-canvas')
 const canvasContext = canvas.getContext('2d')
 const nameInput = document.getElementById('name-input')
 canvasContext.font = '24px retro'
+const versionNumber = '3.0.0'
 
 // _______________________________________________________________
 // IMAGES
 // _______________________________________________________________
 
 const imageSources = {
-  playerShip: './images/shooter/spaceship.png',
-  snakeHead: './images/shooter/snake-head.png',
-  snakeBody: './images/shooter/snake.png',
-  enemyShip: './images/shooter/enemy-ship.png',
+  playerShip: './images/shooter/player-ship.png',
+  playerShot: './images/shooter/player-shot.png',
+  longShot: './images/shooter/longshot.png',
+  wideShot: './images/shooter/wideshot.png',
+  wideAndlongShot: './images/shooter/wide-and-longshot.png',
+  snakeHead: './images/shooter/snake-head-new.png',
+  snakeBody: './images/shooter/snake-body-new.png',
+  enemyShip: './images/shooter/enemy-ship-new.png',
+  enemyShot: './images/shooter/enemy-shot.png',
   asteroid: './images/shooter/asteroid.png',
   explosion: './images/shooter/explosion.png',
   bossStructure: './images/shooter/boss-structure.png',
@@ -26,9 +32,14 @@ const imageSources = {
 
 const images = {
   playerShip: new Image(),
+  playerShot: new Image(),
+  longShot: new Image(),
+  wideShot: new Image(),
+  wideAndLongShot: new Image(),
   snakeHead: new Image(),
   snakeBody: new Image(),
   enemyShip: new Image(),
+  enemyShot: new Image(),
   asteroid: new Image(),
   explosion: new Image(),
   bossStructure: new Image(),
@@ -51,11 +62,16 @@ function loadImages() {
     images.snakeHead.src = imageSources.snakeHead
     images.snakeBody.src = imageSources.snakeBody
     images.enemyShip.src = imageSources.enemyShip
+    images.enemyShot.src = imageSources.enemyShot
     images.bossStructure.src = imageSources.bossStructure
     images.background.src = imageSources.background
     images.backgroundLoop1.src = imageSources.backgroundLoop
     images.backgroundLoop2.src = imageSources.backgroundLoop
     images.playerShip.src = imageSources.playerShip
+    images.playerShot.src = imageSources.playerShot
+    images.longShot.src = imageSources.longShot
+    images.wideShot.src = imageSources.wideShot
+    images.wideAndLongShot.src = imageSources.wideAndlongShot
     images.explosion.src = imageSources.explosion
     images.asteroid.src = imageSources.asteroid
     images.astronaut.src = imageSources.astronaut
@@ -662,12 +678,17 @@ class Game {
   }
 
   moveShipEnemies() {
-    this.enemyShips.forEach(enemy => {
+    const activeShips = this.enemyShips.filter(enemy => enemy.lives > 0)
+    activeShips.forEach(enemy => {
       enemy.moveShip()
       this.player.activeShots.forEach(shot => enemy.detectHitByPlayer(shot))
     })
 
-    if (!this.enemyShips.some(enemy => enemy.lives > 0)) this.endLevel()
+    if (activeShips.length === 1) {
+      activeShips.forEach(enemy => enemy.moveDown())
+    }
+
+    if (activeShips.length < 1) this.endLevel()
   }
 
   setScore() {
@@ -719,7 +740,7 @@ class Game {
     canvasContext.save()
     canvasContext.font = '12px retro'
     canvasContext.textAlign = 'right'
-    canvasContext.fillText(`version 2.1.0`, canvas.width - 10, canvas.height - 10)
+    canvasContext.fillText(`version ${versionNumber}`, canvas.width - 10, canvas.height - 10)
     canvasContext.restore()
     canvasContext.save()
     canvasContext.fillStyle = 'limegreen'
@@ -836,7 +857,7 @@ class Game {
     const totalHeight = creditsLines.length * 40
     const creditsFinished = (elapsed * scrollSpeed) > (startY + totalHeight + 50)
 
-    if (creditsFinished) {
+    if (creditsFinished || buttonsPressed.w) {
       this.state = gameStates.gameOver
     }
   }
@@ -991,7 +1012,7 @@ class Game {
             this.highScoresLoading = false
             setTimeout(() => this.switchInfoScreen(), 3000)
           })
-          .catch(() => this.highScoresLoading = false)
+          .catch(() => this.highScoresLoaded = true)
   }
 
   postHighScore(event) {
@@ -1192,12 +1213,12 @@ class EnemyShip {
   constructor(x,y, isLockOn) {
       this.x = x
       this.y = y
-      this.width = 50
-      this.height = 50
+      this.width = 60
+      this.height = 60
       this.speed = this.isLockOn ? 3 : 4
       this.lives = game.level > 1 ? 4 : 2
       this.isShotCoolDown = false
-      this.shotCoolDown = 500
+      this.shotCoolDown = 400
       this.shots = []
       this.activeShots = []
       this.isLockOn = game.level > 1 ? isLockOn : false
@@ -1220,7 +1241,7 @@ class EnemyShip {
   shoot() {
     if (this.isShotCoolDown || game.player.killed) return
 
-    if (this.x + 40 >= game.player.x && this.x <= game.player.x + 40 && this.lives >= 1) {
+    if (this.x + 60 >= game.player.x && this.x <= game.player.x + 60 && this.lives >= 1) {
       this.shots.push(new EnemyShot(this))
       this.setActiveShots()
       playSound(sounds.laserEnemy)
@@ -1249,11 +1270,14 @@ class EnemyShip {
     }
   }
 
+  moveDown() {
+    if (this.y < canvas.height - 200) this.y += 1
+  }
+
   handleShots() {
     if (game.player.killed) return
     this.shoot()
     this.activeShots.forEach(shot => {
-      shot.draw()
       shot.move()
       shot.detectHittingPlayer()
     })
@@ -1278,12 +1302,11 @@ class EnemyShip {
 class EnemyShot {
   constructor(enemy) {
     this.enemyShip = enemy
-    this.width = 10
-    this.maxHeightShot = game.level > 1 ? 40 : 20
+    this.maxHeightShot = 20
     this.currentShotHeight = 0
     this.x = enemy.x
     this.x2 = enemy.x + 30
-    this.y = enemy.y
+    this.y = enemy.y + 10
     this.isActive = true
     this.shotSpeed = 4
     this.shotWidth = 10
@@ -1295,6 +1318,8 @@ class EnemyShot {
       canvasContext.fillStyle = 'rgba(255,0,0,0.6)'
       canvasContext.fillRect(this.x, this.y, this.shotWidth, this.currentShotHeight)
       canvasContext.fillRect(this.x2, this.y, this.shotWidth, this.currentShotHeight)
+      canvasContext.drawImage(images.enemyShot, this.x, this.y, this.shotWidth, this.currentShotHeight)
+      canvasContext.drawImage(images.enemyShot, this.x2, this.y, this.shotWidth, this.currentShotHeight)
     }
   }
 
@@ -1621,8 +1646,9 @@ class Boss {
   constructor() {
     this.elements = [
         new SnakeElement(canvas.width, 60, false, true), new SnakeElement(canvas.width + 40, 60, false, true), new SnakeElement(canvas.width + 80, 60, false, true),
-        new SnakeElement(canvas.width, 100, false, true), new SnakeElement(canvas.width + 40, 100, true, false), new SnakeElement(canvas.width + 80, 100, false, true),
+        new SnakeElement(canvas.width, 100, false, true), new SnakeElement(canvas.width + 80, 100, false, true),
         new SnakeElement(canvas.width, 140, false, true), new SnakeElement(canvas.width + 40, 140, false, true), new SnakeElement(canvas.width + 80, 140, false, true),
+        new SnakeElement(canvas.width + 40, 100, true, false),
     ]
     this.obstacles = null
     this.moves = true
@@ -1634,7 +1660,7 @@ class Boss {
   draw() {
     this.elements.forEach(element => element.draw())
     if (this.obstacles) this.obstacles.forEach(obstacle => obstacle.draw())
-    const now = performance.now();
+    const now = performance.now()
     const blinkElapsed = (now - this.blinkingTextStartTime) % (2 * 550);
     const isVisible = blinkElapsed < 550
     if (isVisible && !this.isActive) {
@@ -2294,6 +2320,7 @@ class ObstacleLevel {
     }
 
     isOver() {
+        if (!this.activeObstacles || !this.activeObstacles[this.activeObstacles.length - 1]) return false
         return game.player.y + game.player.height < this.activeObstacles[this.activeObstacles.length - 1].y
     }
 }
@@ -2469,28 +2496,10 @@ class Shot {
   }
 
   draw() {
-    canvasContext.save()
-    let fillColor
-
-    if (!this.isWideShot && !this.isLongShot) fillColor = 'rgba(50, 205, 50, 0.8)'
-    if (this.isWideShot && !this.isLongShot) fillColor = 'rgba(255, 0, 0, 0.8)'
-    if (!this.isWideShot && this.isLongShot) fillColor = 'rgba(0, 0, 255, 0.8)'
-    if (this.isWideShot && this.isLongShot) fillColor = 'rgba(255, 0, 255, 0.8)'
-
-    canvasContext.fillStyle = fillColor
-
-    if (this.isLongShot) {
-      const lineHeight = 3
-      const gap = 3
-      const numLines = Math.floor(this.currentHeight / (lineHeight + gap))
-
-      for (let i = 0; i < numLines; i++) {
-        const yPosition = this.y + i * (lineHeight + gap)
-        canvasContext.fillRect(this.x, yPosition, this.width, lineHeight)
-      }
-    } else canvasContext.fillRect(this.x, this.y, this.width, this.currentHeight)
-
-    canvasContext.restore()
+    if (!this.isWideShot && !this.isLongShot) canvasContext.drawImage(images.playerShot, this.x, this.y, this.width, this.fullHeight)
+    if (this.isWideShot && !this.isLongShot) canvasContext.drawImage(images.wideShot, this.x, this.y, this.width, this.fullHeight)
+    if (!this.isWideShot && this.isLongShot) canvasContext.drawImage(images.longShot, this.x, this.y, this.width, this.currentHeight)
+    if (this.isWideShot && this.isLongShot) canvasContext.drawImage(images.wideAndLongShot, this.x, this.y, this.width, this.currentHeight)
   }
 
   playLaserSound() {
