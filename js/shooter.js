@@ -397,6 +397,11 @@ class Game {
   }
 
   startGame() {
+    for (let key in sounds) {
+      if (sounds[key] instanceof Audio) {
+        sounds[key].playbackRate = 1
+      }
+    }
     playSound(sounds.spaceshipSound)
     this.state = gameStates.spaceshipAnimation
   }
@@ -491,11 +496,13 @@ class Game {
 
     intervals.game = setInterval(this.runGame, 1000 / 140)
     intervals.enemies = setInterval(this.runEnemies, 1000 / this.gameSpeed)
-    if (!intervals.background) intervals.background = setInterval(game.moveBackground, 1000 / 140)
+    clearInterval(intervals.background)
+    intervals.background = setInterval(game.moveBackground, 1000 / 140)
 
     if (this.round !== rounds.boss && !this.musicRunning) {
       if (this.music) this.music.pause()
       this.music = this.level === 2 ? sounds.gameMusic3 : sounds.gameMusic2
+      this.music.playbackRate = 1
       playSound(this.music)
       this.musicRunning = true
     }

@@ -120,6 +120,7 @@ h2 {
 
 .crt {
   position: relative;
+  filter: contrast(1.2) brightness(1.1);
 }
 
 .crt::before {
