@@ -72,7 +72,6 @@
   z-index: 2500;
   overflow-y: auto;
   font-family: "Ubuntu", serif !important;
-  box-shadow: rgba(50, 50, 50, 0.25) 0 44px 45px, rgba(50, 50, 50, 0.12) 0 -6px 20px, rgba(50, 50, 50, 0.12) 0 2px 3px, rgba(50, 50, 50, 0.17) 0 6px 7px, rgba(50, 50, 50, 0.09) 0 -2px 4px;
 }
 
 .sidebar[data-show="false"] {
