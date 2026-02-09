@@ -225,10 +225,6 @@ window.addEventListener('gamepad2Connected', (e) => {
   e.gamepad.buttons.length, e.gamepad.axes.length)
 })
 
-const checkGamePadConnected = () => {
-  return typeof navigator !== 'undefined' && typeof navigator.getGamepads === 'function' && navigator.getGamepads()[0] !== null && navigator?.getGamepads?.()[0]?.connected
-}
-
 inputs.colorPaddle1.addEventListener('change', () => paddle1.color = inputs.colorPaddle1.value)
 
 inputs.colorPaddle2.addEventListener('change', () => paddle2.color = inputs.colorPaddle2.value)
@@ -272,9 +268,6 @@ inputs.obstacles.addEventListener('change', () => settings.amountObstacles = par
 window.onload = () => {
   document.addEventListener('keydown', keyDownHandler, false)
   document.addEventListener('keyup', keyUpHandler, false)
-  if (checkGamePadConnected()) {
-    console.log('gamepad connected')
-  }
 }
 
 const setFullscreen = () => {
@@ -400,7 +393,8 @@ const moveEverything = () => {
 }
 
 const move1 = () => {
-  if (checkGamePadConnected()) {
+  const gamepadConnected = navigator.getGamepads()[0] !== null
+  if (gamepadConnected) {
     move1Gamepad()
     return
   }
@@ -447,6 +441,7 @@ const move1Gamepad = () => {
 }
 
 const move2 = () => {
+  const gamepadConnected = navigator.getGamepads()[0] !== null
   if (buttonsPressed.down) {
     paddle2.y = paddle2.y + 8;
   }
