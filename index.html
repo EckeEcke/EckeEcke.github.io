@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Frontend Engineer Christian Eckardt | Hamburg, Germany</title>
-    <meta name="description" content="Frontend Engineer from Hamburg with 5+ years of experience in eCommerce | Techstack of choice: Nuxt, Vue, Typescript | Check out my hobby projects">
-    <link rel="stylesheet" href="css/index.css">
+    <title>Fullstack Engineer Christian Eckardt | Hamburg, Germany</title>
+    <meta name="description" content="Fullstack Engineer from Hamburg with 5+ years of experience in eCommerce | Specialized in Nuxt and Vue + Typescript | Check out my hobby projects">
     <link rel="stylesheet" href="css/css-reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/nav-menu.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald&family=Roboto&display=swap">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -16,16 +17,22 @@
 
 <body id="body" class="bg-slate-900">
     <div id="backdrop" onclick="toggleSidebar()"></div>
-    <div>
+    <div class="sidebar-wrapper">
         <div data-show="false" id="sidebar" class="sidebar">
-            <button id="close-button" class="bg-transparent" aria-label="close menu button" tabindex="-1" onclick="toggleSidebar()">
-                <i class="uil uil-times m-0"></i>
-            </button>
             <div class="level1">
                 <h4>eckeecke.github.io</h4>
-                <button class="nav-item" data-target="highlights">Highlights</button>
-                <button class="nav-item" data-target="games">Games</button>
-                <button class="nav-item" data-target="spas">Applications</button>
+                <button class="nav-item" data-target="highlights">
+                    Highlights
+                    <span class="iconify sidebar-icon" data-icon="material-symbols:arrow-forward-ios"></span>
+                </button>
+                <button class="nav-item" data-target="games">
+                    Games
+                    <span class="iconify sidebar-icon" data-icon="material-symbols:arrow-forward-ios"></span>
+                </button>
+                <button class="nav-item" data-target="spas">
+                    Applications
+                    <span class="iconify sidebar-icon" data-icon="material-symbols:arrow-forward-ios"></span>
+                </button>
                 <a class="nav-item" href="https://www.linkedin.com/in/christian-eckardt-41527216a/" target="_blank" aria-label="Linkedin">
                     <span class="iconify sidebar-icon white-background" data-icon="skill-icons:linkedin"></span>
                     LinkedIn
@@ -37,10 +44,6 @@
             </div>
             <div class="level2" id="highlights">
                 <h4>Highlights</h4>
-                <button class="back-button">
-                    <span class="iconify sidebar-icon" data-icon="weui:back-outlined"></span>
-                    <span data-localization="back">Back</span>
-                </button>
                 <ul>
                     <li class="nav-item">
                         <a href="https://www.triggerscore.de/" target="_blank" tabindex="-1">
@@ -58,22 +61,28 @@
                         </a>
                     </li>
                 </ul>
+                <button class="back-button">
+                    <span class="iconify sidebar-icon" data-icon="ion:arrow-back-circle-sharp"></span>
+                </button>
             </div>
             <div class="level2" id="games">
                 <h4>Games</h4>
-                <button class="back-button">
-                    <span class="iconify sidebar-icon" data-icon="weui:back-outlined"></span>
-                    <span data-localization="back">Back</span>
-                </button>
                 <ul>
                     <li class="nav-item">
                         <a href="https://eckeecke.itch.io/school-fight" tabindex="-1" target="_blank">
                             School Fight
+                            <span class="iconify sidebar-icon" data-icon="tabler:external-link"></span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="/shooter" tabindex="-1" target="_blank">
                             JS Space Shooter
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://eckeecke.itch.io/imposter-race" tabindex="-1" target="_blank">
+                            Python Imposter Race
+                            <span class="iconify sidebar-icon" data-icon="tabler:external-link"></span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -86,68 +95,70 @@
                             Temple Looter
                         </a>
                     </li>
+                    <!--
                     <li class="nav-item">
                         <a href="https://clicky-clicky-run-run.netlify.app/" tabindex="-1" target="_blank">
                             Clicky Clicky Run Run
+                            <span class="iconify sidebar-icon" data-icon="tabler:external-link"></span>
                         </a>
                     </li>
+                    -->
                     <li class="nav-item">
                         <a href="/snake" tabindex="-1" target="_blank">
                             Isomer Snake
                         </a>
                     </li>
                 </ul>
+                <button class="back-button">
+                    <span class="iconify sidebar-icon" data-icon="ion:arrow-back-circle-sharp"></span>
+                </button>
             </div>
             <div class="level2" id="spas">
                 <h4>Applications</h4>
-                <button class="back-button">
-                    <span class="iconify sidebar-icon" data-icon="weui:back-outlined"></span>
-                    <span data-localization="back">Back</span>
-                </button>
                 <ul>
                     <li class="nav-item">
                         <a href="https://www.triggerscore.de/" target="_blank" tabindex="-1">
                             Triggerscore
+                            <span class="iconify sidebar-icon" data-icon="tabler:external-link"></span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="https://vue-mealplanner.vercel.app/" target="_blank" tabindex="-1">
                             Vue Meal Planner
+                            <span class="iconify sidebar-icon" data-icon="tabler:external-link"></span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="https://eima.netlify.app" target="_blank" tabindex="-1">
                             eima
+                            <span class="iconify sidebar-icon" data-icon="tabler:external-link"></span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="https://retroclub.vercel.app" target="_blank" tabindex="-1">
                             Retroclub Game Rating
+                            <span class="iconify sidebar-icon" data-icon="tabler:external-link"></span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="https://react-travelblog.netlify.app/" target="_blank" tabindex="-1">
                             React Travel Blog
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://eckeecke.github.io/drawing" target="_blank" tabindex="-1">
-                            Drawing App
+                            <span class="iconify sidebar-icon" data-icon="tabler:external-link"></span>
                         </a>
                     </li>
                 </ul>
+                <button class="back-button">
+                    <span class="iconify sidebar-icon" data-icon="ion:arrow-back-circle-sharp"></span>
+                </button>
             </div>
         </div>
     </div>
     <header>
-      <div id="language-switch" class="appear static">
-        <button class="language-selector" data-value="en" tabindex="0" onclick="changeLanguage('en')">EN</button>
-        <span class="divider-pipe"></span>
-        <button class="language-selector inactive" data-value="de" tabindex="0" onclick="changeLanguage('de')">DE</button>
-      </div>
-      <button id="menu-button"  aria-label="Open menu button" onclick="toggleSidebar()">
-        <i class="uil uil-bars m-0"></i>
-      </button>
+        <div class="menu-button-wrapper">
+            <div id="menu-btn" class="menu-btn" aria-label="Open menu button" onclick="toggleSidebar()">
+                <span></span>
+            </div>
+        </div>
     </header>
 
     <div id="homepage-running-mario">
@@ -157,35 +168,41 @@
     </div>
     
     <div id="intro">
+      <div id="stars-container"></div>
       <div class="intro-content-wrapper">
         <div class="intro-content">
+            <img src="images/me.webp" alt="profile picture of Christian Eckardt" class="profile-picture appear">
             <h1 class="appear">Christian Eckardt</h1>
-            <h2 class="appear">Frontend Engineer</h2>
-            <hr class="appear">
-            <p data-localization="intro_text" class="appear">
-                I am a Frontend Engineer based in Hamburg, Germany with 5+ years of experience in frontend web development and eCommerce. Framework of my choice is Vue/Nuxt. Besides working fulltime as an engineer, I still find some time to code for fun.
-                This website serves as a hub for my hobby projects for everyone who is interested in working with me or just curious.
-                Feel free to check out applications, animations, games and other stuff I built.
-            </p>
-            <div class="contact-icons appear">
-                <div class="contact-icon">
-                    <a href="https://github.com/EckeEcke" target="_blank" aria-label="Github">
-                        <span class="iconify social-icon" data-icon="akar-icons:github-fill"></span>
-                    </a>
-                </div>
-                <div class="contact-icon">
-                    <a href="https://www.linkedin.com/in/christian-eckardt-41527216a/" target="_blank" aria-label="Linkedin">
-                        <span class="iconify social-icon" data-icon="logos:linkedin-icon"></span>
-                    </a>
+            <h2 class="appear">Fullstack Engineer</h2>
+            <div class="intro-list-wrapper appear">
+                <ul class="intro-bulletpoints appear">
+                    <li>
+                        <span class="font-bold">5+ years of experience</span> in web development and eCommerce
+                    </li>
+                    <li>
+                        Specialized in <span class="font-bold">Nuxt/Vue</span> framework
+                    </li>
+                    <li>
+                        This website serves as a <span class="font-bold">portfolio</span> for my hobby projects
+                    </li>
+                    <li>
+                        Looking for a collaboration? <span class="font-bold">Contact me!</span>
+                    </li>
+                </ul>
+                <div class="contact-icons appear">
+                    <div class="contact-icon">
+                        <a href="https://github.com/EckeEcke" target="_blank" aria-label="Github">
+                            <span class="iconify social-icon" data-icon="akar-icons:github-fill"></span>
+                        </a>
+                    </div>
+                    <div class="contact-icon">
+                        <a href="https://www.linkedin.com/in/christian-eckardt-41527216a/" target="_blank" aria-label="Linkedin">
+                            <span class="iconify social-icon" data-icon="logos:linkedin-icon"></span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-      </div>
-
-      <div id="scroll-arrow-div" onClick="scrollToMainContent()">
-        <button id="scroll-to-tiles-BTN" aria-label="scroll to content button">
-          <i class="uil uil-angle-down" id="scroll-arrow"></i>
-        </button>
       </div>
     </div>
 
@@ -201,8 +218,8 @@
       </div>
       <div>
         <h2>Triggerscore</h2>
-        <article data-localization="triggerscore_description">
-          On this movie rating portal movies users can rate old movies based on how much these trigger viewers today. I designed and built the page myself including a Node JS server connected to a MySQL database for saving and receiving user ratings. Movie data I receive via TMDB api. Used technologies: Nuxt 3, Tailwind, Node JS, MySQL.
+        <article>
+            On this movie rating portal movies users can rate old movies based on how much these trigger viewers today. Additionally I added a filmquiz using data of the rated movies. I designed and built the page myself including Vercel Serverless Functions and a MongoDB for saving and receiving user ratings. Movie data I receive via TMDB api. Besides that I also developed a small movie quiz using data of movies rated on Triggerscore.
         </article>
         <div class="used-tech-info">
           <span class="used-tech-element">Nuxt3</span>
@@ -234,8 +251,8 @@
       </div>
       <div>
         <h2>Vue Mealplanner</h2>
-        <article data-localization="vue-mealplanner_description">
-          This application offers a meal and grocery planner. In the Vue Mealplanner users can add their own receipes and manage a list of grocery items. Ingredients can be added to the grocery list right from the recipe. Data is saved in local storage. The mealplanner is also provied as PWA. I recently migrated the project from Vue 2 with Javascript to Vue 3 using Typescript. Used technologies: Vue 3, Bootstrap, HTML, CSS, Typescript.
+        <article>
+            This application offers a meal and grocery planner. In the Vue Mealplanner users can add their own receipes and manage a list of grocery items. Ingredients can be added to the grocery list right from the recipe. Data is saved in local storage. Alternatively users can create a unique ID and save their lists in a MongoDB. The mealplanner is also provied as PWA.
         </article>
         <div class="used-tech-info">
           <span class="used-tech-element">Vue3</span>
@@ -267,8 +284,8 @@
       </div>
       <div>
         <h2>School Fight</h2>
-        <article data-localization="school-fight_description">
-          This game offers turn based battles with different characters and ten levels, including two mini games and a boss fight. Additionally the game includes six trophies and three hidden characters to unlock. The game is mobile friendly and currently playable on itch.io. Used technologies: HTML, CSS, Javascript, HTML Canvas.
+        <article>
+          This game offers turn based battles with different characters and ten levels, including three mini games, a boss fight and a shop system. Additionally the game includes six trophies and three hidden characters to unlock. The game is mobile friendly and currently playable on itch.io with already 1000+ browser plays.
         </article>
         <div class="used-tech-info">
           <span class="used-tech-element">Javascript</span>
@@ -286,134 +303,8 @@
       </div>
     </section>
 
-    <section class="demo-section appear">
-      <div>
-          <a href="https://retroclub.vercel.app" target="_blank">
-              <img
-                      alt="screenshot retroclub"
-                      class="screenshot-box-shadow"
-                      src="images/screenshots/screenshot-retroclub.png"
-              >
-          </a>
-      </div>
-      <div>
-        <h2>Retroclub Game Rating</h2>
-        <article data-localization="retroclub_description">
-          Retroclub is a private freetime event for gaming enthusiasts, playing games of a specific theme. It is all about discovering new and unique games together and simply having a great a time. This rating page is designed for participants of Retroclub to rate games that we played. Used technologies: React, Serverless functions hosted via Vercel, MongoDB.
-        </article>
-        <div class="used-tech-info">
-          <span class="used-tech-element">React</span>
-          <span class="used-tech-element">MongoDB</span>
-          <span class="used-tech-element">NodeJS</span>
-        </div>
-        <div class="link-wrapper">
-          <a href="https://retroclub.vercel.app"    target="_blank">
-              <span class="iconify" data-icon="pepicons-pop:internet-circle"></span>
-          </a>
-          <a href="https://github.com/EckeEcke/retroclub" target="_blank">
-              <span class="iconify" data-icon="akar-icons:github-fill"></span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="demo-section appear">
-        <div>
-            <a href="/pong" target="_blank">
-                <img
-                        alt="screenshot pong"
-                        class="screenshot-box-shadow"
-                        src="images/screenshots/screenshot-pong.png"
-                >
-            </a>
-        </div>
-        <div>
-            <h2>Pong</h2>
-            <article data-localization="pong_description">
-                My first steps in Javascript I made by coding my own version of PONG. Over the years I implemented a lot of new features and refactored the code. A variety of configuration options enables to set an individual difficulty. The trophy system encourages players to experiment and replay the game. PONG provides a single- as well as a multiplayer experience.
-            </article>
-            <div class="used-tech-info">
-                <span class="used-tech-element">Javascript</span>
-                <span class="used-tech-element">HTMLCanvas</span>
-            </div>
-            <div class="link-wrapper">
-                <a href="/pong" target="_blank">
-                    <span class="iconify" data-icon="pepicons-pop:internet-circle"></span>
-                </a>
-                <a href="https://github.com/EckeEcke/EckeEcke.github.io/blob/master/js/pong.js" target="_blank">
-                    <span class="iconify" data-icon="akar-icons:github-fill"></span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section class="demo-section appear">
-        <div>
-            <a href="https://eima.netlify.app" target="_blank">
-                <img
-                        alt="screenshot eima"
-                        class="screenshot-box-shadow"
-                        src="images/screenshots/screenshot-eima.webp"
-                >
-            </a>
-        </div>
-        <div>
-            <h2>WIP: eima</h2>
-            <article data-localization="eima_description">
-                eima is a web application designed to bring together the entire process of collecting ideas for activities and experiences, finding interested friends, and scheduling a common date. The name 'eima' is a nod to the German word 'Eimer', which means bucket—as in the bucket where you place your plans. Besides the option to create a private bucket list, eima focuses on groups. Groups allow users to share events and find people who would like to join. A gamification approach motivates users to turn their ideas into reality. From a technical standpoint, eima's frontend is built as a Nuxt 4 application using NuxtUI and Tailwind as UI toolkits. The backend tech stack consists of Netlify Serverless Functions and MongoDB.
-            </article>
-            <div class="used-tech-info">
-                <span class="used-tech-element">Nuxt 4</span>
-                <span class="used-tech-element">Nuxt UI</span>
-                <span class="used-tech-element">Tailwind</span>
-                <span class="used-tech-element">Typescript</span>
-                <span class="used-tech-element">MongoDB</span>
-                <span class="used-tech-element">NodeJS</span>
-            </div>
-            <div class="link-wrapper">
-                <a href="https://eima.netlify.app"    target="_blank">
-                    <span class="iconify" data-icon="pepicons-pop:internet-circle"></span>
-                </a>
-                <a href="https://github.com/EckeEcke/eima" target="_blank">
-                    <span class="iconify" data-icon="akar-icons:github-fill"></span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <section class="demo-section appear">
-      <div>
-          <a href="https://clicky-clicky-run-run.netlify.app/" target="_blank">
-              <img
-                      alt="screenshot clicky"
-                      class="screenshot-box-shadow"
-                      src="images/screenshots/screenshot-clicky.webp"
-              >
-          </a>
-      </div>
-      <div>
-        <h2>Clicky Clicky Run Run</h2>
-        <article data-localization="clicky-clicky_description">
-          To try out Websocket I created this small online multiplayer game. If you want to test it, gather a second player or simply open the game in two tabs. 😉 Click the button as fast as you can to win the race. Used technologies: Vue3, NodeJS, Websocket
-        </article>
-        <div class="used-tech-info">
-          <span class="used-tech-element">Vue3</span>
-          <span class="used-tech-element">Websocket</span>
-          <span class="used-tech-element">NodeJS</span>
-        </div>
-        <div class="link-wrapper">
-            <a href="https://clicky-clicky-run-run.netlify.app/" target="_blank">
-              <span class="iconify" data-icon="pepicons-pop:internet-circle"></span>
-            </a>
-            <a href="https://github.com/EckeEcke/frontend-websocket-demo" target="_blank">
-                <span class="iconify" data-icon="akar-icons:github-fill"></span>
-            </a>
-        </div>
-      </div>
-    </section>
-
     <section class="icons-section appear">
-      <article class="py-0 mx-0 icons-wrapper appear px-3 text-center">
+      <article class="py-0 mx-0 icons-wrapper appear text-center">
           <h2 class="w-100 mb-5">Tech Stack</h2>
           <div>
             <div class="techstack-icon" data-tooltip='Javascript'>
@@ -452,12 +343,24 @@
             <div class="techstack-icon" data-tooltip="Jest">
               <span class="iconify" data-icon="logos:jest"></span>
             </div>
+            <div class="techstack-icon" data-tooltip="Python">
+              <span class="iconify" data-icon="logos:python"></span>
+            </div>
+            <div class="techstack-icon" data-tooltip="Node">
+              <span class="iconify" data-icon="logos:nodejs"></span>
+            </div>
+            <div class="techstack-icon" data-tooltip="MongoDB">
+              <span class="iconify" data-icon="vscode-icons:file-type-mongo"></span>
+            </div>
+            <div class="techstack-icon" data-tooltip="Jira">
+              <span class="iconify" data-icon="logos:jira"></span>
+            </div>
           </div>
       </article>
 
-        <div class="divider w-100 d-block d-xl-none"></div>
+      <div class="divider w-100 d-block"></div>
 
-      <article class="mx-0 py-0 icons-wrapper appear px-3 text-center appear">
+      <article class="mx-0 py-0 icons-wrapper appear text-center appear">
         <h2 class="text-black w-100 mb-5">Social</h2>
         <div>
           <div class="techstack-icon" data-tooltip="Github">
@@ -490,23 +393,17 @@
               <span class="iconify social-icon text-dark" data-icon="teenyicons:npm-outline"></span>
             </a>
           </div>
-            <div class="techstack-icon" data-tooltip="chess.com">
-                <a href="https://www.chess.com/member/eckeecke" target="_blank" aria-label="chess.com">
-                    <img class="social-icon h-100" src="images/chess-com-icon.svg" alt="chess.com"/>
-                </a>
-            </div>
+          <div class="techstack-icon" data-tooltip="chess.com">
+            <a href="https://www.chess.com/member/eckeecke" target="_blank" aria-label="chess.com">
+                <img class="social-icon h-100" src="images/chess-com-icon.svg" alt="chess.com"/>
+            </a>
+          </div>
         </div>
       </article>
     </section>
 
-    <section class="appear">
-        <a href="https://www.chess.com/member/eckeecke" target="_blank" class="chess-stats-link">
-            <div id="chess-stats"></div>
-        </a>
-    </section>
-
     <footer>
-        © Copyright 2025 eckeecke.github.io
+        © Copyright 2026 eckeecke.github.io
     </footer>
 
     <button id="scroll-back-top-BTN" aria-label="scroll back to top button" onClick="scrollToTop()">

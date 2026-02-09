@@ -28,48 +28,15 @@ const mainContent = document.getElementById("main-content")
 const body = document.getElementById("body")
 const scrollTopBTN = document.getElementById("scroll-back-top-BTN")
 
-const scrollToMainContent = () => mainContent.scrollIntoView({behavior: "smooth"})
-
 const scrollToTop = () => body.scrollIntoView({behavior: "smooth"})
 
 document.addEventListener("scroll", () => scrollTopBTN.style.display = scrollY > 400 ? 'block' : 'none')
-
-const updateContent = (langData) => {
-  document.querySelectorAll('[data-localization]').forEach(element => {
-    const key = element.getAttribute('data-localization')
-    element.textContent = langData[key]
-  })
-}
-
-const fetchLanguageData = async (lang) => {
-  const response = await fetch(`https://eckeecke.github.io/locales/${lang}.json`)
-  return response.json()
-}
-
-const changeLanguage = async (lang) => {
-  localStorage.setItem('lang', lang)
-  const langData = await fetchLanguageData(lang)
-  const selectors = Array.from(document.getElementsByClassName('language-selector'))
-  selectors.forEach(selector => {
-    selector.classList.remove('inactive')
-    if (selector.dataset.value !== lang) selector.classList.add('inactive')
-  })
-  document.documentElement.lang = lang
-  updateContent(langData)
-}
-
-const validLangs = ['de', 'en']
-const isValidLang = lang => validLangs.includes(lang)
-
-const getValidatedLangFromStorage = () => {
-  const lang = localStorage.getItem('lang')
-  return lang && isValidLang(lang) ? lang : 'en'
-}
 
 let showSidebar = false
 const backdrop = document.getElementById("backdrop")
 
 const toggleSidebar = () => {
+  document.getElementById("menu-btn").classList.toggle("active")
   showSidebar = !showSidebar
   if (showSidebar) {
     document.getElementById("sidebar").dataset.show = "true"
@@ -102,51 +69,20 @@ function displayLevel1SidebarContent() {
   })
 }
 
-async function getChessElo() {
-    const url = "https://api.chess.com/pub/player/eckeecke/stats"
-    try {
-        const response = await fetch(url)
-        const result = await response.json()
-        const chessStatsContainer = document.getElementById('chess-stats')
-
-        const statsHTML = `
-            <div>
-                <h2>Chess.com</h2>
-                <h2>Live Stats</h2>
-            </div>
-            <div class="elo-wrapper">
-                <p class="chess-elo">ELO</p>
-                <p class="chess-elo">${result.chess_rapid.last.rating}</p>
-            </div>
-            <div class="stats-grid">
-                <div>W</div>
-                <div>L</div>
-                <div>D</div>
-                <div>${result.chess_rapid.record.win}</div>
-                <div>${result.chess_rapid.record.loss}</div>
-                <div>${result.chess_rapid.record.draw}</div>
-            </div>
-        `
-        chessStatsContainer.innerHTML = statsHTML
-    } catch (error) {
-        console.error(error.message)
-    }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-  changeLanguage(getValidatedLangFromStorage())
-  getChessElo()
   const navItems = document.querySelectorAll('.nav-item')
   const backButtons = document.querySelectorAll('.back-button')
-  const level1 = document.querySelector('.level1')
 
   navItems.forEach(item => {
     item.addEventListener('click', () => {
-      const target = item.getAttribute('data-target')
-      const targetContainer = document.getElementById(target)
-      if (!target) return
-      level1.classList.add('hidden')
-      targetContainer.classList.add('active')
+      const targetId = item.getAttribute('data-target')
+      const targetLevel = document.getElementById(targetId)
+      const level1 = document.querySelector('.level1')
+
+      if (targetLevel) {
+        level1.classList.add('hidden')
+        targetLevel.classList.add('active')
+      }
     })
   })
 
@@ -156,3 +92,34 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   })
 })
+
+
+
+const initStars = () => {
+  const container = document.getElementById('stars-container')
+  const starCount = 100
+
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div')
+    star.className = 'star'
+    
+    const x = Math.random() * 100
+    const y = Math.random() * 100
+    const duration = Math.random() * 3 + 2
+    const delay = Math.random() * 5
+    const size = Math.random() * 2 + 1
+
+    Object.assign(star.style, {
+      left: `${x}%`,
+      top: `${y}%`,
+      width: `${size}px`,
+      height: `${size}px`,
+      animationDuration: `${duration}s`,
+      animationDelay: `${delay}s`
+    })
+
+    container.appendChild(star)
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initStars)

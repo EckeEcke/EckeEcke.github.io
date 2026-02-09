@@ -1,0 +1,176 @@
+.menu-btn {
+    height: 32px;
+    width: 40px;
+    cursor: pointer;
+}
+
+.menu-btn span,
+.menu-btn span::before,
+.menu-btn span::after {
+    background: var(--highlight-color);
+    border-radius: 3px;
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 6px;         
+    margin-top: 13px; 
+
+    -webkit-transition: .3s ease-in-out;
+    -moz-transition: .3s ease-in-out;
+    -o-transition: .3s ease-in-out;
+    transition: .3s ease-in-out;
+}
+
+.menu-btn span::before {
+    margin-top:-12px;
+}
+
+.menu-btn span::after {
+    margin-top:12px;
+}
+
+.menu-btn.active span {
+    background: transparent;
+}
+
+.menu-btn.active span::before {
+    margin-top: 0;
+
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.menu-btn.active span::after {
+    margin-top: 0;
+
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.sidebar-wrapper {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.sidebar {
+  transition: all 0.6s ease-in-out;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100vh;
+  background: radial-gradient(circle, rgba(15, 23, 42, 1) 0%, rgba(1, 4, 10, 1) 50%, rgba(10, 5, 10, 1) 100%);
+  color: #fff;
+  overflow: hidden;
+  z-index: 2500;
+  overflow-y: auto;
+  font-family: "Ubuntu", serif !important;
+  box-shadow: rgba(50, 50, 50, 0.25) 0 44px 45px, rgba(50, 50, 50, 0.12) 0 -6px 20px, rgba(50, 50, 50, 0.12) 0 2px 3px, rgba(50, 50, 50, 0.17) 0 6px 7px, rgba(50, 50, 50, 0.09) 0 -2px 4px;
+}
+
+.sidebar[data-show="false"] {
+  top: -50vh;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sidebar h4 {
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--highlight-color);
+  padding: 6px 24px;
+  margin: 0 0 32px;
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+
+.level1, .level2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 80px 0;
+  transition: transform 0.3s ease-in-out;
+  background: inherit;
+}
+
+.level1 {
+  transform: translateX(0);
+  z-index: 2;
+}
+
+.level2 {
+  transform: translateX(100%);
+  z-index: 1;
+}
+
+.level1.hidden {
+  transform: translateX(-100%);
+}
+
+.level2.active {
+  transform: translateX(0);
+  z-index: 3;
+}
+
+.level1, .level2 {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.nav-item, .back-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+  margin: 0 auto;
+  background-color: transparent;
+  font-size: 1.5rem;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  transition: 0.3s;
+  font-family: "Ubuntu", serif !important;
+  text-transform: uppercase;
+}
+
+.back-button svg {
+  fill: var(--intro-font-color);
+  width: 4rem;
+  height: 4rem;
+}
+
+.nav-item a {
+  width: 100%;
+}
+
+.nav-item a, .nav-item:hover {
+  color: #fff;
+}
+
+.nav-item:hover, .back-button:hover, .nav-item a:hover {
+  color: var(--highlight-color);
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 24px;
+}
+
+.sidebar-icon {
+  font-size: 16px;
+}
