@@ -38,6 +38,7 @@ header {
 
 h1, h2 {
     margin: 0.5rem 0;
+    line-height: 1.2;
 }
 
 .w-100 { width: 100% !important; }
