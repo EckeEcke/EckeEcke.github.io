@@ -37,8 +37,13 @@ jobs:
       - name: Minify CSS
         run: |
           esbuild css/index.css --minify --outfile=dist/css/index.css
-      - name: Minify JS
-        run: esbuild script.js --minify --outfile=dist/script.js
+      - name: Minify all js files
+        run: |
+          mkdir -p dist/js
+          for file in js/*.js; do
+            filename=$(basename "$file")
+            esbuild "$file" --minify --outfile="dist/js/$filename"
+          done
       - name: Minify HTML
         run: |
           html-minifier-terser --collapse-whitespace --remove-comments --minify-css true --minify-js true -o dist/index.html index.html
