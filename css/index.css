@@ -729,7 +729,7 @@ article div {
 
 .timeline-date {
   font-size: 0.85rem;
-  color: #94a3b8;
+  color: rgba(10,10,10,0.9);
   margin-bottom: 5px;
 }
 
