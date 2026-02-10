@@ -106,6 +106,7 @@ h3 {
 .intro-bulletpoints li {
   font-size: 1.2rem;
   color: var(--intro-font-color);
+  margin-bottom: 8px;
 }
 
 .profile-picture {
@@ -463,6 +464,10 @@ article div {
 .social-icon:hover,
 .techstack-icon:hover {
   transform: scale(1.1);
+}
+
+.youtube-icon {
+  color: rgb(205, 32, 31);
 }
 
 .link-wrapper {
