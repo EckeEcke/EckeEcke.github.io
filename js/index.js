@@ -87,16 +87,8 @@ document.addEventListener('keydown', (event) => {
   buttons.forEach((btn, index) => {
     btn.addEventListener('click', () => {
       updateView(index)
-    })})
-    const initialActive = 0
-    buttons.forEach((btn, index) => {
-      if (btn.classList.contains('active')) initialActive = index
     })
-    slider.style.transition = 'none'
-    updateView(initialActive)
-    setTimeout(() => {
-      slider.style.transition = 'transform 0.4s ease'
-    }, 50)
+  })
   }
 )
 
