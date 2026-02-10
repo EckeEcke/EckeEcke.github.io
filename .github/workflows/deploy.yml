@@ -44,9 +44,11 @@ jobs:
             filename=$(basename "$file")
             esbuild "$file" --minify --outfile="dist/js/$filename"
           done
-      - name: Minify HTML
+      - name: Minify HTML files
         run: |
-          html-minifier-terser --collapse-whitespace --remove-comments --minify-css true --minify-js true -o dist/index.html index.html
+          for file in *.html; do
+            html-minifier-terser --collapse-whitespace --remove-comments --minify-css true --minify-js true -o "dist/$file" "$file"
+          done
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
