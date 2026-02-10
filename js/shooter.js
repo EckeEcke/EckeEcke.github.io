@@ -8,6 +8,30 @@ const nameInput = document.getElementById('name-input')
 canvasContext.font = '24px retro'
 const versionNumber = '3.0.0'
 
+const initStars = () => {
+  const container = document.getElementById('stars-container')
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement('div')
+    star.className = 'star'
+    const x = Math.random() * 100
+    const y = Math.random() * 100
+    const duration = Math.random() * 3 + 2
+    const delay = Math.random() * 5
+    const size = Math.random() * 2 + 1
+    Object.assign(star.style, {
+      left: `${x}%`,
+      top: `${y}%`,
+      width: `${size}px`,
+      height: `${size}px`,
+      animationDuration: `${duration}s`,
+      animationDelay: `${delay}s`,
+    })
+    container.appendChild(star)
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initStars)
+
 // _______________________________________________________________
 // IMAGES
 // _______________________________________________________________
