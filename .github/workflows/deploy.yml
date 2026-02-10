@@ -23,18 +23,17 @@ jobs:
       - name: Prepare Dist Folder
         run: mkdir -p dist
       - name: Copy Assets
-      run: |
-        [ -d "images" ] && cp -r images dist/ || echo "No images"
-        [ -d "assets" ] && cp -r assets dist/ || echo "No assets"
-        [ -d "sounds" ] && cp -r sounds dist/ || echo "No sounds"
-        # Wir nutzen 'find', um alle HTMLs zu finden und nach dist zu kopieren
-        find . -maxdepth 1 -name "*.html" ! -name "index.html" -exec cp {} dist/ \;
-        cp robots.txt dist/ 2>/dev/null || true
-        cp site.webmanifest dist/ 2>/dev/null || true
-        cp sitemap.xml dist/ 2>/dev/null || true
-        cp *.png dist/ 2>/dev/null || true
-        cp *.ico dist/ 2>/dev/null || true
-        cp *.svg dist/ 2>/dev/null || true
+        run: |
+          [ -d "images" ] && cp -r images dist/ || echo "No images"
+          [ -d "assets" ] && cp -r assets dist/ || echo "No assets"
+          [ -d "sounds" ] && cp -r sounds dist/ || echo "No sounds"
+          find . -maxdepth 1 -name "*.html" ! -name "index.html" -exec cp {} dist/ \;
+          cp robots.txt dist/ 2>/dev/null || true
+          cp site.webmanifest dist/ 2>/dev/null || true
+          cp sitemap.xml dist/ 2>/dev/null || true
+          cp *.png dist/ 2>/dev/null || true
+          cp *.ico dist/ 2>/dev/null || true
+          cp *.svg dist/ 2>/dev/null || true
       - name: Minify CSS
         run: cleancss -o dist/index.css index.css
       - name: Minify JS
