@@ -178,9 +178,8 @@
         <img id="homepage-mario" alt="sprite of running Super Mario" src="images/mariosprites-walking.png">
       </div>
     </div>
-    
+    <div id="stars-container"></div>
     <div id="intro">
-      <div id="stars-container"></div>
       <div class="intro-content-wrapper">
         <div class="intro-content">
             <img src="images/me.webp" alt="profile picture of Christian Eckardt" class="profile-picture appear">
@@ -218,189 +217,367 @@
       </div>
     </div>
 
-    <section class="demo-section appear pt-5" id="main-content">
-      <div>
-          <a href="https://www.triggerscore.de/" target="_blank" rel="noopener">
-              <img
-                      alt="screenshot triggerscore"
-                      class="screenshot-box-shadow"
-                      src="images/screenshots/Screenshot-Triggerscore.webp"
-                      loading="lazy"
-              >
-          </a>
+    <div class="toggle-container">
+      <div class="toggle-switch">
+        <div class="nav-slider"></div>
+        <button class="toggle-btn" data-target="resume">Resume</button>
+        <button class="toggle-btn" data-target="stack">Tech Stack</button>
+        <button class="toggle-btn active" data-target="projects">Projects</button>
       </div>
-      <div>
-        <h2>Triggerscore</h2>
-        <article>
-            On this movie rating portal users can rate old movies based on how much these trigger viewers today. Additionally I added a filmquiz using data of the rated movies. I designed and built the page myself including Vercel Serverless Functions and a MongoDB for saving and receiving user ratings. Movie data I receive via TMDB api. Besides that I also developed a small movie quiz using data of movies rated on Triggerscore.
-        </article>
-        <div class="used-tech-info">
-          <span class="used-tech-element">Nuxt3</span>
-          <span class="used-tech-element">Typescript</span>
-          <span class="used-tech-element">NodeJS</span>
-          <span class="used-tech-element">MongoDB</span>
-          <span class="used-tech-element">Tailwind</span>
-        </div>
-        <div class="link-wrapper">
-          <a href="https://www.triggerscore.de/"  target="_blank" rel="noopener">
-              <span class="iconify" data-icon="pepicons-pop:internet-circle"></span>
-          </a>
-          <a href="https://github.com/EckeEcke/triggerscore-nuxt3" target="_blank" rel="noopener">
-              <span class="iconify" data-icon="akar-icons:github-fill"></span>
-          </a>
-        </div>
-      </div>
-    </section>
+    </div>
 
-    <section class="demo-section appear">
-      <div>
-          <a href="https://eckeecke.itch.io/school-fight" target="_blank" rel="noopener">
-              <img
-                      alt="screenshot school fight"
-                      class="screenshot-box-shadow"
-                      src="images/screenshots/screenshot-schoolfight.webp"
-                      loading="lazy"
-              >
-          </a>
-      </div>
-      <div>
-        <h2>School Fight</h2>
-        <article>
-          This game offers turn based battles with different characters and ten levels, including three mini games, a boss fight and a shop system. Additionally the game includes six trophies and three hidden characters to unlock. The game is mobile friendly and currently playable on itch.io with already 1000+ browser plays.
-        </article>
-        <div class="used-tech-info">
-          <span class="used-tech-element">Javascript</span>
-          <span class="used-tech-element">CSS</span>
-          <span class="used-tech-element">HTMLCanvas</span>
-        </div>
-        <div class="link-wrapper">
-          <a href="https://eckeecke.itch.io/school-fight"   target="_blank" rel="noopener">
-              <span class="iconify" data-icon="pepicons-pop:internet-circle"></span>
-          </a>
-          <a href="https://github.com/EckeEcke/schoolfight" target="_blank" rel="noopener">
-              <span class="iconify" data-icon="akar-icons:github-fill"></span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="demo-section appear">
-      <div>
-          <a href="https://vue-mealplanner.vercel.app/" target="_blank" rel="noopener">
-              <img
-                      alt="screenshot mealplanner"
-                      class="screenshot-box-shadow"
-                      src="images/screenshots/screenshot-mealplanner-vue3.webp"
-                      loading="lazy"
-              >
-          </a>
-      </div>
-      <div>
-        <h2>Vue Mealplanner</h2>
-        <article>
-            This application offers a meal and grocery planner. In the Vue Mealplanner users can add their own recipes and manage a list of grocery items. Ingredients can be added to the grocery list right from the recipe. Data is saved in local storage. Alternatively users can create a unique ID and save their lists in a MongoDB. The mealplanner is also provided as PWA.
-        </article>
-        <div class="used-tech-info">
-          <span class="used-tech-element">Vue3</span>
-          <span class="used-tech-element">Typescript</span>
-          <span class="used-tech-element">NodeJS</span>
-          <span class="used-tech-element">MongoDB</span>
-          <span class="used-tech-element">Bootstrap</span>
-        </div>
-        <div class="link-wrapper">
-          <a href="https://vue-mealplanner.vercel.app/"  target="_blank" rel="noopener">
-              <span class="iconify" data-icon="pepicons-pop:internet-circle"></span>
-          </a>
-          <a href="https://github.com/EckeEcke/grocery-app-vue3" target="_blank" rel="noopener">
-              <span class="iconify" data-icon="akar-icons:github-fill"></span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="icons-section appear">
-      <article class="py-0 mx-0 icons-wrapper appear text-center">
-          <h2 class="w-100 mb-5">Tech Stack</h2>
-          <div>
-            <div class="techstack-icon" data-tooltip='Javascript'>
-              <span class="iconify" data-icon="logos:javascript"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Typescript">
-              <span class="iconify" data-icon="logos:typescript-icon"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Vue">
-              <span class="iconify" data-icon="logos:vue"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Nuxt">
-              <span class="iconify" data-icon="logos:nuxt-icon"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="HTML5">
-              <span class="iconify blue-font" data-icon="vscode-icons:file-type-html"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="CSS3">
-              <span class="iconify" data-icon="vscode-icons:file-type-css"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="SCSS">
-              <span class="iconify blue-font" data-icon="vscode-icons:file-type-scss2"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Vitest">
-              <span class="iconify" data-icon="logos:vitest"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Playwright">
-              <span class="iconify" data-icon="logos:playwright"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Jest">
-              <span class="iconify" data-icon="logos:jest"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Python">
-              <span class="iconify" data-icon="logos:python"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Node">
-              <span class="iconify" data-icon="logos:nodejs"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="MongoDB">
-              <span class="iconify" data-icon="vscode-icons:file-type-mongo"></span>
+    <div id="resume-content" class="tab-content hidden">
+      <section class="timeline-section">
+        <h2 class="tab-headline appear">Professional Experience</h2>
+        <div class="timeline">
+          <div class="timeline-item appear">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2022 - 2026</div>
+            <div class="timeline-content">
+              <h3>Frontend Engineer, Tchibo</h3>
+              <ul>
+                <li>Webshop team responsible for product detail page, quick buy modal, user review page and coffee subscription</li>
+                <li>Nuxt 3 migration</li>
+                <li>Creating new Nuxt based user review page</li>
+                <li>Migrating to new product data api</li>
+                <li>Accessibility and performance optimizations, SEO </li>
+                <li>Team representative in Frontend Champion rounds contributing to cross team alignments</li>
+              </ul>
             </div>
           </div>
-      </article>
-
-      <div class="divider w-100 d-block"></div>
-
-      <article class="py-0 mx-0 icons-wrapper appear text-center">
-          <h2 class="w-100 mb-5">Tools & Methods</h2>
-          <div>
-            <div class="techstack-icon" data-tooltip="Git">
-              <span class="iconify" data-icon="cib:git"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="GitLab">
-              <span class="iconify" data-icon="material-icon-theme:gitlab"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Jira">
-              <span class="iconify" data-icon="logos:jira"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Netlify">
-              <span class="iconify" data-icon="material-icon-theme:netlify"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Vercel">
-              <span class="iconify" data-icon="ri:vercel-fill"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Tailwind">
-              <span class="iconify" data-icon="logos:tailwindcss-icon"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Eslint">
-              <span class="iconify" data-icon="material-icon-theme:eslint"></span>
-            </div>
-            <div class="techstack-icon" data-tooltip="Prettier">
-              <span class="iconify" data-icon="material-icon-theme:prettier"></span>
+        
+          <div class="timeline-item appear">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2022 - 2022</div>
+            <div class="timeline-content">
+              <h3>Web Developer, Medienwerft</h3>
+              <ul>
+                <li>Frontend development for SAP Storefront</li>
+                <li>Realization of new components and shop features</li>
+                <li>Intensive course for Angular + Spartacus</li>
+              </ul>
             </div>
           </div>
-      </article>
 
-      <div class="divider w-100 d-block"></div>
+          <div class="timeline-item appear">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2021 - 2022</div>
+            <div class="timeline-content">
+              <h3>Junior Web Developer, cadooz</h3>
+              <ul>
+                <li>
+                  Creating components and shop logic for a new Vue2 redemption platform
+                </li>
+                <li>
+                  Leading frontend dev for realization of a reusable shop template for OTTO Up using Velocity template engine
+                </li>
+                <li>
+                  Reproducing modern Vue behavior in Velocity template engine for a smooth UX
+                </li>
+                <li>
+                  Leading frontend dev for major facelift for an existing redemption portal
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="timeline-item appear">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2021 - 2021</div>
+            <div class="timeline-content">
+              <h3>Full Stack Web Developer Course, Hamburg Coding School</h3>
+              <ul>
+                <li>
+                  6 months of intense training
+                </li>
+                <li>
+                  Basics in HTML, CSS and Javascript
+                </li>
+                <li>
+                  Introduction to React framework
+                </li>
+                <li>
+                  Node as backend language
+                </li>
+                <li>
+                  Workshops for git and jest unit testing
+                </li>
+                <li>
+                  React Travelblog as final project
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="timeline-item appear">
+            <div class="timeline-dot"></div>
+            <div class="timeline-date">2008 - 2021</div>
+            <div class="timeline-content">
+              <h3>Healthcare</h3>
+              <ul>
+                <li>
+                  Bachelor of Arts in Healthcare management
+                </li>
+                <li>
+                  Project management for a healthcare foundation (recruiting, email marketing)
+                </li>
+                <li>
+                  Working directly with patients in different roles (nursing, elderly care)
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
 
-      <article class="mx-0 py-0 icons-wrapper appear text-center">
-        <h2 class="text-black w-100 mb-5">Social</h2>
+    <div id="stack-content" class="tab-content hidden">
+      <section class="icons-section-wrapper">
+        <section class="icons-section appear">
+          <article class="mx-0 appear tech-stack-section">
+              <h2 class="w-100">Frontend</h2>
+                <ul>
+                  <li>
+                    <strong>Architecting</strong> reusable and maintainable UI components
+                  </li>
+                  <li>
+                    Expertise in <strong>Vue & Nuxt</strong> ecosystems, complemented by personal project experience in React
+                  </li>
+                  <li>
+                    <strong>Business logic:</strong> Developing, maintaining, and scaling complex frontend logic
+                  </li>
+                  <li>
+                    <strong>Performance & SEO:</strong> Semantic HTML, accessibility (a11y), and Search Engine Optimization
+                  </li>
+                  <li>
+                    <strong>Responsive Design:</strong> Ensuring full cross-browser compatibility and mobile-first layouts
+                  </li>
+                  <li>
+                    Seamless <strong>API integration</strong> and state management (Pinia/Vuex)
+                  </li>
+                  <li>
+                    Quality assurance: Unit testing with <strong>Vitest/Jest</strong> and E2E testing with <strong>Playwright</strong>
+                  </li>
+                </ul>
+                <div class="icons-wrapper">
+                    <div class="techstack-icon" data-tooltip='Javascript'>
+                      <span class="iconify" data-icon="logos:javascript"></span>
+                    </div>
+                    <div class="techstack-icon" data-tooltip="Typescript">
+                      <span class="iconify" data-icon="logos:typescript-icon"></span>
+                    </div>
+                    <div class="techstack-icon" data-tooltip="Vue">
+                      <span class="iconify" data-icon="logos:vue"></span>
+                    </div>
+                    <div class="techstack-icon" data-tooltip="Nuxt">
+                      <span class="iconify" data-icon="logos:nuxt-icon"></span>
+                    </div>
+                    <div class="techstack-icon" data-tooltip="HTML5">
+                      <span class="iconify blue-font" data-icon="vscode-icons:file-type-html"></span>
+                    </div>
+                    <div class="techstack-icon" data-tooltip="CSS3">
+                      <span class="iconify" data-icon="vscode-icons:file-type-css"></span>
+                    </div>
+                    <div class="techstack-icon" data-tooltip="SCSS">
+                      <span class="iconify blue-font" data-icon="vscode-icons:file-type-scss2"></span>
+                    </div>
+                    <div class="techstack-icon" data-tooltip="Vitest">
+                      <span class="iconify" data-icon="logos:vitest"></span>
+                    </div>
+                    <div class="techstack-icon" data-tooltip="Playwright">
+                      <span class="iconify" data-icon="logos:playwright"></span>
+                    </div>
+                    <div class="techstack-icon" data-tooltip="Jest">
+                      <span class="iconify" data-icon="logos:jest"></span>
+                    </div>
+                </div>
+          </article>
+
+          <article class="mx-0 appear tech-stack-section">
+            <h2 class="w-100">Backend</h2>
+            <ul class="skills-list">
+              <li>
+                  <strong>Node.js and ExpressJs:</strong> Developing RESTful APIs and serverless logic for full-stack hobby projects
+              </li>
+              <li>
+                  <strong>MongoDB:</strong> Designing schemas, hosting, and managing NoSQL databases for persistent data storage
+              </li>
+              <li>
+                  <strong>Data Handling:</strong> Implementing CRUD operations, data sanitization, and processing for frontend consumption
+              </li>
+              <li>
+                  <strong>Python & Pygame:</strong> Exploring game development and logic patterns (Early stage / Current focus)
+              </li>
+              <li>
+                  <strong>Full-Stack Integration:</strong> Connecting frontends to self-built backends via fetch and handling asynchronous data flows
+              </li>
+            </ul>
+            <div class="icons-wrapper">
+              <div class="techstack-icon" data-tooltip="Node">
+                <span class="iconify" data-icon="logos:nodejs"></span>
+              </div>
+              <div class="techstack-icon" data-tooltip="ExpressJs">
+                <span class="iconify" data-icon="skill-icons:expressjs-dark"></span>
+              </div>
+              <div class="techstack-icon" data-tooltip="MongoDB">
+                <span class="iconify" data-icon="vscode-icons:file-type-mongo"></span>
+              </div>
+              <div class="techstack-icon" data-tooltip="Python">
+                <span class="iconify" data-icon="logos:python"></span>
+              </div>
+            </div>
+          </article>
+    
+          <article class="mx-0 appear tech-stack-section">
+              <h2 class="w-100">Tools & Methods</h2>
+              <ul class="skills-list">
+              <li>
+                  <strong>Version control:</strong> Experience in working with Git, Github and Gitlab
+              </li>
+              <li>
+                  <strong>Jira:</strong> Multiple years of experience in working with Jira in agile international teams
+              </li>
+              <li>
+                  <strong>Cloud hosting:</strong> Hosting and configuring multiple hobby frontend and full stack projects on Netlify and Vercel including serverless functions 
+              </li>
+              <li>
+                  <strong>Styling & Code quality:</strong> UI development using Tailwind, Integrating and configuring Prettier and Eslint to automate quality control
+              </li>
+            </ul>
+              <div class="icons-wrapper">
+                <div class="techstack-icon" data-tooltip="Git">
+                  <span class="iconify" data-icon="cib:git"></span>
+                </div>
+                <div class="techstack-icon" data-tooltip="GitLab">
+                  <span class="iconify" data-icon="material-icon-theme:gitlab"></span>
+                </div>
+                <div class="techstack-icon" data-tooltip="Jira">
+                  <span class="iconify" data-icon="logos:jira"></span>
+                </div>
+                <div class="techstack-icon" data-tooltip="Netlify">
+                  <span class="iconify" data-icon="material-icon-theme:netlify"></span>
+                </div>
+                <div class="techstack-icon" data-tooltip="Vercel">
+                  <span class="iconify" data-icon="ri:vercel-fill"></span>
+                </div>
+                <div class="techstack-icon" data-tooltip="Tailwind">
+                  <span class="iconify" data-icon="logos:tailwindcss-icon"></span>
+                </div>
+                <div class="techstack-icon" data-tooltip="Eslint">
+                  <span class="iconify" data-icon="material-icon-theme:eslint"></span>
+                </div>
+                <div class="techstack-icon" data-tooltip="Prettier">
+                  <span class="iconify" data-icon="material-icon-theme:prettier"></span>
+                </div>
+              </div>
+          </article>    
+        </section>
+      </section>
+    </div>
+
+    <div id="projects-content" class="tab-content">
+      <section class="demo-section appear" id="main-content">
         <div>
+            <a href="https://www.triggerscore.de/" target="_blank" rel="noopener">
+                <img
+                        alt="screenshot triggerscore"
+                        class="screenshot-box-shadow"
+                        src="images/screenshots/Screenshot-Triggerscore.webp"
+                        loading="lazy"
+                >
+            </a>
+        </div>
+        <div>
+          <h2>Triggerscore</h2>
+          <article>
+              On this movie rating portal users can rate old movies based on how much these trigger viewers today. Additionally I added a filmquiz using data of the rated movies. I designed and built the page myself including Vercel Serverless Functions and a MongoDB for saving and receiving user ratings. Movie data I receive via TMDB api. Besides that I also developed a small movie quiz using data of movies rated on Triggerscore.
+          </article>
+          <div class="used-tech-info">
+            <span class="used-tech-element">Nuxt3</span>
+            <span class="used-tech-element">Typescript</span>
+            <span class="used-tech-element">NodeJS</span>
+            <span class="used-tech-element">MongoDB</span>
+            <span class="used-tech-element">Tailwind</span>
+          </div>
+          <div class="link-wrapper">
+            <a href="https://www.triggerscore.de/"  target="_blank" rel="noopener">
+                <span class="iconify" data-icon="pepicons-pop:internet-circle"></span>
+            </a>
+            <a href="https://github.com/EckeEcke/triggerscore-nuxt3" target="_blank" rel="noopener">
+                <span class="iconify" data-icon="akar-icons:github-fill"></span>
+            </a>
+          </div>
+        </div>
+      </section>
+  
+      <section class="demo-section appear">
+        <div>
+            <a href="https://eckeecke.itch.io/school-fight" target="_blank" rel="noopener">
+                <img
+                        alt="screenshot school fight"
+                        class="screenshot-box-shadow"
+                        src="images/screenshots/screenshot-schoolfight.webp"
+                        loading="lazy"
+                >
+            </a>
+        </div>
+        <div>
+          <h2>School Fight</h2>
+          <article>
+            This game offers turn based battles with different characters and ten levels, including three mini games, a boss fight and a shop system. Additionally the game includes six trophies and three hidden characters to unlock. The game is mobile friendly and currently playable on itch.io with already 1000+ browser plays.
+          </article>
+          <div class="used-tech-info">
+            <span class="used-tech-element">Javascript</span>
+            <span class="used-tech-element">CSS</span>
+            <span class="used-tech-element">HTMLCanvas</span>
+          </div>
+          <div class="link-wrapper">
+            <a href="https://eckeecke.itch.io/school-fight"   target="_blank" rel="noopener">
+                <span class="iconify" data-icon="pepicons-pop:internet-circle"></span>
+            </a>
+            <a href="https://github.com/EckeEcke/schoolfight" target="_blank" rel="noopener">
+                <span class="iconify" data-icon="akar-icons:github-fill"></span>
+            </a>
+          </div>
+        </div>
+      </section>
+  
+      <section class="demo-section appear">
+        <div>
+            <a href="https://vue-mealplanner.vercel.app/" target="_blank" rel="noopener">
+                <img
+                        alt="screenshot mealplanner"
+                        class="screenshot-box-shadow"
+                        src="images/screenshots/screenshot-mealplanner-vue3.webp"
+                        loading="lazy"
+                >
+            </a>
+        </div>
+        <div>
+          <h2>Vue Mealplanner</h2>
+          <article>
+              This application offers a meal and grocery planner. In the Vue Mealplanner users can add their own recipes and manage a list of grocery items. Ingredients can be added to the grocery list right from the recipe. Data is saved in local storage. Alternatively users can create a unique ID and save their lists in a MongoDB. The mealplanner is also provided as PWA.
+          </article>
+          <div class="used-tech-info">
+            <span class="used-tech-element">Vue3</span>
+            <span class="used-tech-element">Typescript</span>
+            <span class="used-tech-element">NodeJS</span>
+            <span class="used-tech-element">MongoDB</span>
+            <span class="used-tech-element">Bootstrap</span>
+          </div>
+          <div class="link-wrapper">
+            <a href="https://vue-mealplanner.vercel.app/"  target="_blank" rel="noopener">
+                <span class="iconify" data-icon="pepicons-pop:internet-circle"></span>
+            </a>
+            <a href="https://github.com/EckeEcke/grocery-app-vue3" target="_blank" rel="noopener">
+                <span class="iconify" data-icon="akar-icons:github-fill"></span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <article class="w-full icons-wrapper appear">
+        <div class="icons-wrapper">
           <div class="techstack-icon" data-tooltip="Github">
             <a href="https://github.com/EckeEcke" target="_blank" rel="noopener" aria-label="Github">
               <span class="iconify social-icon text-dark" data-icon="akar-icons:github-fill"></span>
@@ -412,7 +589,7 @@
             </a>
           </div>
           <div class="techstack-icon" data-tooltip="Xing">
-            <a href="https://www.xing.com/profile/Christian_Eckardt097954" target="_blank" rel="noopener" aria-label="Xing">
+            <a href="https://www.xing.com/profile/Christian_Eckardt21/" target="_blank" rel="noopener" aria-label="Xing">
               <img class="social-icon h-100" src="images/xing.svg" alt="xing icon"/>
             </a>
           </div>
@@ -443,15 +620,8 @@
           </div>
         </div>
       </article>
-    </section>
-
-    <footer>
         © Copyright 2026 eckeecke.github.io
     </footer>
-
-    <button id="scroll-back-top-BTN" aria-label="scroll back to top button">
-      <i id="scroll-arrow-up" class="uil uil-angle-down"></i>
-    </button>
 
     <audio src="sounds/mario_its_me.wav" id="mario-sound"></audio>
     <script src="js/index.js" defer></script>
@@ -477,7 +647,7 @@
             "sameAs": [
                 "https://github.com/EckeEcke",
                 "https://www.linkedin.com/in/christian-eckardt-41527216a/",
-                "https://www.xing.com/profile/Christian_Eckardt097954"
+                "https://www.xing.com/profile/Christian_Eckardt21/"
             ]
         }
     </script>

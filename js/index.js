@@ -1,6 +1,5 @@
 const CONFIG = {
   BASE_URL: window.location.origin,
-  SCROLL_THRESHOLD: 400,
   STAR_COUNT: 100,
 }
 
@@ -25,11 +24,6 @@ const io = new IntersectionObserver(active)
 items.forEach((item) => io.observe(item))
 
 const body = document.getElementById('body')
-const scrollTopBTN = document.getElementById('scroll-back-top-BTN')
-const scrollToTop = () => body.scrollIntoView({ behavior: 'smooth' })
-document.addEventListener('scroll', () => {
-  scrollTopBTN.style.display = window.scrollY > CONFIG.SCROLL_THRESHOLD ? 'block' : 'none'
-})
 
 let showSidebar = false
 const backdrop = document.getElementById('backdrop')
@@ -64,13 +58,47 @@ const toggleSidebar = () => {
 
 backdrop.addEventListener('click', toggleSidebar)
 menuBtn.addEventListener('click', toggleSidebar)
-scrollTopBTN.addEventListener('click', scrollToTop)
 
 document.addEventListener('keydown', (event) => {
   if (event.key === 'Escape' && showSidebar) {
     toggleSidebar()
   }
 })
+
+|document.addEventListener('DOMContentLoaded', () => { 
+  const buttons = document.querySelectorAll('.toggle-btn')
+  const slider = document.querySelector('.nav-slider')
+  const sections = document.querySelectorAll('.tab-content')
+  const updateView = (activeIndex) => {
+    const target = buttons[activeIndex].getAttribute('data-target')
+    slider.style.transform = 'translateX(' + (activeIndex * 100) + '%)'
+    buttons.forEach((btn) => { btn.classList.remove('active')})
+    buttons[activeIndex].classList.add('active')
+    sections.forEach((sec) => {
+      if (sec.id === target + '-content') {
+        sec.classList.remove('hidden')
+        sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        sec.classList.add('hidden')
+      }
+    })
+  }
+
+  buttons.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      updateView(index)
+    })})
+    const initialActive = 0
+    buttons.forEach((btn, index) => {
+      if (btn.classList.contains('active')) initialActive = index
+    })
+    slider.style.transition = 'none'
+    updateView(initialActive)
+    setTimeout(() => {
+      slider.style.transition = 'transform 0.4s ease'
+    }, 50)
+  }
+)
 
 document.addEventListener('DOMContentLoaded', () => {
   const navItems = document.querySelectorAll('.nav-item')

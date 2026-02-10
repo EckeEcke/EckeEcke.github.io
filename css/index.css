@@ -21,11 +21,6 @@ header {
 
 body {
   font-family: Roboto, serif;
-  background: var(--main-background-color);
-}
-
-body, html {
-  overflow-x: hidden;
 }
 
 button:focus {
@@ -119,6 +114,73 @@ hr {
   border-color: var(--highlight-color);
 }
 
+.toggle-container { 
+  position: sticky;
+  top: 16px;
+  display: flex;
+  justify-content: center;
+  margin: 3rem 1rem; 
+  z-index: 10;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.toggle-switch { 
+  position: relative;
+  display: flex;
+  background: rgba(15, 23, 42, 1);
+  padding: 4px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+
+.nav-slider { 
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  height: calc(100% - 8px);
+  width: calc(33.33% - 4px);
+  background: var(--highlight-color);
+  border-radius: 8px;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 0;
+  transform: translateX(200%);
+}
+
+.toggle-btn { 
+  position: relative;
+  flex: 1;
+  padding: 12px;
+  border: none;
+  background: none;
+  color: var(--highlight-color);
+  cursor: pointer;
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  z-index: 1;
+  transition: color 0.3s;
+}
+
+.toggle-btn.active { 
+  color: black;
+}
+
+.tab-headline {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.tab-content {
+  scroll-margin-top: 100px;
+}
+
+.tab-content.hidden { 
+  display: none;
+}
+
 footer {
   text-align: center;
   padding: 0.5rem;
@@ -162,6 +224,13 @@ footer {
 .icons-wrapper {
   width: 100%;
   transition: 0.3s;
+  margin: 0 auto 32px;
+  max-width: 400px;
+}
+
+footer .icons-wrapper {
+  max-width: 400px;
+  margin: 32px auto;
 }
 
 .divider {
@@ -243,25 +312,6 @@ footer {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-}
-
-#scroll-back-top-BTN {
-  display: none;
-  background: none;
-  transform: rotate(180deg);
-  border-style: none;
-  position: fixed;
-  right: 4px;
-  bottom: 6px;
-  z-index: 100;
-}
-
-#scroll-arrow-up {
-  display: block;
-  opacity: 0.7;
-  animation: arrow-animation 5s infinite linear;
-  padding: 8px;
-  border-radius: 8px;
 }
 
 .appear {
@@ -399,7 +449,7 @@ article div {
   :not(.uil-times):not(.uil-bars).uil,
   .iconify,
   .xing-icon {
-    font-size: 4rem;
+    font-size: 3rem;
   }
 
   article div {
@@ -424,6 +474,10 @@ article div {
   }
 }
 
+.icons-section-wrapper {
+  padding: 8px;
+}
+
 .demo-section,
 .icons-section {
   position: relative;
@@ -433,9 +487,9 @@ article div {
   gap: 1.5rem;
   justify-content: center;
   width: 600px;
-  max-width: 100vw; 
+  max-width: 100%; 
   padding: 0 1rem;
-  margin: 7rem auto;
+  margin: 0 auto 7rem;
 }
 
 .demo-section div {
@@ -497,6 +551,24 @@ article div {
   width: 100%;
 }
 
+.tech-stack-section {
+  border: 2px solid var(--highlight-color);
+  border-radius: 16px;
+  padding: 16px;
+  text-align: left;
+}
+
+.tech-stack-section h2 {
+  text-align: center;
+}
+
+.tech-stack-section ul {
+  margin-bottom: 32px;
+  li {
+    margin-bottom: 4px;
+  }
+}
+
 .used-tech-element {
   background: var(--highlight-color);
   color: rgba(15, 23, 42, 1);
@@ -504,4 +576,63 @@ article div {
   border-radius: 8px;
   font-family: "Ubuntu", serif;
   font-size: 13px;
+}
+
+.timeline-section {
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.timeline {
+  position: relative;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--highlight-color);
+  border-radius: 4px;
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 30px;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: 5px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  display: block;
+  background: var(--highlight-color);
+  border: 1px solid black;
+  border-radius: 50%;
+  z-index: 8;
+}
+
+.timeline-date {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-bottom: 5px;
+}
+
+.timeline-content h3 {
+  margin: 0;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.timeline-content li {
+  color: black;
+  margin-top: 5px;
 }
