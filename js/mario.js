@@ -40,3 +40,7 @@ const itsMeMario = () => {
   document.getElementById("mario-sound").volume = 0.2
   document.getElementById("mario-sound").play()
 }
+
+if (homepageMario) {
+  homepageMario.addEventListener('click', itsMeMario)
+}

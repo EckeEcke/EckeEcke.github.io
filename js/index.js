@@ -1,3 +1,6 @@
+const SCROLL_THRESHOLD = 400
+const STAR_COUNT = 100
+
 function setVhProperty() {
   if (window.scrollY > 0) return
   let vh = window.innerHeight * 0.01;
@@ -30,7 +33,7 @@ const scrollTopBTN = document.getElementById("scroll-back-top-BTN")
 
 const scrollToTop = () => body.scrollIntoView({behavior: "smooth"})
 
-document.addEventListener("scroll", () => scrollTopBTN.style.display = scrollY > 400 ? 'block' : 'none')
+document.addEventListener("scroll", () => scrollTopBTN.style.display = scrollY > SCROLL_THRESHOLD ? 'block' : 'none')
 
 let showSidebar = false
 const backdrop = document.getElementById("backdrop")
@@ -54,6 +57,10 @@ const toggleSidebar = () => {
     displayLevel1SidebarContent()
   }
 }
+
+backdrop.addEventListener('click', toggleSidebar)
+document.getElementById('menu-btn').addEventListener('click', toggleSidebar)
+scrollTopBTN.addEventListener('click', scrollToTop)
 
 document.addEventListener('keydown', function(event) {
   if (event.key === 'Escape') {
@@ -100,9 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const initStars = () => {
   const container = document.getElementById('stars-container')
-  const starCount = 100
 
-  for (let i = 0; i < starCount; i++) {
+  for (let i = 0; i < STAR_COUNT; i++) {
     const star = document.createElement('div')
     star.className = 'star'
     
