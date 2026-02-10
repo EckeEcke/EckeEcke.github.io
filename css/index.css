@@ -146,7 +146,7 @@ hr {
   border-radius: 8px;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 0;
-  transform: translateX(200%);
+  transform: translateX(0%);
 }
 
 .toggle-btn { 
@@ -574,7 +574,7 @@ article div {
 .timeline {
   position: relative;
   width: 100%;
-  padding: 20px 0;
+  margin: 20px 0;
 }
 
 .timeline::before {
@@ -596,10 +596,10 @@ article div {
 
 .timeline-dot {
   position: absolute;
-  left: 5px;
-  top: 4px;
-  width: 14px;
-  height: 14px;
+  left: 2px;
+  top: 0;
+  width: 20px;
+  height: 20px;
   display: block;
   background: var(--highlight-color);
   border: 1px solid black;
