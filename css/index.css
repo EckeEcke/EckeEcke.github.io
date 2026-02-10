@@ -345,7 +345,7 @@ article div {
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* Klicks gehen durch zu den Buttons */
+  pointer-events: none;
 }
 
 .star {
@@ -353,7 +353,6 @@ article div {
   background-color: white;
   border-radius: 50%;
   opacity: 0.5;
-  /* Animation wie in deiner Vue-Komponente definiert */
   animation: twinkle linear infinite;
 }
 
