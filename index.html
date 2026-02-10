@@ -30,7 +30,7 @@
 <body id="body" class="bg-slate-900">
     <div id="backdrop" onclick="toggleSidebar()"></div>
     <div class="sidebar-wrapper">
-        <div data-show="false" id="sidebar" class="sidebar">
+        <div data-show="false" id="sidebar" class="sidebar" aria-hidden="true">
             <div class="level1">
                 <h4>eckeecke.github.io</h4>
                 <button class="nav-item" data-target="highlights">
@@ -198,7 +198,7 @@
                         This website serves as a <span class="font-bold">portfolio</span> for my hobby projects
                     </li>
                     <li>
-                        Looking for a collaboration? <span class="font-bold">Contact me!</span>
+                        Looking for a collaboration? <span class="font-bold">Contact me on GitHub or LinkedIn</span>
                     </li>
                 </ul>
                 <div class="contact-icons appear">
@@ -225,6 +225,7 @@
                       alt="screenshot triggerscore"
                       class="screenshot-box-shadow"
                       src="images/screenshots/Screenshot-Triggerscore.webp"
+                      loading="lazy"
               >
           </a>
       </div>
@@ -258,6 +259,7 @@
                       alt="screenshot mealplanner"
                       class="screenshot-box-shadow"
                       src="images/screenshots/screenshot-mealplanner-vue3.webp"
+                      loading="lazy"
               >
           </a>
       </div>
@@ -291,6 +293,7 @@
                       alt="screenshot school fight"
                       class="screenshot-box-shadow"
                       src="images/screenshots/screenshot-schoolfight.webp"
+                      loading="lazy"
               >
           </a>
       </div>
@@ -423,10 +426,10 @@
     </button>
 
     <audio src="sounds/mario_its_me.wav" id="mario-sound"></audio>
-    <script type="text/javascript" src="js/index.js"></script>
-    <script type="text/javascript" src="js/mario.js"></script>
-    <script src="https://code.iconify.design/2/2.1.0/iconify.min.js"></script>
-    <script data-goatcounter="https://eckeecke.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+    <script src="js/index.js" defer></script>
+    <script src="js/mario.js" defer></script>
+    <script src="https://code.iconify.design/2/2.1.0/iconify.min.js" defer></script>
+    <script data-goatcounter="https://eckeecke.goatcounter.com/count" src="https://gc.zgo.at/count.js" defer></script>
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",

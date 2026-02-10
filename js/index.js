@@ -38,13 +38,16 @@ const backdrop = document.getElementById("backdrop")
 const toggleSidebar = () => {
   document.getElementById("menu-btn").classList.toggle("active")
   showSidebar = !showSidebar
+  const sidebar = document.getElementById("sidebar")
   if (showSidebar) {
-    document.getElementById("sidebar").dataset.show = "true"
+    sidebar.dataset.show = "true"
+    sidebar.setAttribute("aria-hidden", "false")
     backdrop.style.display = "block"
     document.body.style.overflowY = "hidden"
     document.body.style.height = "100vh"
   } else {
-    document.getElementById("sidebar").dataset.show = "false"
+    sidebar.dataset.show = "false"
+    sidebar.setAttribute("aria-hidden", "true")
     backdrop.style.display = "none"
     document.body.style.overflowY = "auto"
     document.body.style.height = "auto"
