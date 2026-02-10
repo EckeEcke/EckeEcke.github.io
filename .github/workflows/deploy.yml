@@ -35,7 +35,8 @@ jobs:
           cp *.ico dist/ 2>/dev/null || true
           cp *.svg dist/ 2>/dev/null || true
       - name: Minify CSS
-        run: cleancss -o dist/index.css index.css
+        run: |
+          esbuild css/index.css --minify --outfile=dist/css/index.css
       - name: Minify JS
         run: esbuild script.js --minify --outfile=dist/script.js
       - name: Minify HTML
