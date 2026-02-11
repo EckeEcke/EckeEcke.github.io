@@ -151,9 +151,6 @@ h3 {
     animation-delay: 0.5s;
     text-align: left;
   }
-  ul {
-    padding-inline-start: 16px;
-  }
 }
 
 .intro-list-wrapper {
@@ -167,12 +164,12 @@ h3 {
 
 .intro-bulletpoints {
   margin: 0;
-}
-
-.intro-bulletpoints li {
-  font-size: 1.2rem;
-  color: var(--intro-font-color);
-  margin-bottom: 8px;
+  padding-inline-start: 16px;
+  li {
+    font-size: 1.2rem;
+    color: var(--intro-font-color);
+    margin-bottom: 8px;
+  }
 }
 
 #intro h2 {
