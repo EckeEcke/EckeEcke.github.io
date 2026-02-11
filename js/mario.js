@@ -6,11 +6,17 @@ if (marioBox && homepageMario) {
   let marioLeft = -60
   let spritesheetPosition = 0
   let sheetMovement = 50
+  let isMoving = true
 
-  const movingBox = () => {
+  const moveBox = () => {
+    if (!isMoving) return
     marioBox.style.transform = `translateX(${marioLeft}px)`
     if (marioLeft < window.innerWidth) marioLeft += 2
-    if (marioLeft >= window.innerWidth) marioLeft = -500
+    if (marioLeft >= window.innerWidth) {
+      isMoving = false
+      marioLeft = -100
+      setTimeout(() => isMoving = true, 20000)
+    }
   }
 
   const animateMario = () => {
@@ -25,7 +31,7 @@ if (marioBox && homepageMario) {
     marioSound.play()
   }
 
-  setInterval(movingBox, 1000 / 60)
+  setInterval(moveBox, 1000 / 60)
   setInterval(animateMario, 102)
   homepageMario.addEventListener('click', itsMeMario)
 }
