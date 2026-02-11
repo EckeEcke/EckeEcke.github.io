@@ -1,6 +1,0 @@
-[submodule "schoolfight"]
-	path = schoolfight
-	url = https://github.com/EckeEcke/schoolfight
-[submodule "imposter-race"]
-	path = imposter-race
-	url = https://github.com/EckeEcke/Imposter-Race-Python.git
