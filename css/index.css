@@ -664,7 +664,7 @@ footer .icons-wrapper {
 .tech-stack-section ul {
   margin-bottom: 32px;
   li {
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 }
 
@@ -741,7 +741,7 @@ article div {
 
 .timeline-content li {
   color: black;
-  margin-top: 5px;
+  margin-bottom: 8px;
 }
 
   /*********/
