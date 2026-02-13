@@ -294,6 +294,9 @@ const initGame = async (p1, p2, mode, battleData) => {
     let lastEnemyShotTime = 0
     const SHOT_COOLDOWN = 400
 
+    let cpuPattern = 0 // 0: Random L/R, 1: Follow Player, 2: Target Shields
+    let enemyDir = 1
+
     const timerLabel = createSharpText('01:00', 24, true, '#39d353', true)
     timerLabel.position.set(DESIGN_W + 5, 180)
     stage.addChild(timerLabel)
@@ -328,6 +331,7 @@ const initGame = async (p1, p2, mode, battleData) => {
         if (winner || reason === 'time') {
             gameOver = true
             clearInterval(timerInterval)
+            if (mode === 'cpu') clearInterval(patternInterval)
             const overlay = new PIXI.Graphics().rect(0, 0, TOTAL_W, DESIGN_H).fill({ color: 0x000000, alpha: 0.8 })
             const msg = winner ? `${winner}\nWINS!` : 'DRAW'
             const message = createSharpText(msg, 30, true, '#39d353')
@@ -350,6 +354,11 @@ const initGame = async (p1, p2, mode, battleData) => {
             checkWin('time') 
         }
     }, 1000)
+
+    const patternInterval = mode === 'cpu' ? setInterval(() => {
+        if (gameOver) return clearInterval(patternInterval)
+        cpuPattern = (cpuPattern + 1) % 3
+    }, 3000) : null
 
     const createExplosion = (x, y, color) => {
         for (let i = 0; i < 8; i++) {
@@ -403,8 +412,6 @@ const initGame = async (p1, p2, mode, battleData) => {
     const enemyChar = new PIXI.Container()
     enemyChar.position.set(DESIGN_W/2, 20)
     stage.addChild(enemyChar)
-    
-    let enemyDir = 1
 
     const getGitColor = (c) => {
         if (c <= 0) return 0x2d333b
@@ -450,7 +457,6 @@ const initGame = async (p1, p2, mode, battleData) => {
         app.ticker.add(tick)
     }
 
-    // Grid laden mit den übergebenen battleData
     const tileSize = (DESIGN_W - 70) / 7
     const drawGrid = (cont, grid, y) => {
         cont.position.set(20, y)
@@ -495,7 +501,7 @@ const initGame = async (p1, p2, mode, battleData) => {
         const shootAI = () => { 
             if(!gameOver){ 
                 createBullet(enemyChar.x, enemyChar.y+15, 5, true)
-                setTimeout(shootAI, Math.random()*600+400) 
+                setTimeout(shootAI, Math.random()*600 + 400) 
             }
         }
         shootAI()
@@ -516,9 +522,32 @@ const initGame = async (p1, p2, mode, battleData) => {
                 lastEnemyShotTime = now 
             }
         } else {
-            enemyChar.x += 2 * enemyDir
-            if (enemyChar.x > DESIGN_W - 20 || enemyChar.x < 20) enemyDir *= -1
+            if (cpuPattern === 0) {
+                enemyChar.x += 2 * enemyDir
+                if (enemyChar.x > DESIGN_W - 20 || enemyChar.x < 20) enemyDir *= -1
+            } 
+            else if (cpuPattern === 1) {
+                const diff = playerChar.x - enemyChar.x
+                if (Math.abs(diff) > 5) {
+                    enemyChar.x += diff > 0 ? 2.5 : -2.5
+                }
+            } 
+            else if (cpuPattern === 2) {
+                const activeShields = playerShields.children.filter(s => s.visible)
+                if (activeShields.length > 0) {
+                    const targetX = activeShields[0].x + playerShields.x + (tileSize/2)
+                    const diff = targetX - enemyChar.x
+                    if (Math.abs(diff) > 5) {
+                        enemyChar.x += diff > 0 ? 2 : -2
+                    }
+                } else {
+                    const diff = playerChar.x - enemyChar.x
+                    enemyChar.x += diff > 0 ? 2 : -2
+                }
+            }
+            enemyChar.x = Math.max(20, Math.min(DESIGN_W - 20, enemyChar.x))
         }
+
         if (keys.w && now - lastShotTime > SHOT_COOLDOWN) { 
             createBullet(playerChar.x, playerChar.y - 15, -5, false)
             lastShotTime = now
