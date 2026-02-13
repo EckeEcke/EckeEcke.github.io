@@ -6,9 +6,37 @@ const GH_MONO = ['ui-monospace', 'SFMono-Regular', 'SF Mono', 'Menlo', 'Consolas
 // create ui elements for setup mask
 const setupLauncher = () => {
     const container = document.getElementById('game-container')
+
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768
+    
+    if (isMobile) {
+        const msg = document.createElement('div')
+        msg.style.cssText = `position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background:#2d333b; padding:30px; border-radius:8px; color:white; font-family:${GH_SANS.join(',')}; text-align:center; border:2px solid #ff4444; width:80%`
+        msg.innerHTML = `<h2 style="color:#ff4444; margin-top:0">PC Required</h2><p>This game requires a keyboard and a larger screen to play.</p><p style="font-size:12px; color:#8b949e">Please open this page on a Desktop computer.</p>`
+        container.appendChild(msg)
+        return
+    }
+
     const uiOverlay = document.createElement('div')
     uiOverlay.id = 'ui-overlay'
     uiOverlay.style.cssText = `position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background:#2d333b; padding:20px; border-radius:8px; display:flex; flex-direction:column; gap:10px; color:white; font-family:${GH_SANS.join(',')}; z-index:100; border:2px solid #39d353`
+
+    const infoBox = document.createElement('div')
+    infoBox.style.cssText = 'background:#22272e; padding:15px; border-radius:6px; font-size:13px; border:1px solid #444c56'
+    infoBox.innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:10px; border-bottom:1px solid #444c56; padding-bottom:10px">
+            <div style="text-align:center; flex:1">
+                <strong style="color:#39d353">P1 (Green)</strong><br>Move: A / D<br>Shoot: W
+            </div>
+            <div style="width:1px; background:#444c56; margin:0 10px"></div>
+            <div style="text-align:center; flex:1">
+                <strong style="color:#ff4444">P2 (Red)</strong><br>Move: ← / →<br>Shoot: ↓
+            </div>
+        </div>
+        <div style="text-align:center; color:#8b949e">
+            <strong>Goal:</strong> First to 10 Hits or most hits after 1:00 min wins!
+        </div>
+    `
     
     const title = document.createElement('h2')
     title.innerText = 'Commit Combat'
@@ -41,7 +69,7 @@ const setupLauncher = () => {
     startBtn.innerText = 'START BATTLE'
     startBtn.style.cssText = 'padding:10px; background:#39d353; border:none; border-radius:4px; cursor:pointer; font-weight:bold'
     
-    uiOverlay.append(title, input1, input2, radioContainer, startBtn)
+    uiOverlay.append(title, infoBox, input1, input2, radioContainer, infoBox, startBtn)
     container.appendChild(uiOverlay)
     
     startBtn.onclick = () => {
@@ -166,16 +194,14 @@ const initGame = async (p1, p2, mode) => {
     const sidebar = new PIXI.Graphics().rect(DESIGN_W, 0, SIDEBAR_W, DESIGN_H).fill({ color: 0x000000, alpha: 0.5 })
     stage.addChild(sidebar)
     
-    let playerHits = 0, enemyHits = 0, p1S = 0, p2S = 0, timeLeft = 60, gameOver = false, lastShotTime = 0, lastEnemyShotTime = 0
+    let playerHits = 0, enemyHits = 0, p1ShieldHits = 0, p2ShieldHits = 0, timeLeft = 60, gameOver = false, lastShotTime = 0, lastEnemyShotTime = 0
     const SHOT_COOLDOWN = 400
 
     const timerLabel = createSharpText('01:00', 24, true, '#39d353', true); timerLabel.position.set(DESIGN_W + 5, 180); stage.addChild(timerLabel)
     const enemyNameLabel = createSharpText(p2, 14); enemyNameLabel.position.set(DESIGN_W + 5, 20); stage.addChild(enemyNameLabel)
     const enemyHitLabel = createSharpText('Hits: 0', 12, false, '#aaaaaa', true); enemyHitLabel.position.set(DESIGN_W + 5, 45); stage.addChild(enemyHitLabel)
-    const enemyShieldLabel = createSharpText('S: 0', 10, false, '#666666', true); enemyShieldLabel.position.set(DESIGN_W + 70, 45); stage.addChild(enemyShieldLabel)
     const playerNameLabel = createSharpText(p1, 14); playerNameLabel.position.set(DESIGN_W + 5, 320); stage.addChild(playerNameLabel)
     const playerHitLabel = createSharpText('Hits: 0', 12, false, '#aaaaaa', true); playerHitLabel.position.set(DESIGN_W + 5, 345); stage.addChild(playerHitLabel)
-    const playerShieldLabel = createSharpText('S: 0', 10, false, '#666666', true); playerShieldLabel.position.set(DESIGN_W + 70, 345); stage.addChild(playerShieldLabel)
 
     const checkWin = (reason) => {
         if (gameOver) return
@@ -185,8 +211,8 @@ const initGame = async (p1, p2, mode) => {
         else if (reason === 'time') {
             if (playerHits > enemyHits) winner = p1
             else if (enemyHits > playerHits) winner = p2
-            else if (p1S > p2S) winner = p1
-            else if (p2S > p1S) winner = p2
+            else if (p1ShieldHits > p2ShieldHits) winner = p1
+            else if (p2ShieldHits > p1ShieldHits) winner = p2
         }
         if (winner || reason === 'time') {
             gameOver = true
@@ -265,7 +291,11 @@ const initGame = async (p1, p2, mode) => {
     enemyChar.position.set(DESIGN_W/2, 20)
     stage.addChild(enemyChar)
     let enemyDir = 1
-    const getGitColor = (c) => [0x2d333b, 0x0e4429, 0x006d32, 0x26a641, 0x39d353][Math.min(4, Math.floor(c/3))]
+    const getGitColor = (c) => {
+        if (c <= 0) return 0x2d333b
+        const colors = [0x0e4429, 0x006d32, 0x26a641, 0x39d353]
+        return colors[Math.min(3, Math.max(0, Math.ceil(c/3) - 1))]
+    }
 
     const createBullet = (x, y, vy, isEnemy) => {
         if (gameOver) return
@@ -288,15 +318,13 @@ const initGame = async (p1, p2, mode) => {
                 if (s.visible && b.x + 4 > s.x + shields.x && b.x - 4  < s.x + shields.x + tileSize && b.y > s.y + shields.y && b.y < s.y + shields.y + tileSize) {
                     s.lives--
                     createExplosion(b.x, b.y, getGitColor(s.lives + 1))
-                    if (s.lives <= 0) { 
+                    if (s.lives < 0) { 
                         s.visible = false
                         if (isEnemy) { 
-                            p1S++
-                            enemyShieldLabel.text = `S: ${p1S}`
+                            p2ShieldHits++
                         }
                         else { 
-                            p2S++
-                            playerShieldLabel.text = `S: ${p2S}`
+                            p1ShieldHits++
                         }
                     } else s.clear().roundRect(0,0,tileSize,tileSize,6).fill(getGitColor(s.lives))
                     stage.removeChild(b)
