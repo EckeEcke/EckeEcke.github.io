@@ -640,7 +640,7 @@ footer {
 .tech-stack-section {
   border: 2px solid var(--highlight-color);
   border-radius: 16px;
-  padding: 32px;
+  padding: 32px 16px;
   text-align: left;
 }
 
@@ -816,6 +816,10 @@ footer {
 
   .tab-headline {
     text-align: center;
+  }
+
+  .tech-stack-section {
+    padding: 32px;
   }
 }
 

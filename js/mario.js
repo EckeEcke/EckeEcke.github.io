@@ -3,7 +3,7 @@ const homepageMario = document.getElementById('homepage-mario')
 const marioSound = document.getElementById('mario-sound')
 
 if (marioBox && homepageMario) {
-    let marioLeft = -60
+    let marioLeft = -500
     let spritesheetPosition = 0
     let sheetMovement = 50
     let isMoving = true
@@ -24,10 +24,13 @@ if (marioBox && homepageMario) {
                 lastSpriteUpdate = timestamp
             }
 
-            if (marioLeft >= window.innerWidth) {
+            if (marioLeft >= window.innerWidth || marioBox.style.display === 'none') {
                 isMoving = false
                 marioLeft = -500
-                setTimeout(() => isMoving = true, 20000)
+                setTimeout(() => {
+                    isMoving = true
+                    marioBox.style.display = 'block'
+                }, 30000)
             }
         }
         requestAnimationFrame(animate)
@@ -43,6 +46,7 @@ if (marioBox && homepageMario) {
 
     window.addEventListener('resize', () => {
         marioLeft = -500
+        marioBox.style.display = 'none'
     })
 
     requestAnimationFrame(animate)
