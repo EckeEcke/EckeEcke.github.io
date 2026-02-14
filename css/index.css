@@ -277,7 +277,7 @@ h3 {
 
 .icons-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   gap: 12px;
   max-width: 600px;
 }
@@ -768,7 +768,7 @@ footer {
   background: rgba(94, 234, 212, 0.1);
   border-radius: 24px;
   padding: 12px 24px;
-  font-size: 16px;
+  font-size: 12px;
   color: #1a202c;
 }
 
@@ -796,6 +796,14 @@ footer {
 @media (min-width: 575px) {
   .intro-list-wrapper {
     padding: 32px;
+  }
+
+  .techstack-icon {
+    font-size: 16px;
+  }
+
+  .icons-wrapper {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
   .toggle-btn {
