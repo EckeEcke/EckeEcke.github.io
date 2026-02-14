@@ -169,6 +169,10 @@ h3 {
   }
 }
 
+.intro-bulletpoints li::marker {
+  color: var(--highlight-color);
+}
+
 #intro h2 {
   animation-delay: 1.5s;
   color: var(--intro-font-color);
