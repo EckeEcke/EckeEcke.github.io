@@ -2,7 +2,7 @@ name: Optimize eckeecke.github.io
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build-and-deploy:

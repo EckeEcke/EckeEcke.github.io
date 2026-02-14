@@ -1,61 +1,143 @@
 <html lang="en">
+	<head>
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=0.8, user-scalable=0"
+		/>
+		<meta charset="UTF-8" />
+		<title>Temple Looter</title>
+		<link rel="stylesheet" href="css/templelooter.css" />
+		<link
+			rel="icon"
+			type="image/png"
+			href="images/templelooter/character1.png"
+		/>
+	</head>
 
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=0.8, user-scalable=0">
-    <meta charset="UTF-8">
-    <title>Temple Looter</title>
-    <link rel="stylesheet" href="css/templelooter.css">
-    <link rel="icon" type="image/png" href="images/templelooter/character1.png" />
-</head>
+	<body>
+		<div class="game-wrapper">
+			<h1>Temple Looter</h1>
+			<div class="canvas-wrapper">
+				<canvas id="game-canvas" width="400" height="400"></canvas>
+				<div id="damage-overlay"></div>
+			</div>
+			<div id="volume-control">
+				<div>VOLUME</div>
+				<span onclick="setVolume(0)"> | </span>
+				<span onclick="setVolume(1)" data-value="1" class="volume-item"
+					>&#11036;</span
+				>
+				<span onclick="setVolume(2)" data-value="2" class="volume-item"
+					>&#11036;</span
+				>
+				<span onclick="setVolume(3)" data-value="3" class="volume-item"
+					>&#11036;</span
+				>
+				<span onclick="setVolume(4)" data-value="4" class="volume-item"
+					>&#11036;</span
+				>
+				<span onclick="setVolume(5)" data-value="5" class="volume-item"
+					>&#11036;</span
+				>
+			</div>
 
-<body>
-    <div class="game-wrapper">
-        <h1>Temple Looter</h1>
-        <div class="canvas-wrapper">
-            <canvas id="game-canvas" width="400" height="400"></canvas>
-            <div id="damage-overlay"></div>
-        </div>
-        <div id="volume-control">
-            <div>VOLUME</div>
-            <span onclick="setVolume(0)"> | </span>
-            <span onclick="setVolume(1)" data-value="1" class="volume-item">&#11036;</span>
-            <span onclick="setVolume(2)" data-value="2" class="volume-item">&#11036;</span>
-            <span onclick="setVolume(3)" data-value="3" class="volume-item">&#11036;</span>
-            <span onclick="setVolume(4)" data-value="4" class="volume-item">&#11036;</span>
-            <span onclick="setVolume(5)" data-value="5" class="volume-item">&#11036;</span>
-        </div>
+			<div class="btn-wrapper">
+				<button class="touch-BTN" id="touch-BTN-start">START</button>
+			</div>
+		</div>
 
-        <div class="btn-wrapper">
-            <button class="touch-BTN" id="touch-BTN-start">START</button>
-        </div>
-    </div>
+		<img
+			src="images/templelooter/treasure.png"
+			alt=""
+			id="treasure"
+			style="display: none"
+		/>
+		<img
+			src="images/templelooter/dungeon-background2.png"
+			alt=""
+			id="background"
+			style="display: none"
+		/>
+		<img
+			src="images/templelooter/dungeon-wall.png"
+			alt=""
+			id="wall"
+			style="display: none"
+		/>
+		<img
+			src="images/templelooter/character1.png"
+			alt=""
+			id="character1"
+			style="display: none"
+		/>
+		<img
+			src="images/templelooter/character2.png"
+			alt=""
+			id="character2"
+			style="display: none"
+		/>
+		<img
+			src="images/templelooter/bat1.png"
+			alt=""
+			id="bat1"
+			style="display: none"
+		/>
+		<img
+			src="images/templelooter/bat2.png"
+			alt=""
+			id="bat2"
+			style="display: none"
+		/>
+		<img
+			src="images/templelooter/key.png"
+			alt=""
+			id="key"
+			style="display: none"
+		/>
+		<img
+			src="images/templelooter/background-lava1.png"
+			alt=""
+			id="lava-background1"
+			style="display: none"
+		/>
+		<img
+			src="images/templelooter/background-lava2.png"
+			alt=""
+			id="lava-background2"
+			style="display: none"
+		/>
+		<img
+			src="images/templelooter/bridge.png"
+			alt=""
+			id="bridge"
+			style="display: none"
+		/>
+		<audio src="sounds/templelooter/dungeon-death.wav" id="death"></audio>
+		<audio
+			src="sounds/templelooter/looter-startsound.wav"
+			id="start-sound"
+		></audio>
+		<audio
+			src="sounds/templelooter/looter-gameover.wav"
+			id="gameover-sound"
+		></audio>
+		<audio src="sounds/templelooter/treasure.wav" id="treasure-sound"></audio>
+		<audio src="sounds/templelooter/gate-passed.wav" id="gate-sound"></audio>
+		<audio src="sounds/templelooter/looter-hurt.wav" id="hurt-sound"></audio>
+		<audio
+			src="sounds/templelooter/looter-victory.wav"
+			id="victory-sound"
+		></audio>
+		<audio src="sounds/templelooter/key-sound.wav" id="key-sound"></audio>
+		<audio src="sounds/templelooter/batsound.wav" id="bat-sound"></audio>
+		<audio src="sounds/templelooter/drums.wav" id="drum-sound" loop></audio>
+		<audio src="sounds/templelooter/timer.wav" id="timer-sound" loop></audio>
 
-     
-    <img src="images/templelooter/treasure.png" alt="" id="treasure" style="display:none">
-    <img src="images/templelooter/dungeon-background2.png" alt="" id="background" style="display:none">
-    <img src="images/templelooter/dungeon-wall.png" alt="" id="wall" style="display:none">
-    <img src="images/templelooter/character1.png" alt="" id="character1" style="display:none">
-    <img src="images/templelooter/character2.png" alt="" id="character2" style="display:none">
-    <img src="images/templelooter/bat1.png" alt="" id="bat1" style="display:none">
-    <img src="images/templelooter/bat2.png" alt="" id="bat2" style="display:none">
-    <img src="images/templelooter/key.png" alt="" id="key" style="display:none">
-    <img src="images/templelooter/background-lava1.png" alt="" id="lava-background1" style="display:none">
-    <img src="images/templelooter/background-lava2.png" alt="" id="lava-background2" style="display:none">
-    <img src="images/templelooter/bridge.png" alt="" id="bridge" style="display:none">
-    <audio src="sounds/templelooter/dungeon-death.wav" id="death"></audio>
-    <audio src="sounds/templelooter/looter-startsound.wav" id="start-sound"></audio>
-    <audio src="sounds/templelooter/looter-gameover.wav" id="gameover-sound"></audio>
-    <audio src="sounds/templelooter/treasure.wav" id="treasure-sound"></audio>
-    <audio src="sounds/templelooter/gate-passed.wav" id="gate-sound"></audio>
-    <audio src="sounds/templelooter/looter-hurt.wav" id="hurt-sound"></audio>
-    <audio src="sounds/templelooter/looter-victory.wav" id="victory-sound"></audio>
-    <audio src="sounds/templelooter/key-sound.wav" id="key-sound"></audio>
-    <audio src="sounds/templelooter/batsound.wav" id="bat-sound"></audio>
-    <audio src="sounds/templelooter/drums.wav" id="drum-sound" loop></audio>
-    <audio src="sounds/templelooter/timer.wav" id="timer-sound" loop></audio>
-
-    <script src="./js/templelooter.js"></script>
-    <script data-goatcounter="https://eckeecke.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-</body>
-
+		<script src="./js/templelooter.js"></script>
+		<script
+			data-goatcounter="https://eckeecke.goatcounter.com/count"
+			async
+			src="//gc.zgo.at/count.js"
+		></script>
+	</body>
 </html>

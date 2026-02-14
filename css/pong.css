@@ -1,351 +1,360 @@
 @font-face {
-  font-family: "retro";
-  src: url('../assets/fonts/joystix.ttf');
+	font-family: 'retro';
+	src: url('../assets/fonts/joystix.ttf');
 }
 
 html,
 body {
-  background-color: #000500;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  margin: 0;
-  /*preventing text selecting in mobile view*/
-  overscroll-behavior-y: contain;
-  /*preventing scroll reload in mobile view */
+	background-color: #000500;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	margin: 0;
+	/*preventing text selecting in mobile view*/
+	overscroll-behavior-y: contain;
+	/*preventing scroll reload in mobile view */
 }
 
 body {
-  display: flex; justify-content: center;
+	display: flex;
+	justify-content: center;
 }
 
 * {
-  font-family: retro, serif;
+	font-family: retro, serif;
 }
 
 body.neon-mode * {
-  text-shadow: 0 0 8px #55ffff99;
+	text-shadow: 0 0 8px #55ffff99;
 }
 
 body.sepia-mode {
-  filter: sepia(1);
+	filter: sepia(1);
 }
 
 body.black-and-white {
-  filter: grayscale(1);
+	filter: grayscale(1);
 }
 
 canvas {
-  display: none;
-  margin: 0 auto ;
-  border: 5px solid white;
-  border-radius: 8px;
-  position: relative;
-  box-shadow: 0 0 8px #55ffff99;
+	display: none;
+	margin: 0 auto;
+	border: 5px solid white;
+	border-radius: 8px;
+	position: relative;
+	box-shadow: 0 0 8px #55ffff99;
 }
 
 #trophy {
-  position: absolute;
-  transform: translate(-50%, -50%);
+	position: absolute;
+	transform: translate(-50%, -50%);
 }
 
 .trophy-hidden {
-  display: none;
+	display: none;
 }
 
 .trophy-p1 {
-  left: calc(50% - 200px);
+	left: calc(50% - 200px);
 }
 
 .trophy-p2 {
-  left: calc(50% + 200px);
+	left: calc(50% + 200px);
 }
 
-input[type="radio"] {
-  transform: scale(1.5);
+input[type='radio'] {
+	transform: scale(1.5);
 }
 
 h1 {
-  color: white;
-  text-align: center;
-  margin-top: 0;
-  font-size: 3rem;
+	color: white;
+	text-align: center;
+	margin-top: 0;
+	font-size: 3rem;
 }
 
 article {
-  color: white;
-  text-align: justify;
-  font-size: 1.2em;
-  padding: 0 16px;
-  max-width: 816px;
-  margin: 16px auto 32px;
+	color: white;
+	text-align: justify;
+	font-size: 1.2em;
+	padding: 0 16px;
+	max-width: 816px;
+	margin: 16px auto 32px;
 }
 
 .controls {
-  display: block;
-  text-align: center;
+	display: block;
+	text-align: center;
 }
 
 .canvas-wrapper {
-  position: relative;
+	position: relative;
 }
 
 .content-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 button {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 #start-button,
 #start-button-2p {
-  background: orange;
-  box-shadow: 0 0 4px orange;
+	background: orange;
+	box-shadow: 0 0 4px orange;
 }
 
 #settings-button,
 #fullscreen-button {
-  box-shadow: 0 0 4px white;
+	box-shadow: 0 0 4px white;
 }
 
 #start-button,
 #start-button-2p,
 #settings-button,
 #restart-button {
-  border-radius: 20px;
-  padding: 12px;
-  font-size: 1.2em;
-  border-style: none;
-  display: block;
-  transition: .3s;
-  margin: 2rem auto;
-  min-width: 300px;
+	border-radius: 20px;
+	padding: 12px;
+	font-size: 1.2em;
+	border-style: none;
+	display: block;
+	transition: 0.3s;
+	margin: 2rem auto;
+	min-width: 300px;
 }
 
 .restart-button-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  width: 100%;
-  height: 100%;
-  align-items: flex-end;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	width: 100%;
+	height: 100%;
+	align-items: flex-end;
 }
 
 #restart-button {
-  display: none;
+	display: none;
 }
 
 #fullscreen-button {
-  border-radius: 8px;
-  transition: 0.3s;
+	border-radius: 8px;
+	transition: 0.3s;
 }
 
 #fullscreen-button:hover {
-  opacity: 0.9;
-  transform: scale(1.1);
+	opacity: 0.9;
+	transform: scale(1.1);
 }
 
-#fullscreen-button[data-fullscreen="active"] {
-  background-color: white;
+#fullscreen-button[data-fullscreen='active'] {
+	background-color: white;
 }
 
-
-#fullscreen-button[data-fullscreen="inactive"] {
-  background-color: transparent;
-  color: white;
-  border: 1px solid white;
-  opacity: 0.8;
+#fullscreen-button[data-fullscreen='inactive'] {
+	background-color: transparent;
+	color: white;
+	border: 1px solid white;
+	opacity: 0.8;
 }
 
 #toasts {
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-  display: flex;
-  flex-direction: column-reverse;
-  justify-content: flex-end;
-  gap: 16px;
+	position: fixed;
+	bottom: 16px;
+	right: 16px;
+	display: flex;
+	flex-direction: column-reverse;
+	justify-content: flex-end;
+	gap: 16px;
 }
 
 .toast {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  padding: 16px;
-  background: white;
-  border-radius: 8px;
-  width: 300px;
+	display: flex;
+	gap: 16px;
+	align-items: center;
+	padding: 16px;
+	background: white;
+	border-radius: 8px;
+	width: 300px;
 }
 
 #trophies-button {
-  height: 48px;
-  width: 48px;
-  border-radius: 8px;
-  transition: 0.3s;
-  background: white;
-  border: none;
+	height: 48px;
+	width: 48px;
+	border-radius: 8px;
+	transition: 0.3s;
+	background: white;
+	border: none;
 }
 
 #trophies-button img {
-  width: 32px;
-  height: 32px;
+	width: 32px;
+	height: 32px;
 }
 
 .trophy-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 16px;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	margin-bottom: 16px;
 }
 
 .trophy-message {
-  opacity: 0.3;
+	opacity: 0.3;
 }
 
 .trophy-icon {
-  width: 32px;
-  height: 32px;
-  background: green;
-  border-radius: 8px;
-  opacity: 0;
+	width: 32px;
+	height: 32px;
+	background: green;
+	border-radius: 8px;
+	opacity: 0;
 }
 
 .trophy-toast {
-  width: 48px;
-  height: 48px;
-  background: green;
-  border-radius: 8px;
+	width: 48px;
+	height: 48px;
+	background: green;
+	border-radius: 8px;
 }
 
 .trophy-wrapper.unlocked .trophy-icon,
 .trophy-wrapper.unlocked .trophy-message {
-  opacity: 1;
+	opacity: 1;
 }
 
 #start-button:hover,
 #start-button-2p:hover,
 #settings-button:hover,
 .dialog-buttons button:hover,
-#restart-button:hover{
-  background-color: white;
-  color: red;
-  scale: 1.1;
+#restart-button:hover {
+	background-color: white;
+	color: red;
+	scale: 1.1;
 }
 
 dialog h2 {
-  margin: 0 0 32px;
+	margin: 0 0 32px;
 
-  text-align: center;
+	text-align: center;
 }
 
 dialog {
-  padding: 2rem;
-  border-radius: 1rem;
+	padding: 2rem;
+	border-radius: 1rem;
 }
 
 .dialog-buttons {
-  display: flex;
-  justify-content: end;
-  gap: 16px;
-  margin-top: 32px;
+	display: flex;
+	justify-content: end;
+	gap: 16px;
+	margin-top: 32px;
 }
 
 .dialog-buttons button {
-  padding: 0.5rem;
-  border-radius: 0.5rem;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
 }
 
 .option-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  height: 25px;
-  margin-bottom: 16px;
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	height: 25px;
+	margin-bottom: 16px;
 }
 
 .option-input {
-  margin: 0;
-  width: 80px;
-  accent-color: black;
+	margin: 0;
+	width: 80px;
+	accent-color: black;
 }
 
-.option-input[type="checkbox"] {
-  height: 20px;
+.option-input[type='checkbox'] {
+	height: 20px;
 }
 
 #volume-control {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  right: 32px;
-  bottom: 32px;
-  width: 248px;
-  color: white;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	right: 32px;
+	bottom: 32px;
+	width: 248px;
+	color: white;
 }
 
 .volume-item {
-  width: 22px;
-  min-width: 22px;
-  max-width: 22px;
-  text-align: center;
+	width: 22px;
+	min-width: 22px;
+	max-width: 22px;
+	text-align: center;
 }
 
 #github-link {
-  background: white;
-  border-radius: 8px;
-  height: 32px;
-  padding: 8px;
-  transition: 0.3s;
+	background: white;
+	border-radius: 8px;
+	height: 32px;
+	padding: 8px;
+	transition: 0.3s;
 }
 
 #github-link:hover,
 #trophies-button:hover {
-  transform: scale(1.1);
+	transform: scale(1.1);
 }
 
 .wrapper {
-  max-width: 816px;
-  margin: 0 auto;
-  padding: 0 16px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 32px;
-  flex-wrap: wrap;
+	max-width: 816px;
+	margin: 0 auto;
+	padding: 0 16px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 32px;
+	flex-wrap: wrap;
 }
 
 .crt {
-  position: relative;
+	position: relative;
 }
 
 .crt::before {
-  content: " ";
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 200, 100, 0.02), rgba(0, 0, 255, 0.06));
-  z-index: 2;
-  background-size: 100% 2px, 3px 100%;
-  pointer-events: none;
+	content: ' ';
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background:
+		linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+		linear-gradient(
+			90deg,
+			rgba(255, 0, 0, 0.06),
+			rgba(0, 200, 100, 0.02),
+			rgba(0, 0, 255, 0.06)
+		);
+	z-index: 2;
+	background-size:
+		100% 2px,
+		3px 100%;
+	pointer-events: none;
 }
 
 @media (min-width: 1440px) and (min-height: 900px) {
-  .content-wrapper {
-    zoom: 125%;
-  }
+	.content-wrapper {
+		zoom: 125%;
+	}
 }
 
 @media (min-width: 1900px) and (min-height: 1200px) {
-  .content-wrapper {
-    zoom: 150%;
-  }
+	.content-wrapper {
+		zoom: 150%;
+	}
 }
