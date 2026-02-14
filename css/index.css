@@ -785,6 +785,9 @@ footer {
   svg {
     font-size: 20px;
   }
+  div {
+    margin-top: 2px;
+  }
 }
 
 .contact-icons {
