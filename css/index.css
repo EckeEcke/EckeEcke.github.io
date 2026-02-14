@@ -259,12 +259,12 @@ h3 {
 }
 
 .tab-headline {
-  text-align: center;
-  margin-bottom: 32px;
+  margin: 48px 0;
 }
 
 .tab-content {
-  scroll-margin-top: 100px;
+  scroll-margin-top: 128px;
+  margin: 64px 16px;
 }
 
 .tab-content.hidden { 
@@ -279,7 +279,7 @@ h3 {
 .icons-wrapper {
   width: 100%;
   transition: 0.3s;
-  margin: 0 auto 32px;
+  margin: 48px auto 32px;
   max-width: 400px;
 }
 
@@ -602,8 +602,7 @@ footer .icons-wrapper {
   gap: 24px;
   justify-content: center;
   width: var(--max-container-width);
-  max-width: 100%; 
-  padding: 0 16px;
+  max-width: 100%;
   margin: 0 auto 100px;
 }
 
@@ -668,11 +667,6 @@ article div {
   grid-row-gap: 64px;
 }
 
-.icons-section-wrapper {
-  padding: 8px;
-}
-
-
   /******************/
  /* timeline tab */
 /******************/
@@ -681,7 +675,6 @@ article div {
   width: 100%;
   max-width: var(--max-container-width);
   margin: 32px auto;
-  padding: 0 16px;
 }
 
 .timeline {
@@ -853,6 +846,10 @@ article div {
 
   .nav-item, .back-button {
     font-size: 24px;
+  }
+
+  .tab-headline {
+    text-align: center;
   }
 }
 
