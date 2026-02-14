@@ -83,6 +83,10 @@ button:focus-visible, a:focus-visible {
   outline: 4px solid blue!important;
 }
 
+ul {
+  padding-inline-start: 16px;
+}
+
 h1 {
   color: white;
   text-align: center;
@@ -271,16 +275,11 @@ h3 {
   display: none;
 }
 
-.uil,
-.xing-icon {
-  font-size: 32px;
-}
-
 .icons-wrapper {
-  width: 100%;
-  transition: 0.3s;
-  margin: 48px auto 32px;
-  max-width: 400px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  max-width: 600px;
 }
 
 footer {
@@ -288,10 +287,23 @@ footer {
   padding: 8px;
 }
 
-footer .icons-wrapper {
-  max-width: 400px;
+.footer-icon, .footer-icon a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer-icons-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
   margin: 32px auto;
   padding: 16px;
+}
+
+.xing-icon {
+  color: #046064;
 }
 
   /**************/
@@ -621,22 +633,6 @@ footer .icons-wrapper {
   max-width: min(100%, var(--max-container-width));
 }
 
-.demo-section .used-tech-info {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.used-tech-element {
-  background: var(--highlight-color);
-  color: rgba(15, 23, 42, 1);
-  padding: 8px 10px;
-  border-radius: 8px;
-  font-family: "Ubuntu", serif;
-  font-size: 13px;
-}
-
   /******************/
  /* tech stack tab */
 /******************/
@@ -644,12 +640,13 @@ footer .icons-wrapper {
 .tech-stack-section {
   border: 2px solid var(--highlight-color);
   border-radius: 16px;
-  padding: 16px;
+  padding: 32px;
   text-align: left;
 }
 
 .tech-stack-section h2 {
   text-align: center;
+  margin-bottom: 32px;
 }
 
 .tech-stack-section ul {
@@ -657,14 +654,6 @@ footer .icons-wrapper {
   li {
     margin-bottom: 8px;
   }
-}
-
-article div {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  justify-items:center;
-  grid-gap: 32px;
-  grid-row-gap: 64px;
 }
 
   /******************/
@@ -733,12 +722,15 @@ article div {
  /* icons */
 /*********/
 
+.footer-icon {
+  font-size: 48px;
+}
+
 .social-icon {
   transition: all 0.3s;
 }
 
-.social-icon:hover,
-.techstack-icon:hover {
+.social-icon:hover {
   transform: scale(1.1);
 }
 
@@ -766,26 +758,18 @@ article div {
 }
 
 .techstack-icon {
-  position: relative;
-  display: inline-block;
-  transition: all 0.3s; 
-}
-
-.techstack-icon::before {
-  display: block;
-  position: absolute;
-  top: 130%;
-  left: 50%;
-  transform: translateX(-50%) translateY(-50%);
-  z-index: 1;
-  content: attr(data-tooltip);
+  display: flex;
+  flex: 1 1 120px;
+  align-items: center;
+  gap: 8px;
   transition: all 0.3s;
-  opacity: 0;
-  font-weight: bolder;
-}
-
-.techstack-icon:hover::before {
-  opacity: 1;
+  border: 1px solid var(--highlight-color);
+  box-shadow: 0 2px 4px rgba(94, 234, 212, 0.2);
+  background: rgba(94, 234, 212, 0.1);
+  border-radius: 24px;
+  padding: 12px 24px;
+  font-size: 16px;
+  color: #1a202c;
 }
 
 .contact-icons {
@@ -805,13 +789,6 @@ article div {
   fill: var(--highlight-color);
 }
 
-:not(.uil-times):not(.uil-bars).uil,
-.iconify,
-.xing-icon {
-  font-size: 48px;
-  justify-self: center;
-}
-
   /*****************/
  /* media queries */
 /*****************/
@@ -819,25 +796,6 @@ article div {
 @media (min-width: 575px) {
   .intro-list-wrapper {
     padding: 32px;
-  }
-  article div {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-gap: 32px;
-  }
-}
-
-@media (min-width: 769px) {
-  :not(.uil-times):not(.uil-bars).uil,
-  .iconify,
-  .xing-icon {
-    font-size: 48px;
-  }
-
-  article div {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-gap: 32px;
-    
-    grid-row-gap: 64px;
   }
 
   .toggle-btn {
