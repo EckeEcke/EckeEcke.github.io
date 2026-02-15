@@ -217,7 +217,6 @@ class Player {
 		this.coolDownPlayer = 400
 		this.isShotCoolDown = false
 		this.shots = []
-		this.activeShots = []
 		this.hasShield = false
 		this.isInvincible = false
 		this.hasWideShot = false
@@ -225,12 +224,16 @@ class Player {
 	}
 
 	setActiveShots() {
-		this.activeShots = this.shots.filter((shot) => shot.isActive)
+		for (let i = this.shots.length - 1; i >= 0; i--) {
+			const shot = this.shots[i]
+			if (!shot.isActive) {
+				this.shots.splice(i, 1)
+			}
+		}
 	}
 
 	resetShots() {
 		this.shots = []
-		this.setActiveShots()
 	}
 
 	draw() {
@@ -319,7 +322,6 @@ class Player {
 			setTimeout(() => (this.isShotCoolDown = false), this.coolDownPlayer)
 			const shot = new Shot(this.hasWideShot, this.hasLongShot)
 			this.shots.push(shot)
-			game.player.setActiveShots()
 			shot.playLaserSound()
 		}
 	}
@@ -329,6 +331,7 @@ class Player {
 		this.hasShield = false
 		this.hasWideShot = false
 		this.hasLongShot = false
+		createExplosion(this.x + this.width / 2, this.y + this.height / 2, 'red')
 	}
 
 	handlePlayer() {
@@ -336,8 +339,8 @@ class Player {
 		this.move()
 		this.moveTouch()
 		this.shoot()
-		if (this.activeShots.length > 0)
-			this.activeShots.forEach((shot) => {
+		if (this.shots.length > 0)
+			this.shots.forEach((shot) => {
 				shot.move()
 			})
 	}
@@ -381,6 +384,13 @@ const intervals = {
 	bossPositionSwapping: null
 }
 
+const clearAllGameIntervals = () => {
+	Object.keys(intervals).forEach((key) => {
+		clearInterval(intervals[key])
+		delete intervals[key]
+	})
+}
+
 class Game {
 	constructor() {
 		this.state = gameStates.titleScreen
@@ -402,7 +412,6 @@ class Game {
 		this.player = new Player()
 		this.respawnAsteroids = false
 		this.asteroids = []
-		this.activeAsteroids = []
 		this.enemyShips = []
 		this.obstacles = null
 		this.currentGapPattern = 0
@@ -510,6 +519,8 @@ class Game {
 
 	startNextRound() {
 		this.resetGame()
+		clearAllGameIntervals()
+		particles = []
 
 		switch (this.round) {
 			case null:
@@ -615,15 +626,15 @@ class Game {
 	}
 
 	runAsteroidsLevel() {
-		this.activeAsteroids.forEach((asteroid) => {
+		this.asteroids.forEach((asteroid) => {
 			asteroid.moveAsteroid()
 			asteroid.detectCollisionWithShip()
-			this.player.activeShots.forEach((shot) =>
+			this.player.shots.forEach((shot) =>
 				asteroid.detectCollisionWithShot(shot)
 			)
 		})
 
-		if (this.activeAsteroids.length === 0) {
+		if (this.asteroids.length === 0) {
 			this.endLevel()
 		}
 	}
@@ -649,12 +660,12 @@ class Game {
 			this.boss.moveObstacles()
 			this.boss.handleShots()
 			this.boss.elements.forEach((element) =>
-				this.player.activeShots.forEach((shot) => element.hitDetection(shot))
+				this.player.shots.forEach((shot) => element.hitDetection(shot))
 			)
 			if (this.boss.obstacles)
 				this.boss.obstacles.forEach((obstacle) => {
 					obstacle.detectCollisionWithShip()
-					this.player.activeShots.forEach((shot) => obstacle.hitDetection(shot))
+					this.player.shots.forEach((shot) => obstacle.hitDetection(shot))
 				})
 			const headElement = this.boss.elements.find((element) => element.isHead)
 			if (headElement.lives <= 0) {
@@ -686,12 +697,12 @@ class Game {
 
 			if (snake1IsDead) {
 				this.dualSnakes[0].runDeathAnimation()
-				this.dualSnakes[0].activeShots = []
+				this.dualSnakes[0].shots = []
 			}
 
 			if (snake2IsDead) {
 				this.dualSnakes[1].runDeathAnimation()
-				this.dualSnakes[1].activeShots = []
+				this.dualSnakes[1].shots = []
 			}
 
 			if (snake1IsDead && snake2IsDead) {
@@ -749,17 +760,26 @@ class Game {
 	}
 
 	moveShipEnemies() {
-		const activeShips = this.enemyShips.filter((enemy) => enemy.lives > 0)
-		activeShips.forEach((enemy) => {
-			enemy.moveShip()
-			this.player.activeShots.forEach((shot) => enemy.detectHitByPlayer(shot))
-		})
+		for (let i = this.enemyShips.length - 1; i >= 0; i--) {
+			const enemy = this.enemyShips[i]
 
-		if (activeShips.length === 1) {
-			activeShips.forEach((enemy) => enemy.moveDown())
+			if (enemy.lives <= 0) {
+				this.enemyShips.splice(i, 1)
+				continue
+			}
+
+			enemy.moveShip()
+
+			this.player.shots.forEach((shot) => enemy.detectHitByPlayer(shot))
 		}
 
-		if (activeShips.length < 1) this.endLevel()
+		if (this.enemyShips.length === 1) {
+			this.enemyShips[0].moveDown()
+		}
+
+		if (this.enemyShips.length === 0) {
+			this.endLevel()
+		}
 	}
 
 	setScore() {
@@ -971,8 +991,8 @@ class Game {
 	}
 
 	drawShipAndShot() {
-		if (this.player.activeShots.length > 0)
-			this.player.activeShots.forEach((shot) => {
+		if (this.player.shots.length > 0)
+			this.player.shots.forEach((shot) => {
 				shot.draw()
 			})
 
@@ -1053,7 +1073,7 @@ class Game {
 
 		switch (this.state) {
 			case gameStates.asteroidsRound:
-				this.activeAsteroids.forEach((asteroid) => asteroid.drawAsteroid())
+				this.asteroids.forEach((asteroid) => asteroid.drawAsteroid())
 				if (this.powerUp) this.powerUp.draw()
 				break
 
@@ -1107,6 +1127,15 @@ class Game {
 			default:
 				break
 		}
+
+		particles.forEach((particle, index) => {
+			if (particle.alpha <= 0) {
+				particles.splice(index, 1)
+			} else {
+				particle.update()
+				particle.draw()
+			}
+		})
 
 		requestAnimationFrame(this.drawEverything)
 	}
@@ -1194,7 +1223,9 @@ class Game {
 	}
 
 	setActiveAsteroids() {
-		this.activeAsteroids = this.asteroids.filter((asteroid) => !asteroid.hit)
+		for (let i = this.asteroids.length - 1; i >= 0; i--) {
+			if (this.asteroids[i].hit) this.asteroids.splice(i, 1)
+		}
 	}
 
 	addSnakeElements() {
@@ -1247,7 +1278,6 @@ class Asteroid {
 		this.width = size
 		this.height = size
 		this.hit = false
-		this.countBlocker = false
 		this.speed = speed
 	}
 
@@ -1272,7 +1302,7 @@ class Asteroid {
 	drawAsteroid() {
 		if (this.hit) return
 		canvasContext.drawImage(
-			this.countBlocker ? images.explosion : images.asteroid,
+			images.asteroid,
 			this.x,
 			this.y,
 			this.width,
@@ -1293,7 +1323,7 @@ class Asteroid {
 	}
 
 	detectCollisionWithShip() {
-		if (this.hit || this.countBlocker) return
+		if (this.hit) return
 		const tolerance = 6
 
 		const overlapX =
@@ -1305,20 +1335,14 @@ class Asteroid {
 
 		if (overlapX && overlapY) {
 			if (!game.player.hasShield && game.player.isInvincible) {
-				this.countBlocker = true
-				setTimeout(() => {
-					this.hit = true
-					game.setActiveAsteroids()
-				}, 100)
+				this.hit = true
+				game.setActiveAsteroids()
 			}
 
 			if (game.player.hasShield) {
 				game.player.losePowerUps()
-				this.countBlocker = true
-				setTimeout(() => {
-					this.hit = true
-					game.setActiveAsteroids()
-				}, 100)
+				this.hit = true
+				game.setActiveAsteroids()
 				setTimeout(() => {
 					if (!game.player.hasShield) game.player.isInvincible = false
 				}, 500)
@@ -1333,20 +1357,18 @@ class Asteroid {
 			shot.y < this.y + this.height && shot.y + shot.currentHeight > this.y
 
 		if (overlapX && overlapY) {
-			if (!this.countBlocker) {
-				shot.isActive = false
-				game.player.setActiveShots()
-				playSound(sounds.hitSound)
-				game.score += 5
-			}
-
-			this.countBlocker = true
-
-			setTimeout(() => {
-				this.hit = true
-				game.setActiveAsteroids()
-				this.addNewAsteroid()
-			}, 100)
+			shot.isActive = false
+			game.player.setActiveShots()
+			playSound(sounds.hitSound)
+			game.score += 5
+			createExplosion(
+				this.x + this.width / 2,
+				this.y + this.height / 2,
+				'#5eead4'
+			)
+			this.hit = true
+			game.setActiveAsteroids()
+			this.addNewAsteroid()
 		}
 	}
 }
@@ -1366,7 +1388,6 @@ class EnemyShip {
 		this.isShotCoolDown = false
 		this.shotCoolDown = 400
 		this.shots = []
-		this.activeShots = []
 		this.isLockOn = game.level > 1 ? isLockOn : false
 		this.isLockOnMode = false
 	}
@@ -1381,17 +1402,8 @@ class EnemyShip {
 				this.height
 			)
 		}
-		if (this.lives % 1 !== 0) {
-			canvasContext.drawImage(
-				images.explosion,
-				this.x,
-				this.y,
-				this.width,
-				this.height
-			)
-		}
 		if (game.player.killed) return
-		this.activeShots.forEach((shot) => {
+		this.shots.forEach((shot) => {
 			shot.draw()
 		})
 	}
@@ -1414,7 +1426,9 @@ class EnemyShip {
 	}
 
 	setActiveShots() {
-		this.activeShots = this.shots.filter((shot) => shot.isActive)
+		for (let i = this.shots.length - 1; i >= 0; i--) {
+			if (!this.shots[i].isActive) this.shots.splice(i, 1)
+		}
 	}
 
 	moveShip() {
@@ -1439,7 +1453,7 @@ class EnemyShip {
 	handleShots() {
 		if (game.player.killed) return
 		this.shoot()
-		this.activeShots.forEach((shot) => {
+		this.shots.forEach((shot) => {
 			shot.move()
 			shot.detectHittingPlayer()
 		})
@@ -1459,6 +1473,7 @@ class EnemyShip {
 			shot.isActive = false
 			game.player.setActiveShots()
 			game.score += 30
+			createExplosion(this.x + this.width / 2, this.y + this.height / 2, '#5eead4')
 		}
 	}
 }
@@ -1590,7 +1605,7 @@ class Snake {
 
 	detectHitByPlayer() {
 		this.elements.forEach((element) => {
-			game.player.activeShots.forEach((shot) => element.hitDetection(shot))
+			game.player.shots.forEach((shot) => element.hitDetection(shot))
 		})
 	}
 
@@ -1629,7 +1644,6 @@ class SnakeElement {
 		this.isShotCoolDown = false
 		this.shotCoolDown = 750
 		this.shots = []
-		this.activeShots = []
 		this.regenerates = regenerates
 		this.isActive = false
 	}
@@ -1652,19 +1666,13 @@ class SnakeElement {
 		}
 
 		if (this.lives % 1 !== 0 && this.isActive) {
-			canvasContext.drawImage(
-				images.explosion,
-				this.x,
-				this.y,
-				this.size,
-				this.size
-			)
+			createExplosion(this.x + this.size / 2, this.y + this.size / 2, '#5eead4')
 		}
 		canvasContext.filter = 'none'
 
 		if (game.player.killed) return
 		if (this.isHead) {
-			this.activeShots.forEach((shot) => {
+			this.shots.forEach((shot) => {
 				shot.draw()
 			})
 		}
@@ -1709,13 +1717,15 @@ class SnakeElement {
 	}
 
 	setActiveShots() {
-		this.activeShots = this.shots.filter((shot) => shot.isActive)
+		for (let i = this.shots.length - 1; i >= 0; i--) {
+			if (!this.shots[i].isActive) this.shots.splice(i, 1)
+		}
 	}
 
 	handleShots() {
 		if (game.player.killed || !this.isHead || this.lives === 0) return
 		this.shoot()
-		this.activeShots.forEach((shot) => {
+		this.shots.forEach((shot) => {
 			shot.move()
 			shot.detectHittingPlayer()
 		})
@@ -1741,6 +1751,7 @@ class SnakeElement {
 				game.colorVariable -= 50
 			}, 50)
 			playSound(this.isHead ? sounds.bossHitSound : sounds.hitSound)
+			createExplosion(this.x, this.y, '#5eead4')
 		}
 	}
 
@@ -1838,7 +1849,7 @@ class Boss2 {
 
 	detectHitByPlayer() {
 		this.elements.forEach((element) => {
-			game.player.activeShots.forEach((shot) => element.hitDetection(shot))
+			game.player.shots.forEach((shot) => element.hitDetection(shot))
 		})
 	}
 
@@ -2045,21 +2056,16 @@ class Obstacle {
 	}
 
 	draw() {
-		if (!this.isActive) return
+		if (
+			!this.isActive ||
+			this.y < 0 - this.size ||
+			this.y > canvas.height + this.size
+		)
+			return
 		canvasContext.filter = `hue-rotate(${game.colorVariable}deg)`
 		if (this.lives > 0.5) {
 			canvasContext.drawImage(
 				images.bossStructure,
-				this.x,
-				this.y,
-				this.size,
-				this.size
-			)
-		}
-
-		if (this.lives % 1 !== 0) {
-			canvasContext.drawImage(
-				images.explosion,
 				this.x,
 				this.y,
 				this.size,
@@ -2074,22 +2080,24 @@ class Obstacle {
 	}
 
 	hitDetection(shot) {
-		if (!this.isActive) return
+		if (
+			!this.isActive ||
+			this.y < 0 - this.size ||
+			this.y > canvas.height + this.size
+		)
+			return
 		const overlapY =
 			shot.y < this.y + this.size && shot.y + shot.currentHeight > this.y
 		const overlapX = shot.x < this.x + this.size && shot.x + shot.width > this.x
 		if (overlapY && overlapX && this.lives > 0.5) {
+			createExplosion(this.x + this.size / 2, this.y + this.size / 2, '#5eead4')
 			shot.isActive = false
 			game.player.setActiveShots()
-			game.colorVariable += 50
 			this.lives -= 0.5
 			setTimeout(() => {
 				this.lives -= 0.5
 				this.isActive = false
 			}, 100)
-			setTimeout(() => {
-				game.colorVariable -= 50
-			}, 50)
 			playSound(sounds.hitSound)
 		}
 	}
@@ -2595,6 +2603,7 @@ class Collectible {
 			game.player.y + game.player.height - tolerance > this.y
 
 		if (overlapX && overlapY) {
+			createExplosion(this.x + this.size / 2, this.y + this.size / 2, 'yellow')
 			this.isCollected = true
 			game.score += 100
 			playSound(sounds.thankYou)
@@ -2614,36 +2623,53 @@ class ObstacleLevel {
 	}
 
 	update() {
-		this.y -= this.obstacleSize
 		if (this.currentRow < this.pattern.length) {
-			const row = this.pattern[this.currentRow]
-			row.forEach((cell, col) => {
-				if (cell === 1) {
-					this.activeObstacles.push(
-						new Obstacle(col * this.obstacleSize, this.y, true)
-					)
+			let canSpawn = false
+
+			if (this.activeObstacles.length === 0) {
+				canSpawn = true
+			} else {
+				const lastAdded = this.activeObstacles[this.activeObstacles.length - 1]
+
+				if (lastAdded.y >= 0) {
+					canSpawn = true
 				}
-				if (cell === 2) {
-					this.activeObstacles.push(
-						new Collectible(col * this.obstacleSize, this.y)
-					)
-				}
-			})
-			this.currentRow++
+			}
+
+			if (canSpawn) {
+				const row = this.pattern[this.currentRow]
+				row.forEach((cell, col) => {
+					if (cell === 1) {
+						this.activeObstacles.push(
+							new Obstacle(col * this.obstacleSize, -this.obstacleSize, true)
+						)
+					}
+					if (cell === 2) {
+						this.activeObstacles.push(
+							new Collectible(col * this.obstacleSize, -this.obstacleSize)
+						)
+					}
+				})
+				this.currentRow++
+			}
+		}
+
+		for (let i = this.activeObstacles.length - 1; i >= 0; i--) {
+			if (this.activeObstacles[i].y > canvas.height + 100) {
+				this.activeObstacles.splice(i, 1)
+			}
 		}
 
 		this.activeObstacles.forEach((obs) => obs.move())
-
-		this.activeObstacles = this.activeObstacles.filter(
-			(obs) => obs.y < canvas.height + 40
-		)
 
 		this.handleCollisions()
 	}
 
 	handleCollisions() {
-		this.activeObstacles.forEach((o) => o.detectCollisionWithShip())
-		game.player.activeShots.forEach((shot) => {
+		this.activeObstacles.forEach((o) => {
+			if (o.y > (canvas.height / 4) * 3) o.detectCollisionWithShip()
+		})
+		game.player.shots.forEach((shot) => {
 			this.activeObstacles.forEach((obs) => obs.hitDetection(shot))
 		})
 	}
@@ -2794,6 +2820,11 @@ class PowerUp {
 
 		if (isCollision) {
 			this.isActive = false
+			createExplosion(
+				this.x + this.baseRadius,
+				this.y + this.baseRadius,
+				'yellow'
+			)
 
 			if (this.type === powerUpTypes.shield) {
 				if (game.player.hasShield) game.score += 50
@@ -2891,6 +2922,42 @@ class Shot {
 			sound = sounds.laser2
 		else sound = sounds.laser
 		playSound(sound)
+	}
+}
+
+let particles = []
+
+class Particle {
+	constructor(x, y, color) {
+		this.x = x
+		this.y = y
+		this.color = color
+		this.size = Math.random() * 4 + 2
+		this.speedX = (Math.random() - 0.5) * 6
+		this.speedY = (Math.random() - 0.5) * 6
+		this.alpha = 1
+		this.decay = Math.random() * 0.02 + 0.01
+	}
+
+	update() {
+		this.x += this.speedX
+		this.y += this.speedY
+		this.alpha -= this.decay
+	}
+
+	draw() {
+		canvasContext.save()
+		canvasContext.globalAlpha = this.alpha
+		canvasContext.fillStyle = this.color
+		canvasContext.fillRect(this.x, this.y, this.size, this.size)
+		canvasContext.restore()
+	}
+}
+
+const createExplosion = (x, y, color) => {
+	const particleCount = 15
+	for (let i = 0; i < particleCount; i++) {
+		particles.push(new Particle(x, y, '#5eead4'))
 	}
 }
 
