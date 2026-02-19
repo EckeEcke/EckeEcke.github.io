@@ -12,6 +12,40 @@ const setVhProperty = () => {
 setVhProperty()
 window.addEventListener('resize', setVhProperty)
 
+const themeToggle = document.querySelector('#theme-toggle')
+const currentTheme = localStorage.getItem('theme')
+
+if (currentTheme === 'dark') {
+  document.body.classList.add('dark-theme')
+} else if (currentTheme === 'light') {
+  document.body.classList.add('light-theme')
+}
+
+themeToggle.addEventListener('click', () => {
+  let theme
+  
+  if (document.body.classList.contains('dark-theme')) {
+    document.body.classList.remove('dark-theme')
+    document.body.classList.add('light-theme')
+    theme = 'light'
+  } else if (document.body.classList.contains('light-theme')) {
+    document.body.classList.remove('light-theme')
+    document.body.classList.add('dark-theme')
+    theme = 'dark'
+  } else {
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    if (isDark) {
+      document.body.classList.add('light-theme')
+      theme = 'light'
+    } else {
+      document.body.classList.add('dark-theme')
+      theme = 'dark'
+    }
+  }
+  
+  localStorage.setItem('theme', theme)
+})
+
 const items = document.querySelectorAll('.appear')
 const active = (entries) => {
 	entries.forEach((entry) =>
