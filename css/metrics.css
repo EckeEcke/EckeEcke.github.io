@@ -1,0 +1,50 @@
+body {
+	background: radial-gradient(
+		circle,
+		rgba(15, 23, 42, 1) 0%,
+		rgba(1, 4, 10, 1) 50%,
+		rgba(10, 5, 10, 1) 100%
+	);
+}
+body * {
+	font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+h1 {
+	display: block;
+	text-align: center;
+	max-width: 800px;
+	margin: 24px auto;
+	color: #5eead5;
+}
+h2 {
+	color: white;
+	font-size: 16px;
+}
+#metrics-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 24px;
+	max-width: 800px;
+	margin: 24px auto;
+}
+h1,
+h2 {
+	text-align: center;
+}
+button {
+	display: block;
+	padding: 12px;
+	font-size: 16px;
+	font-weight: bold;
+	border: none;
+	border-radius: 8px;
+	background: #5eead5;
+	color: black;
+	margin: 64px auto;
+	transition: all 0.3s;
+}
+button:hover {
+	transform: scale(1.1);
+}

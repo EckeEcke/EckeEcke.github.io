@@ -1,56 +1,7 @@
 <html lang="en">
-	<style>
-		body {
-			background: radial-gradient(
-				circle,
-				rgba(15, 23, 42, 1) 0%,
-				rgba(1, 4, 10, 1) 50%,
-				rgba(10, 5, 10, 1) 100%
-			);
-		}
-		body * {
-			font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		}
-		h1 {
-			display: block;
-			text-align: center;
-			max-width: 800px;
-			margin: 24px auto;
-			color: #5eead5;
-		}
-		h2 {
-			color: white;
-			font-size: 16px;
-		}
-		#metrics-container {
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			justify-content: center;
-			gap: 24px;
-			max-width: 800px;
-			margin: 24px auto;
-		}
-		h1,
-		h2 {
-			text-align: center;
-		}
-		button {
-			display: block;
-			padding: 12px;
-			font-size: 16px;
-			font-weight: bold;
-			border: none;
-			border-radius: 8px;
-			background: #5eead5;
-			color: black;
-			margin: 64px auto;
-			transition: all 0.3s;
-		}
-		button:hover {
-			transform: scale(1.1);
-		}
-	</style>
+	<head>
+		<link rel="stylesheet" href="css/metrics.css" />
+	</head>
 	<body>
 		<h1>METRICS</h1>
 		<div id="metrics-container"></div>
@@ -60,55 +11,7 @@
 			OPEN FULL METRICS
 		</button>
 
-		<script>
-			const pages = [
-				{ path: '/', title: 'HOMEPAGE', id: 'homepage' },
-				{ path: '/shooter', title: 'SHOOTER GAME', id: 'shooter' },
-				{ path: '/pong', title: 'PONG GAME', id: 'pong' },
-				{ path: '/snake', title: 'SNAKE GAME', id: 'snake' },
-				{ path: '/templelooter', title: 'TEMPLE LOOTER', id: 'templelooter' },
-				{ path: '/drawing', title: 'DRAWING APP', id: 'drawing' },
-				{ path: '/metrics', title: 'METRICS', id: 'metrics' },
-				{ path: '/404', title: '404', id: '404' }
-			]
-
-			function createMetricsHTML() {
-				const container = document.getElementById('metrics-container')
-
-				pages.forEach((page) => {
-					const div = document.createElement('div')
-					div.className = 'metric-item'
-					div.innerHTML = `
-                    <h2>${page.title}</h2>
-                    <div id="visit-count-${page.id}" class="visit-count"></div>
-                `
-					container.appendChild(div)
-				})
-			}
-
-			function loadVisitCounts() {
-				var t = setInterval(function () {
-					if (window.goatcounter && window.goatcounter.visit_count) {
-						clearInterval(t)
-
-						pages.forEach((page) => {
-							window.goatcounter.visit_count({
-								path: page.path,
-								append: `#visit-count-${page.id}`,
-								no_branding: true,
-								style:
-									'* {color: #000; font-size: 14px;font-family: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;border: none!important}'
-							})
-						})
-					}
-				}, 100)
-			}
-
-			document.addEventListener('DOMContentLoaded', function () {
-				createMetricsHTML()
-				loadVisitCounts()
-			})
-		</script>
+		<script src="js/metrics.js" defer></script>
 
 		<script
 			data-goatcounter="https://eckeecke.goatcounter.com/count"
