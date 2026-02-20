@@ -1189,11 +1189,15 @@
 			src="https://code.iconify.design/2/2.1.0/iconify.min.js"
 			defer
 		></script>
-		<script
-			data-goatcounter="https://eckeecke.goatcounter.com/count"
-			src="https://gc.zgo.at/count.js"
-			defer
-		></script>
+		<script>
+			if (!window.location.hostname.includes('localhost')) {
+				const script = document.createElement('script')
+				script.async = true
+				script.src = 'https://gc.zgo.at/count.js'
+				script.dataset.goatcounter = 'https://eckeecke.goatcounter.com/count'
+				document.head.appendChild(script)
+			}
+		</script>
 		<script type="application/ld+json">
 			{
 				"@context": "https://schema.org",

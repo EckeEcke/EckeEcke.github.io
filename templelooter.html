@@ -134,10 +134,14 @@
 		<audio src="sounds/templelooter/timer.wav" id="timer-sound" loop></audio>
 
 		<script src="./js/templelooter.js"></script>
-		<script
-			data-goatcounter="https://eckeecke.goatcounter.com/count"
-			async
-			src="//gc.zgo.at/count.js"
-		></script>
+		<script>
+			if (!window.location.hostname.includes('localhost')) {
+				const script = document.createElement('script')
+				script.async = true
+				script.src = 'https://gc.zgo.at/count.js'
+				script.dataset.goatcounter = 'https://eckeecke.goatcounter.com/count'
+				document.head.appendChild(script)
+			}
+		</script>
 	</body>
 </html>
