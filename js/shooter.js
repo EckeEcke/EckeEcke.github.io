@@ -216,35 +216,35 @@ function loadSounds() {
 const audioPool = {}
 
 const initAudioPool = (soundName, soundObject, size = 10) => {
-    audioPool[soundName] = {
-        samples: [],
-        currentIndex: 0
-    }
-    for (let i = 0; i < size; i++) {
-        const clone = soundObject.cloneNode()
-        audioPool[soundName].samples.push(clone)
-    }
+	audioPool[soundName] = {
+		samples: [],
+		currentIndex: 0
+	}
+	for (let i = 0; i < size; i++) {
+		const clone = soundObject.cloneNode()
+		audioPool[soundName].samples.push(clone)
+	}
 }
 
 function playSound(soundKey) {
-    const pool = audioPool[soundKey]
-    
-    if (!pool) {
-        const original = sounds[soundKey]
-        if (!original) return
-        
-        original.play()
-        return
-    }
+	const pool = audioPool[soundKey]
 
-    const sample = pool.samples[pool.currentIndex]
-    
-    if (sample) {
-        sample.pause()
-        sample.currentTime = 0
-        sample.play()
-        pool.currentIndex = (pool.currentIndex + 1) % pool.samples.length
-    }
+	if (!pool) {
+		const original = sounds[soundKey]
+		if (!original) return
+
+		original.play()
+		return
+	}
+
+	const sample = pool.samples[pool.currentIndex]
+
+	if (sample) {
+		sample.pause()
+		sample.currentTime = 0
+		sample.play()
+		pool.currentIndex = (pool.currentIndex + 1) % pool.samples.length
+	}
 }
 
 function playMusic(music) {
@@ -675,12 +675,12 @@ class Game {
 				break
 		}
 
-		this.enemyShots.forEach(shot => {
+		this.enemyShots.forEach((shot) => {
 			shot.move()
-			shot.detectHittingPlayer()		
+			shot.detectHittingPlayer()
 		})
 
-		this.enemyShots = this.enemyShots.filter(shot => {
+		this.enemyShots = this.enemyShots.filter((shot) => {
 			return shot.isActive && shot.y < canvas.height
 		})
 	}
@@ -1160,8 +1160,9 @@ class Game {
 				break
 		}
 
-		this.enemyShots.forEach(shot => {
-			shot.draw()})
+		this.enemyShots.forEach((shot) => {
+			shot.draw()
+		})
 
 		this.drawScore()
 
@@ -1649,7 +1650,11 @@ class Snake {
 			setTimeout(() => {
 				playSound('explosion')
 				element.lives = 0.5
-				createExplosion(element.x - element.size / 2, element.y - element.size / 2, '#5eead4')
+				createExplosion(
+					element.x - element.size / 2,
+					element.y - element.size / 2,
+					'#5eead4'
+				)
 				if (index === this.elements.length - 1) {
 					this.elements.forEach((element) => {
 						element.lives = 0
@@ -1692,7 +1697,6 @@ class SnakeElement {
 				this.size
 			)
 		}
-
 
 		if (game.player.killed) return
 	}
@@ -1761,7 +1765,6 @@ class SnakeElement {
 			playSound(this.isHead ? 'bossHitSound' : 'hitSound')
 			createExplosion(this.x - this.size / 2, this.y - this.size / 2, '#5eead4')
 			createExplosion(this.x - this.size / 2, this.y - this.size / 2, '#5eead4')
-
 		}
 	}
 
@@ -1920,7 +1923,11 @@ class Boss2 {
 			element.regenerates = false
 			setTimeout(() => {
 				playSound('explosion')
-				createExplosion(element.x - element.size / 2, element.y - element.size / 2, '#5eead4')
+				createExplosion(
+					element.x - element.size / 2,
+					element.y - element.size / 2,
+					'#5eead4'
+				)
 
 				element.lives = 0.5
 				if (index === this.elements.length - 1) {
@@ -1997,72 +2004,21 @@ class Boss {
 	}
 
 	setObstacles() {
-		const randomIndex = Math.floor(Math.random() * 9)
-		this.obstacles = [
-			[
-				new Obstacle(0, -40, true),
-				new Obstacle(0, -80, true),
-				new Obstacle(0, -120, true),
-				new Obstacle(0, -160, true)
-			],
-			[
-				new Obstacle(40, -40, true),
-				new Obstacle(40, -80, true),
-				new Obstacle(40, -120, true),
-				new Obstacle(40, -160, true)
-			],
-			[
-				new Obstacle(80, -40, true),
-				new Obstacle(80, -80, true),
-				new Obstacle(80, -120, true),
-				new Obstacle(80, -160, true)
-			],
-			[
-				new Obstacle(120, -40, true),
-				new Obstacle(120, -80, true),
-				new Obstacle(120, -120, true),
-				new Obstacle(120, -160, true)
-			],
-			[
-				new Obstacle(160, -40, true),
-				new Obstacle(160, -80, true),
-				new Obstacle(160, -120, true),
-				new Obstacle(160, -160, true)
-			],
-			[
-				new Obstacle(200, -40, true),
-				new Obstacle(200, -80, true),
-				new Obstacle(200, -120, true),
-				new Obstacle(200, -160, true)
-			],
-			[
-				new Obstacle(240, -40, true),
-				new Obstacle(240, -80, true),
-				new Obstacle(240, -120, true),
-				new Obstacle(240, -160, true)
-			],
-			[
-				new Obstacle(280, -40, true),
-				new Obstacle(280, -80, true),
-				new Obstacle(280, -120, true),
-				new Obstacle(280, -160, true)
-			],
-			[
-				new Obstacle(320, -40, true),
-				new Obstacle(320, -80, true),
-				new Obstacle(320, -120, true),
-				new Obstacle(320, -160, true)
-			],
-			[
-				new Obstacle(360, -40, true),
-				new Obstacle(360, -80, true),
-				new Obstacle(360, -120, true),
-				new Obstacle(360, -160, true)
-			]
-		]
-		this.obstacles[randomIndex].forEach((entry) => (entry.isActive = false))
-		this.obstacles[randomIndex + 1].forEach((entry) => (entry.isActive = false))
-		this.obstacles = this.obstacles.flat()
+		const gapIndex = Math.floor(Math.random() * 9)
+		const newObstacles = []
+
+		for (let i = 0; i < 10; i++) {
+			if (i === gapIndex || i === gapIndex + 1) continue
+
+			const x = i * 40
+			newObstacles.push(
+				new Obstacle(x, -40, true),
+				new Obstacle(x, -80, true),
+				new Obstacle(x, -120, true),
+				new Obstacle(x, -160, true)
+			)
+		}
+		this.obstacles = newObstacles
 	}
 
 	moveObstacles() {
@@ -2781,17 +2737,17 @@ function getGradientByType(type) {
 	if (type === powerUpTypes.shield)
 		return {
 			step1: 'rgba(0, 255, 155, 0.6)',
-			step2: 'rgba(0, 255, 0, 0.6)'
+			step2: 'rgba(94, 234, 212, 0.6)'
 		}
 	if (type === powerUpTypes.wideShot)
 		return {
 			step1: 'rgba(255, 155, 0, 0.6)',
-			step2: 'rgba(255, 0, 0, 0.6)'
+			step2: 'rgba(255, 115, 52, 0.6)'
 		}
 	if (type === powerUpTypes.longShot)
 		return {
 			step1: 'rgba(0, 0, 255, 0.6)',
-			step2: 'rgba(155, 0, 255, 0.6)'
+			step2: 'rgba(94, 234, 212, 0.6)'
 		}
 }
 
@@ -2874,9 +2830,7 @@ class PowerUp {
 				game.player.hasLongShot = true
 			}
 
-			playSound(
-				this.type === powerUpTypes.shield ? 'shieldUp' : 'powerUp'
-			)
+			playSound(this.type === powerUpTypes.shield ? 'shieldUp' : 'powerUp')
 		}
 	}
 }
@@ -2948,8 +2902,7 @@ class Shot {
 
 	playLaserSound() {
 		let sound
-		if (game.player.hasWideShot && game.player.hasLongShot)
-			sound = 'laser3'
+		if (game.player.hasWideShot && game.player.hasLongShot) sound = 'laser3'
 		else if (game.player.hasWideShot || game.player.hasLongShot)
 			sound = 'laser2'
 		else sound = 'laser'
