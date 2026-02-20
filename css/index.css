@@ -368,11 +368,15 @@ body.light-them .intro-content::before {
 	top: 0;
 	display: flex;
 	justify-content: center;
-	max-width: var(--max-container-width);
-	margin: 32px auto;
 	padding: 16px 0;
 	z-index: 10;
+	
+}
+
+.toggle-background {
 	background: var(--bg);
+	width: var(--max-container-width);
+	margin: 0 16px;
 }
 
 .toggle-switch {

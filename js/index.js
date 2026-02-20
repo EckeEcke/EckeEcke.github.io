@@ -170,3 +170,37 @@ const initStars = () => {
 }
 
 document.addEventListener('DOMContentLoaded', initStars)
+
+let touchstartX = 0
+let touchendX = 0
+const swipeContainer = document.querySelector('#swipe-container')
+
+const handleGesture = () => {
+    const minDistance = 50
+    const activeBtn = document.querySelector('.toggle-btn.active')
+    if (!activeBtn) return
+
+    const allBtns = Array.from(document.querySelectorAll('.toggle-btn'))
+    const currentIndex = allBtns.indexOf(activeBtn)
+
+    if (touchendX + minDistance < touchstartX) {
+        if (currentIndex < allBtns.length - 1) {
+            allBtns[currentIndex + 1].click()
+        }
+    }
+    
+    if (touchendX > touchstartX + minDistance) {
+        if (currentIndex > 0) {
+            allBtns[currentIndex - 1].click()
+        }
+    }
+}
+
+swipeContainer.addEventListener('touchstart', e => {
+    touchstartX = e.changedTouches[0].screenX
+}, { passive: true })
+
+swipeContainer.addEventListener('touchend', e => {
+    touchendX = e.changedTouches[0].screenX
+    handleGesture()
+}, { passive: true })
