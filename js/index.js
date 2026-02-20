@@ -112,7 +112,7 @@ document.addEventListener('keydown', (event) => {
 			sections.forEach((sec) => {
 				if (sec.id === target + '-content') {
 					sec.classList.remove('hidden')
-					sec.scrollIntoView({ behavior: 'smooth', block: 'start' })
+					sec.scrollIntoView({ behavior: 'auto', block: 'start' })
 				} else {
 					sec.classList.add('hidden')
 				}
