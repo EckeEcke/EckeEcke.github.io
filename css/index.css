@@ -51,7 +51,7 @@ body.light-theme {
 	--text-secondary: #59636e;
 	--intro-card-bg: rgba(255, 255, 255, 0.8);
 	--intro-bg:
-		radial-gradient(circle, #d1d9e6 1px, transparent 1px),
+		radial-gradient(circle, #d1d9e6 2px, transparent 2px),
 		radial-gradient(circle, #ffffff 0%, #f0f7ff 100%);
 	--toggle-bg: var(--intro-bg);
 	--text-toggle: #000000;
