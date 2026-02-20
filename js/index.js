@@ -3,15 +3,6 @@ const CONFIG = {
 	STAR_COUNT: 100
 }
 
-const setVhProperty = () => {
-	if (window.scrollY > 0) return
-	const vh = window.innerHeight * 0.01
-	document.documentElement.style.setProperty('--vh', `${vh}px`)
-}
-
-setVhProperty()
-window.addEventListener('resize', setVhProperty)
-
 const themeToggle = document.querySelector('#theme-toggle')
 const currentTheme = localStorage.getItem('theme')
 
