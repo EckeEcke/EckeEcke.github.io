@@ -368,7 +368,6 @@ body.light-them .intro-content::before {
 	top: 0;
 	display: flex;
 	justify-content: center;
-	padding: 16px 0;
 	z-index: 10;
 	
 }
@@ -377,6 +376,7 @@ body.light-them .intro-content::before {
 	background: var(--bg);
 	width: var(--max-container-width);
 	margin: 0 16px;
+	padding: 16px 0;
 }
 
 .toggle-switch {
