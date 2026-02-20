@@ -26,13 +26,10 @@ if (marioBox && homepageMario) {
 				lastSpriteUpdate = timestamp
 			}
 
-			if (marioLeft >= window.innerWidth || marioBox.style.display === 'none') {
+			if (marioLeft >= window.innerWidth) {
+				marioBox.style.display = 'none'
 				isMoving = false
 				marioLeft = -100
-				setTimeout(() => {
-					isMoving = true
-					marioBox.style.display = 'block'
-				}, 40000)
 			}
 		}
 		requestAnimationFrame(animate)
@@ -45,11 +42,6 @@ if (marioBox && homepageMario) {
 	}
 
 	homepageMario.addEventListener('click', itsMeMario)
-
-	window.addEventListener('resize', () => {
-		marioLeft = -500
-		marioBox.style.display = 'none'
-	})
 
 	requestAnimationFrame(animate)
 }
