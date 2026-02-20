@@ -657,7 +657,7 @@ footer {
 #menu-btn {
 	position: absolute;
 	top: 32px;
-	right: 8px;
+	right: 16px;
 	z-index: 2501;
 	color: var(--highlight-color);
 }
