@@ -154,24 +154,34 @@ const sounds = {
 function loadSounds() {
 	sounds.laserEnemy = new Audio(soundSources.laserEnemy)
 	sounds.laserEnemy.onloadeddata = () => (game.gameLoaded += 5)
+	initAudioPool('laserEnemy', sounds.laserEnemy, 20)
 	sounds.laser = new Audio(soundSources.laser)
 	sounds.laser.onloadeddata = () => (game.gameLoaded += 5)
+	initAudioPool('laser', sounds.laser, 10)
 	sounds.laser2 = new Audio(soundSources.laser2)
 	sounds.laser2.onloadeddata = () => (game.gameLoaded += 5)
+	initAudioPool('laser2', sounds.laser2, 10)
 	sounds.laser3 = new Audio(soundSources.laser3)
 	sounds.laser3.onloadeddata = () => (game.gameLoaded += 5)
+	initAudioPool('laser3', sounds.laser3, 10)
 	sounds.powerUp = new Audio(soundSources.powerUp)
 	sounds.powerUp.onloadeddata = () => (game.gameLoaded += 5)
+	initAudioPool('powerUp', sounds.powerUp, 6)
 	sounds.hitSound = new Audio(soundSources.hitSound)
 	sounds.hitSound.onloadeddata = () => (game.gameLoaded += 3)
+	initAudioPool('hitSound', sounds.hitSound, 20)
 	sounds.bossHitSound = new Audio(soundSources.bossHitSound)
 	sounds.bossHitSound.onloadeddata = () => (game.gameLoaded += 1)
+	initAudioPool('bossHitSound', sounds.bossHitSound, 10)
 	sounds.bossAlert = new Audio(soundSources.bossAlert)
 	sounds.bossAlert.onloadeddata = () => (game.gameLoaded += 1)
+	initAudioPool('bossAlert', sounds.bossAlert, 1)
 	sounds.spaceshipSound = new Audio(soundSources.spaceshipSound)
 	sounds.spaceshipSound.onloadeddata = () => (game.gameLoaded += 5)
+	initAudioPool('spaceshipSound', sounds.spaceshipSound, 1)
 	sounds.loseSound = new Audio(soundSources.loseSound)
 	sounds.loseSound.onloadeddata = () => (game.gameLoaded += 5)
+	initAudioPool('loseSound', sounds.loseSound, 1)
 	sounds.gameMusic = new Audio(soundSources.gameMusic)
 	sounds.gameMusic.onloadeddata = () => (game.gameLoaded += 3)
 	sounds.gameMusic.loop = true
@@ -183,24 +193,64 @@ function loadSounds() {
 	sounds.gameMusic3.loop = true
 	sounds.shieldUp = new Audio(soundSources.shieldUp)
 	sounds.shieldUp.onloadeddata = () => (game.gameLoaded += 5)
+	initAudioPool('shieldUp', sounds.shieldUp, 3)
 	sounds.shieldDown = new Audio(soundSources.shieldDown)
 	sounds.shieldDown.onloadeddata = () => (game.gameLoaded += 5)
+	initAudioPool('shieldDown', sounds.shieldDown, 3)
 	sounds.explosion = new Audio(soundSources.explosion)
 	sounds.explosion.onloadeddata = () => (game.gameLoaded += 1)
+	initAudioPool('explosion', sounds.explosion, 30)
 	sounds.explosion2 = new Audio(soundSources.explosion2)
 	sounds.explosion2.onloadeddata = () => (game.gameLoaded += 1)
+	initAudioPool('explosion2', sounds.explosion2, 30)
 	sounds.thankYou = new Audio(soundSources.thankYou)
 	sounds.thankYou.onloadeddata = () => (game.gameLoaded += 1)
+	initAudioPool('thankYou', sounds.thankYou, 10)
 	sounds.teleport = new Audio(soundSources.teleport)
 	sounds.teleport.onloadeddata = () => (game.gameLoaded += 1)
+	initAudioPool('teleport', sounds.teleport, 8)
 	sounds.credits = new Audio(soundSources.credits)
 	sounds.credits.onloadeddata = () => (game.gameLoaded += 1)
 }
 
-function playSound(sound) {
-	sound.pause()
-	sound.currentTime = 0
-	sound.play()
+const audioPool = {}
+
+const initAudioPool = (soundName, soundObject, size = 10) => {
+    audioPool[soundName] = {
+        samples: [],
+        currentIndex: 0
+    }
+    for (let i = 0; i < size; i++) {
+        const clone = soundObject.cloneNode()
+        audioPool[soundName].samples.push(clone)
+    }
+}
+
+function playSound(soundKey) {
+    const pool = audioPool[soundKey]
+    
+    if (!pool) {
+        const original = sounds[soundKey]
+        if (!original) return
+        
+        original.play()
+        return
+    }
+
+    const sample = pool.samples[pool.currentIndex]
+    
+    if (sample) {
+        sample.pause()
+        sample.currentTime = 0
+        sample.play()
+        pool.currentIndex = (pool.currentIndex + 1) % pool.samples.length
+    }
+}
+
+function playMusic(music) {
+	music.pause()
+	music.currentTime = 0
+	music.play()
 }
 
 // _______________________________________________________________
@@ -267,7 +317,7 @@ class Player {
 		canvasContext.beginPath()
 		canvasContext.arc(x, y, radius, 0, Math.PI * 2)
 		const gradient = canvasContext.createRadialGradient(x, y, 0, x, y, radius)
-		gradient.addColorStop(0, 'rgba(255, 0, 0, 0.3)')
+		gradient.addColorStop(0, 'rgba(94, 234, 212, 0.3)')
 		gradient.addColorStop(1, 'rgba(0, 0, 255, 0.3)')
 		canvasContext.fillStyle = gradient
 		canvasContext.fill()
@@ -327,7 +377,7 @@ class Player {
 	}
 
 	losePowerUps() {
-		playSound(sounds.shieldDown)
+		playSound('shieldDown')
 		this.hasShield = false
 		this.hasWideShot = false
 		this.hasLongShot = false
@@ -408,11 +458,11 @@ class Game {
 		this.backgroundScrollPositions = [0, -2200]
 		this.gameLoaded = 0
 		this.displayedScreen = screens.title
-		this.volume = 1
 		this.player = new Player()
 		this.respawnAsteroids = false
 		this.asteroids = []
 		this.enemyShips = []
+		this.enemyShots = []
 		this.obstacles = null
 		this.currentGapPattern = 0
 		this.snake = null
@@ -458,13 +508,14 @@ class Game {
 				sounds[key].playbackRate = 1
 			}
 		}
-		playSound(sounds.spaceshipSound)
+		playSound('spaceshipSound')
 		this.state = gameStates.spaceshipAnimation
 	}
 
 	resetGame() {
 		this.player.shots.length = 0
 		this.player.shotCoolDown = false
+		this.enemyShots = []
 		this.resetAsteroids()
 		this.snake = new Snake(this.addSnakeElements(), this.colorVariable)
 		this.dualSnakes = [
@@ -504,7 +555,7 @@ class Game {
 		setTimeout(() => {
 			this.music.pause()
 		}, 1000)
-		playSound(sounds.loseSound)
+		playSound('loseSound')
 		setTimeout(() => {
 			this.state = gameStates.gameOver
 			this.isHighScore = false
@@ -564,16 +615,16 @@ class Game {
 			if (this.music) this.music.pause()
 			this.music = this.level === 2 ? sounds.gameMusic3 : sounds.gameMusic2
 			this.music.playbackRate = 1
-			playSound(this.music)
+			playMusic(this.music, true)
 			this.musicRunning = true
 		}
 
 		if (this.round === rounds.boss) {
 			this.music.pause()
 			this.music = sounds.gameMusic
-			playSound(this.music)
+			playMusic(this.music, true)
 			this.musicRunning = false
-			playSound(sounds.bossAlert)
+			playSound('bossAlert')
 			if (this.level === 4) {
 				intervals.bossPositionSwapping = setInterval(
 					() => this.boss2.swapPositions(),
@@ -594,9 +645,9 @@ class Game {
 				() => this.moveShipForAnimation(),
 				1000 / 120
 			)
-			playSound(sounds.spaceshipSound)
+			playSound('spaceshipSound')
 			if (this.gameSpeed < 100) this.gameSpeed += 2
-			canvasContext.fillStyle = 'limegreen'
+			canvasContext.fillStyle = '#5eead4'
 			canvasContext.fillText('Next round!', 100, canvas.height / 2)
 		}, 500)
 	}
@@ -623,6 +674,15 @@ class Game {
 			default:
 				break
 		}
+
+		this.enemyShots.forEach(shot => {
+			shot.move()
+			shot.detectHittingPlayer()		
+		})
+
+		this.enemyShots = this.enemyShots.filter(shot => {
+			return shot.isActive && shot.y < canvas.height
+		})
 	}
 
 	runAsteroidsLevel() {
@@ -669,11 +729,9 @@ class Game {
 				})
 			const headElement = this.boss.elements.find((element) => element.isHead)
 			if (headElement.lives <= 0) {
-				headElement.shots = []
-				headElement.setActiveShots()
 				this.boss.elements.forEach((element, index) => {
 					setTimeout(() => {
-						playSound(sounds.explosion)
+						playSound('explosion')
 						element.lives = 0.5
 					}, index * 60)
 				})
@@ -697,12 +755,10 @@ class Game {
 
 			if (snake1IsDead) {
 				this.dualSnakes[0].runDeathAnimation()
-				this.dualSnakes[0].shots = []
 			}
 
 			if (snake2IsDead) {
 				this.dualSnakes[1].runDeathAnimation()
-				this.dualSnakes[1].shots = []
 			}
 
 			if (snake1IsDead && snake2IsDead) {
@@ -738,7 +794,7 @@ class Game {
 						this.musicRunning = false
 						this.isHighScore = false
 						this.gameSpeed = 60
-						playSound(sounds.credits)
+						playMusic(sounds.credits)
 						this.state = gameStates.credits
 					}, 3000)
 				}
@@ -803,7 +859,7 @@ class Game {
 		canvasContext.fillStyle = 'black'
 		canvasContext.fillRect(0, 0, canvas.width, canvas.height)
 		canvasContext.textAlign = 'center'
-		canvasContext.fillStyle = 'limegreen'
+		canvasContext.fillStyle = '#5eead4'
 		if (!this.highScoresLoaded && !this.highScoresLoading) {
 			this.fetchHighScores()
 			return
@@ -851,10 +907,10 @@ class Game {
 		)
 		canvasContext.restore()
 		canvasContext.save()
-		canvasContext.fillStyle = 'limegreen'
+		canvasContext.fillStyle = '#5eead4'
 		canvasContext.font = '48px retro'
 		canvasContext.textAlign = 'center'
-		canvasContext.strokeStyle = 'yellow'
+		canvasContext.strokeStyle = '#5eead4'
 		canvasContext.lineWidth = 1
 		canvasContext.fillText('SPACE', canvas.width / 2, canvas.height / 2 - 140)
 		canvasContext.strokeText('SPACE', canvas.width / 2, canvas.height / 2 - 140)
@@ -893,9 +949,10 @@ class Game {
 	}
 
 	drawGameOverScreen() {
+		canvasContext.filter = 'none'
 		canvasContext.fillStyle = 'black'
 		canvasContext.fillRect(0, 0, canvas.width, canvas.height)
-		canvasContext.fillStyle = 'limegreen'
+		canvasContext.fillStyle = '#5eead4'
 		canvasContext.textAlign = 'center'
 		canvasContext.fillText(
 			'Game over',
@@ -958,7 +1015,7 @@ class Game {
 		const startY = canvas.height + 50
 
 		canvasContext.font = '24px retro'
-		canvasContext.fillStyle = 'limegreen'
+		canvasContext.fillStyle = '#5eead4'
 		canvasContext.textAlign = 'center'
 
 		creditsLines.forEach((line, index) => {
@@ -1001,17 +1058,17 @@ class Game {
 
 	drawScore() {
 		canvasContext.textAlign = 'start'
-		canvasContext.fillStyle = 'limegreen'
+		canvasContext.fillStyle = '#5eead4'
 		canvasContext.fillText('Score', 12, 30)
 		canvasContext.fillStyle = 'white'
 		canvasContext.fillText(this.score, 12, 55)
 		canvasContext.textAlign = 'right'
-		canvasContext.fillStyle = 'limegreen'
+		canvasContext.fillStyle = '#5eead4'
 		canvasContext.fillText('Hi-Score', canvas.width - 12, 30)
 		canvasContext.fillStyle = 'white'
 		canvasContext.fillText(this.highScore, canvas.width - 12, 55)
 		canvasContext.textAlign = 'center'
-		canvasContext.fillStyle = 'limegreen'
+		canvasContext.fillStyle = '#5eead4'
 		canvasContext.fillText('LVL', canvas.width / 2 - 25, 30)
 		canvasContext.fillStyle = 'white'
 		canvasContext.fillText(
@@ -1032,7 +1089,7 @@ class Game {
 			canvasContext.fillStyle = 'black'
 			canvasContext.fillRect(0, 0, canvas.width, canvas.height)
 		}
-		canvasContext.fillStyle = 'limegreen'
+		canvasContext.fillStyle = '#5eead4'
 		canvasContext.textAlign = 'center'
 		canvasContext.fillText(
 			this.score === 0 ? 'Save earth!' : 'Next round!',
@@ -1069,8 +1126,6 @@ class Game {
 		})
 		this.drawShipAndShot()
 
-		this.drawScore()
-
 		switch (this.state) {
 			case gameStates.asteroidsRound:
 				this.asteroids.forEach((asteroid) => asteroid.drawAsteroid())
@@ -1104,6 +1159,9 @@ class Game {
 			default:
 				break
 		}
+
+		this.enemyShots.forEach(shot => {
+			shot.draw()})
 
 		this.drawScore()
 
@@ -1145,22 +1203,6 @@ class Game {
 			if (position < 2200) this.backgroundScrollPositions[index] += 1
 			else this.backgroundScrollPositions[index] = -2200
 		})
-	}
-
-	setVolume(value) {
-		this.volume = value === 0 ? 0 : (value * 2) / 10
-		sessionStorage.setItem('volume', value)
-		const volumeElements = Array.from(
-			document.getElementsByClassName('volume-item')
-		)
-		volumeElements.forEach((element) => {
-			element.innerHTML = element.dataset.value > value ? '&#9645;' : '&#11036;'
-		})
-		for (let key in sounds) {
-			if (sounds[key] instanceof Audio) {
-				sounds[key].volume = this.volume
-			}
-		}
 	}
 
 	fetchHighScores() {
@@ -1263,10 +1305,6 @@ class Game {
 
 const game = new Game()
 
-function setVolume(value) {
-	game.setVolume(value)
-}
-
 // _______________________________________________________________
 // ASTEROIDS
 // _______________________________________________________________
@@ -1359,7 +1397,7 @@ class Asteroid {
 		if (overlapX && overlapY) {
 			shot.isActive = false
 			game.player.setActiveShots()
-			playSound(sounds.hitSound)
+			playSound('hitSound')
 			game.score += 5
 			createExplosion(
 				this.x + this.width / 2,
@@ -1387,7 +1425,6 @@ class EnemyShip {
 		this.lives = game.level > 1 ? 4 : 2
 		this.isShotCoolDown = false
 		this.shotCoolDown = 400
-		this.shots = []
 		this.isLockOn = game.level > 1 ? isLockOn : false
 		this.isLockOnMode = false
 	}
@@ -1403,9 +1440,6 @@ class EnemyShip {
 			)
 		}
 		if (game.player.killed) return
-		this.shots.forEach((shot) => {
-			shot.draw()
-		})
 	}
 
 	shoot() {
@@ -1416,19 +1450,12 @@ class EnemyShip {
 			this.x <= game.player.x + 60 &&
 			this.lives >= 1
 		) {
-			this.shots.push(new EnemyShot(this))
-			this.setActiveShots()
-			playSound(sounds.laserEnemy)
+			game.enemyShots.push(new EnemyShot(this))
+			playSound('laserEnemy')
 		}
 
 		this.isShotCoolDown = true
 		setTimeout(() => (this.isShotCoolDown = false), this.shotCoolDown)
-	}
-
-	setActiveShots() {
-		for (let i = this.shots.length - 1; i >= 0; i--) {
-			if (!this.shots[i].isActive) this.shots.splice(i, 1)
-		}
 	}
 
 	moveShip() {
@@ -1453,10 +1480,6 @@ class EnemyShip {
 	handleShots() {
 		if (game.player.killed) return
 		this.shoot()
-		this.shots.forEach((shot) => {
-			shot.move()
-			shot.detectHittingPlayer()
-		})
 	}
 
 	detectHitByPlayer(shot) {
@@ -1468,12 +1491,16 @@ class EnemyShip {
 
 		if (overlapY && overlapX && this.lives >= 1 && shot.isActive) {
 			this.lives -= 0.5
-			playSound(this.lives <= 0.5 ? sounds.explosion2 : sounds.hitSound)
+			playSound(this.lives <= 0.5 ? 'explosion2' : 'hitSound')
 			setTimeout(() => (this.lives -= 0.5), 100)
 			shot.isActive = false
 			game.player.setActiveShots()
 			game.score += 30
-			createExplosion(this.x + this.width / 2, this.y + this.height / 2, '#5eead4')
+			createExplosion(
+				this.x + this.width / 2,
+				this.y + this.height / 2,
+				'#5eead4'
+			)
 		}
 	}
 }
@@ -1531,7 +1558,6 @@ class EnemyShot {
 		}
 		if (this.y > canvas.height) {
 			this.isActive = false
-			this.enemyShip.setActiveShots()
 		}
 
 		this.detectHittingPlayer()
@@ -1558,7 +1584,6 @@ class EnemyShot {
 				game.player.losePowerUps()
 				this.currentShotHeight = 0
 				this.isActive = false
-				this.enemyShip.setActiveShots()
 				setTimeout(() => {
 					if (!game.player.hasShield) game.player.isInvincible = false
 				}, 500)
@@ -1600,7 +1625,12 @@ class Snake {
 			if (isVisible) {
 				drawBossWarning(this.blinkingTextStartTime)
 			}
-		} else this.elements.forEach((element) => element.draw())
+		} else {
+			canvasContext.save()
+			canvasContext.filter = `hue-rotate(${game.colorVariable}deg)`
+			this.elements.forEach((element) => element.draw())
+			canvasContext.restore()
+		}
 	}
 
 	detectHitByPlayer() {
@@ -1616,11 +1646,10 @@ class Snake {
 	runDeathAnimation() {
 		this.elements.forEach((element, index) => {
 			if (!element.isActive) return
-			element.shots = []
-			element.setActiveShots()
 			setTimeout(() => {
-				playSound(sounds.explosion)
+				playSound('explosion')
 				element.lives = 0.5
+				createExplosion(element.x - element.size / 2, element.y - element.size / 2, '#5eead4')
 				if (index === this.elements.length - 1) {
 					this.elements.forEach((element) => {
 						element.lives = 0
@@ -1643,7 +1672,6 @@ class SnakeElement {
 		this.image = isHead ? images.snakeHead : images.snakeBody
 		this.isShotCoolDown = false
 		this.shotCoolDown = 750
-		this.shots = []
 		this.regenerates = regenerates
 		this.isActive = false
 	}
@@ -1654,7 +1682,7 @@ class SnakeElement {
 			canvasContext.fillRect(this.x, this.y + this.size / 2 - 4, this.size, 8)
 			return
 		}
-		canvasContext.filter = `hue-rotate(${game.colorVariable}deg)`
+
 		if (this.lives > 0.5) {
 			canvasContext.drawImage(
 				this.regenerates ? images.bossStructure : this.image,
@@ -1665,17 +1693,8 @@ class SnakeElement {
 			)
 		}
 
-		if (this.lives % 1 !== 0 && this.isActive) {
-			createExplosion(this.x + this.size / 2, this.y + this.size / 2, '#5eead4')
-		}
-		canvasContext.filter = 'none'
 
 		if (game.player.killed) return
-		if (this.isHead) {
-			this.shots.forEach((shot) => {
-				shot.draw()
-			})
-		}
 	}
 
 	move() {
@@ -1710,25 +1729,14 @@ class SnakeElement {
 		)
 			return
 		this.isShotCoolDown = true
-		this.shots.push(new EnemyShot(this))
-		playSound(sounds.laserEnemy)
-		this.setActiveShots()
+		game.enemyShots.push(new EnemyShot(this))
+		playSound('laserEnemy')
 		setTimeout(() => (this.isShotCoolDown = false), this.shotCoolDown)
-	}
-
-	setActiveShots() {
-		for (let i = this.shots.length - 1; i >= 0; i--) {
-			if (!this.shots[i].isActive) this.shots.splice(i, 1)
-		}
 	}
 
 	handleShots() {
 		if (game.player.killed || !this.isHead || this.lives === 0) return
 		this.shoot()
-		this.shots.forEach((shot) => {
-			shot.move()
-			shot.detectHittingPlayer()
-		})
 	}
 
 	hitDetection(shot) {
@@ -1750,8 +1758,10 @@ class SnakeElement {
 			setTimeout(() => {
 				game.colorVariable -= 50
 			}, 50)
-			playSound(this.isHead ? sounds.bossHitSound : sounds.hitSound)
-			createExplosion(this.x, this.y, '#5eead4')
+			playSound(this.isHead ? 'bossHitSound' : 'hitSound')
+			createExplosion(this.x - this.size / 2, this.y - this.size / 2, '#5eead4')
+			createExplosion(this.x - this.size / 2, this.y - this.size / 2, '#5eead4')
+
 		}
 	}
 
@@ -1771,19 +1781,36 @@ class SnakeElement {
 
 function drawBossWarning(blinkingTextStartTime) {
 	const now = performance.now()
-	const blinkElapsed = (now - blinkingTextStartTime) % (2 * 550)
+	const elapsed = now - blinkingTextStartTime
+	const blinkElapsed = elapsed % 1100
 	const isVisible = blinkElapsed < 550
+
 	if (isVisible) {
 		canvasContext.save()
-		canvasContext.fillStyle = 'red'
+
+		// 1. Subtiles Kamera-Wackeln (Shaking) für mehr Impact
+		const shakeX = (Math.random() - 0.5) * 4
+		const shakeY = (Math.random() - 0.5) * 4
+		canvasContext.translate(shakeX, shakeY)
+
 		canvasContext.font = '32px retro'
 		canvasContext.textAlign = 'center'
+
+		canvasContext.fillStyle = '#FF4D00'
+		canvasContext.fillText('BOSS', canvas.width / 2 + 2, canvas.height / 2 - 18)
+		canvasContext.fillText(
+			'APPROACHES',
+			canvas.width / 2 + 2,
+			canvas.height / 2 + 22
+		)
+
 		canvasContext.fillText('BOSS', canvas.width / 2, canvas.height / 2 - 20)
 		canvasContext.fillText(
 			'APPROACHES',
 			canvas.width / 2,
 			canvas.height / 2 + 20
 		)
+
 		canvasContext.restore()
 	}
 }
@@ -1828,7 +1855,10 @@ class Boss2 {
 	}
 
 	draw() {
+		canvasContext.save()
+		canvasContext.filter = `hue-rotate(${game.colorVariable}deg)`
 		this.elements.forEach((element) => element.draw())
+		canvasContext.restore()
 		const now = performance.now()
 		const blinkElapsed = (now - this.blinkingTextStartTime) % (2 * 550)
 		const isVisible = blinkElapsed < 550
@@ -1880,17 +1910,18 @@ class Boss2 {
 			this.elements[randomNonHeadIndex].changePosition(tempX, tempY)
 		})
 
-		playSound(sounds.teleport)
+		playSound('teleport')
 	}
 	runDeathAnimation() {
 		if (this.isDead) return
 		this.isDead = true
 		this.elements.forEach((element, index) => {
 			element.shots = []
-			element.setActiveShots()
 			element.regenerates = false
 			setTimeout(() => {
-				playSound(sounds.explosion)
+				playSound('explosion')
+				createExplosion(element.x - element.size / 2, element.y - element.size / 2, '#5eead4')
+
 				element.lives = 0.5
 				if (index === this.elements.length - 1) {
 					this.elements.forEach((element) => {
@@ -1924,8 +1955,11 @@ class Boss {
 	}
 
 	draw() {
+		canvasContext.save()
+		canvasContext.filter = `hue-rotate(${game.colorVariable}deg)`
 		this.elements.forEach((element) => element.draw())
 		if (this.obstacles) this.obstacles.forEach((obstacle) => obstacle.draw())
+		canvasContext.restore()
 		const now = performance.now()
 		const blinkElapsed = (now - this.blinkingTextStartTime) % (2 * 550)
 		const isVisible = blinkElapsed < 550
@@ -2062,7 +2096,7 @@ class Obstacle {
 			this.y > canvas.height + this.size
 		)
 			return
-		canvasContext.filter = `hue-rotate(${game.colorVariable}deg)`
+
 		if (this.lives > 0.5) {
 			canvasContext.drawImage(
 				images.bossStructure,
@@ -2072,7 +2106,6 @@ class Obstacle {
 				this.size
 			)
 		}
-		canvasContext.filter = 'none'
 	}
 
 	move() {
@@ -2098,7 +2131,7 @@ class Obstacle {
 				this.lives -= 0.5
 				this.isActive = false
 			}, 100)
-			playSound(sounds.hitSound)
+			playSound('hitSound')
 		}
 	}
 
@@ -2606,7 +2639,7 @@ class Collectible {
 			createExplosion(this.x + this.size / 2, this.y + this.size / 2, 'yellow')
 			this.isCollected = true
 			game.score += 100
-			playSound(sounds.thankYou)
+			playSound('thankYou')
 		}
 	}
 
@@ -2661,7 +2694,6 @@ class ObstacleLevel {
 		}
 
 		this.activeObstacles.forEach((obs) => obs.move())
-
 		this.handleCollisions()
 	}
 
@@ -2843,7 +2875,7 @@ class PowerUp {
 			}
 
 			playSound(
-				this.type === powerUpTypes.shield ? sounds.shieldUp : sounds.powerUp
+				this.type === powerUpTypes.shield ? 'shieldUp' : 'powerUp'
 			)
 		}
 	}
@@ -2917,10 +2949,10 @@ class Shot {
 	playLaserSound() {
 		let sound
 		if (game.player.hasWideShot && game.player.hasLongShot)
-			sound = sounds.laser3
+			sound = 'laser3'
 		else if (game.player.hasWideShot || game.player.hasLongShot)
-			sound = sounds.laser2
-		else sound = sounds.laser
+			sound = 'laser2'
+		else sound = 'laser'
 		playSound(sound)
 	}
 }
@@ -2955,7 +2987,8 @@ class Particle {
 }
 
 const createExplosion = (x, y, color) => {
-	const particleCount = 15
+	if (particles.length > 400) particles.splice(0, 30)
+	const particleCount = 30
 	for (let i = 0; i < particleCount; i++) {
 		particles.push(new Particle(x, y, '#5eead4'))
 	}
@@ -3034,10 +3067,6 @@ window.onload = () => {
 
 	loadImages()
 	loadSounds()
-
-	const volumeFromSessionStorage = sessionStorage.getItem('volume')
-	if (volumeFromSessionStorage)
-		game.setVolume(parseFloat(volumeFromSessionStorage))
 
 	requestAnimationFrame(game.drawEverything)
 

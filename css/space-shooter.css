@@ -22,6 +22,7 @@ canvas {
 	transition: 0.5s;
 	border: 1px solid white;
 	border-radius: 8px;
+	filter: blur(1px);
 }
 
 #canvas-wrapper {
@@ -40,7 +41,7 @@ form {
 	left: 50%;
 	transform: translateX(-50%);
 	background-color: black;
-	color: limegreen;
+	color: #5eead4;
 }
 
 input {
@@ -50,60 +51,17 @@ input {
 	margin: 0 auto;
 	width: 200px;
 	background-color: black;
-	color: limegreen;
+	color: #5eead4;
 	font-size: 24px;
 	border: 0;
 	outline: 0;
 	caret-color: transparent;
+	filter: blur(1px);
 }
 
 input::placeholder {
-	color: limegreen;
+	color: #5eead4;
 	font-size: 24px;
-}
-
-p {
-	margin-top: 8px;
-}
-
-article {
-	text-align: justify;
-	font-size: 1.2em;
-	width: 400px;
-	height: calc(600px - 2rem);
-	background: black;
-	color: limegreen;
-	padding: 1rem;
-}
-
-h2 {
-	font-family: retro, serif;
-	color: white;
-}
-
-#startButton {
-	font-family: retro, serif;
-	background-color: black;
-	color: white;
-	font-size: 1.5em;
-	padding: 10px;
-	width: 400px;
-}
-
-#volume-control {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	margin: 32px auto 0;
-	width: 248px;
-	color: white;
-}
-
-.volume-item {
-	width: 22px;
-	min-width: 22px;
-	max-width: 22px;
-	text-align: center;
 }
 
 #github-link {
