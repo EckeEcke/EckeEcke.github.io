@@ -567,6 +567,12 @@ footer {
 	background: inherit;
 }
 
+.sidebar[data-show='false'] .level1,
+.sidebar[data-show='false'] .level2 {
+	transition: none;
+}
+
+
 .level1 {
 	transform: translateX(0);
 	z-index: 2;
