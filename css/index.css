@@ -46,6 +46,7 @@ body.dark-theme {
 }
 
 body.light-theme {
+	--highlight-color: rgb(45, 212, 191);
 	--bg: #fafeff;
 	--text: #000000;
 	--text-secondary: #59636e;
@@ -138,7 +139,6 @@ ul {
 h1 {
 	color: var(--text);
 	text-align: center;
-	text-shadow: 4px 4px rgba(0, 0, 0, 0.4);
 }
 
 h2 {
@@ -338,7 +338,6 @@ body.light-them .intro-content::before {
 .intro-content * {
 	color: var(--text);
 	max-width: 590px;
-	text-shadow: 1px 1px rgba(0, 0, 0, 0.4);
 }
 
 .intro-content p {
@@ -368,7 +367,6 @@ body.light-them .intro-content::before {
 	display: flex;
 	justify-content: center;
 	z-index: 10;
-	
 }
 
 .toggle-background {
@@ -571,7 +569,6 @@ footer {
 .sidebar[data-show='false'] .level2 {
 	transition: none;
 }
-
 
 .level1 {
 	transform: translateX(0);
