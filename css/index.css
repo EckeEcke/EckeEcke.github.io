@@ -719,10 +719,6 @@ footer {
 	transform: translateY(20px);
 }
 
-#resume-content .timeline-item.appear {
-	transform: translateY(0) translateX(40px);
-}
-
 .appear.inview,
 #resume-content .appear.inview {
 	opacity: 1;
