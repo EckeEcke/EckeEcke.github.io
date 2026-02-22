@@ -710,8 +710,8 @@ footer {
 /**************/
 
 .appear {
-	-webkit-transition: all 0.8s;
-	transition: all 0.8s;
+	-webkit-transition: all 0.8s ease-in-out;
+	transition: all 0.8s ease-in-out;
 	opacity: 0;
 }
 
@@ -719,7 +719,12 @@ footer {
 	transform: translateY(20px);
 }
 
-.appear.inview {
+#resume-content .timeline-item.appear {
+	transform: translateY(0) translateX(40px);
+}
+
+.appear.inview,
+#resume-content .appear.inview {
 	opacity: 1;
 	transform: none;
 }
@@ -966,7 +971,7 @@ footer {
 .contact-icons {
 	display: flex;
 	justify-content: center;
-	gap: 16px;
+	gap: 24px;
 	margin-top: 16px;
 }
 
