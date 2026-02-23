@@ -12,7 +12,6 @@
 	--blue-font-color: #143a5d;
 	--coral-font-color: #f73163;
 	--max-container-width: 600px;
-	--text-toggle: #000000;
 	--bg: rgba(1, 4, 10, 1);
 	--text: #f0f0f0;
 	--text-secondary: rgb(148, 163, 184);
@@ -24,9 +23,7 @@
 		rgba(10, 5, 10, 1) 100%
 	);
 
-	--intro-bg: transparent,
-	--toggle-bg: rgba(15, 23, 42, 1);
-	--text-toggle: var(--highlight-color);
+	--intro-bg: transparent;
 	--text-intro-button: #0f172a;
 	--accent-color: rgb(251, 191, 36);
     --glow-color: rgba(251, 191, 36, 0.5);
@@ -45,8 +42,6 @@ body.dark-theme {
 		rgba(10, 5, 10, 1) 100%
 	);
 	--intro-bg: transparent;
-	--toggle-bg: rgba(15, 23, 42, 1);
-	--text-toggle: var(--highlight-color);
 	--text-intro-button: #0f172a;
 	--accent-color: rgb(251, 191, 36);
     --glow-color: rgba(251, 191, 36, 0.5);
@@ -62,8 +57,6 @@ body.light-theme {
 	--header-bg: radial-gradient(circle, #ffffff 0%, #f0f7ff 100%);
 	--intro-bg: radial-gradient(circle at top right, #e0f2fe, transparent),
             radial-gradient(circle at bottom left, #f0fdf4, transparent);
-	--toggle-bg: var(--header-bg);
-	--text-toggle: #000000;
 	--text-intro-button: #f0f0f0;
 	--accent-color: rgb(217, 119, 6);
     --glow-color: rgba(217, 119, 6, 0.2);
@@ -234,7 +227,7 @@ h3 {
 	border: 2px solid var(--highlight-color);
 	border-radius: 20px;
 	position: relative;
-	transition: background 0.3s ease;
+	transition: all 0.3s ease;
 	backdrop-filter: blur(10px);
 }
 
@@ -466,17 +459,6 @@ body.light-them .intro-content::before {
 	padding: 16px 0;
 }
 
-.toggle-switch {
-	position: relative;
-	display: flex;
-	background: var(--toggle-bg);
-	padding: 4px;
-	border-radius: 12px;
-	width: 100%;
-	max-width: var(--max-container-width);
-	border: 2px solid rgba(55, 55, 55, 0.1);
-}
-
 .nav-slider {
 	position: absolute;
 	top: 4px;
@@ -488,25 +470,6 @@ body.light-them .intro-content::before {
 	transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 	z-index: 0;
 	transform: translateX(0%);
-}
-
-.toggle-btn {
-	position: relative;
-	flex: 1;
-	padding: 12px;
-	border: none;
-	background: none;
-	color: var(--text-toggle);
-	cursor: pointer;
-	font-family: 'Ubuntu', sans-serif;
-	font-size: 14px;
-	text-transform: uppercase;
-	z-index: 1;
-	transition: color 0.3s;
-}
-
-.toggle-btn.active {
-	color: black;
 }
 
 .tab-headline {
@@ -1157,11 +1120,6 @@ body.light-theme .form-group textarea {
 	.icons-wrapper {
 		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 	}
-
-	.toggle-btn {
-		font-weight: bolder;
-	}
-
 
 	.tab-headline {
 		text-align: center;
