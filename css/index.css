@@ -13,7 +13,6 @@
 	--coral-font-color: #f73163;
 	--max-container-width: 600px;
 	--text-toggle: #000000;
-	--bg-pattern: 30px 30px, 100% 100%;
 	--bg: rgba(1, 4, 10, 1);
 	--text: #f0f0f0;
 	--text-secondary: rgb(148, 163, 184);
@@ -28,7 +27,6 @@
 	--intro-bg: transparent,
 	--toggle-bg: rgba(15, 23, 42, 1);
 	--text-toggle: var(--highlight-color);
-	--bg-pattern: 100%;
 	--text-intro-button: #0f172a;
 	--accent-color: rgb(251, 191, 36);
     --glow-color: rgba(251, 191, 36, 0.5);
@@ -49,7 +47,6 @@ body.dark-theme {
 	--intro-bg: transparent;
 	--toggle-bg: rgba(15, 23, 42, 1);
 	--text-toggle: var(--highlight-color);
-	--bg-pattern: 100%;
 	--text-intro-button: #0f172a;
 	--accent-color: rgb(251, 191, 36);
     --glow-color: rgba(251, 191, 36, 0.5);
@@ -62,13 +59,11 @@ body.light-theme {
 	--text: #0f172a;
 	--text-secondary: #59636e;
 	--intro-card-bg: rgba(255, 255, 255, 0.8);
-	--header-bg:
-		radial-gradient(circle, #d1d9e6 2px, transparent 2px),
-		radial-gradient(circle, #ffffff 0%, #f0f7ff 100%);
-	--intro-bg: var(--header-bg);
+	--header-bg: radial-gradient(circle, #ffffff 0%, #f0f7ff 100%);
+	--intro-bg: radial-gradient(circle at top right, #e0f2fe, transparent),
+            radial-gradient(circle at bottom left, #f0fdf4, transparent);
 	--toggle-bg: var(--header-bg);
 	--text-toggle: #000000;
-	--bg-pattern: 30px 30px, 100% 100%;
 	--text-intro-button: #f0f0f0;
 	--accent-color: rgb(217, 119, 6);
     --glow-color: rgba(217, 119, 6, 0.2);
@@ -270,10 +265,6 @@ h3 {
 	opacity: 1;
 }
 
-body.dark-theme header {
-	background-size: 100%;
-}
-
 body.dark-theme .toggle-thumb {
 	transform: translateX(30px);
 	background: #f0f0f0;
@@ -309,7 +300,6 @@ body.light-theme .toggle-track {
 	padding: 50px 16px;
 	margin-bottom: 64px;
 	background: var(--intro-bg);
-	background-size: var(--bg-pattern);
 	h1 {
 		opacity: 0;
 		animation: show-title-animation 2s ease-out;
@@ -619,7 +609,6 @@ footer {
 	width: 100vw;
 	max-width: var(--max-container-width);
 	background: var(--header-bg);
-	background-size: 0;
 	z-index: 2500;
 	padding: 16px 0;
 
@@ -686,13 +675,14 @@ footer {
 	border: none;
 	cursor: pointer;
 	text-align: center;
-	transition: 0.3s;
+	transition: all 0.3s ease-in-out;
 	font-family: 'Ubuntu', serif !important;
 	text-transform: uppercase;
 }
 
 .nav-item a {
 	width: 100%;
+	transition: all 0.3s ease-in-out;
 }
 
 .nav-item a,
@@ -708,6 +698,7 @@ footer {
 .nav-item.active,
 .nav-item a.active {
 	color: var(--highlight-color);
+	font-weight: 700;
 }
 
 .sidebar ul {
