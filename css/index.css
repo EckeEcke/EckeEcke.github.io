@@ -609,7 +609,7 @@ footer {
 	pointer-events: none;
 }
 
-.sidebar-content h4 a {
+.sidebar-content .nav-headline a {
 	text-align: center;
 	font-size: 24px;
 	color: var(--highlight-color);
