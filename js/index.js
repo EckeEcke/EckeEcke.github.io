@@ -37,16 +37,89 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('theme', theme)
 })
 
+
+
+const contactForm = document.getElementById('contact-form')
+
+contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault()
+
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        message: document.getElementById('message').value
+    }
+
+    try {
+        const response = await fetch('https://python-contact-form.vercel.app/api/send-mail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+
+        const result = await response.json()
+
+        if (response.ok) {
+            alert('Message received! Thx, ' + result.received)
+            contactForm.reset()
+        } else {
+            alert('Error while sending...')
+        }
+    } catch (error) {
+        console.error('Backend connection failed:', error)
+        alert('Backend not reachable.')
+    }
+})
+
+
 const items = document.querySelectorAll('.appear')
+const contentSections = document.querySelectorAll('.content-section')
+const navLinks = document.querySelectorAll('.nav-item a')
+navLinksMobile = document.querySelectorAll('.nav-item')
+
 const active = (entries) => {
-	entries.forEach((entry) =>
-		entry.isIntersecting
-			? entry.target.classList.add('inview')
-			: entry.target.classList.remove('inview')
-	)
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('inview')
+        } else {
+            entry.target.classList.remove('inview')
+        }
+    })
 }
+
+const activeNav = (entries) => {
+    entries.forEach((entry) => {
+        const id = entry.target.getAttribute('id')
+
+        if (!id || !entry.isIntersecting) return
+
+        navLinks.forEach((link) => {
+            const href = link.getAttribute('href')
+            
+            link.classList.remove('active')
+            if (href === `#${id}`) {
+                link.classList.add('active')
+            }
+        })
+
+		navLinksMobile.forEach((link) => {
+            const href = link.getAttribute('href')
+            
+            link.classList.remove('active')
+            if (href === `#${id}`) {
+                link.classList.add('active')
+            }
+        })
+    })
+}
+
 const io = new IntersectionObserver(active)
+const io2 = new IntersectionObserver(activeNav, { rootMargin: '-40% 0px -40% 0px' })
+
 items.forEach((item) => io.observe(item))
+contentSections.forEach((section) => io2.observe(section))
 
 const body = document.getElementById('body')
 
@@ -55,13 +128,6 @@ const backdrop = document.getElementById('backdrop')
 const menuBtn = document.getElementById('menu-btn')
 const sidebar = document.getElementById('sidebar')
 
-const displayLevel1SidebarContent = () => {
-	const level1 = document.querySelector('.level1')
-	const level2Containers = document.querySelectorAll('.level2')
-	level1.classList.remove('hidden')
-	level2Containers.forEach((container) => container.classList.remove('active'))
-}
-
 const toggleSidebar = () => {
 	menuBtn.classList.toggle('active')
 	showSidebar = !showSidebar
@@ -69,15 +135,10 @@ const toggleSidebar = () => {
 		sidebar.dataset.show = 'true'
 		sidebar.setAttribute('aria-hidden', 'false')
 		backdrop.style.display = 'block'
-		document.body.style.overflowY = 'hidden'
-		document.body.style.height = '100vh'
 	} else {
 		sidebar.dataset.show = 'false'
 		sidebar.setAttribute('aria-hidden', 'true')
 		backdrop.style.display = 'none'
-		document.body.style.height = 'auto'
-		document.body.style.overflowY = 'auto'
-		displayLevel1SidebarContent()
 	}
 }
 
@@ -89,52 +150,14 @@ document.addEventListener('keydown', (event) => {
 		toggleSidebar()
 	}
 })
-	document.addEventListener('DOMContentLoaded', () => {
-		const buttons = document.querySelectorAll('.toggle-btn')
-		const slider = document.querySelector('.nav-slider')
-		const sections = document.querySelectorAll('.tab-content')
-		const updateView = (activeIndex) => {
-			const target = buttons[activeIndex].getAttribute('data-target')
-			slider.style.transform = 'translateX(' + activeIndex * 100 + '%)'
-			buttons.forEach((btn) => {
-				btn.classList.remove('active')
-			})
-			buttons[activeIndex].classList.add('active')
-			sections.forEach((sec) => {
-				if (sec.id === target + '-content') {
-					sec.classList.remove('hidden')
-					sec.scrollIntoView({ behavior: 'auto', block: 'start' })
-				} else {
-					sec.classList.add('hidden')
-				}
-			})
-		}
-
-		buttons.forEach((btn, index) => {
-			btn.addEventListener('click', () => {
-				updateView(index)
-			})
-		})
-	})
 
 document.addEventListener('DOMContentLoaded', () => {
-	const navItems = document.querySelectorAll('.nav-item')
-	const backButtons = document.querySelectorAll('.back-button')
-	const level1 = document.querySelector('.level1')
+	const navItems = document.querySelectorAll('#sidebar .nav-item')
 
 	navItems.forEach((item) => {
 		item.addEventListener('click', () => {
-			const targetId = item.getAttribute('data-target')
-			const targetLevel = document.getElementById(targetId)
-			if (targetLevel) {
-				level1.classList.add('hidden')
-				targetLevel.classList.add('active')
-			}
+			toggleSidebar()
 		})
-	})
-
-	backButtons.forEach((button) => {
-		button.addEventListener('click', displayLevel1SidebarContent)
 	})
 })
 
@@ -161,37 +184,3 @@ const initStars = () => {
 }
 
 document.addEventListener('DOMContentLoaded', initStars)
-
-let touchstartX = 0
-let touchendX = 0
-const swipeContainer = document.querySelector('#swipe-container')
-
-const handleGesture = () => {
-    const minDistance = 50
-    const activeBtn = document.querySelector('.toggle-btn.active')
-    if (!activeBtn) return
-
-    const allBtns = Array.from(document.querySelectorAll('.toggle-btn'))
-    const currentIndex = allBtns.indexOf(activeBtn)
-
-    if (touchendX + minDistance < touchstartX) {
-        if (currentIndex < allBtns.length - 1) {
-            allBtns[currentIndex + 1].click()
-        }
-    }
-    
-    if (touchendX > touchstartX + minDistance) {
-        if (currentIndex > 0) {
-            allBtns[currentIndex - 1].click()
-        }
-    }
-}
-
-swipeContainer.addEventListener('touchstart', e => {
-    touchstartX = e.changedTouches[0].screenX
-}, { passive: true })
-
-swipeContainer.addEventListener('touchend', e => {
-    touchendX = e.changedTouches[0].screenX
-    handleGesture()
-}, { passive: true })
