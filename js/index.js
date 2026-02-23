@@ -83,9 +83,12 @@ const active = (entries) => {
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
             entry.target.classList.add('inview')
-        } else {
+        } 
+		/* remove fade in once more on upscrolling
+		else {
             entry.target.classList.remove('inview')
         }
+		*/
     })
 }
 
