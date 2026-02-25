@@ -704,6 +704,25 @@ footer {
 	z-index: 2499;
 }
 
+.back-to-top-link {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
+	color: var(--text-secondary);
+	text-decoration: underline;
+	transition: all 0.3s ease-in-out;
+	width: 200px;
+	margin: 100px auto 0;
+}
+
+.back-to-top-link:hover {
+	color: var(--highlight-color);
+	transform: scale(1.1);
+}
+
+
+
 /*******************/
 /* Mario animation */
 /*******************/
@@ -1045,6 +1064,7 @@ body.light-theme .form-group input,
 body.light-theme .form-group textarea {
 	border: 1px solid rgba(55, 55, 55, 0.1);
 	color: black;
+	background: var(--intro-bg);
 }
 
 .form-group input:focus, 
