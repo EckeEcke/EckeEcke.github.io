@@ -197,3 +197,23 @@ window.addEventListener('scroll', () => {
     header.classList.remove('scrolled')
   }
 })
+
+const glow = document.getElementById('cursor-glow')
+
+document.addEventListener('mousemove', (e) => {
+    if (body.classList.contains('light-theme')) {
+        glow.style.opacity = '0'
+        return
+    } 
+
+    glow.style.left = e.clientX + 'px'
+    glow.style.top = e.clientY + 'px'
+    
+    if (glow.style.opacity !== '1') {
+        glow.style.opacity = '1'
+    }
+})
+
+document.addEventListener('mouseleave', () => {
+    glow.style.opacity = '0'
+})
