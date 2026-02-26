@@ -22,7 +22,7 @@
 		rgba(1, 4, 10, 1) 50%,
 		rgba(10, 5, 10, 1) 100%
 	);
-
+	--header-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 	--intro-bg: transparent;
 	--text-intro-button: #0f172a;
 	--accent-color: rgb(251, 191, 36);
@@ -41,6 +41,8 @@ body.dark-theme {
 		rgba(1, 4, 10, 1) 50%,
 		rgba(10, 5, 10, 1) 100%
 	);
+	--header-shadow: rgba(150, 150, 203, 0.25) 0px 50px 100px -20px, rgba(199, 199, 233, 0.3) 0px 30px 60px -30px;
+
 	--intro-bg: transparent;
 	--text-intro-button: #0f172a;
 	--accent-color: rgb(251, 191, 36);
@@ -55,6 +57,7 @@ body.light-theme {
 	--text-secondary: #59636e;
 	--intro-card-bg: rgba(255, 255, 255, 0.8);
 	--header-bg: radial-gradient(circle, #ffffff 0%, #f0f7ff 100%);
+	--header-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 	--intro-bg: radial-gradient(circle at top right, #e0f2fe, transparent),
             radial-gradient(circle at bottom left, #f0fdf4, transparent);
 	--text-intro-button: #f0f0f0;
@@ -123,6 +126,12 @@ header {
 	backdrop-filter: blur(8px);
 	opacity: 0.95;
 	z-index: 100;
+	box-shadow: 0 0 0 0 var(--header-shadow);
+	transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+header.scrolled {
+	box-shadow: var(--header-shadow);
 }
 
 .desktop-nav {
