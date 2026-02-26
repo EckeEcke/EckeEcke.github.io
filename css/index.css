@@ -211,7 +211,7 @@ h3 {
 }
 
 .screenshot-box-shadow {
-	box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
+	box-shadow: 0 10px 30px rgba(94, 234, 212, 0.2), 0 5px 10px rgba(94, 234, 212, 0.15);
 }
 
 /****************/
@@ -861,6 +861,7 @@ footer {
 .demo-section img {
 	border-radius: 8px;
 	max-width: min(100%, var(--max-container-width));
+	box-shadow: 0 10px 30px rgba(94, 234, 212, 0.15), 0 5px 10px rgba(94, 234, 212, 0.1);
 }
 
 .demo-section article {
