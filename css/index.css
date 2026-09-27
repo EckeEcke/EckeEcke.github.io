@@ -554,7 +554,7 @@ footer {
 	display: flex;
 	justify-content: center;
 	gap: 24px;
-	flex-wrap: wrap;
+	flex-wrap: balance;
 	margin: 32px auto;
 	padding: 16px;
 }
