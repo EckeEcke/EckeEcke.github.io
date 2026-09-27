@@ -34,6 +34,7 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://code.iconify.design" />
     <link rel="stylesheet" href="css/index.css" />
     <link
       rel="stylesheet"
@@ -66,7 +67,10 @@
         "sameAs": [
           "https://github.com/EckeEcke",
           "https://www.linkedin.com/in/christian-eckardt-41527216a/",
-          "https://www.xing.com/profile/Christian_Eckardt21/"
+          "https://www.xing.com/profile/Christian_Eckardt21/",
+          "https://www.youtube.com/@EckeEcke",
+          "https://eckeecke.itch.io/",
+          "https://codepen.io/EckeEcke"
         ],
         "knowsAbout": [
           "Nuxt.js",
@@ -87,16 +91,16 @@
       <nav class="desktop-nav">
         <ul>
           <li class="nav-item">
-            <a href="#projects-content" tabindex="-1">Projects</a>
+            <a href="#projects-content">Projects</a>
           </li>
           <li class="nav-item">
-            <a href="#stack-content" tabindex="-1">Stack</a>
+            <a href="#stack-content">Stack</a>
           </li>
           <li class="nav-item">
-            <a href="#resume-content" tabindex="-1">CV</a>
+            <a href="#resume-content">CV</a>
           </li>
           <li class="nav-item">
-            <a href="#contact-content" tabindex="-1">Contact</a>
+            <a href="#contact-content">Contact</a>
           </li>
         </ul>
       </nav>
@@ -121,7 +125,7 @@
           </div>
         </div>
         <div class="menu-button-wrapper">
-          <div id="menu-btn" class="menu-btn" aria-label="Open menu button">
+          <div id="menu-btn" class="menu-btn" aria-label="Open menu button" role="button" tabindex="0" aria-expanded="false" aria-controls="sidebar">
             <span></span>
           </div>
         </div>
@@ -490,10 +494,7 @@
                 CSS3
               </div>
               <div class="techstack-icon">
-                <span
-                  class="iconify blue-font"
-                  data-icon="vscode-icons:file-type-html"
-                ></span>
+                <span class="iconify blue-font" data-icon="vscode-icons:file-type-html"></span>
                 HTMLCanvas
               </div>
             </div>
@@ -1234,7 +1235,7 @@
               href="https://www.youtube.com/@EckeEcke"
               target="_blank"
               rel="noopener"
-              aria-label="chess.com"
+              aria-label="YouTube"
             >
               <span
                 class="iconify social-icon youtube-icon"

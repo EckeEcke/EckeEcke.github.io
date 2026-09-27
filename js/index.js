@@ -1,3 +1,5 @@
+document.documentElement.classList.add('js')
+
 const CONFIG = {
 	BASE_URL: window.location.origin,
 	STAR_COUNT: 100
@@ -14,7 +16,7 @@ if (currentTheme === 'dark') {
 
 themeToggle.addEventListener('click', () => {
   let theme
-  
+
   if (document.body.classList.contains('dark-theme')) {
     document.body.classList.remove('dark-theme')
     document.body.classList.add('light-theme')
@@ -33,7 +35,7 @@ themeToggle.addEventListener('click', () => {
       theme = 'dark'
     }
   }
-  
+
   localStorage.setItem('theme', theme)
 })
 
@@ -77,13 +79,13 @@ contactForm.addEventListener('submit', async (e) => {
 const items = document.querySelectorAll('.appear')
 const contentSections = document.querySelectorAll('.content-section')
 const navLinks = document.querySelectorAll('.nav-item a')
-navLinksMobile = document.querySelectorAll('.nav-item')
+const navLinksMobile = document.querySelectorAll('.nav-item')
 
 const active = (entries) => {
     entries.forEach((entry) => {
         if (entry.isIntersecting) {
             entry.target.classList.add('inview')
-        } 
+        }
 		/* remove fade in once more on upscrolling
 		else {
             entry.target.classList.remove('inview')
@@ -100,7 +102,7 @@ const activeNav = (entries) => {
 
         navLinks.forEach((link) => {
             const href = link.getAttribute('href')
-            
+
             link.classList.remove('active')
             if (href === `#${id}`) {
                 link.classList.add('active')
@@ -109,7 +111,7 @@ const activeNav = (entries) => {
 
 		navLinksMobile.forEach((link) => {
             const href = link.getAttribute('href')
-            
+
             link.classList.remove('active')
             if (href === `#${id}`) {
                 link.classList.add('active')
@@ -131,27 +133,66 @@ const backdrop = document.getElementById('backdrop')
 const menuBtn = document.getElementById('menu-btn')
 const sidebar = document.getElementById('sidebar')
 
+const getSidebarFocusable = () =>
+	Array.from(sidebar.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])'))
+
+const trapSidebarFocus = (event) => {
+	if (event.key !== 'Tab' || !showSidebar) return
+
+	const focusable = getSidebarFocusable()
+	if (focusable.length === 0) return
+
+	const first = focusable[0]
+	const last = focusable[focusable.length - 1]
+
+	if (event.shiftKey && document.activeElement === first) {
+		event.preventDefault()
+		last.focus()
+	} else if (!event.shiftKey && document.activeElement === last) {
+		event.preventDefault()
+		first.focus()
+	}
+}
+
 const toggleSidebar = () => {
 	menuBtn.classList.toggle('active')
 	showSidebar = !showSidebar
+	menuBtn.setAttribute('aria-expanded', String(showSidebar))
+
 	if (showSidebar) {
 		sidebar.dataset.show = 'true'
 		sidebar.setAttribute('aria-hidden', 'false')
 		backdrop.style.display = 'block'
+
+		const focusable = getSidebarFocusable()
+		if (focusable.length > 0) {
+			focusable[0].focus()
+		}
 	} else {
 		sidebar.dataset.show = 'false'
 		sidebar.setAttribute('aria-hidden', 'true')
 		backdrop.style.display = 'none'
+
+		menuBtn.focus()
 	}
 }
 
 backdrop.addEventListener('click', toggleSidebar)
 menuBtn.addEventListener('click', toggleSidebar)
 
+menuBtn.addEventListener('keydown', (event) => {
+	if (event.key === 'Enter' || event.key === ' ') {
+		event.preventDefault()
+		toggleSidebar()
+	}
+})
+
 document.addEventListener('keydown', (event) => {
 	if (event.key === 'Escape' && showSidebar) {
 		toggleSidebar()
+		return
 	}
+	trapSidebarFocus(event)
 })
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -204,11 +245,11 @@ document.addEventListener('mousemove', (e) => {
     if (body.classList.contains('light-theme')) {
         glow.style.opacity = '0'
         return
-    } 
+    }
 
     glow.style.left = e.clientX + 'px'
     glow.style.top = e.clientY + 'px'
-    
+
     if (glow.style.opacity !== '1') {
         glow.style.opacity = '1'
     }
